@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>奇點智匯 JudgAI - 會員方案比較</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* 自定義樣式 */
+        body {
+            font-family: 'Noto Sans TC', 'Inter', sans-serif;
+            background-color: #050816; /* 深邃星空背景 */
+        }
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #38bdf8, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-section {
+            position: relative;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+            overflow: hidden;
+        }
+        .plan-card, .audience-card {
+            background-color: rgba(17, 24, 39, 0.8); /* 半透明玻璃效果 */
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+        .plan-card:hover, .audience-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(56, 189, 248, 0.6);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
+        }
+        .popular-badge {
+            background: linear-gradient(90deg, #38bdf8, #a78bfa);
+            box-shadow: 0 0 15px #38bdf8;
+        }
+        .cta-button {
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            transition: all 0.3s ease-in-out;
+        }
+        .cta-button:hover {
+            box-shadow: 0 0 20px #38bdf8;
+            transform: scale(1.05);
+        }
+        .cta-button-secondary {
+            background-color: transparent;
+            border: 1px solid #38bdf8;
+            color: #38bdf8;
+        }
+        .cta-button-secondary:hover {
+            background-color: rgba(56, 189, 248, 0.1);
+        }
+        .feature-item svg {
+            flex-shrink: 0;
+        }
+        .comparison-table th, .comparison-table td {
+            border-color: rgba(56, 189, 248, 0.2);
+        }
+        .table-section-header {
+            background-color: rgba(17, 24, 39, 0.9);
+        }
+        .check-icon {
+            color: #34d399; /* 綠色 */
+            font-weight: bold;
+        }
+        .cross-icon {
+            color: #f87171; /* 紅色 */
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <div class="min-h-screen w-full">
+        
+        <!-- Hero Section -->
+        <section class="hero-section text-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 text-center">
+                <h1 class="font-orbitron text-4xl md:text-5xl lg:text-6xl font-bold tracking-wider">
+                    奇點智匯 JudgAI
+                    <span class="gradient-text block mt-4 text-3xl md:text-4xl">當經驗成為奇點，AI更是保險未來的引擎</span>
+                </h1>
+                <p class="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-gray-300">
+                    從經驗、法條到決策，奇點智匯讓每位保險專業者擁有一位懂法的科技夥伴
+                </p>
+                <div class="mt-10 flex flex-wrap justify-center gap-4">
+                    <a href="https://aistudy.pse.is/insurance-bot" target="_blank" class="cta-button inline-block text-white font-bold py-3 px-8 rounded-lg text-lg">
+                        立即開始免費試用 →
+                    </a>
+                    <a href="#comparison-table" class="cta-button-secondary inline-block font-bold py-3 px-8 rounded-lg text-lg">
+                        了解更多功能
+                    </a>
+                </div>
+                <div class="mt-16 max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                    <div class="flex items-start space-x-4">
+                        <svg class="w-8 h-8 text-cyan-400 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 15.75H3m18 0h-1.5M8.25 21v-1.5M15.75 3v1.5M15.75 21v-1.5M12 6.75h.008v.008H12V6.75Zm-.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm.375 3.75h.008v.008H12v-.008Zm-.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm.375 3.75h.008v.008H12v-.008Zm-.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm.375 3.75h.008v.008H12V18Zm-.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm3-11.25h.008v.008H15V6.75Zm-.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm.375 3.75h.008v.008H15v-.008Zm-.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm.375 3.75h.008v.008H15v-.008Zm-.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm.375 3.75h.008v.008H15V18Zm-.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-3.75-3.75h.008v.008H11.25v-.008Zm-.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm.375-3.75h.008v.008H11.25V6.75Zm-.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm.375 7.5h.008v.008H11.25v-.008Zm-.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm.375 3.75h.008v.008H11.25V18Zm-.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>
+                        <div>
+                            <h3 class="font-bold text-lg text-white">AI 法險決策引擎</h3>
+                            <p class="text-gray-400 mt-1">融合保險法規與稅務知識庫，並結合多位保險專家、會計師、財稅專家、地政士等司法專業人士之經驗，協助您超速生成理賠建議與銷售話術，節省您的時間，同時提升判斷效率與成交率。</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <svg class="w-8 h-8 text-cyan-400 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m-1.125 9a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Z" /><path stroke-linecap="round" stroke-linejoin="round" d="m3 16.125 1.125-1.125" /></svg>
+                        <div>
+                            <h3 class="font-bold text-lg text-white">智慧判例摘要與條文比對</h3>
+                            <p class="text-gray-400 mt-1">自動匯整解析法險相關裁判書與函釋，擷取重點條文、關鍵爭點與案例關聯，精準支援專業判讀與實務應用。</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <svg class="w-8 h-8 text-cyan-400 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193l-3.722.267c-.317.022-.652.022-.969 0l-3.722-.267c-1.133-.093-1.98-1.057-1.98-2.193V10.608c0-.97-.616-1.813-1.5-2.097m14.25-6.118c.223.194.428.422.612.678l.258.347a.96.96 0 0 1 0 1.152l-.258.347c-.184.256-.389.484-.612.678m-14.25 0c-.223.194-.428.422-.612.678l-.258.347a.96.96 0 0 0 0 1.152l.258.347c.184.256.389.484.612.678m14.25-6.118-3.722.267c-.317.022-.652.022-.969 0l-3.722-.267m14.25 0-3.722.267c-.317.022-.652.022-.969 0l-3.722-.267M3.75 8.511c-.884.284-1.5 1.128-1.5 2.097v4.286c0 1.136.847 2.1 1.98 2.193l3.722.267c.317.022.652.022.969 0l3.722-.267c1.133-.093 1.98-1.057 1.98-2.193V10.608c0-.97-.616-1.813-1.5-2.097" /></svg>
+                        <div>
+                            <h3 class="font-bold text-lg text-white">客製知識庫與AI對話助理</h3>
+                            <p class="text-gray-400 mt-1">支援法險數十萬字級資料上傳與深度訓練，打造專屬 AI 代理人，強化個人品牌與教學/銷售一體化服務。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Introduction & Target Audience Section -->
+        <section class="py-16 md:py-24 bg-gray-900/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="font-orbitron text-3xl md:text-4xl font-bold gradient-text">
+                    專為保險專業人士與知識創作者打造的智慧夥伴
+                </h2>
+                <p class="mt-6 max-w-4xl mx-auto text-lg text-gray-300 leading-relaxed">
+                    無論您是第一線的保險顧問、會計師、金融顧問、地政士、代書、專業講師、教育訓練規劃者或者是司法從業專家，或正在打造個人保險品牌的內容創作者，JudgAI 都能協助您用 AI 快速提煉知識、優化銷售表現，並掌握法稅資訊，做出更精準的決策。我們整合龐大法險資料，轉化為易用的智慧工具，讓您在瞬息萬變的市場中領先一步。
+                </p>
+                
+                <!-- Target Audience Cards -->
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                    <!-- Card 1: 保險顧問 / 業務人員 -->
+                    <div class="audience-card p-8 rounded-2xl">
+                        <div class="flex items-center mb-4">
+                            <svg class="w-10 h-10 text-cyan-400 mr-4 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
+                            <h3 class="text-xl font-bold text-white">🧑‍💼 保險顧問 / 業務人員</h3>
+                        </div>
+                        <div class="space-y-3">
+                            <p><strong class="text-gray-200">痛點:</strong> <span class="text-gray-400">法條理解困難、保險理賠或相關知識匯整耗費時間、應對客戶問題壓力大、銷售話術難以標準化。</span></p>
+                            <p><strong class="text-cyan-200">JudgAI 解方:</strong> <span class="text-cyan-300">快速生成保險知識匯整內容，並佐以實例提供參考，亦提供符合話術與法稅參考，提供深度對話記憶與銷售指導，打造個人化 AI 保險知識庫與銷售助理。</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: 教育講師 / 知識型創作者 -->
+                    <div class="audience-card p-8 rounded-2xl">
+                        <div class="flex items-center mb-4">
+                             <svg class="w-10 h-10 text-cyan-400 mr-4 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path d="M15.75 10.5l4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9A2.25 2.25 0 0 0 4.5 18.75Z" /></svg>
+                            <h3 class="text-xl font-bold text-white">🧑‍🏫 教育講師 / 知識型創作者</h3>
+                        </div>
+                        <div class="space-y-3">
+                            <p><strong class="text-gray-200">痛點:</strong> <span class="text-gray-400">教材準備耗時、內容難更新、知識難以規模化複製。</span></p>
+                            <p><strong class="text-cyan-200">JudgAI 解方:</strong> <span class="text-cyan-300">可上傳與訓練個人知識庫，生成教學對話機器人與客製回應內容，強化學員體驗、提升課程單價與續約率。</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: 法務 / 法險研究者 -->
+                    <div class="audience-card p-8 rounded-2xl">
+                        <div class="flex items-center mb-4">
+                            <svg class="w-10 h-10 text-cyan-400 mr-4 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75c0 3.142-2.558 5.69-5.69 5.69s-5.69-2.558-5.69-5.69c0-3.142 2.558-5.69 5.69-5.69s5.69 2.558 5.69 5.69ZM11.56 5.69h.008v.008h-.008v-.008Zm-2.812 2.812h.008v.008h-.008V8.502Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M11.56 5.69h.008v.008h-.008v-.008Zm-2.812 2.812h.008v.008h-.008V8.502Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M14.25 11.25a2.25 2.25 0 0 1 2.25 2.25v4.5a2.25 2.25 0 0 1-2.25 2.25h-5.25a2.25 2.25 0 0 1-2.25-2.25v-4.5a2.25 2.25 0 0 1 2.25-2.25h5.25Z" /></svg>
+                            <h3 class="text-xl font-bold text-white">🧑‍💻 法務 / 法險研究者</h3>
+                        </div>
+                        <div class="space-y-3">
+                            <p><strong class="text-gray-200">痛點:</strong> <span class="text-gray-400">裁判資料零散、法規搜尋效率低、難以整合研究洞察。</span></p>
+                            <p><strong class="text-cyan-200">JudgAI 解方:</strong> <span class="text-cyan-300">智慧搜尋與總結全台保險法規、國稅函釋與裁判書，快速萃取重點、比對案例，協助洞察趨勢與風險判讀。</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+            <!-- Detailed Comparison Table -->
+            <div id="comparison-table" class="mb-24 scroll-mt-20">
+                <h2 class="font-orbitron text-3xl sm:text-4xl font-bold text-center mb-12 gradient-text">詳細功能比較</h2>
+                <div class="overflow-x-auto rounded-lg border border-gray-700">
+                    <table class="w-full text-sm text-left comparison-table">
+                        <thead class="bg-gray-800 text-xs text-white uppercase tracking-wider">
+                            <tr>
+                                <th scope="col" class="px-6 py-4">功能</th>
+                                <th scope="col" class="px-6 py-4 text-center">免費會員</th>
+                                <th scope="col" class="px-6 py-4 text-center">標準版</th>
+                                <th scope="col" class="px-6 py-4 text-center">專業版</th>
+                                <th scope="col" class="px-6 py-4 text-center">訂製版</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Section: 基本資訊 -->
+                            <tr class="table-section-header">
+                                <th colspan="5" scope="colgroup" class="px-6 py-3 text-base font-bold text-cyan-400">基本資訊</th>
+                            </tr>
+                            <tr class="bg-gray-900 border-b">
+                                <td class="px-6 py-4 font-medium text-gray-300">使用者類型</td>
+                                <td class="px-6 py-4 text-center">免費會員</td>
+                                <td class="px-6 py-4 text-center">付費會員</td>
+                                <td class="px-6 py-4 text-center">付費會員</td>
+                                <td class="px-6 py-4 text-center">專家老師</td>
+                            </tr>
+                            <tr class="bg-gray-900 border-b">
+                                <td class="px-6 py-4 font-medium text-gray-300">使用平台</td>
+                                <td class="px-6 py-4 text-center">Line 機器人服務</td>
+                                <td class="px-6 py-4 text-center">Line 機器人 & Web APP 部分服務</td>
+                                <td class="px-6 py-4 text-center">Line 機器人 & Web APP 完整服務</td>
+                                <td class="px-6 py-4 text-center">個人IP Line 機器人 & Web APP服務</td>
+                            </tr>
+                            <tr class="bg-gray-900 border-b">
+                                <td class="px-6 py-4 font-medium text-gray-300">年費</td>
+                                <td class="px-6 py-4 text-center">免費</td>
+                                <td class="px-6 py-4 text-center"><span class="font-bold text-yellow-400">特惠: 6,888</span> <del class="text-gray-500">8,888</del></td>
+                                <td class="px-6 py-4 text-center"><span class="font-bold text-yellow-400">特惠: 16,888</span> <del class="text-gray-500">18,888</del></td>
+                                <td class="px-6 py-4 text-center">另外洽談</td>
+                            </tr>
+                             <!-- Section: 主要特色 -->
+                            <tr class="table-section-header">
+                                <th colspan="5" scope="colgroup" class="px-6 py-3 text-base font-bold text-cyan-400">主要特色</th>
+                            </tr>
+                            <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">專屬AI法險大語言模型</td><td class="px-6 py-4 text-center">2.0 版</td><td class="px-6 py-4 text-center">2.0 版</td><td class="px-6 py-4 text-center">3.0 版 (深度)</td><td class="px-6 py-4 text-center">已訓練 AI + 自製知識庫</td></tr>
+                            <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">獨家知識庫</td><td class="px-6 py-4 text-center">整合超過2,500萬字</td><td class="px-6 py-4 text-center">引用功能</td><td class="px-6 py-4 text-center">引用與總結功能</td><td class="px-6 py-4 text-center">結合權威資料庫</td></tr>
+                            <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">知識庫持續更新</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center">逐步更新</td><td class="px-6 py-4 text-center">確保即時有效</td><td class="px-6 py-4 text-center">打造個人知識品牌</td></tr>
+                            <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">智慧線上搜尋</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
+                            <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">深度對話記憶</td><td class="px-6 py-4 text-center">4 輪</td><td class="px-6 py-4 text-center">4 輪</td><td class="px-6 py-4 text-center">4 輪</td><td class="px-6 py-4 text-center">訂製</td></tr>
+                            <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">每日使用上限</td><td class="px-6 py-4 text-center">5 次</td><td class="px-6 py-4 text-center">49 次</td><td class="px-6 py-4 text-center">49 次</td><td class="px-6 py-4 text-center">每天 49 次 / 學員</td></tr>
+                            <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">實戰銷售AI助理</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
+                            <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">Web App 個人後台</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
+
+                            <!-- Section: AI 模型功能 -->
+                            <tr class="table-section-header">
+                                <th colspan="5" scope="colgroup" class="px-6 py-3 text-base font-bold text-cyan-400">AI 模型功能</th>
+                            </tr>
+                            <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">深度思考功能</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center">✅ (汲取專家經驗)</td><td class="px-6 py-4 text-center">✅ (汲取專家經驗)</td></tr>
+                            <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">生成字數</td><td class="px-6 py-4 text-center">&lt; 500</td><td class="px-6 py-4 text-center">&lt; 1500</td><td class="px-6 py-4 text-center">&lt; 3500</td><td class="px-6 py-4 text-center">&lt; 20,000</td></tr>
+                            <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">上下文繼續對話記憶</td><td class="px-6 py-4 text-center">4 筆</td><td class="px-6 py-4 text-center">6 筆</td><td class="px-6 py-4 text-center">8 筆</td><td class="px-6 py-4 text-center">訂製</td></tr>
+                            
+                            <!-- Section: 自訂知識庫 -->
+                            <tr class="table-section-header">
+                                <th colspan="5" scope="colgroup" class="px-6 py-3 text-base font-bold text-cyan-400">自訂知識庫</th>
+                            </tr>
+                            <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">可上傳自訂知識庫</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
+                            <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">自訂知識庫額度</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center">5萬字</td><td class="px-6 py-4 text-center">10萬中文字</td></tr>
+                            <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">超額收費</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center">每月10元/100字</td><td class="px-6 py-4 text-center">每月5元/100字</td></tr>
+                            
+                            <!-- Section: 知識庫內容 -->
+                            <tr class="table-section-header">
+                                <th colspan="5" scope="colgroup" class="px-6 py-3 text-base font-bold text-cyan-400">知識庫內容</th>
+                            </tr>
+                            <tr class="bg-gray-900 border-b">
+                                <td class="px-6 py-4 font-medium text-gray-300">基礎知識庫<p class="text-xs text-gray-400">(保險法, 遺贈稅基礎)</p></td>
+                                <td class="px-6 py-4 text-center check-icon">✅</td>
+                                <td class="px-6 py-4 text-center check-icon">✅</td>
+                                <td class="px-6 py-4 text-center check-icon">✅</td>
+                                <td class="px-6 py-4 text-center check-icon">✅</td>
+                            </tr>
+                            <tr class="bg-gray-900 border-b">
+                                <td class="px-6 py-4 font-medium text-gray-300">知識庫更新</td>
+                                <td class="px-6 py-4 text-center">僅更新引述資料</td>
+                                <td class="px-6 py-4 text-center">僅更新引述資料</td>
+                                <td class="px-6 py-4 text-center">✅ 不斷更新</td>
+                                <td class="px-6 py-4 text-center">✅ 不斷更新</td>
+                            </tr>
+                            <tr class="bg-gray-900 border-b">
+                                <td class="px-6 py-4 font-medium text-gray-300">國稅類函釋 (15種)</td>
+                                <td class="px-6 py-4 text-center">僅摘要</td>
+                                <td class="px-6 py-4 text-center">僅摘要</td>
+                                <td class="px-6 py-4 text-center">✅ (含綜整說明)</td>
+                                <td class="px-6 py-4 text-center">✅ (含綜整說明)</td>
+                            </tr>
+                            <tr class="bg-gray-900 border-b">
+                                <td class="px-6 py-4 font-medium text-gray-300">金融保險和解實例</td>
+                                <td class="px-6 py-4 text-center">僅引述</td>
+                                <td class="px-6 py-4 text-center">僅引述</td>
+                                <td class="px-6 py-4 text-center">✅ (6000+則)</td>
+                                <td class="px-6 py-4 text-center">✅ (6000+則)</td>
+                            </tr>
+                            <tr class="bg-gray-900 border-b">
+                                <td class="px-6 py-4 font-medium text-gray-300">裁判書彙編</td>
+                                <td class="px-6 py-4 text-center">僅引述</td>
+                                <td class="px-6 py-4 text-center">僅引述</td>
+                                <td class="px-6 py-4 text-center">✅ (200萬字+)</td>
+                                <td class="px-6 py-4 text-center">✅ (200萬字+)</td>
+                            </tr>
+                             <tr class="bg-gray-900 border-b">
+                                <td class="px-6 py-4 font-medium text-gray-300">財稅/金融/訴願/信託/六法</td>
+                                <td class="px-6 py-4 text-center">部分</td>
+                                <td class="px-6 py-4 text-center">部分</td>
+                                <td class="px-6 py-4 text-center check-icon">✅</td>
+                                <td class="px-6 py-4 text-center check-icon">✅</td>
+                            </tr>
+                            
+                            <!-- Section: 使用者後台 -->
+                            <tr class="table-section-header">
+                                <th colspan="5" scope="colgroup" class="px-6 py-3 text-base font-bold text-cyan-400">使用者後台</th>
+                            </tr>
+                            <tr class="bg-gray-900 border-b">
+                                <td class="px-6 py-4 font-medium text-gray-300">實戰銷售指導機器人</td>
+                                <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                <td class="px-6 py-4 text-center check-icon">✅</td>
+                                <td class="px-6 py-4 text-center check-icon">✅</td>
+                            </tr>
+                            <tr class="bg-gray-900 border-b">
+                                <td class="px-6 py-4 font-medium text-gray-300">保險機器人對話功能</td>
+                                <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                <td class="px-6 py-4 text-center check-icon">✅</td>
+                                <td class="px-6 py-4 text-center check-icon">✅</td>
+                            </tr>
+                            <tr class="bg-gray-900 border-b">
+                                <td class="px-6 py-4 font-medium text-gray-300">歷程記錄</td>
+                                <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                <td class="px-6 py-4 text-center check-icon">✅</td>
+                                <td class="px-6 py-4 text-center check-icon">✅</td>
+                                <td class="px-6 py-4 text-center check-icon">✅</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="p-6 text-sm text-gray-400">
+                        <h4 class="font-bold text-gray-300 mb-2">備註：</h4>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>金融保險和解實例 (授權中，未來即將上架；共 2000 萬字+ )</li>
+                            <li>裁判書彙編（更新中，未來即將上架；105 - 113年的民事判決彙編，共 600 萬字+）</li>
+                            <li>訴願類（更新中，未來即將上架；39種財稅決定書）</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pricing Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Plan 1: 免費版 -->
+                 <div class="plan-card rounded-2xl p-8 flex flex-col">
+                    <div class="flex-grow">
+                        <h3 class="font-orbitron text-2xl font-bold text-white">免費會員</h3>
+                        <p class="mt-4 text-gray-400">適合初次接觸或個人使用者</p>
+                        <div class="mt-6">
+                            <span class="text-5xl font-bold text-white">免費</span>
+                        </div>
+                    </div>
+                    <a href="https://aistudy.pse.is/insurance-bot" target="_blank" class="cta-button mt-8 block w-full text-center text-white font-bold py-3 rounded-lg">免費註冊</a>
+                </div>
+
+                <!-- Plan 2: 標準版 -->
+                <div class="plan-card rounded-2xl p-8 flex flex-col">
+                    <div class="flex-grow">
+                        <h3 class="font-orbitron text-2xl font-bold text-white">標準版</h3>
+                        <p class="mt-4 text-gray-400">適合專業人士與小型團隊</p>
+                        <div class="mt-6 text-center">
+                            <p class="text-yellow-400 font-medium">特惠價</p>
+                            <div class="flex justify-center items-baseline">
+                                <span class="text-3xl font-bold text-yellow-400">NT$6,888</span>
+                                <span class="text-lg text-gray-400 ml-1">/ 年</span>
+                            </div>
+                             <p class="text-lg text-gray-500 line-through mt-1">原價 NT$8,888</p>
+                        </div>
+                    </div>
+                    <a href="https://line.me/ti/p/ECTAxiLRSh" target="_blank" class="cta-button mt-8 block w-full text-center text-white font-bold py-3 rounded-lg">選擇方案</a>
+                </div>
+
+                <!-- Plan 3: 專業版 -->
+                <div class="relative plan-card rounded-2xl p-8 flex flex-col border-2 border-cyan-400">
+                    <div class="popular-badge absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2 px-4 py-1 text-sm font-bold text-gray-900 rounded-full">
+                        最受歡迎
+                    </div>
+                    <div class="flex-grow">
+                        <h3 class="font-orbitron text-2xl font-bold text-white">專業版</h3>
+                        <p class="mt-4 text-gray-400">為進階用戶與成長中企業打造</p>
+                        <div class="mt-6 text-center">
+                            <p class="text-yellow-400 font-medium">特惠價</p>
+                            <div class="flex justify-center items-baseline">
+                                <span class="text-3xl font-bold text-yellow-400">NT$16,888</span>
+                                <span class="text-lg text-gray-400 ml-1">/ 年</span>
+                            </div>
+                            <p class="text-lg text-gray-500 line-through mt-1">原價 NT$18,888</p>
+                        </div>
+                    </div>
+                    <a href="https://line.me/ti/p/ECTAxiLRSh" target="_blank" class="cta-button mt-8 block w-full text-center text-white font-bold py-3 rounded-lg">升級專業版</a>
+                </div>
+                
+                <!-- Plan 4: 訂製版 -->
+                <div class="plan-card rounded-2xl p-8 flex flex-col">
+                    <div class="flex-grow">
+                        <h3 class="font-orbitron text-2xl font-bold text-white">訂製版</h3>
+                        <p class="mt-4 text-gray-400">客製化、安全且可擴展的方案</p>
+                        <div class="mt-6 text-center">
+                            <span class="text-4xl font-bold text-white">另外洽談</span>
+                            <p class="mt-4 text-gray-400">為您打造專屬的AI代理人</p>
+                        </div>
+                    </div>
+                    <a href="https://line.me/ti/p/ECTAxiLRSh" target="_blank" class="cta-button mt-8 block w-full text-center text-white font-bold py-3 rounded-lg">聯絡我們</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
