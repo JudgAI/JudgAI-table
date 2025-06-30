@@ -76,6 +76,23 @@
             color: #f87171; /* 紅色 */
             font-weight: bold;
         }
+        /* 圖片放大 Modal 樣式 */
+        .enlargeable-image {
+            cursor: pointer;
+        }
+        .image-modal {
+            transition: opacity 0.3s ease;
+        }
+        .image-modal.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .image-modal-content {
+            transition: transform 0.3s ease;
+        }
+        .image-modal.hidden .image-modal-content {
+            transform: scale(0.95);
+        }
     </style>
 </head>
 <body class="text-gray-200">
@@ -138,19 +155,19 @@
                 <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
                     <!-- Image Card 1: 免費版 -->
                     <div class="image-showcase-card p-6 rounded-2xl flex flex-col items-center">
-                        <img src="免費.png" alt="JudgAI 免費版介面" class="rounded-lg shadow-2xl w-full mb-4 border border-gray-700" onerror="this.onerror=null;this.src='https://placehold.co/600x400/090a0f/e0e0e0?text=免費版圖片';">
+                        <img src="免費.jpg" alt="JudgAI 免費版介面" class="enlargeable-image rounded-lg shadow-2xl w-full mb-4 border border-gray-700" onerror="this.onerror=null;this.src='https://placehold.co/600x400/090a0f/e0e0e0?text=免費版圖片';">
                         <h3 class="text-xl font-bold text-white">免費版</h3>
                         <p class="text-gray-400">基礎問答與法規引用</p>
                     </div>
                     <!-- Image Card 2: 標準版 -->
                     <div class="image-showcase-card p-6 rounded-2xl flex flex-col items-center">
-                        <img src="標準.png" alt="JudgAI 標準版介面" class="rounded-lg shadow-2xl w-full mb-4 border border-gray-700" onerror="this.onerror=null;this.src='https://placehold.co/600x400/090a0f/e0e0e0?text=標準版圖片';">
+                        <img src="標準.jpg" alt="JudgAI 標準版介面" class="enlargeable-image rounded-lg shadow-2xl w-full mb-4 border border-gray-700" onerror="this.onerror=null;this.src='https://placehold.co/600x400/090a0f/e0e0e0?text=標準版圖片';">
                         <h3 class="text-xl font-bold text-white">標準版</h3>
                         <p class="text-gray-400">進階案例與摘要</p>
                     </div>
                     <!-- Image Card 3: 專業版 -->
                     <div class="image-showcase-card p-6 rounded-2xl flex flex-col items-center">
-                        <img src="專業.png" alt="JudgAI 專業版介面" class="rounded-lg shadow-2xl w-full mb-4 border border-gray-700" onerror="this.onerror=null;this.src='https://placehold.co/600x400/090a0f/e0e0e0?text=專業版圖片';">
+                        <img src="專業.jpg" alt="JudgAI 專業版介面" class="enlargeable-image rounded-lg shadow-2xl w-full mb-4 border border-gray-700" onerror="this.onerror=null;this.src='https://placehold.co/600x400/090a0f/e0e0e0?text=專業版圖片';">
                         <h3 class="text-xl font-bold text-white">專業版</h3>
                         <p class="text-gray-400">深度分析與函釋總結</p>
                     </div>
@@ -386,6 +403,50 @@
 
         </div>
     </div>
+
+    <!-- Modal for Image Enlargement -->
+    <div id="imageModal" class="image-modal fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center p-4 z-50 hidden">
+        <span id="closeModal" class="absolute top-4 right-6 text-white text-5xl font-bold cursor-pointer hover:text-gray-300 transition-colors">&times;</span>
+        <img id="modalImage" src="" alt="放大圖片" class="image-modal-content max-w-full max-h-full rounded-lg shadow-2xl">
+    </div>
+
+    <script>
+        // 等待 DOM 完全載入
+        document.addEventListener('DOMContentLoaded', () => {
+            // 獲取 Modal 相關元素
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const closeModalBtn = document.getElementById('closeModal');
+            
+            // 獲取所有可放大的圖片
+            const images = document.querySelectorAll('.enlargeable-image');
+
+            // 為每張圖片添加點擊事件監聽器
+            images.forEach(img => {
+                img.addEventListener('click', () => {
+                    // 顯示 Modal 並設置圖片來源
+                    modal.classList.remove('hidden');
+                    modalImg.src = img.src;
+                });
+            });
+
+            // 定義關閉 Modal 的函數
+            const closeTheModal = () => {
+                modal.classList.add('hidden');
+            }
+
+            // 為關閉按鈕添加點擊事件
+            closeModalBtn.addEventListener('click', closeTheModal);
+
+            // 點擊 Modal 背景時關閉 Modal
+            modal.addEventListener('click', (e) => {
+                // 確保點擊的是背景本身，而不是圖片
+                if (e.target === modal) {
+                    closeTheModal();
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
