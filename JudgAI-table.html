@@ -94,6 +94,49 @@
         .modal-overlay.hidden .modal-content {
             transform: scale(0.95);
         }
+        
+        /* Logo 科技感動畫效果 */
+        @keyframes pulse-glow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(56, 189, 248, 0.3), 0 0 40px rgba(168, 139, 250, 0.2);
+                filter: brightness(1) contrast(1.1);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(56, 189, 248, 0.5), 0 0 60px rgba(168, 139, 250, 0.3);
+                filter: brightness(1.2) contrast(1.3);
+            }
+        }
+        
+        @keyframes rotate-gradient {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes scale-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .logo-container {
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+        
+        .logo-container:hover {
+            transform: scale(1.1);
+            filter: brightness(1.3) contrast(1.2);
+        }
+        
+        .logo-rotating-border {
+            animation: rotate-gradient 3s linear infinite;
+        }
+        
+        .logo-pulse-bg {
+            animation: scale-pulse 2s ease-in-out infinite;
+        }
+        
+        .logo-image {
+            animation: pulse-glow 2.5s ease-in-out infinite;
+        }
     </style>
 </head>
 <body class="text-gray-200">
@@ -105,17 +148,24 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 text-center flex flex-col items-center justify-center">
                     <div class="flex flex-col items-center mb-8">
                         <div class="relative mb-4">
-                            <div class="relative flex items-center justify-center" style="width: 9rem; aspect-ratio: 1/1; min-width: 9rem; min-height: 9rem; max-width: 9rem; max-height: 9rem;">
-                                <!-- Outer neon/gradient border -->
-                                <span class="absolute inset-0 rounded-full" style="background: conic-gradient(from 180deg at 50% 50%, #38bdf8 0%, #818cf8 40%, #a78bfa 80%, #38bdf8 100%); filter: blur(6px) brightness(1.2); opacity: 0.7; aspect-ratio: 1/1;"></span>
-                                <!-- Glassmorphism background -->
-                                <span class="absolute inset-1 rounded-full" style="background: rgba(17,24,39,0.7); box-shadow: 0 4px 32px 0 rgba(56,189,248,0.18), 0 1.5px 8px 0 rgba(168,139,250,0.10); backdrop-filter: blur(6px); aspect-ratio: 1/1;"></span>
-                                <!-- Logo image -->
-                                <img src="奇點.png" alt="JudgAI Logo" class="relative z-10 object-cover rounded-full" style="width: 7.5rem; height: 7.5rem; min-width: 7.5rem; min-height: 7.5rem; max-width: 7.5rem; max-height: 7.5rem; border-radius: 50%; aspect-ratio: 1/1; box-shadow: 0 0 0 4px rgba(56,189,248,0.18), 0 2px 16px 0 rgba(56,189,248,0.18); background: rgba(255,255,255,0.03);">
-                                <!-- Subtle top glass reflection -->
-                                <span class="absolute z-20 left-1/2 top-0 -translate-x-1/2" style="width: 70%; height: 32%; border-radius: 100% 100% 60% 60%/80% 80% 40% 40%; background: linear-gradient(180deg,rgba(255,255,255,0.35) 0%,rgba(255,255,255,0.05) 100%); filter: blur(1.5px); opacity: 0.7; aspect-ratio: 1/1;"></span>
-                                <!-- Subtle bottom glow -->
-                                <span class="absolute z-0 left-1/2 bottom-0 -translate-x-1/2" style="width: 60%; height: 24%; border-radius: 100% 100% 60% 60%/80% 80% 40% 40%; background: linear-gradient(0deg,rgba(56,189,248,0.18) 0%,rgba(56,189,248,0.01) 100%); filter: blur(4px); opacity: 0.7; aspect-ratio: 1/1;"></span>
+                            <div class="logo-container relative flex items-center justify-center" style="width: 9rem; aspect-ratio: 1/1; min-width: 9rem; min-height: 9rem; max-width: 9rem; max-height: 9rem;">
+                                <!-- 外層旋轉漸層邊框 -->
+                                <span class="logo-rotating-border absolute inset-0 rounded-full" style="background: conic-gradient(from 0deg at 50% 50%, #38bdf8 0%, #818cf8 25%, #a78bfa 50%, #f472b6 75%, #38bdf8 100%); filter: blur(8px) brightness(1.3); opacity: 0.8; aspect-ratio: 1/1;"></span>
+                                
+                                <!-- 中層脈動背景 -->
+                                <span class="logo-pulse-bg absolute inset-1 rounded-full" style="background: radial-gradient(circle at 30% 30%, rgba(56,189,248,0.8), rgba(17,24,39,0.9), rgba(168,139,250,0.6)); box-shadow: inset 0 2px 8px rgba(56,189,248,0.3), 0 4px 32px rgba(56,189,248,0.2); backdrop-filter: blur(8px); aspect-ratio: 1/1;"></span>
+                                
+                                <!-- 內層發光圓環 -->
+                                <span class="absolute inset-2 rounded-full" style="background: transparent; border: 2px solid rgba(56,189,248,0.6); box-shadow: 0 0 15px rgba(56,189,248,0.4), inset 0 0 15px rgba(168,139,250,0.2); aspect-ratio: 1/1;"></span>
+                                
+                                <!-- Logo 圖片 -->
+                                <img src="奇點.png" alt="JudgAI Logo" class="logo-image relative z-10 object-cover rounded-full" style="width: 7.5rem; height: 7.5rem; min-width: 7.5rem; min-height: 7.5rem; max-width: 7.5rem; max-height: 7.5rem; border-radius: 50%; aspect-ratio: 1/1; border: 3px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.02);">
+                                
+                                <!-- 頂部玻璃反光 -->
+                                <span class="absolute z-20 left-1/2 top-2 -translate-x-1/2" style="width: 65%; height: 30%; border-radius: 100% 100% 50% 50%/90% 90% 30% 30%; background: linear-gradient(180deg,rgba(255,255,255,0.4) 0%,rgba(255,255,255,0.1) 60%, transparent 100%); filter: blur(1px); opacity: 0.8;"></span>
+                                
+                                <!-- 底部科技光暈 -->
+                                <span class="absolute z-0 left-1/2 bottom-0 -translate-x-1/2" style="width: 80%; height: 30%; border-radius: 100% 100% 50% 50%/70% 70% 40% 40%; background: radial-gradient(ellipse at center, rgba(56,189,248,0.3) 0%, rgba(168,139,250,0.2) 50%, transparent 100%); filter: blur(6px);"></span>
                             </div>
                         </div>
                         <h1 class="font-orbitron text-4xl md:text-5xl lg:text-6xl font-bold tracking-wider mb-2">
