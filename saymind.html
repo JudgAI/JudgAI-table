@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saymind官網：一站式語音轉錄，AI 筆記整理，自動口條訓練</title>
+    <!-- Open Graph & Twitter Card for preview link photo -->
+    <meta property="og:title" content="SayMind官網：一站式語音轉錄，AI 筆記整理，自動口條訓練" />
+    <meta property="og:description" content="專為保險、法律、知識型內容設計，AI語音轉錄、筆記整理、口條訓練一站完成。" />
+    <meta property="og:image" content="SayMind_light.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SayMind官網：一站式語音轉錄，AI 筆記整理，自動口條訓練" />
+    <meta name="twitter:description" content="專為保險、法律、知識型內容設計，AI語音轉錄、筆記整理、口條訓練一站完成。" />
+    <meta name="twitter:image" content="SayMind_light.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="SayMind_light.png">
+    <style>
+        /* 自定義樣式 */
+        body {
+            font-family: 'Noto Sans TC', 'Inter', sans-serif;
+            background-color: #050816; /* 深邃星空背景 */
+        }
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #38bdf8, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-section {
+            position: relative;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+            overflow: hidden;
+        }
+        .plan-card, .audience-card, .image-showcase-card {
+            background-color: rgba(17, 24, 39, 0.8); /* 半透明玻璃效果 */
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+        .plan-card:hover, .audience-card:hover, .image-showcase-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(56, 189, 248, 0.6);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
+        }
+        .popular-badge {
+            background: linear-gradient(90deg, #38bdf8, #a78bfa);
+            box-shadow: 0 0 15px #38bdf8;
+        }
+        .cta-button {
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            transition: all 0.3s ease-in-out;
+        }
+        .cta-button:hover {
+            box-shadow: 0 0 20px #38bdf8;
+            transform: scale(1.05);
+        }
+        .cta-button-secondary {
+            background-color: transparent;
+            border: 1px solid #38bdf8;
+            color: #38bdf8;
+        }
+        .cta-button-secondary:hover {
+            background-color: rgba(56, 189, 248, 0.1);
+        }
+        .feature-item svg {
+            flex-shrink: 0;
+        }
+        .comparison-table th, .comparison-table td {
+            border-color: rgba(56, 189, 248, 0.2);
+            vertical-align: middle;
+        }
+        .table-section-header {
+            background-color: rgba(17, 24, 39, 0.9);
+        }
+        .check-icon {
+            color: #34d399; /* 綠色 */
+            font-weight: bold;
+        }
+        .cross-icon {
+            color: #f87171; /* 紅色 */
+            font-weight: bold;
+        }
+        /* Modal 樣式 */
+        .enlargeable-image {
+            cursor: pointer;
+        }
+        .modal-overlay {
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .modal-content {
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.hidden .modal-content {
+            transform: scale(0.95);
+        }
+        /* Logo 科技感效果 */
+        .logo-container {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .logo-container:hover {
+            transform: scale(1.08);
+            filter: brightness(1.1);
+        }
+        .logo-rotating-border {
+            animation: logoRotate 4s linear infinite;
+        }
+        .logo-pulse-bg {
+            animation: logoPulse 2s ease-in-out infinite alternate;
+        }
+        .logo-image {
+            transition: all 0.3s ease-in-out;
+            filter: brightness(1.1) contrast(1.05) saturate(1.1);
+        }
+        .logo-container:hover .logo-image {
+            transform: scale(1.02);
+            filter: brightness(1.15) contrast(1.1) saturate(1.15);
+        }
+        @keyframes logoRotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes logoPulse {
+            0% {
+                opacity: 0.7;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0.9;
+                transform: scale(1.02);
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <div class="min-h-screen w-full flex flex-col">
+        <main class="flex-grow">
+            <!-- Hero Section -->
+            <section class="hero-section text-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 text-center flex flex-col items-center justify-center">
+                    <div class="flex flex-col items-center mb-8">
+                        <div class="relative mb-4">
+                            <div class="logo-container relative flex items-center justify-center" style="width: 9rem; aspect-ratio: 1/1; min-width: 9rem; min-height: 9rem; max-width: 9rem; max-height: 9rem;">
+                                <!-- 外層旋轉漸層邊框 -->
+                                <span class="logo-rotating-border absolute inset-0 rounded-full" style="background: conic-gradient(from 0deg at 50% 50%, #38bdf8 0%, #818cf8 25%, #a78bfa 50%, #f472b6 75%, #38bdf8 100%); filter: blur(8px) brightness(1.3); opacity: 0.8; aspect-ratio: 1/1;"></span>
+                                
+                                <!-- 中層脈動背景 -->
+                                <span class="logo-pulse-bg absolute inset-1 rounded-full" style="background: radial-gradient(circle at 30% 30%, rgba(56,189,248,0.8), rgba(17,24,39,0.9), rgba(168,139,250,0.6)); box-shadow: inset 0 2px 8px rgba(56,189,248,0.3), 0 4px 32px rgba(56,189,248,0.2); backdrop-filter: blur(8px); aspect-ratio: 1/1;"></span>
+                                
+                                <!-- 內層發光圓環 -->
+                                <span class="absolute inset-2 rounded-full" style="background: transparent; border: 2px solid rgba(56,189,248,0.6); box-shadow: 0 0 15px rgba(56,189,248,0.4), inset 0 0 15px rgba(168,139,250,0.2); aspect-ratio: 1/1;"></span>
+                                
+                                <!-- Logo 圖片 -->
+                                <img src="SayMind_LOGO.png" alt="SayMind Logo" class="logo-image relative z-10 object-cover rounded-full" style="width: 7.5rem; height: 7.5rem; min-width: 7.5rem; min-height: 7.5rem; max-width: 7.5rem; max-height: 7.5rem; border-radius: 50%; aspect-ratio: 1/1; border: 3px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.02);">
+                                
+                                <!-- 頂部玻璃反光 -->
+                                <span class="absolute z-20 left-1/2 top-2 -translate-x-1/2" style="width: 65%; height: 30%; border-radius: 100% 100% 50% 50%/90% 90% 30% 30%; background: linear-gradient(180deg,rgba(255,255,255,0.4) 0%,rgba(255,255,255,0.1) 60%, transparent 100%); filter: blur(1px); opacity: 0.8;"></span>
+                                
+                                <!-- 底部科技光暈 -->
+                                <span class="absolute z-0 left-1/2 bottom-0 -translate-x-1/2" style="width: 80%; height: 30%; border-radius: 100% 100% 50% 50%/70% 70% 40% 40%; background: radial-gradient(ellipse at center, rgba(56,189,248,0.3) 0%, rgba(168,139,250,0.2) 50%, transparent 100%); filter: blur(6px);"></span>
+                            </div>
+                        </div>
+                        <h1 class="font-orbitron text-4xl md:text-5xl lg:text-6xl font-bold tracking-wider mb-2">
+                            Saymind
+                        </h1>
+                        <span class="gradient-text block mt-2 text-3xl md:text-4xl font-bold">一站式語音轉錄，AI 筆記整理，自動口條訓練</span>
+                    </div>
+                    <p class="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-gray-300">
+                        專門為法律、判例、保險、語音轉譯所設計，結合專業法律知識及最新 AI 技術，讓您在法險與多領域更具競爭力。
+                    </p>
+                    <div class="mt-10 flex flex-wrap justify-center gap-4">
+                       <a href="https://dev-box3.taiwanmds.com/speech2text_free_registry/" target="_blank" class="cta-button inline-block text-white font-bold py-3 px-8 rounded-lg text-lg">
+                            立即開始免費使用 →
+                        </a>
+                        <a href="#saymind-core" class="cta-button-secondary inline-block font-bold py-3 px-8 rounded-lg text-lg">
+                            了解更多功能
+                        </a>
+                    </div>
+                    <div class="mt-16 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                        <div class="flex items-start space-x-4">
+                            <svg class="w-8 h-8 text-cyan-400 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 15.75H3m18 0h-1.5M8.25 21v-1.5M15.75 3v1.5M15.75 21v-1.5M12 6.75h.008v.008H12V6.75Zm-.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm.375 3.75h.008v.008H12v-.008Zm-.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm.375 3.75h.008v.008H12v-.008Zm-.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm.375 3.75h.008v.008H12V18Zm-.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                            </svg>
+                            <div>
+                                <h3 class="font-bold text-lg text-white">AI 語音轉譯智慧平台</h3>
+                                <p class="text-gray-400 mt-1">
+                                    專為保險、法律與知識型內容設計，精準辨識專業術語，高效將語音轉換為逐字稿、重點摘要與視覺化心智圖，節省大量資訊整理與管理時間。
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <svg class="w-8 h-8 text-cyan-400 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m-1.125 9a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m3 16.125 1.125-1.125" />
+                            </svg>
+                            <div>
+                                <h3 class="font-bold text-lg text-white">智慧口條分析與溝通訓練</h3>
+                                <p class="text-gray-400 mt-1">
+                                    即時分析業務銷售對話與講師授課內容，透過 AI 提供語速、語調與話術的個人化建議，提升溝通表達能力，助你打造自信專業形象。
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <svg class="w-8 h-8 text-cyan-400 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193l-3.722.267c-.317.022-.652.022-.969 0l-3.722-.267c-1.133-.093-1.98-1.057-1.98-2.193V10.608c0-.97-.616-1.813-1.5-2.097m14.25-6.118c.223.194.428.422.612.678l.258.347a.96.96 0 0 1 0 1.152l-.258.347c-.184.256-.389.484-.612.678m-14.25 0c-.223.194-.428.422-.612.678l-.258.347a.96.96 0 0 0 0 1.152l.258.347c.184.256.389.484.612.678m14.25-6.118-3.722.267c-.317.022-.652.022-.969 0l-3.722-.267m14.25 0-3.722.267c-.317.022-.652.022-.969 0l-3.722-.267M3.75 8.511c-.884.284-1.5 1.128-1.5 2.097v4.286c0 1.136.847 2.1 1.98 2.193l3.722.267c.317.022.652.022.969 0l3.722-.267c1.133-.093 1.98-1.057 1.98-2.193V10.608c0-.97-.616-1.813-1.5-2.097" />
+                            </svg>
+                            <div>
+                                <h3 class="font-bold text-lg text-white">視覺化知識管理工具</h3>
+                                <p class="text-gray-400 mt-1">
+                                    AI 自動整合並優化逐字稿、重點摘要與筆記內容，生成互動心智圖，提供歷程記錄與關鍵字搜尋功能，助您快速查詢、複習與管理知識資產，有效傳承專業知識與技能。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SayMind 產品特色與平台更新公告
+            <section class="py-16 md:py-24 bg-gray-900/50">
+              <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="font-orbitron text-3xl md:text-4xl font-bold gradient-text text-center mb-8">🎤 SayMind 一站式 AI 語音轉譯與筆記平台</h2>
+                <div class="prose prose-invert mx-auto mb-12">
+                  <p>專門為法律、判例、保險、語音轉譯所設計，結合 Leo 哥團隊專業法律知識及最新 AI 技術，讓您在法律領域更具競爭力。</p>
+                  <p><strong>知識來源：</strong>透過 Leo 哥團隊專業經驗，整合法律筆記、心智圖及案例來源，打造權威參考。</p>
+                  <p><strong>AI 技術：</strong>基於最先進語音辨識與自然語言處理，確保每一次轉譯結果的準確性與可靠性。</p>
+                </div>
+                <h3 class="font-bold text-xl text-cyan-300 mb-4">📢 平台更新公告</h3>
+                <div class="space-y-6 text-gray-300">
+                  <div>
+                    <p class="font-semibold">🚀 2025/6/8 加值版全新升級！語音辨識、筆記全面進化</p>
+                    <ul class="list-disc list-inside">
+                      <li>功能選單與頁面結構優化：更直觀分流「業務/講師口條訓練」與「實戰銷售」場景，快速找到所需工具。</li>
+                      <li>業務/講師口條訓練：支持音訊上傳、AI 智慧回饋與個人化訓練報告，提升演講口條。</li>
+                      <li>實戰銷售：即時錄音與上傳錄音分析，生成逐字稿與銷售話術建議，並集中管理成果。</li>
+                      <li>音訊檔案合併：多段音訊一鍵合併，方便整理長時間錄音。</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p class="font-semibold">🚀 2025/5/12 加值版全新升級！語音辨識、筆記、心智圖全面進化</p>
+                    <ul class="list-disc list-inside">
+                      <li>支援多種音訊/影音格式（MP3、AAC、WAV、M4A、OGG、MP4 等），單檔最高 3 小時／400MB。</li>
+                      <li>逐字稿與補充筆記可編輯並一鍵儲存，AI 智慧優化心智圖，更直觀。</li>
+                      <li>文件轉筆記支援 PDF、Word、TXT、PPTX，一鍵轉換並下載。</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p class="font-semibold">🗓️ 2025/5/4 歷程記錄功能再升級</p>
+                    <ul class="list-disc list-inside">
+                      <li>支援關鍵字與時間範圍查詢，分頁顯示並可切換最近 5 筆。</li>
+                      <li>筆記與心智圖區塊可展開查看、複製、下載或刪除。</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </section> -->
+
+            <!-- Image Showcase Section -->
+            <section class="py-16 md:py-24">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h2 id="saymind-core" class="font-orbitron text-3xl md:text-4xl font-bold gradient-text">
+                        一窺 SayMind 智慧核心
+                    </h2>
+                    <p class="mt-6 max-w-3xl mx-auto text-lg text-gray-300">
+                        直觀感受SayMind驚艷的強大功能，體驗 AI 如何將複雜的語音與文件內容轉化為您的致勝洞見。
+                    </p>
+                    <!-- 介紹影片嵌入區塊，寬度盡量同頁面主內容同寬 -->
+                    <div class="flex justify-center my-10">
+                        <div class="w-full max-w-6xl aspect-video rounded-2xl overflow-hidden shadow-2xl border-2 border-cyan-400">
+                            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/Qmw3t9C_Oe0"
+                                title="SayMind 介紹影片" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <!-- 影片區塊 -->
+                    <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <!-- 影片1 -->
+                        <div class="flex flex-col items-center text-left">
+                            <h3 class="font-orbitron text-xl font-bold text-white mb-2 text-center w-full">✨ SayMind平台功能介紹 - 語音轉筆記 成果</h3>
+                            <div class="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border border-cyan-700 mb-4">
+                                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/7NrQg5Om5UE?si=6KbLS6CvXz1ecoEZ"
+                                    title="SayMind平台功能介紹" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen></iframe>
+                            </div>
+                            <div class="bg-gray-900/60 rounded-lg px-4 py-3 w-full text-gray-300 text-base leading-relaxed text-center">
+                                功能包含音訊檔案上傳、語音轉逐字稿、重點摘要、心智圖繪製、筆記補充整理。
+                            </div>
+                        </div>
+                        <!-- 影片2 -->
+                        <div class="flex flex-col items-center text-left">
+                            <h3 class="font-orbitron text-xl font-bold text-white mb-2 text-center w-full">✨SayMind平台介紹 - 加值版文件綜整成果</h3>
+                            <div class="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border border-cyan-700 mb-4">
+                                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/KEQG4MGXH5k?si=Omci1gQED3S3v1hv"
+                                    title="SayMind平台介紹" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen></iframe>
+                            </div>
+                            <div class="bg-gray-900/60 rounded-lg px-4 py-3 w-full text-gray-300 text-base leading-relaxed text-center">
+                                功能除了基礎版的音訊檔案上傳、語音轉逐字稿、重點摘要、心智圖繪製、筆記補充整理外，額外包含音訊檔案剪輯、文件上傳重點摘要、文字轉筆記等功能。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Introduction & Target Audience Section -->
+            <section class="py-16 md:py-24 bg-gray-900/50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h2 class="font-orbitron text-3xl md:text-4xl font-bold gradient-text">
+                        專為保險專業人士與知識創作者打造的智慧後勤夥伴
+                    </h2>
+                    <p class="mt-6 max-w-4xl mx-auto text-lg text-gray-300 leading-relaxed">
+                        無論您是第一線的保險顧問、會計師、金融顧問、地政士、代書、專業講師、教育訓練規劃者、業務或銷售人員、口條訓練需求者、法律合規人員、法務專家、司法從業專家、產品開發與研究人員，SayMind 都能透過精準的 AI 語音轉譯、逐字稿製作、重點摘要、視覺化心智圖、專業術語識別、口條訓練與即時分析等功能，協助您輕鬆管理、分析並有效運用各類知識與資訊，全面提升專業效率與競爭力。
+                    </p>
+                    
+
+                    <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                                <!-- Card 1: 保險顧問 / 業務人員 -->
+                                <div class="audience-card p-8 rounded-2xl">
+                                    <div class="flex items-center mb-4">
+                                        <svg class="w-10 h-10 text-cyan-400 mr-4 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
+                                        <h3 class="text-xl font-bold text-white">保險顧問 / 業務人員</h3>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <p><strong class="text-gray-200">痛點：</strong></p>
+                                        <ul class="list-disc list-inside text-gray-400 ml-4">
+                                            <li>客戶問題複雜多變，資料查詢耗時費力。</li>
+                                            <li>大量理賠案件資訊難以快速有效整理。</li>
+                                            <li>客戶溝通時需要快速且精準的回應。</li>
+                                        </ul>
+                                        <p><strong class="text-cyan-200">SayMind 解方：</strong></p>
+                                        <ul class="list-disc list-inside text-cyan-300 ml-4">
+                                            <li>快速精準的語音轉逐字稿、重點摘要與視覺化心智圖。</li>
+                                            <li>專業的保險與法律術語精準辨識。</li>
+                                            <li>即時口條分析，提升溝通技巧與銷售話術。</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- Card 2: 教育講師 / 知識型創作者 -->
+                                <div class="audience-card p-8 rounded-2xl">
+                                    <div class="flex items-center mb-4">
+                                        <svg class="w-10 h-10 text-cyan-400 mr-4 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path d="M15.75 10.5l4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9A2.25 2.25 0 0 0 4.5 18.75Z" /></svg>
+                                        <h3 class="text-xl font-bold text-white">教育講師 / 知識型創作者</h3>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <p><strong class="text-gray-200">痛點：</strong></p>
+                                        <ul class="list-disc list-inside text-gray-400 ml-4">
+                                            <li>備課與教材更新耗費大量時間，整理繁瑣。</li>
+                                            <li>難以快速整合市場調研、培訓音檔內容。</li>
+                                            <li>專業知識無法有效視覺化與數位化傳承。</li>
+                                        </ul>
+                                        <p><strong class="text-cyan-200">SayMind 解方：</strong></p>
+                                        <ul class="list-disc list-inside text-cyan-300 ml-4">
+                                            <li>將音訊與文件快速轉為逐字稿、摘要及互動心智圖。</li>
+                                            <li>AI 協助筆記補充與內容優化，提升教材品質。</li>
+                                            <li>完整的歷程記錄與管理功能，方便快速查詢與複習。</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- Card 3: 法務 / 法險研究者 -->
+                                <div class="audience-card p-8 rounded-2xl">
+                                    <div class="flex items-center mb-4">
+                                        <svg class="w-10 h-10 text-cyan-400 mr-4 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75c0 3.142-2.558 5.69-5.69 5.69s-5.69-2.558-5.69-5.69c0-3.142 2.558-5.69 5.69-5.69s5.69 2.558 5.69 5.69ZM11.56 5.69h.008v.008h-.008v-.008Zm-2.812 2.812h.008v.008h-.008V8.502Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M11.56 5.69h.008v.008h-.008v-.008Zm-2.812 2.812h.008v.008h-.008V8.502Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M14.25 11.25a2.25 2.25 0 0 1 2.25 2.25v4.5a2.25 2.25 0 0 1-2.25 2.25h-5.25a2.25 2.25 0 0 1-2.25-2.25v-4.5a2.25 2.25 0 0 1 2.25-2.25h5.25Z" /></svg>
+                                        <h3 class="text-xl font-bold text-white">法務 / 法險研究者</h3>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <p><strong class="text-gray-200">痛點：</strong></p>
+                                        <ul class="list-disc list-inside text-gray-400 ml-4">
+                                            <li>法規與案例資料量龐大，難以快速有效整理。</li>
+                                            <li>合規分析與法律風險評估耗時且複雜。</li>
+                                            <li>需要快速且準確地掌握大量法律更新與資訊。</li>
+                                        </ul>
+                                        <p><strong class="text-cyan-200">SayMind 解方：</strong></p>
+                                        <ul class="list-disc list-inside text-cyan-300 ml-4">
+                                            <li>高效語音辨識與文字轉換，產生準確的逐字稿及摘要。</li>
+                                            <li>自動生成法律重點與視覺化心智圖，加速資料掌握。</li>
+                                            <li>提供歷程記錄、關鍵字搜尋及編輯管理功能，提升法律研究與合規工作的效率。</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+            <div class="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+                <!-- Detailed Comparison Table -->
+                <div id="comparison-table" class="mb-24 scroll-mt-20">
+                    <h2 class="font-orbitron text-3xl sm:text-4xl font-bold text-center mb-12 gradient-text">詳細功能比較</h2>
+                    <div class="overflow-x-auto rounded-lg border border-gray-700" style="max-height: 80vh;">
+                        <table class="w-full text-sm text-left comparison-table">
+                            <thead class="sticky top-0 z-10 bg-gray-800 text-xs text-white uppercase tracking-wider">
+                                <tr>
+                                    <th scope="col" class="px-6 py-4">項目</th>
+                                    <th scope="col" class="px-6 py-4 text-center">免費</th>
+                                    <th scope="col" class="px-6 py-4 text-center">專業版</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">音訊上傳轉錄</td>
+                                    <td class="px-6 py-4">檔案時長限制：≤ 60 分鐘<br>檔案大小限制：≤ 50 MB</td>
+                                    <td class="px-6 py-4">檔案時長限制：≤ 120 分鐘<br>檔案大小限制：≤ 100 MB</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">音檔剪輯</td>
+                                    <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                    <td class="px-6 py-4 text-center check-icon">✅</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">音檔合併</td>
+                                    <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                    <td class="px-6 py-4 text-center check-icon">✅</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">影音上傳轉錄</td>
+                                    <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                    <td class="px-6 py-4">檔案時長限制：≤ 180 分鐘<br>檔案大小限制：≤ 400 MB</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">逐字稿</td>
+                                    <td class="px-6 py-4 text-center check-icon">✅</td>
+                                    <td class="px-6 py-4 text-center check-icon">✅</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">重點摘要</td>
+                                    <td class="px-6 py-4 text-center check-icon">✅</td>
+                                    <td class="px-6 py-4 text-center check-icon">✅</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">筆記補充</td>
+                                    <td class="px-6 py-4 text-center check-icon">✅</td>
+                                    <td class="px-6 py-4 text-center check-icon">✅</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">心智圖</td>
+                                    <td class="px-6 py-4 text-center check-icon">✅</td>
+                                    <td class="px-6 py-4 text-center check-icon">✅</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">心智圖修改功能</td>
+                                    <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                    <td class="px-6 py-4 text-center check-icon">✅</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">文件上傳</td>
+                                    <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                    <td class="px-6 py-4">支援：docx, pdf, txt, pptx</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">重點摘要（AI筆記整理）</td>
+                                    <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                    <td class="px-6 py-4 text-center check-icon">✅</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">文字轉筆記</td>
+                                    <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                    <td class="px-6 py-4 text-center check-icon">✅</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">心智圖（AI筆記整理）</td>
+                                    <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                    <td class="px-6 py-4 text-center check-icon">✅</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">音檔上傳（口條訓練）</td>
+                                    <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                    <td class="px-6 py-4">檔案時長限制：≤ 180 分鐘<br>檔案大小限制：≤ 300 MB</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">口條訓練</td>
+                                    <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                    <td class="px-6 py-4 text-center check-icon">✅</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">即時錄音訓練</td>
+                                    <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                    <td class="px-6 py-4 text-center">10 分鐘／每次</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">上傳錄音訓練</td>
+                                    <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                    <td class="px-6 py-4">檔案時長限制：≤ 120 分鐘<br>檔案大小限制：≤ 100 MB</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">上傳錄音解析結果</td>
+                                    <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                    <td class="px-6 py-4 text-center check-icon">✅</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">影音轉字與整理記錄</td>
+                                    <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                    <td class="px-6 py-4 text-center check-icon">✅</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">AI筆記整理記錄</td>
+                                    <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                    <td class="px-6 py-4 text-center check-icon">✅</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">口條訓練產出結果記錄</td>
+                                    <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                    <td class="px-6 py-4 text-center check-icon">✅</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">實戰銷售記錄</td>
+                                    <td class="px-6 py-4 text-center cross-icon">✗</td>
+                                    <td class="px-6 py-4 text-center check-icon">✅</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="p-6 text-sm text-gray-400">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 會員定價區塊（替換原有 Pricing Grid） -->
+                <div class="max-w-4xl mx-auto mt-16 mb-24 bg-gray-900/80 rounded-2xl shadow-2xl border border-cyan-400 p-8">
+                    <h2 class="font-orbitron text-3xl md:text-4xl font-bold gradient-text text-center mb-8">SayMind 方案與加值分鐘數</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-base text-center border border-cyan-300 rounded-lg mb-8">
+                            <thead class="bg-cyan-900/80 text-white">
+                                <tr>
+                                    <th class="px-4 py-3">方案</th>
+                                    <th class="px-4 py-3">規格</th>
+                                    <th class="px-4 py-3">價格</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-cyan-100/10 border-b">
+                                    <td class="font-bold text-cyan-300 px-4 py-3">一套專業版<br><span class="text-xs text-gray-400">(含操作影片)</span></td>
+                                    <td class="px-4 py-3">網頁<br><span class="text-xs text-gray-400">送 600 分鐘<br>限期(2025/12/31)</span></td>
+                                    <td class="px-4 py-3 text-3xl font-bold text-blue-400">$5,888</td>
+                                </tr>
+                                <tr class="bg-pink-100/10 border-b">
+                                    <td class="font-bold text-pink-400 px-4 py-3">加值分鐘數<br><span class="text-xs text-gray-400">優惠A</span></td>
+                                    <td class="px-4 py-3">3,000 分鐘<br><span class="text-xs text-gray-400">限期(2025/12/31)</span></td>
+                                    <td class="px-4 py-3 text-2xl font-bold text-pink-400">$3,600</td>
+                                </tr>
+                                <tr class="bg-yellow-100/10 border-b">
+                                    <td class="font-bold text-yellow-400 px-4 py-3">加值分鐘數<br><span class="text-xs text-gray-400">優惠B</span></td>
+                                    <td class="px-4 py-3">10,000 分鐘<br><span class="text-xs text-gray-400">限期(2025/12/31)</span></td>
+                                    <td class="px-4 py-3 text-2xl font-bold text-yellow-400">$10,000</td>
+                                </tr>
+                                <tr class="bg-gray-800 border-b">
+                                    <td class="font-bold text-gray-300 px-4 py-3">加值分鐘數<br><span class="text-xs text-gray-400">原價</span></td>
+                                    <td class="px-4 py-3">1,000 分鐘<br><span class="text-xs text-gray-400">限期(2026/6/30)</span></td>
+                                    <td class="px-4 py-3 text-xl font-bold text-gray-200">$1,800</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-sm text-gray-400 mt-4">
+                        <ul class="list-disc list-inside space-y-2 text-left">
+                            <li>專業版含操作教學影片，購買即贈送 600 分鐘語音轉錄額度。</li>
+                            <li>加值分鐘數可依需求選購，優惠限期至 2025/12/31。</li>
+                            <li>所有價格均為新台幣，限時優惠，售完為止。</li>
+                            <li>如需大量或企業客製方案，請聯絡我們。</li>
+                        </ul>
+                    </div>
+                    <!-- 聯絡我們按鈕 -->
+                    <div class="flex justify-center mt-10">
+                        <a href="https://dev-box3.taiwanmds.com/speech2text_free_registry/" target="_blank"
+                           class="inline-block bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:scale-105 hover:shadow-cyan-400 transition-all text-lg mr-4">
+                            免費註冊使用
+                        </a>
+                        <a href="https://line.me/ti/p/ECTAxiLRSh" target="_blank"
+                           class="inline-block bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:scale-105 hover:shadow-cyan-400 transition-all text-lg">
+                            聯絡我們
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-900/50 border-t border-gray-700/50">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-gray-400">
+                <p>&copy; 2025 SayMind JudgAI. All Rights Reserved.</p>
+                <a href="#" id="termsLink" class="hover:text-cyan-400 transition-colors mt-2 inline-block">服務條款</a>
+                <div class="mt-6 flex justify-center">
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Modal for Image Enlargement -->
+    <div id="imageModal" class="modal-overlay fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center p-4 z-50 hidden">
+        <span class="close-modal-btn absolute top-4 right-6 text-white text-5xl font-bold cursor-pointer hover:text-gray-300 transition-colors">&times;</span>
+        <img id="modalImage" src="" alt="放大圖片" class="modal-content max-w-full max-h-full rounded-lg shadow-2xl">
+    </div>
+
+    <!-- Modal for Terms of Service -->
+    <div id="termsModal" class="modal-overlay fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center p-4 z-50 hidden">
+        <div class="modal-content bg-gray-900 border border-cyan-500/30 rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center p-6 border-b border-gray-700">
+                <h2 class="text-2xl font-bold text-white font-orbitron">服務條款</h2>
+                <span class="close-modal-btn text-white text-3xl font-bold cursor-pointer hover:text-gray-300 transition-colors">&times;</span>
+            </div>
+            <div class="p-8 text-gray-300 overflow-y-auto">
+                <p class="mb-4">歡迎您使用本網站。在使用本網站提供的各項服務前，請您詳閱以下服務條款。一旦您使用本網站，即表示您已閱讀、瞭解並同意遵守這些條款之所有內容。如果您不同意這些條款，請停止使用本網站。</p>
+                
+                <h3 class="text-lg font-bold text-cyan-400 mt-6 mb-2">一、使用許可</h3>
+                <p>本網站授予您有限的、個人的、非轉讓的許可，用於訪問及使用本網站。您同意不會以任何非法的方式使用本網站，並同意遵守所有相關的法律法規。</p>
+                
+                <h3 class="text-lg font-bold text-cyan-400 mt-6 mb-2">二、使用者義務</h3>
+                <p class="mb-2">使用者應遵守相關法律法規，不得利用本網站從事任何非法行為。</p>
+                <p>使用者不得干擾或破壞本網站的正常運作，包括但不限於散播病毒、駭客攻擊等行為。</p>
+
+                <h3 class="text-lg font-bold text-cyan-400 mt-6 mb-2">三、智慧財產權</h3>
+                <p class="mb-2">本網站上的所有內容，包括但不限於文字、圖片、音頻、視頻、標誌、商標，均受到版權、商標和其他相關法律的保護。</p>
+                <p>您同意不得未經本網站所有者的明確書面許可，複製、修改、分發、散佈或以其他方式使用本網站上的任何內容。</p>
+
+                <h3 class="text-lg font-bold text-cyan-400 mt-6 mb-2">四、免責聲明</h3>
+                <p class="mb-2">本網站所提供之資訊僅供參考，對於其正確性、完整性或即時性不作任何保證。使用本網站的信息時，請謹慎判斷並在必要時諮詢專業意見。</p>
+                <p>使用者因依據本網站資訊所為之行為，所產生之任何損害，本網站不負任何責任。</p>
+
+                <h3 class="text-lg font-bold text-cyan-400 mt-6 mb-2">五、條款修改</h3>
+                <p>本網站保留隨時修改本條款之權利，修改後的條款將公布於網站上，使用者應定期查閱。若使用者在條款修改後繼續使用本網站，視為同意該修改內容。</p>
+
+                <h3 class="text-lg font-bold text-cyan-400 mt-6 mb-2">六、其他條款</h3>
+                <p class="mb-2">這些使用條款構成您與本網站之間的全部協議，並取代任何先前的協議。</p>
+                <p>本網站保留解釋、修改或補充這些使用條款的權利。</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Image Modal Logic ---
+            const imageModal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const enlargeableImages = document.querySelectorAll('.enlargeable-image');
+
+            enlargeableImages.forEach(img => {
+                img.addEventListener('click', () => {
+                    imageModal.classList.remove('hidden');
+                    modalImage.src = img.src;
+                });
+            });
+
+            // --- Terms Modal Logic ---
+            const termsModal = document.getElementById('termsModal');
+            const termsLink = document.getElementById('termsLink');
+
+            termsLink.addEventListener('click', (e) => {
+                e.preventDefault(); // 防止頁面跳轉
+                termsModal.classList.remove('hidden');
+            });
+
+            // --- Generic Modal Closing Logic ---
+            const allCloseButtons = document.querySelectorAll('.close-modal-btn');
+            const allModals = document.querySelectorAll('.modal-overlay');
+
+            const closeModal = (modal) => {
+                modal.classList.add('hidden');
+            };
+
+            allCloseButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // 找到最近的 modal-overlay 父元素並關閉它
+                    closeModal(button.closest('.modal-overlay'));
+                });
+            });
+
+            allModals.forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    // 如果點擊的是背景本身 (modal-overlay)，則關閉 modal
+                    if (e.target === modal) {
+                        closeModal(modal);
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
