@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025年流行AI工具彙總表 (更新版)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', 'Segoe UI', 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+            background-color: #f4f7f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 30px auto;
+            padding: 25px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0f2f7;
+            padding-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            color: #005f73;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            font-size: 1em;
+            font-weight: 500;
+            color: #007791;
+            background-color: #ffffff;
+            border: 2px solid #bde0fe;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: #007791;
+            color: #ffffff;
+            border-color: #007791;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 119, 145, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+            vertical-align: middle;
+        }
+
+        thead tr {
+            background-color: #e0f2f7; /* 淡藍底 */
+        }
+
+        th {
+            font-weight: 700;
+            color: #005f73;
+            font-size: 1em;
+        }
+
+        tbody tr {
+            background-color: #ffffff; /* 單身白底 */
+            transition: background-color 0.2s ease;
+        }
+        
+        tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        td a:hover {
+            text-decoration: underline;
+            color: #0056b3;
+        }
+        
+        .highlight {
+            color: #d9534f; /* 重點紅色 */
+            font-weight: bold;
+        }
+
+        .tags span {
+            display: inline-block;
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 4px 10px;
+            border-radius: 15px;
+            margin: 2px;
+            font-size: 0.85em;
+        }
+        
+        .ai-name {
+            font-weight: 700;
+            color: #005f73;
+        }
+        
+        /* 響應式設計 */
+        @media (max-width: 992px) {
+            .container {
+                width: 95%;
+                padding: 15px;
+            }
+            th, td {
+                padding: 10px;
+            }
+            .header h1 {
+                font-size: 1.8em;
+            }
+        }
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr { 
+                display: block; 
+            }
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            tr { 
+                border: 1px solid #ccc; 
+                margin-bottom: 15px;
+                border-radius: 8px;
+                overflow: hidden;
+            }
+            td { 
+                border: none;
+                border-bottom: 1px solid #eee; 
+                position: relative;
+                padding-left: 50%;
+                min-height: 40px;
+            }
+            td:before { 
+                position: absolute;
+                top: 50%;
+                left: 15px;
+                width: 45%; 
+                padding-right: 10px; 
+                white-space: nowrap;
+                transform: translateY(-50%);
+                content: attr(data-label);
+                font-weight: bold;
+                color: #005f73;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>2025年流行AI工具彙總表</h1>
+        <p>本表由HTML考題小舖學藝股長 ( Sunny )整理彙編，內容主要為個人收集之 2025 年熱門 AI 工具資訊，供自用參考之用（尚未涵蓋全部工具），整理日期：2025/6/15，AI 協作。</p>
+    </div>
+
+    <div id="filterContainer" class="filter-buttons">
+        <!-- Filter buttons will be dynamically generated here -->
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>分類</th>
+                <th>AI名稱</th>
+                <th>國家</th>
+                <th>開發公司</th>
+                <th>介紹</th>
+                <th>Tags</th>
+                <th>官方網站連結</th>
+            </tr>
+        </thead>
+        <tbody id="aiToolsTable">
+            <!-- AI tool data will be populated here -->
+             <tr data-category="文案與聊天">
+                <td data-label="分類">文案與聊天</td>
+                <td data-label="AI名稱" class="ai-name">ChatGPT</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">OpenAI</td>
+                <td data-label="介紹"><span class="highlight">全球領先的對話式AI</span>，能進行自然語言理解與生成，適用於寫作、編程、翻譯等多種任務。</td>
+                <td data-label="Tags" class="tags"><span>#對話式AI</span><span>#LLM</span><span>#內容創作</span><span>#GPT-4o</span></td>
+                <td data-label="官方網站連結"><a href="https://chat.openai.com/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="文案與聊天">
+                <td data-label="分類">文案與聊天</td>
+                <td data-label="AI名稱" class="ai-name">Claude</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Anthropic</td>
+                <td data-label="介紹">以<span class="highlight">安全性與長文本處理</span>著稱的大型語言模型，特別擅長摘要、分析和問答。</td>
+                <td data-label="Tags" class="tags"><span>#長文本</span><span>#AI倫理</span><span>#Claude 3.5</span><span>#分析</span></td>
+                <td data-label="官方網站連結"><a href="https://claude.ai/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="文案與聊天">
+                <td data-label="分類">文案與聊天</td>
+                <td data-label="AI名稱" class="ai-name">Gemini (原Bard)</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Google</td>
+                <td data-label="介紹">Google開發的多模態AI模型，<span class="highlight">深度整合Google生態系</span>，能處理文字、圖片、音訊和影片。</td>
+                <td data-label="Tags" class="tags"><span>#多模態</span><span>#Google AI</span><span>#創意寫作</span><span>#研究</span></td>
+                <td data-label="官方網站連結"><a href="https://gemini.google.com/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="文案與聊天">
+                <td data-label="分類">文案與聊天</td>
+                <td data-label="AI名稱" class="ai-name">豆包</td>
+                <td data-label="國家">中國</td>
+                <td data-label="開發公司">字節跳動 (ByteDance)</td>
+                <td data-label="介紹">字節跳動推出的對話式AI，提供聊天、寫作、翻譯等功能，<span class="highlight">整合抖音集團技術</span>。</td>
+                <td data-label="Tags" class="tags"><span>#對話式AI</span><span>#免費</span><span>#內容創作</span></td>
+                <td data-label="官方網站連結"><a href="https://www.doubao.com/" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="文案與聊天">
+                <td data-label="分類">文案與聊天</td>
+                <td data-label="AI名稱" class="ai-name">Meta Sota (祕塔)</td>
+                <td data-label="國家">中國</td>
+                <td data-label="開發公司">上海祕塔網絡科技有限公司</td>
+                <td data-label="介紹"><span class="highlight">一站式AI搜尋與寫作平台</span>，提供學術、法律、論文等多種模式，功能全面。</td>
+                <td data-label="Tags" class="tags"><span>#AI寫作</span><span>#AI搜尋</span><span>#學術研究</span></td>
+                <td data-label="官方網站連結"><a href="https://metaso.cn/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="文案與聊天">
+                <td data-label="分類">文案與聊天</td>
+                <td data-label="AI名稱" class="ai-name">Grok</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">xAI</td>
+                <td data-label="介紹">由Elon Musk創立的xAI開發，特色是<span class="highlight">能即時存取X(Twitter)數據</span>，回答風格較幽默、叛逆。</td>
+                <td data-label="Tags" class="tags"><span>#即時資訊</span><span>#X整合</span><span>#幽默</span></td>
+                <td data-label="官方網站連結"><a href="https://grok.x.ai/" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="文案與聊天">
+                <td data-label="分類">文案與聊天</td>
+                <td data-label="AI名稱" class="ai-name">Jasper</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Jasper AI, Inc.</td>
+                <td data-label="介紹">專為<span class="highlight">企業與行銷團隊</span>設計的AI內容平台，提供多種模板，快速生成高品質行銷文案。</td>
+                <td data-label="Tags" class="tags"><span>#行銷文案</span><span>#商業寫作</span><span>#內容生成</span></td>
+                <td data-label="官方網站連結"><a href="https://www.jasper.ai/" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="文案與聊天">
+                <td data-label="分類">文案與聊天</td>
+                <td data-label="AI名稱" class="ai-name">TAIDE</td>
+                <td data-label="國家">臺灣</td>
+                <td data-label="開發公司">國科會 (NSTC)</td>
+                <td data-label="介紹">臺灣自主開發的<span class="highlight">可信任生成式AI模型</span>，特別強化繁體中文處理能力與臺灣在地文化內容。</td>
+                <td data-label="Tags" class="tags"><span>#繁體中文</span><span>#臺灣</span><span>#大型語言模型</span></td>
+                <td data-label="官方網站連結"><a href="https://taide.tw/" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="文案與聊天">
+                <td data-label="分類">文案與聊天</td>
+                <td data-label="AI名稱" class="ai-name">TaiLexi AI</td>
+                <td data-label="國家">臺灣</td>
+                <td data-label="開發公司">{待確認}</td>
+                <td data-label="介紹">專為臺灣設計的AI，<span class="highlight">專注於法律與商業領域</span>，提供文件草擬、合約審閱等專業服務。</td>
+                <td data-label="Tags" class="tags"><span>#法律AI</span><span>#商業文件</span><span>#臺灣</span></td>
+                <td data-label="官方網站連結"><a href="https://twlawbot.com/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="文案與聊天">
+                <td data-label="分類">文案與聊天</td>
+                <td data-label="AI名稱" class="ai-name">Felo</td>
+                <td data-label="國家">日本</td>
+                <td data-label="開發公司">Felo, Inc.</td>
+                <td data-label="介紹">一個<span class="highlight">AI搜尋代理與即時翻譯助理</span>，能進行智慧搜尋、內容總結，並為會議提供高品質的同聲傳譯。</td>
+                <td data-label="Tags" class="tags"><span>#AI搜尋</span><span>#即時翻譯</span><span>#會議</span></td>
+                <td data-label="官方網站連結"><a href="https://felo.ai/zh-Hant/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="文案與聊天">
+                <td data-label="分類">文案與聊天</td>
+                <td data-label="AI名稱" class="ai-name">DeepSeek</td>
+                <td data-label="國家">中國</td>
+                <td data-label="開發公司">深度求索</td>
+                <td data-label="介紹">深度求索開發的AI助理與<span class="highlight">開源大型語言模型</span>，提供免費對話服務，在程式碼和數學方面表現尤為出色。</td>
+                <td data-label="Tags" class="tags"><span>#開源LLM</span><span>#程式碼</span><span>#數學</span><span>#免費</span></td>
+                <td data-label="官方網站連結"><a href="https://www.deepseek.com/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="文案與聊天">
+                <td data-label="分類">文案與聊天</td>
+                <td data-label="AI名稱" class="ai-name">Kimi</td>
+                <td data-label="國家">中國</td>
+                <td data-label="開發公司">月之暗面 (Moonshot AI)</td>
+                <td data-label="介紹">由月之暗面(Moonshot AI)開發的AI助理，以<span class="highlight">超長上下文窗口</span>著稱，能高效處理長篇文檔的閱讀、研究與寫作。</td>
+                <td data-label="Tags" class="tags"><span>#長文本</span><span>#AI助理</span><span>#對話式AI</span><span>#Kimi Chat</span></td>
+                <td data-label="官方網站連結"><a href="https://kimi.ai/" target="_blank">前往網站</a></td>
+            </tr>
+
+            <tr data-category="影像生成">
+                <td data-label="分類">影像生成</td>
+                <td data-label="AI名稱" class="ai-name">Midjourney</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Midjourney, Inc.</td>
+                <td data-label="介紹"><span class="highlight">藝術風格最強的AI繪圖工具</span>，透過Discord操作，生成圖片品質極高，富含創意與細節。</td>
+                <td data-label="Tags" class="tags"><span>#AI繪圖</span><span>#藝術風格</span><span>#高品質</span><span>#Discord</span></td>
+                <td data-label="官方網站連結"><a href="https://www.midjourney.com/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="影像生成">
+                <td data-label="分類">影像生成</td>
+                <td data-label="AI名稱" class="ai-name">Stable Diffusion</td>
+                <td data-label="國家">英國/德國</td>
+                <td data-label="開發公司">Stability AI / LMU Munich</td>
+                <td data-label="介紹"><span class="highlight">開源的AI繪圖模型</span>，可本地部署，自由度極高，擁有龐大的社群與豐富的客製化模型(Lora)。</td>
+                <td data-label="Tags" class="tags"><span>#開源</span><span>#AI繪圖</span><span>#客製化</span><span>#本地部署</span></td>
+                <td data-label="官方網站連結"><a href="https://stability.ai/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="影像生成">
+                <td data-label="分類">影像生成</td>
+                <td data-label="AI名稱" class="ai-name">DALL·E 3</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">OpenAI</td>
+                <td data-label="介紹">整合於ChatGPT Plus與Microsoft Copilot，<span class="highlight">對自然語言理解能力極強</span>，能準確生成符合複雜描述的圖片。</td>
+                <td data-label="Tags" class="tags"><span>#語意理解</span><span>#ChatGPT整合</span><span>#AI繪圖</span></td>
+                <td data-label="官方網站連結"><a href="https://openai.com/dall-e-3" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="影像生成">
+                <td data-label="分類">影像生成</td>
+                <td data-label="AI名稱" class="ai-name">Leonardo.Ai</td>
+                <td data-label="國家">澳洲</td>
+                <td data-label="開發公司">Leonardo.Ai</td>
+                <td data-label="介紹">專為<span class="highlight">遊戲開發與素材創作</span>設計的AI繪圖平台，提供多種風格模型與訓練功能。</td>
+                <td data-label="Tags" class="tags"><span>#遊戲素材</span><span>#AI繪圖</span><span>#模型訓練</span></td>
+                <td data-label="官方網站連結"><a href="https://leonardo.ai/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="影像生成">
+                <td data-label="分類">影像生成</td>
+                <td data-label="AI名稱" class="ai-name">Krea AI</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Krea</td>
+                <td data-label="介紹"><span class="highlight">即時生成與增強</span>的創意AI套件，可透過畫布、鏡頭即時互動生成影像，功能多樣。</td>
+                <td data-label="Tags" class="tags"><span>#即時生成</span><span>#AI畫布</span><span>#創意工具</span></td>
+                <td data-label="官方網站連結"><a href="https://www.krea.ai/" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="影像生成">
+                <td data-label="分類">影像生成</td>
+                <td data-label="AI名稱" class="ai-name">PromeAI</td>
+                <td data-label="國家">新加坡</td>
+                <td data-label="開發公司">{待確認}</td>
+                <td data-label="介紹">強大的<span class="highlight">建築與室內設計</span>AI渲染工具，能將草圖快速轉化為逼真效果圖。</td>
+                <td data-label="Tags" class="tags"><span>#建築設計</span><span>#室內設計</span><span>#渲染</span></td>
+                <td data-label="官方網站連結"><a href="https://www.promeai.com/" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="影像生成">
+                <td data-label="分類">影像生成</td>
+                <td data-label="AI名稱" class="ai-name">Tensor.Art</td>
+                <td data-label="國家">香港</td>
+                <td data-label="開發公司">Echo INTERNATIONAL HK LIMITED</td>
+                <td data-label="介紹">一個<span class="highlight">免費的線上Stable Diffusion模型託管平台</span>，提供大量社群分享的模型，方便用戶體驗各種風格。</td>
+                <td data-label="Tags" class="tags"><span>#Stable Diffusion</span><span>#免費</span><span>#模型分享</span></td>
+                <td data-label="官方網站連結"><a href="https://tensor.art/" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="影像生成">
+                <td data-label="分類">影像生成</td>
+                <td data-label="AI名稱" class="ai-name">a1.art</td>
+                <td data-label="國家">香港</td>
+                <td data-label="開發公司">Jishi Design&Tech (HK) Limited</td>
+                <td data-label="介紹">AI藝術生成器，可以將文字轉換為<span class="highlight">獨特的藝術作品</span>，提供多種風格選擇。</td>
+                <td data-label="Tags" class="tags"><span>#AI藝術</span><span>#文生圖</span><span>#風格化</span></td>
+                <td data-label="官方網站連結"><a href="https://a1.art/" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="影像生成">
+                <td data-label="分類">影像生成</td>
+                <td data-label="AI名稱" class="ai-name">Lovart</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Lovart AI</td>
+                <td data-label="介紹">專注於生成<span class="highlight">動漫和插畫風格</span>的AI藝術創作工具，深受二次元文化愛好者歡迎。</td>
+                <td data-label="Tags" class="tags"><span>#動漫</span><span>#插畫</span><span>#二次元</span></td>
+                <td data-label="官方網站連結"><a href="https://www.lovart.ai/" target="_blank">前往網站</a></td>
+            </tr>
+
+            <tr data-category="影片生成">
+                <td data-label="分類">影片生成</td>
+                <td data-label="AI名稱" class="ai-name">Sora</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">OpenAI</td>
+                <td data-label="介紹"><span class="highlight">革命性的文生影片模型</span>，能生成長達一分鐘的高擬真度、高連貫性影片，尚未公開使用。</td>
+                <td data-label="Tags" class="tags"><span>#文生影片</span><span>#物理模擬</span><span>#高品質</span><span>#OpenAI</span></td>
+                <td data-label="官方網站連結"><a href="https://openai.com/sora" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="影片生成">
+                <td data-label="分類">影片生成</td>
+                <td data-label="AI名稱" class="ai-name">Kling (可靈)</td>
+                <td data-label="國家">中國</td>
+                <td data-label="開發公司">快手 (Kuaishou)</td>
+                <td data-label="介紹">快手推出的AI影片模型，能生成<span class="highlight">長達2分鐘、1080p</span>的高品質影片，物理模擬能力強，是Sora的有力競爭者。</td>
+                <td data-label="Tags" class="tags"><span>#AI影片</span><span>#文生影片</span><span>#Sora對手</span><span>#長影片</span></td>
+                <td data-label="官方網站連結"><a href="https://kling.kuaishou.com/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="影片生成">
+                <td data-label="分類">影片生成</td>
+                <td data-label="AI名稱" class="ai-name">Runway</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">RunwayML, Inc.</td>
+                <td data-label="介紹">領先的AI影片創作平台，提供<span class="highlight">文生影片(Gen-2)、圖生影片</span>及多種AI影片剪輯魔法工具。</td>
+                <td data-label="Tags" class="tags"><span>#AI影片</span><span>#影片剪輯</span><span>#Gen-2</span><span>#創意工具</span></td>
+                <td data-label="官方網站連結"><a href="https://runwayml.com/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="影片生成">
+                <td data-label="分類">影片生成</td>
+                <td data-label="AI名稱" class="ai-name">Pika</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Pika Labs</td>
+                <td data-label="介紹">易於上手的AI影片生成工具，<span class="highlight">運鏡控制與創意風格</span>是其特色，社群活躍。</td>
+                <td data-label="Tags" class="tags"><span>#AI影片</span><span>#運鏡</span><span>#創意</span><span>#Pika 1.0</span></td>
+                <td data-label="官方網站連結"><a href="https://pika.art/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="影片生成">
+                <td data-label="分類">影片生成</td>
+                <td data-label="AI名稱" class="ai-name">Viggle</td>
+                <td data-label="國家">中國</td>
+                <td data-label="開發公司">{待確認}</td>
+                <td data-label="介紹">讓<span class="highlight">靜態角色圖片跟隨影片動作跳舞</span>的AI工具，在社群媒體上引發病毒式傳播。</td>
+                <td data-label="Tags" class="tags"><span>#角色動畫</span><span>#影片跳舞</span><span>#AI動畫</span></td>
+                <td data-label="官方網站連結"><a href="https://viggle.ai/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="影片生成">
+                <td data-label="分類">影片生成</td>
+                <td data-label="AI名稱" class="ai-name">CapCut (剪映)</td>
+                <td data-label="國家">中國</td>
+                <td data-label="開發公司">字節跳動 (ByteDance)</td>
+                <td data-label="介紹">全球流行的影片剪輯App，<span class="highlight">內建大量AI功能</span>，如AI字幕、AI摳像、AI特效等，降低創作門檻。</td>
+                <td data-label="Tags" class="tags"><span>#影片剪輯</span><span>#AI特效</span><span>#移動端</span></td>
+                <td data-label="官方網站連結"><a href="https://www.capcut.com/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="影片生成">
+                <td data-label="分類">影片生成</td>
+                <td data-label="AI名稱" class="ai-name">Vidu AI</td>
+                <td data-label="國家">中國</td>
+                <td data-label="開發公司">生數科技 / 清華大學</td>
+                <td data-label="介紹">中國首個長影片大模型，基於自研視覺大模型架構，支持生成<span class="highlight">最長16秒</span>的1080p影片。</td>
+                <td data-label="Tags" class="tags"><span>#文生影片</span><span>#中國Sora</span><span>#視覺大模型</span></td>
+                <td data-label="官方網站連結"><a href="https://www.shengshu-ai.com/vidu" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="影片生成">
+                <td data-label="分類">影片生成</td>
+                <td data-label="AI名稱" class="ai-name">FlexClip</td>
+                <td data-label="國家">中國香港</td>
+                <td data-label="開發公司">PearlMountain Limited</td>
+                <td data-label="介紹">簡單易用的線上影片剪輯與製作工具，整合了<span class="highlight">AI腳本、AI配音、AI圖像</span>等功能，適合快速產出。</td>
+                <td data-label="Tags" class="tags"><span>#影片剪輯</span><span>#線上工具</span><span>#快速製作</span></td>
+                <td data-label="官方網站連結"><a href="https://www.flexclip.com/" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="影片生成">
+                <td data-label="分類">影片生成</td>
+                <td data-label="AI名稱" class="ai-name">Invideo</td>
+                <td data-label="國家">印度/美國</td>
+                <td data-label="開發公司">InVideo</td>
+                <td data-label="介紹">強大的<span class="highlight">文本轉影片</span>平台，只需輸入一個主題，AI就能自動生成包含腳本、影像、配音和字幕的完整影片。</td>
+                <td data-label="Tags" class="tags"><span>#文本轉影片</span><span>#自動化</span><span>#行銷影片</span></td>
+                <td data-label="官方網站連結"><a href="https://invideo.io/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="影片生成">
+                <td data-label="分類">影片生成</td>
+                <td data-label="AI名稱" class="ai-name">LTX Studio</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Lightricks</td>
+                <td data-label="介紹">一個<span class="highlight">全功能的AI電影製作平台</span>，讓創作者可以從創意構思到最終剪輯，全程使用AI輔助完成。</td>
+                <td data-label="Tags" class="tags"><span>#AI電影</span><span>#敘事</span><span>#影片製作</span></td>
+                <td data-label="官方網站連結"><a href="https://ltx.studio/" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="影片生成">
+                <td data-label="分類">影片生成</td>
+                <td data-label="AI名稱" class="ai-name">PixVerse AI</td>
+                <td data-label="國家">{待確認}</td>
+                <td data-label="開發公司">愛詩科技</td>
+                <td data-label="介紹">一款<span class="highlight">高品質且免費</span>的文生影片和圖生影片工具，生成效果出色，在社群中廣受好評。</td>
+                <td data-label="Tags" class="tags"><span>#文生影片</span><span>#免費</span><span>#高品質</span></td>
+                <td data-label="官方網站連結"><a href="https://pixverse.ai/" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="影片生成">
+                <td data-label="分類">影片生成</td>
+                <td data-label="AI名稱" class="ai-name">CoCoClip.AI</td>
+                <td data-label="國家">新加坡</td>
+                <td data-label="開發公司">{待確認}</td>
+                <td data-label="介紹">專為<span class="highlight">內容創作者</span>設計的AI影片剪輯工具，可以將長影片自動剪輯成多個病毒式短片。</td>
+                <td data-label="Tags" class="tags"><span>#自動剪輯</span><span>#短影片</span><span>#內容再利用</span></td>
+                <td data-label="官方網站連結"><a href="https://www.cococlip.ai/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="影片生成">
+                <td data-label="分類">影片生成</td>
+                <td data-label="AI名稱" class="ai-name">Hailuo AI (海螺)</td>
+                <td data-label="國家">中國</td>
+                <td data-label="開發公司">MiniMax</td>
+                <td data-label="介紹">一個<span class="highlight">綜合性的AI創作平台</span>，提供影片生成、圖像生成和音樂生成等功能，由MiniMax公司開發。</td>
+                <td data-label="Tags" class="tags"><span>#AI影片</span><span>#多功能</span><span>#創作平台</span></td>
+                <td data-label="官方網站連結"><a href="https://hailuoai.video/create" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="影片生成">
+                <td data-label="分類">影片生成</td>
+                <td data-label="AI名稱" class="ai-name">Medeo</td>
+                <td data-label="國家">{待確認}</td>
+                <td data-label="開發公司">Medeo AI</td>
+                <td data-label="介紹"><span class="highlight">圖像轉影片</span>的AI工具，可以讓靜態圖片動起來，創造出有趣的動態效果。</td>
+                <td data-label="Tags" class="tags"><span>#圖生影片</span><span>#動態圖像</span><span>#動畫</span></td>
+                <td data-label="官方網站連結"><a href="https://ai.medeo.app/create" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="影片生成">
+                <td data-label="分類">影片生成</td>
+                <td data-label="AI名稱" class="ai-name">Mootion</td>
+                <td data-label="國家">中國</td>
+                <td data-label="開發公司">{待確認}</td>
+                <td data-label="介紹">一站式<span class="highlight">3D與AI影片創作平台</span>，結合了3D資產庫和AI影片生成能力。</td>
+                <td data-label="Tags" class="tags"><span>#3D動畫</span><span>#AI影片</span><span>#創作平台</span></td>
+                <td data-label="官方網站連結"><a href="https://storyteller.mootion.com/workspace/generate" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="影片生成">
+                <td data-label="分類">影片生成</td>
+                <td data-label="AI名稱" class="ai-name">Vidnoz</td>
+                <td data-label="國家">新加坡</td>
+                <td data-label="開發公司">Vidnoz Inc.</td>
+                <td data-label="介紹">提供免費的AI影片生成器，包含<span class="highlight">AI數字人、AI配音</span>等多種工具，適合製作行銷和教學影片。</td>
+                <td data-label="Tags" class="tags"><span>#數字人</span><span>#免費</span><span>#行銷影片</span></td>
+                <td data-label="官方網站連結"><a href="https://www.vidnoz.com/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="影片生成">
+                <td data-label="分類">影片生成</td>
+                <td data-label="AI名稱" class="ai-name">Vheer</td>
+                <td data-label="國家">香港</td>
+                <td data-label="開發公司">Sparklightforce</td>
+                <td data-label="介紹">提供<span class="highlight">大量免費AI工具</span>，如圖像生成與編輯，無需註冊即可使用，涵蓋影片、圖片等多種應用。</td>
+                <td data-label="Tags" class="tags"><span>#免費</span><span>#工具集</span><span>#圖像生成</span></td>
+                <td data-label="官方網站連結"><a href="https://vheer.com/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="影片生成">
+                <td data-label="分類">影片生成</td>
+                <td data-label="AI名稱" class="ai-name">Animon.ai</td>
+                <td data-label="國家">日本</td>
+                <td data-label="開發公司">株式會社Animon Dream Factory</td>
+                <td data-label="介紹">由日本公司開發的動漫專用AI平台，專注於將<span class="highlight">漫畫或故事版轉化為動畫影片</span>。</td>
+                <td data-label="Tags" class="tags"><span>#漫畫轉動畫</span><span>#動漫</span><span>#動畫製作</span></td>
+                <td data-label="官方網站連結"><a href="https://www.animon.ai/explore" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="影片生成">
+                <td data-label="分類">影片生成</td>
+                <td data-label="AI名稱" class="ai-name">SDV (Stable Video Diffusion)</td>
+                <td data-label="國家">英國</td>
+                <td data-label="開發公司">Stability AI</td>
+                <td data-label="介紹">Stability AI推出的<span class="highlight">開源影片模型</span>，能夠從靜態圖像生成短影片，在模型可控性方面具潛力。</td>
+                <td data-label="Tags" class="tags"><span>#開源</span><span>#圖生影片</span><span>#Stability AI</span></td>
+                <td data-label="官方網站連結"><a href="https://stability.ai/news/stable-video-diffusion-open-ai-video-model" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="影片生成">
+                <td data-label="分類">影片生成</td>
+                <td data-label="AI名稱" class="ai-name">DeeVid AI</td>
+                <td data-label="國家">美國 / 新加坡</td>
+                <td data-label="開發公司">DeeVid AI</td>
+                <td data-label="介紹">提供<span class="highlight">高一致性</span>的角色和風格影片生成，致力於解決AI影片中角色變形的問題。</td>
+                <td data-label="Tags" class="tags"><span>#角色一致性</span><span>#AI影片</span><span>#高品質</span></td>
+                <td data-label="官方網站連結"><a href="https://deevid.ai/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="影片生成">
+                <td data-label="分類">影片生成</td>
+                <td data-label="AI名稱" class="ai-name">MagicLight</td>
+                <td data-label="國家">中國</td>
+                <td data-label="開發公司">MagicLight AI</td>
+                <td data-label="介紹">AI影片平台，主打<span class="highlight">劇本轉動畫、長影片製作、角色一致性</span>、腳本分鏡、風格角色自訂、多語言字幕配音。</td>
+                <td data-label="Tags" class="tags"><span>#劇本轉動畫</span><span>#長影片</span><span>#角色一致性</span></td>
+                <td data-label="官方網站連結"><a href="https://www.magiclight.ai/" target="_blank">前往網站</a></td>
+            </tr>
+
+            <tr data-category="音樂與聲音">
+                <td data-label="分類">音樂與聲音</td>
+                <td data-label="AI名稱" class="ai-name">Suno</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Suno, Inc.</td>
+                <td data-label="介紹">革命性的<span class="highlight">AI音樂生成工具</span>，只需輸入歌詞和風格，即可生成包含人聲、編曲的完整歌曲。</td>
+                <td data-label="Tags" class="tags"><span>#AI音樂</span><span>#歌曲創作</span><span>#文生音樂</span></td>
+                <td data-label="官方網站連結"><a href="https://www.suno.ai/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="音樂與聲音">
+                <td data-label="分類">音樂與聲音</td>
+                <td data-label="AI名稱" class="ai-name">Whisper</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">OpenAI</td>
+                <td data-label="介紹">OpenAI開發的<span class="highlight">開源語音辨識模型</span>，準確率極高，支援多種語言，是許多語音轉文字服務的底層技術。</td>
+                <td data-label="Tags" class="tags"><span>#語音辨識</span><span>#開源</span><span>#語音轉文字</span></td>
+                <td data-label="官方網站連結"><a href="https://openai.com/research/whisper" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="音樂與聲音">
+                <td data-label="分類">音樂與聲音</td>
+                <td data-label="AI名稱" class="ai-name">Descript</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Descript</td>
+                <td data-label="介紹">一個<span class="highlight">像編輯文件一樣編輯音訊/影片</span>的工具，整合了語音辨識、AI配音、AI剪輯等功能。</td>
+                <td data-label="Tags" class="tags"><span>#音訊編輯</span><span>#Podcast</span><span>#影片剪輯</span></td>
+                <td data-label="官方網站連結"><a href="https://www.descript.com/" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="音樂與聲音">
+                <td data-label="分類">音樂與聲音</td>
+                <td data-label="AI名稱" class="ai-name">Memo AI</td>
+                <td data-label="國家">中國</td>
+                <td data-label="開發公司">{待確認}</td>
+                <td data-label="介紹">將YouTube、播客、本地音影片<span class="highlight">輕鬆轉為文本、字幕</span>，並可翻譯、合成語音、提煉精華。</td>
+                <td data-label="Tags" class="tags"><span>#語音轉文字</span><span>#影片摘要</span><span>#字幕</span></td>
+                <td data-label="官方網站連結"><a href="https://memo.ac/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="音樂與聲音">
+                <td data-label="分類">音樂與聲音</td>
+                <td data-label="AI名稱" class="ai-name">ACE-Step</td>
+                <td data-label="國家">{待確認}</td>
+                <td data-label="開發公司">{待確認}</td>
+                <td data-label="介紹"><span class="highlight">免費、免登錄</span>的AI音樂生成工具，可以快速生成不同風格的背景音樂。</td>
+                <td data-label="Tags" class="tags"><span>#AI音樂</span><span>#免費</span><span>#免登錄</span></td>
+                <td data-label="官方網站連結"><a href="https://huggingface.co/spaces/ACE-Step/ACE-Step" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="音樂與聲音">
+                <td data-label="分類">音樂與聲音</td>
+                <td data-label="AI名稱" class="ai-name">Mureka</td>
+                <td data-label="國家">新加坡</td>
+                <td data-label="開發公司">SKYWORK AI PTE LTD</td>
+                <td data-label="介紹">一個AI音樂生成平台，讓用戶可以<span class="highlight">輕鬆創作、分享和探索</span>AI生成的音樂。</td>
+                <td data-label="Tags" class="tags"><span>#AI音樂</span><span>#音樂創作</span><span>#社群</span></td>
+                <td data-label="官方網站連結"><a href="https://www.mureka.ai/" target="_blank">前往網站</a></td>
+            </tr>
+
+            <tr data-category="設計與3D">
+                <td data-label="分類">設計與3D</td>
+                <td data-label="AI名稱" class="ai-name">Canva</td>
+                <td data-label="國家">澳洲</td>
+                <td data-label="開發公司">Canva</td>
+                <td data-label="介紹">全球領先的線上設計平台，<span class="highlight">深度整合Magic Studio AI套件</span>，提供AI繪圖、AI簡報、AI寫作等全方位設計功能。</td>
+                <td data-label="Tags" class="tags"><span>#平面設計</span><span>#Magic Studio</span><span>#線上設計</span></td>
+                <td data-label="官方網站連結"><a href="https://www.canva.com/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="設計與3D">
+                <td data-label="分類">設計與3D</td>
+                <td data-label="AI名稱" class="ai-name">Gamma</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Gamma Tech, Inc.</td>
+                <td data-label="介紹"><span class="highlight">用AI快速生成簡報、文件和網頁</span>的工具，只需輸入主題，即可自動生成完整內容與設計。</td>
+                <td data-label="Tags" class="tags"><span>#AI簡報</span><span>#自動生成</span><span>#生產力</span></td>
+                <td data-label="官方網站連結"><a href="https://gamma.app/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="設計與3D">
+                <td data-label="分類">設計與3D</td>
+                <td data-label="AI名稱" class="ai-name">Beautiful.ai</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Beautiful.ai, Inc.</td>
+                <td data-label="介紹">專注於<span class="highlight">簡報設計自動化</span>的AI工具，提供智慧模板，確保每一頁都設計精美。</td>
+                <td data-label="Tags" class="tags"><span>#簡報設計</span><span>#自動化</span><span>#智慧模板</span></td>
+                <td data-label="官方網站連結"><a href="https://www.beautiful.ai/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="設計與3D">
+                <td data-label="分類">設計與3D</td>
+                <td data-label="AI名稱" class="ai-name">SkyBox</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Blockade Labs</td>
+                <td data-label="介紹">專業的<span class="highlight">360°全景圖生成</span>AI工具，可以快速創建沉浸式的虛擬環境，常用於遊戲和VR。</td>
+                <td data-label="Tags" class="tags"><span>#360全景</span><span>#天空盒</span><span>#遊戲開發</span><span>#VR</span></td>
+                <td data-label="官方網站連結"><a href="https://skybox.blockadelabs.com/" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="設計與3D">
+                <td data-label="分類">設計與3D</td>
+                <td data-label="AI名稱" class="ai-name">FLATICON</td>
+                <td data-label="國家">西班牙</td>
+                <td data-label="開發公司">Freepik Company</td>
+                <td data-label="介紹">全球最大的ICON圖庫網站，現已整合<span class="highlight">AI ICON生成器</span>，可根據文字描述生成獨特的ICON。</td>
+                <td data-label="Tags" class="tags"><span>#ICON設計</span><span>#圖示</span><span>#AI生成</span></td>
+                <td data-label="官方網站連結"><a href="https://www.flaticon.com/ai-icon-generator" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="設計與3D">
+                <td data-label="分類">設計與3D</td>
+                <td data-label="AI名稱" class="ai-name">Tripo</td>
+                <td data-label="國家">中國</td>
+                <td data-label="開發公司">{待確認}</td>
+                <td data-label="介紹"><span class="highlight">快速AI 3D建模</span>工具，可以從文本或圖像在數秒內生成帶有紋理和動畫的3D模型。</td>
+                <td data-label="Tags" class="tags"><span>#3D建模</span><span>#文生3D</span><span>#遊戲資產</span></td>
+                <td data-label="官方網站連結"><a href="https://www.tripo3d.ai/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="設計與3D">
+                <td data-label="分類">設計與3D</td>
+                <td data-label="AI名稱" class="ai-name">TRELLIS 3D AI</td>
+                <td data-label="國家">{待確認}</td>
+                <td data-label="開發公司">{待確認}</td>
+                <td data-label="介紹">專為<span class="highlight">建築、工程和施工(AEC)</span>行業設計的AI工具，用於生成3D設計概念。</td>
+                <td data-label="Tags" class="tags"><span>#建築設計</span><span>#3D建模</span><span>#AEC</span></td>
+                <td data-label="官方網站連結"><a href="https://trellis3d.co/?utm_source=toolify" target="_blank">前往網站</a></td>
+            </tr>
+
+            <tr data-category="程式碼輔助">
+                <td data-label="分類">程式碼輔助</td>
+                <td data-label="AI名稱" class="ai-name">GitHub Copilot</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">GitHub / OpenAI</td>
+                <td data-label="介紹"><span class="highlight">市場領先的AI程式碼助理</span>，深度整合於VS Code等IDE，提供程式碼自動完成、除錯、生成等功能。</td>
+                <td data-label="Tags" class="tags"><span>#程式碼生成</span><span>#AI編程</span><span>#開發者工具</span></td>
+                <td data-label="官方網站連結"><a href="https://github.com/features/copilot" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="程式碼輔助">
+                <td data-label="分類">程式碼輔助</td>
+                <td data-label="AI名稱" class="ai-name">Codeium</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Codeium</td>
+                <td data-label="介紹">一款<span class="highlight">免費的AI程式碼輔助工具</span>，被譽為Copilot的強力替代品，支援超過70種語言。</td>
+                <td data-label="Tags" class="tags"><span>#免費</span><span>#程式碼生成</span><span>#AI編程</span></td>
+                <td data-label="官方網站連結"><a href="https://codeium.com/" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="程式碼輔助">
+                <td data-label="分類">程式碼輔助</td>
+                <td data-label="AI名稱" class="ai-name">Cursor</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Anysphere</td>
+                <td data-label="介紹">一個<span class="highlight">專為AI協作編程設計的IDE</span>，深度整合了程式碼生成、編輯和問答功能，體驗流暢。</td>
+                <td data-label="Tags" class="tags"><span>#AI IDE</span><span>#程式碼編輯器</span><span>#開發者工具</span></td>
+                <td data-label="官方網站連結"><a href="https://cursor.sh/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="程式碼輔助">
+                <td data-label="分類">程式碼輔助</td>
+                <td data-label="AI名稱" class="ai-name">Codex</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">OpenAI</td>
+                <td data-label="介紹">驅動GitHub Copilot的<span class="highlight">底層AI模型</span>，能將自然語言翻譯成程式碼，是程式碼生成領域的里程碑。</td>
+                <td data-label="Tags" class="tags"><span>#AI模型</span><span>#程式碼生成</span><span>#OpenAI</span></td>
+                <td data-label="官方網站連結"><a href="https://openai.com/blog/openai-codex" target="_blank">前往網站</a></td>
+            </tr>
+            
+            <tr data-category="生產力工具">
+                <td data-label="分類">生產力工具</td>
+                <td data-label="AI名稱" class="ai-name">Microsoft 365 Copilot</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Microsoft</td>
+                <td data-label="介紹">將AI<span class="highlight">深度整合到Office全家桶</span>（Word, Excel, PowerPoint, Outlook）中的智慧助理。</td>
+                <td data-label="Tags" class="tags"><span>#辦公室軟體</span><span>#生產力</span><span>#AI助理</span></td>
+                <td data-label="官方網站連結"><a href="https://www.microsoft.com/en-us/microsoft-365/copilot-for-microsoft-365" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="生產力工具">
+                <td data-label="分類">生產力工具</td>
+                <td data-label="AI名稱" class="ai-name">Notion</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Notion Labs, Inc.</td>
+                <td data-label="介紹">整合了<span class="highlight">Notion AI功能</span>的All-in-One工作空間，可用於筆記、任務管理、寫作、摘要等。</td>
+                <td data-label="Tags" class="tags"><span>#筆記軟體</span><span>#知識管理</span><span>#AI寫作</span></td>
+                <td data-label="官方網站連結"><a href="https://www.notion.so/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="生產力工具">
+                <td data-label="分類">生產力工具</td>
+                <td data-label="AI名稱" class="ai-name">NotebookLM</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Google</td>
+                <td data-label="介紹">Google推出的<span class="highlight">個人化AI研究助理</span>，能基於你提供的資料（文件、筆記）進行問答與摘要。</td>
+                <td data-label="Tags" class="tags"><span>#研究助理</span><span>#個人知識庫</span><span>#Google AI</span></td>
+                <td data-label="官方網站連結"><a href="https://notebooklm.google.com/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="生產力工具">
+                <td data-label="分類">生產力工具</td>
+                <td data-label="AI名稱" class="ai-name">DeepL</td>
+                <td data-label="國家">德國</td>
+                <td data-label="開發公司">DeepL SE</td>
+                <td data-label="介紹">以<span class="highlight">翻譯品質自然、準確</span>著稱的神經網路翻譯服務，廣受專業人士好評。</td>
+                <td data-label="Tags" class="tags"><span>#AI翻譯</span><span>#高品質</span><span>#多語言</span></td>
+                <td data-label="官方網站連結"><a href="https://www.deepl.com/translator" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="生產力工具">
+                <td data-label="分類">生產力工具</td>
+                <td data-label="AI名稱" class="ai-name">GPTZero</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">{待確認}</td>
+                <td data-label="介紹">主流的<span class="highlight">AI文本檢測工具</span>，用於判斷一段文字是由人類撰寫還是AI生成，常用於教育領域。</td>
+                <td data-label="Tags" class="tags"><span>#AI檢測</span><span>#學術誠信</span><span>#教育</span></td>
+                <td data-label="官方網站連結"><a href="https://gptzero.me/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="生產力工具">
+                <td data-label="分類">生產力工具</td>
+                <td data-label="AI名稱" class="ai-name">Zapier</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Zapier Inc.</td>
+                <td data-label="介紹">領先的<span class="highlight">自動化工作流程</span>平台，整合AI功能後，能讓用戶用自然語言創建複雜的跨應用程式自動化。</td>
+                <td data-label="Tags" class="tags"><span>#自動化</span><span>#工作流程</span><span>#整合</span></td>
+                <td data-label="官方網站連結"><a href="https://zapier.com/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="生產力工具">
+                <td data-label="分類">生產力工具</td>
+                <td data-label="AI名稱" class="ai-name">GitMind</td>
+                <td data-label="國家">中國香港</td>
+                <td data-label="開發公司">WANGXU TECHNOLOGY CO., LIMITED</td>
+                <td data-label="介紹">一款<span class="highlight">AI心智圖</span>工具，能一鍵生成心智圖、流程圖、組織圖，並進行內容擴寫和分析。</td>
+                <td data-label="Tags" class="tags"><span>#心智圖</span><span>#腦力激盪</span><span>#視覺化</span></td>
+                <td data-label="官方網站連結"><a href="https://gitmind.com/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="生產力工具">
+                <td data-label="分類">生產力工具</td>
+                <td data-label="AI名稱" class="ai-name">Get 筆記</td>
+                <td data-label="國家">臺灣</td>
+                <td data-label="開發公司">{待確認}</td>
+                <td data-label="介紹"><span class="highlight">YouTube影片摘要</span>工具，能快速將影片內容轉換為繁體中文筆記，節省學習時間。</td>
+                <td data-label="Tags" class="tags"><span>#影片摘要</span><span>#YouTube</span><span>#筆記</span></td>
+                <td data-label="官方網站連結"><a href="https://getget.ai/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="生產力工具">
+                <td data-label="分類">生產力工具</td>
+                <td data-label="AI名稱" class="ai-name">Indify</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Indify</td>
+                <td data-label="介紹">為Notion頁面提供<span class="highlight">多樣化的小工具 (Widgets)</span>，如天氣、時鐘、進度條，讓Notion更美觀實用。</td>
+                <td data-label="Tags" class="tags"><span>#Notion插件</span><span>#小工具</span><span>#美化</span></td>
+                <td data-label="官方網站連結"><a href="https://indify.co/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="生產力工具">
+                <td data-label="分類">生產力工具</td>
+                <td data-label="AI名稱" class="ai-name">Napkin</td>
+                <td data-label="國家">德國</td>
+                <td data-label="開發公司">Napkin</td>
+                <td data-label="介紹">一款<span class="highlight">靈感收集與思維連結</span>的筆記工具，AI會自動幫你發現筆記之間的關聯。</td>
+                <td data-label="Tags" class="tags"><span>#靈感管理</span><span>#筆記</span><span>#關聯思考</span></td>
+                <td data-label="官方網站連結"><a href="https://napkin.one/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="生產力工具">
+                <td data-label="分類">生產力工具</td>
+                <td data-label="AI名稱" class="ai-name">BlinkShot AI</td>
+                <td data-label="國家">臺灣</td>
+                <td data-label="開發公司">{待確認}</td>
+                <td data-label="介紹">專為台灣用戶設計的<span class="highlight">AI螢幕截圖與筆記工具</span>，能快速擷取畫面並由AI生成摘要、待辦事項。</td>
+                <td data-label="Tags" class="tags"><span>#截圖工具</span><span>#AI筆記</span><span>#生產力</span></td>
+                <td data-label="官方網站連結"><a href="https://blinkshot.ai/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="生產力工具">
+                <td data-label="分類">生產力工具</td>
+                <td data-label="AI名稱" class="ai-name">Mapify</td>
+                <td data-label="國家">新加坡</td>
+                <td data-label="開發公司">SUPERMIND PTE. LTD (Xmind 團隊支援)</td>
+                <td data-label="介紹">能將任何內容（文章、影片、PDF）<span class="highlight">一鍵轉換為心智圖</span>的AI工具，幫助快速理解和梳理資訊。</td>
+                <td data-label="Tags" class="tags"><span>#心智圖</span><span>#資訊整理</span><span>#摘要</span></td>
+                <td data-label="官方網站連結"><a href="https://mapify.so/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="生產力工具">
+                <td data-label="分類">生產力工具</td>
+                <td data-label="AI名稱" class="ai-name">Mathos AI</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Mathos AI (前身 MathGPTPro)</td>
+                <td data-label="介紹">一款<span class="highlight">AI數學解題工具</span>，能透過拍照或輸入來解決複雜的數學問題，並提供逐步詳解。</td>
+                <td data-label="Tags" class="tags"><span>#數學</span><span>#教育</span><span>#解題</span></td>
+                <td data-label="官方網站連結"><a href="https://mathos.ai/" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="生產力工具">
+                <td data-label="分類">生產力工具</td>
+                <td data-label="AI名稱" class="ai-name">Moki</td>
+                <td data-label="國家">中國</td>
+                <td data-label="開發公司">{待確認}</td>
+                <td data-label="介紹">一款<span class="highlight">AI驅動的流程圖工具</span>，可以將想法快速轉化為視覺化的工作流程圖。</td>
+                <td data-label="Tags" class="tags"><span>#流程圖</span><span>#視覺化</span><span>#生產力</span></td>
+                <td data-label="官方網站連結"><a href="https://www.moki.cn/home" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="生產力工具">
+                <td data-label="分類">生產力工具</td>
+                <td data-label="AI名稱" class="ai-name">Pollo AI</td>
+                <td data-label="國家">新加坡</td>
+                <td data-label="開發公司">COCOSOFT TECHNOLOGY PTE. LTD.</td>
+                <td data-label="介紹">一個<span class="highlight">AI驅動的投票和問卷工具</span>，可以幫助用戶快速生成問題、分析結果。</td>
+                <td data-label="Tags" class="tags"><span>#問卷</span><span>#投票</span><span>#數據分析</span></td>
+                <td data-label="官方網站連結"><a href="https://www.pollo.ai/" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="生產力工具">
+                <td data-label="分類">生產力工具</td>
+                <td data-label="AI名稱" class="ai-name">websim</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Websim, Inc.</td>
+                <td data-label="介紹">一個AI工具，可以<span class="highlight">將任何網站轉換為可互動的應用程式</span>，用於演示或測試。</td>
+                <td data-label="Tags" class="tags"><span>#網站模擬</span><span>#演示</span><span>#開發工具</span></td>
+                <td data-label="官方網站連結"><a href="https://websim.ai/" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="生產力工具">
+                <td data-label="分類">生產力工具</td>
+                <td data-label="AI名稱" class="ai-name">make</td>
+                <td data-label="國家">捷克</td>
+                <td data-label="開發公司">Celonis</td>
+                <td data-label="介紹">強大的<span class="highlight">視覺化工作流程自動化平台</span>，可以連接數千個應用程式，建立複雜的自動化流程。</td>
+                <td data-label="Tags" class="tags"><span>#自動化</span><span>#工作流程</span><span>#無程式碼</span></td>
+                <td data-label="官方網站連結"><a href="https://www.make.com/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="生產力工具">
+                <td data-label="分類">生產力工具</td>
+                <td data-label="AI名稱" class="ai-name">n8n</td>
+                <td data-label="國家">德國</td>
+                <td data-label="開發公司">n8n GmbH</td>
+                <td data-label="介紹"><span class="highlight">開源的工作流程自動化工具</span>，可自架設，提供高度的靈活性和客製化能力。</td>
+                <td data-label="Tags" class="tags"><span>#開源</span><span>#自動化</span><span>#工作流程</span></td>
+                <td data-label="官方網站連結"><a href="https://n8n.io/" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="生產力工具">
+                <td data-label="分類">生產力工具</td>
+                <td data-label="AI名稱" class="ai-name">edcafe</td>
+                <td data-label="國家">美國 / 新加坡</td>
+                <td data-label="開發公司">ClassPoint 國際團隊</td>
+                <td data-label="介紹">一個專為<span class="highlight">教育工作者</span>設計的AI平台，幫助教師創建教案、學習單和評估。</td>
+                <td data-label="Tags" class="tags"><span>#教育科技</span><span>#教師工具</span><span>#課程設計</span></td>
+                <td data-label="官方網站連結"><a href="https://app.edcafe.ai/me/home" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="生產力工具">
+                <td data-label="分類">生產力工具</td>
+                <td data-label="AI名稱" class="ai-name">manus</td>
+                <td data-label="國家">新加坡 / 中國</td>
+                <td data-label="開發公司">Monica 團隊</td>
+                <td data-label="介紹">一個<span class="highlight">專為研究人員設計的AI寫作平台</span>，幫助撰寫、引用和格式化學術論文。</td>
+                <td data-label="Tags" class="tags"><span>#學術寫作</span><span>#研究</span><span>#論文</span></td>
+                <td data-label="官方網站連結"><a href="https://manus.im/app" target="_blank">前往網站</a></td>
+            </tr>
+            
+            <tr data-category="搜尋與研究">
+                <td data-label="分類">搜尋與研究</td>
+                <td data-label="AI名稱" class="ai-name">Perplexity</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Perplexity AI</td>
+                <td data-label="介紹"><span class="highlight">對話式AI搜尋引擎</span>，能提供附有來源引用的精確回答，適合研究和事實查核。</td>
+                <td data-label="Tags" class="tags"><span>#AI搜尋</span><span>#對話式</span><span>#引用來源</span></td>
+                <td data-label="官方網站連結"><a href="https://www.perplexity.ai/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="搜尋與研究">
+                <td data-label="分類">搜尋與研究</td>
+                <td data-label="AI名稱" class="ai-name">Bing (Microsoft Copilot)</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Microsoft</td>
+                <td data-label="介紹">整合了<span class="highlight">GPT-4和DALL-E 3</span>的AI搜尋助理，提供網頁摘要、問答與圖像生成功能。</td>
+                <td data-label="Tags" class="tags"><span>#AI搜尋</span><span>#Microsoft</span><span>#GPT-4</span></td>
+                <td data-label="官方網站連結"><a href="https://www.bing.com/" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="搜尋與研究">
+                <td data-label="分類">搜尋與研究</td>
+                <td data-label="AI名稱" class="ai-name">SciSpace</td>
+                <td data-label="國家">印度</td>
+                <td data-label="開發公司">Typeset</td>
+                <td data-label="介紹">專為<span class="highlight">學術研究</span>設計的AI平台，可以搜尋、閱讀、理解和撰寫科學論文。</td>
+                <td data-label="Tags" class="tags"><span>#學術研究</span><span>#論文</span><span>#AI助理</span></td>
+                <td data-label="官方網站連結"><a href="https://typeset.io/" target="_blank">前往網站</a></td>
+            </tr>
+             <tr data-category="搜尋與研究">
+                <td data-label="分類">搜尋與研究</td>
+                <td data-label="AI名稱" class="ai-name">Genspark</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">{待確認}</td>
+                <td data-label="介紹">新一代的<span class="highlight">AI驅動的搜尋與研究引擎</span>，旨在提供更深入、更具洞察力的答案。</td>
+                <td data-label="Tags" class="tags"><span>#AI搜尋</span><span>#研究</span><span>#洞察力</span></td>
+                <td data-label="官方網站連結"><a href="https://www.genspark.ai/" target="_blank">前往網站</a></td>
+            </tr>
+
+            <tr data-category="AI模型與平台">
+                <td data-label="分類">AI模型與平台</td>
+                <td data-label="AI名稱" class="ai-name">Hugging Face</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Hugging Face, Inc.</td>
+                <td data-label="介紹"><span class="highlight">AI界的GitHub</span>，是全球最大的開源AI模型、資料集和工具共享平台，開發者社群的核心。</td>
+                <td data-label="Tags" class="tags"><span>#開源</span><span>#AI社群</span><span>#模型庫</span></td>
+                <td data-label="官方網站連結"><a href="https://huggingface.co/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="AI模型與平台">
+                <td data-label="分類">AI模型與平台</td>
+                <td data-label="AI名稱" class="ai-name">TensorFlow</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Google</td>
+                <td data-label="介紹">Google開發的<span class="highlight">開源機器學習框架</span>，被廣泛應用於各種AI模型的訓練與部署。</td>
+                <td data-label="Tags" class="tags"><span>#機器學習</span><span>#開源</span><span>#框架</span></td>
+                <td data-label="官方網站連結"><a href="https://www.tensorflow.org/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="AI模型與平台">
+                <td data-label="分類">AI模型與平台</td>
+                <td data-label="AI名稱" class="ai-name">Llama</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Meta</td>
+                <td data-label="介紹">Meta推出的<span class="highlight">開源大型語言模型系列</span> (Llama 3)，性能強大，推動了開源AI社群的發展。</td>
+                <td data-label="Tags" class="tags"><span>#開源LLM</span><span>#Meta AI</span><span>#模型</span></td>
+                <td data-label="官方網站連結"><a href="https://ai.meta.com/llama/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="AI模型與平台">
+                <td data-label="分類">AI模型與平台</td>
+                <td data-label="AI名稱" class="ai-name">Google AI Studio</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Google</td>
+                <td data-label="介紹">一個基於瀏覽器的<span class="highlight">AI模型開發工具</span>，可以快速建構和測試基於Gemini模型的應用。</td>
+                <td data-label="Tags" class="tags"><span>#開發平台</span><span>#Gemini</span><span>#Google AI</span></td>
+                <td data-label="官方網站連結"><a href="https://aistudio.google.com/" target="_blank">前往網站</a></td>
+            </tr>
+            <tr data-category="AI模型與平台">
+                <td data-label="分類">AI模型與平台</td>
+                <td data-label="AI名稱" class="ai-name">BlenderBot</td>
+                <td data-label="國家">美國</td>
+                <td data-label="開發公司">Meta</td>
+                <td data-label="介紹">Meta AI開發的<span class="highlight">開源對話式AI模型</span>，旨在實現更自然、更有同理心和知識性的對話。</td>
+                <td data-label="Tags" class="tags"><span>#對話式AI</span><span>#開源</span><span>#Meta AI</span></td>
+                <td data-label="官方網站連結"><a href="https://blenderbot.ai/" target="_blank">前往網站</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const table = document.getElementById("aiToolsTable");
+        const rows = table.getElementsByTagName("tr");
+        const filterContainer = document.getElementById("filterContainer");
+
+        // Collect all unique categories
+        const categories = new Set();
+        for (let i = 0; i < rows.length; i++) {
+            const category = rows[i].getAttribute("data-category");
+            if (category) {
+                categories.add(category);
+            }
+        }
+
+        // Sort categories (optional)
+        const sortedCategories = Array.from(categories).sort();
+
+        // Create 'All' button
+        const allButton = document.createElement("button");
+        allButton.className = "filter-btn active";
+        allButton.textContent = "全部";
+        allButton.onclick = () => filterTable('All');
+        filterContainer.appendChild(allButton);
+
+        // Create buttons for each category
+        sortedCategories.forEach(category => {
+            const button = document.createElement("button");
+            button.className = "filter-btn";
+            button.textContent = category;
+            button.onclick = () => filterTable(category);
+            filterContainer.appendChild(button);
+        });
+
+        // Add data-label attributes for mobile view
+        const headers = Array.from(document.querySelectorAll('th')).map(th => th.textContent);
+        const dataRows = document.querySelectorAll('tbody tr');
+        dataRows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            cells.forEach((cell, index) => {
+                cell.setAttribute('data-label', headers[index]);
+            });
+        });
+    });
+
+    function filterTable(category) {
+        const tableRows = document.getElementById("aiToolsTable").getElementsByTagName("tr");
+        const buttons = document.querySelectorAll(".filter-btn");
+
+        // Update button active state
+        buttons.forEach(btn => {
+            if (btn.textContent === category || (category === 'All' && btn.textContent === '全部')) {
+                btn.classList.add("active");
+            } else {
+                btn.classList.remove("active");
+            }
+        });
+        
+        // Filter table rows
+        for (let i = 0; i < tableRows.length; i++) {
+            const row = tableRows[i];
+            if (category === 'All' || row.getAttribute("data-category") === category) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

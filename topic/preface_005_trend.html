@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPAS AI 考試重點整理 - 最新 AI 應用趨勢</title>
+    <style>
+        /* --- Global Styles & RWD --- */
+        :root {
+            --primary-color: #007bff;
+            --text-color: #333;
+            --bg-color: #f8f9fa;
+            --container-bg: #ffffff;
+            --border-color: #dee2e6;
+            --highlight-bg: #ffff0030;
+            --chinese-term-color: #0000ff; /* Blue for Chinese terms */
+            --eng-abbr-color: #800080;   /* Purple for English abbreviations */
+            --eng-word-color: #ff0000;   /* Red for English full names/words */
+            --header-bg: #e9ecef;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', 'Roboto', 'Helvetica Neue', sans-serif;
+            line-height: 1.8;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: var(--container-bg);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-radius: 12px;
+        }
+
+        /* --- Typography & Formatting --- */
+        h1, h2, h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 2.2em;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.8em;
+        }
+        
+        h3 {
+            font-size: 1.4em;
+            border-bottom: 1px solid #ccc;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .highlight {
+            background-color: var(--highlight-bg);
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .chinese-term {
+            color: var(--chinese-term-color);
+            font-weight: bold;
+        }
+
+        .eng-abbr {
+            color: var(--eng-abbr-color);
+            font-weight: bold;
+        }
+
+        .eng-word {
+            color: var(--eng-word-color);
+            font-weight: bold;
+        }
+
+        /* --- Table Styles & RWD --- */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch; /* for smooth scrolling on iOS */
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px; /* Ensures table looks good even on smaller viewports before scrolling */
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+        }
+
+        thead th {
+            background-color: var(--header-bg);
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #495057;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        /* --- Media Queries for Mobile/Tablet --- */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 10px;
+            }
+            h1 { font-size: 1.8em; }
+            h2 { font-size: 1.5em; }
+            h3 { font-size: 1.2em; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🚀 iPAS AI 考試核心重點：最新熱門應用全解析</h1>
+        <p>
+            本文件針對 <strong>iPAS 人工智慧應用工程師</strong>（初級與中級）考試，彙整了近期產業最熱門、最常成為考題的 AI 新興應用。內容涵蓋影片生成、音樂生成、AI 代理及 AI 程式設計四大主題，並以專業且易於吸收的方式呈現，協助您掌握關鍵趨勢，順利取得高分！
+        </p>
+
+        <!-- ==================================================== -->
+        <!--  1. AI 影片生成 (Video Generation)                  -->
+        <!-- ==================================================== -->
+        <h2>🎬 AI 影片生成 (Video Generation)</h2>
+        <p>
+            AI 影片生成技術，特別是 <span class="highlight">「文生影」(<span class="eng-word">Text-to-Video</span>)</span>，是目前生成式 AI 領域的焦點。這類技術的核心是讓模型理解自然語言描述的場景、物體、動作與風格，並將其轉化為連貫、高品質的影片。考試中，考生需理解其背後的核心技術與代表性工具的差異。
+        </p>
+        <p>
+            關鍵技術：<span class="highlight">這類模型通常結合了<span class="chinese-term">擴散模型</span> (<span class="eng-word">Diffusion Model</span>) 與<span class="chinese-term">變形金剛架構</span> (<span class="eng-word">Transformer Architecture</span>)</span>。前者擅長生成高品質圖像，後者則精於處理序列資料（如文字和時間序列的影片幀），兩者結合實現了對動態世界的模擬。例如 <span class="eng-word">Sora</span> 就是一個 <span class="highlight"><span class="eng-word">Diffusion Transformer</span> 模型</span>。
+        </p>
+        
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>應用工具</th>
+                        <th>開發者</th>
+                        <th>核心特色與考試重點</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong class="eng-word">Sora</strong></td>
+                        <td><span class="eng-word">OpenAI</span></td>
+                        <td>
+                            <ul>
+                                <li><strong>高擬真度與長度</strong>：可生成長達 <span class="highlight">60 秒</span>的高畫質 (1080p) 影片，遠超前代工具。</li>
+                                <li><strong>世界模型概念</strong>：<span class="highlight">Sora 不僅是生成像素，它試圖理解並模擬物理世界</span>，展現出良好的物體恆存性 (<span class="eng-word">object permanence</span>) 與因果關係。</li>
+                                <li><strong>多樣化生成</strong>：支援「文生影」、「圖生影」(<span class="eng-word">Image-to-Video</span>) 及「影生影」(<span class="eng-word">Video-to-Video</span>)。</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong class="eng-word">Pika</strong></td>
+                        <td><span class="eng-word">Pika Labs</span></td>
+                        <td>
+                            <ul>
+                                <li><strong>風格化與易用性</strong>：早期以其強大的風格化能力和友善的用戶介面受到歡迎，適合製作動畫、3D 卡通等風格短片。</li>
+                                <li><strong>功能完整</strong>：<span class="highlight">支援擴展畫布 (<span class="eng-word">Expand Canvas</span>)、修改內容</span>等實用編輯功能。</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong class="eng-word">Runway ML</strong></td>
+                        <td><span class="eng-word">Runway</span></td>
+                        <td>
+                            <ul>
+                                <li><strong>專業創作者工具集</strong>：不僅是生成，更提供一系列 <span class="highlight">AI 影片編輯工具</span>，如 <span class="eng-word">Gen-1</span> (影生影) 和 <span class="eng-word">Gen-2</span> (文生影)。</li>
+                                <li><strong>多模態能力</strong>：整合了文字、圖像、影片等多種輸入方式，定位為一站式 AI 創意平台。</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ==================================================== -->
+        <!--  2. AI 音樂生成 (Music Generation)                  -->
+        <!-- ==================================================== -->
+        <h2>🎵 AI 音樂生成 (Music Generation)</h2>
+        <p>
+            AI 音樂生成技術讓任何人都能透過簡單的文字描述 (<span class="eng-word">Prompt</span>) 創作出包含人聲、伴奏、歌詞的完整歌曲。這項技術的突破在於<span class="highlight">模型能夠同時理解音樂理論（和弦、節奏、曲式）與語意（歌詞、風格、情緒）</span>，並將其結合。
+        </p>
+        <p>
+            關鍵技術：目前的模型大多採用類似<span class="chinese-term">大型語言模型</span> (<span class="eng-abbr">LLM</span>) 的架構，<span class="highlight">將音樂視為一種「語言」</span>。它們將音訊壓縮成離散的標記 (<span class="eng-word">Tokens</span>)，然後訓練模型預測下一個標記，從而生成連貫的音樂片段。
+        </p>
+        
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>應用工具</th>
+                        <th>開發者</th>
+                        <th>核心特色與考試重點</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong class="eng-word">Suno AI</strong></td>
+                        <td><span class="eng-word">Suno</span></td>
+                        <td>
+                            <ul>
+                                <li><strong>端到端歌曲生成</strong>：<span class="highlight">從單一提示詞生成包含人聲、歌詞、編曲的完整歌曲</span>，是其最大特色。</li>
+                                <li><strong>易用性極高</strong>：用戶只需輸入「創作一首關於在台北雨中漫步的慵懶爵士樂」，即可獲得成品。</li>
+                                <li><strong>自訂模式</strong>：提供自訂歌詞、選擇風格、純器樂等進階選項。</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong class="eng-word">Udio</strong></td>
+                        <td><span class="eng-word">Udio</span> (前 <span class="eng-word">Google DeepMind</span> 員工創立)</td>
+                        <td>
+                            <ul>
+                                <li><strong>高品質人聲</strong>：以其<span class="highlight">極其逼真且富含情感的人聲</span>著稱，常被認為在人聲表現上優於其他模型。</li>
+                                <li><strong>強大的社群與Remix功能</strong>：使用者可以輕易地對他人作品進行「再創作」(<span class="eng-word">Remix</span>)，延伸創作的可能性。</li>
+                                <li><strong>競爭者定位</strong>：作為 <span class="eng-word">Suno</span> 的主要競爭對手，考試中可能會比較兩者差異。</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong class="eng-word">MusicFX</strong></td>
+                        <td><span class="eng-word">Google</span></td>
+                        <td>
+                            <ul>
+                                <li><strong>基於 MusicLM 模型</strong>：是 Google 在音樂生成領域的代表作，技術實力雄厚。</li>
+                                <li><strong>專注於器樂與音效</strong>：目前主要生成高品質的背景音樂、循環樂句 (<span class="eng-word">Loops</span>) 和音效，較少涉及人聲生成。</li>
+                                <li><strong>DJ 模式</strong>：<span class="highlight">提供互動式的生成體驗</span>，讓使用者可以混合不同風格的樂段。</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ==================================================== -->
+        <!--  3. AI 代理 (AI Agent)                            -->
+        <!-- ==================================================== -->
+        <h2>🤖 AI 代理 (AI Agent)</h2>
+        <p>
+            <span class="chinese-term">AI 代理</span>是當前 AI 發展的終極目標之一。它不僅僅是像 <span class="eng-abbr">ChatGPT</span> 一樣的問答工具，而是一個<span class="highlight">能夠感知環境、自主規劃、拆解任務、使用工具並採取行動以達成複雜目標的系統</span>。這是從「被動回應」邁向「主動執行」的關鍵一步。
+        </p>
+        <p>
+            關鍵概念：一個基本的 <span class="chinese-term">AI 代理</span>循環包含<span class="highlight">規劃 (<span class="eng-word">Planning</span>)、記憶 (<span class="eng-word">Memory</span>) 和工具使用 (<span class="eng-word">Tool Use</span>)</span>。模型首先制定達成目標的計畫，利用記憶儲存進度與學習經驗，並呼叫外部工具（如瀏覽器、計算機、<span class="eng-abbr">API</span>）來執行任務。
+        </p>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>應用/框架</th>
+                        <th>類型</th>
+                        <th>核心特色與考試重點</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong class="eng-word">Devin</strong></td>
+                        <td>AI 軟體工程師代理</td>
+                        <td>
+                            <ul>
+                                <li><strong>自主軟體開發</strong>：號稱是<span class="highlight">全球首位全自主的 AI 軟體工程師</span>，能獨立完成整個開發流程。</li>
+                                <li><strong>端到端任務執行</strong>：能自主學習新技術、使用 <span class="eng-word">Shell</span>、程式碼編輯器和瀏覽器來解決問題、除錯並部署應用。</li>
+                                <li><strong>衝擊與意義</strong>：代表了 <span class="chinese-term">AI 代理</span>在<span class="highlight">複雜、長鏈任務</span>上的巨大潛力。</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong class="eng-word">Auto-GPT</strong> / <strong class="eng-word">BabyAGI</strong></td>
+                        <td>開源實驗性代理</td>
+                        <td>
+                            <ul>
+                                <li><strong>概念普及者</strong>：是最早引爆 <span class="chinese-term">AI 代理</span>概念的開源專案。</li>
+                                <li><strong>任務拆解與自我提示</strong>：<span class="highlight">展現了 <span class="eng-abbr">LLM</span> 自我生成提示 (<span class="eng-word">Self-prompting</span>) 以驅動任務循環的能力</span>。</li>
+                                <li><strong>局限性</strong>：常陷入循環、成本高昂且成功率不穩定，主要為概念驗證。</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong class="eng-word">LangChain</strong> / <strong class="eng-word">LlamaIndex</strong></td>
+                        <td>代理開發框架</td>
+                        <td>
+                            <ul>
+                                <li><strong>賦能開發者</strong>：<span class="highlight">它們本身不是代理，而是用來建構代理的「工具箱」</span>。這點是考試中極易混淆的重點！</li>
+                                <li><strong>模組化元件</strong>：提供鏈 (<span class="eng-word">Chains</span>)、記憶 (<span class="eng-word">Memory</span>)、工具 (<span class="eng-word">Tools</span>)、索引 (<span class="eng-word">Indexes</span>) 等標準化元件，簡化代理開發。</li>
+                                <li><strong>生態系核心</strong>：是目前絕大多數 <span class="chinese-term">RAG</span> (檢索增強生成) 與 <span class="chinese-term">AI 代理</span>應用的底層框架。</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ==================================================== -->
+        <!--  4. AI 程式設計 (AI Programming)                    -->
+        <!-- ==================================================== -->
+        <h2>💻 AI 程式設計 (AI Programming)</h2>
+        <p>
+            AI 程式設計輔助工具已成為現代軟體開發不可或缺的一環。這些工具透過整合在整合式開發環境 (<span class="eng-abbr">IDE</span>) 中，提供程式碼自動補全、函式生成、錯誤修正、單元測試撰寫等功能，<span class="highlight">旨在提升開發者生產力，而非完全取代</span>。
+        </p>
+        <p>
+            關鍵技術：核心是<span class="highlight">基於 <span class="eng-abbr">LLM</span> 的程式碼生成與理解能力</span>。模型在海量的開源程式碼上進行訓練（如 <span class="eng-word">GitHub</span> 上的公開專案），從而學習到各種程式語言的語法、模式和最佳實踐。代表性底層模型為 <span class="eng-word">OpenAI</span> 的 <span class="eng-abbr">Codex</span>。
+        </p>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>應用工具</th>
+                        <th>開發者/公司</th>
+                        <th>核心特色與考試重點</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong class="eng-word">GitHub Copilot</strong></td>
+                        <td><span class="eng-word">GitHub</span> / <span class="eng-word">Microsoft</span></td>
+                        <td>
+                            <ul>
+                                <li><strong>市場領導者</strong>：<span class="highlight">最廣泛被使用的 AI 程式碼輔助工具</span>，深度整合 <span class="eng-word">Visual Studio Code</span>。</li>
+                                <li><strong>上下文感知</strong>：能理解整個專案的上下文，提供的不僅是單行補全，而是完整的程式碼區塊。</li>
+                                <li><strong>Copilot Chat</strong>：<span class="highlight">提供對話式編程體驗</span>，可直接在 <span class="eng-abbr">IDE</span> 中詢問關於程式碼的問題、除錯或重構。</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong class="eng-word">Cursor</strong></td>
+                        <td><span class="eng-word">Cursor</span></td>
+                        <td>
+                            <ul>
+                                <li><strong>AI 原生編輯器</strong>：它不是一個外掛，而是一個<span class="highlight">以 AI 為核心重新設計的 <span class="eng-abbr">IDE</span></span> (基於 <span class="eng-word">VS Code</span> 的分支 <span class="eng-word">Fork</span>)。</li>
+                                <li><strong>更深度的整合</strong>：提供「與程式碼庫聊天」、自動修改程式碼、一鍵生成文件與測試等更無縫的 AI 功能。</li>
+                                <li><strong>操作典範轉移</strong>：<span class="highlight">從「寫程式」轉向「指揮 AI 寫程式」</span>的體驗。</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong class="eng-word">Codeium</strong></td>
+                        <td><span class="eng-word">Exafunction</span></td>
+                        <td>
+                            <ul>
+                                <li><strong>強力的免費方案</strong>：以其對個人開發者永久免費的策略快速獲取市佔。</li>
+                                <li><strong>企業級解決方案</strong>：<span class="highlight">支援本地部署 (<span class="eng-word">Self-hosted</span>)</span>，讓企業可以在自己的伺服器上運行模型，確保程式碼的隱私與安全，這是其重要市場區隔。</li>
+                                <li><strong>速度優勢</strong>：常被稱讚其程式碼補全的反應速度非常快。</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</body>
+</html>

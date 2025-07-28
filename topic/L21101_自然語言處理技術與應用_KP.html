@@ -1,0 +1,2114 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>iPAS AI應用規劃師 考試重點整理 - L21101 自然語言處理技術與應用</title> <!-- Changed Title -->
+    <style>
+        /* RWD設定，讓整體版面在不同裝置都有良好顯示 */
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Microsoft JhengHei", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto; /* Added top/bottom margin */
+            padding: 25px;
+            background: #ffffff;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border-radius: 8px;
+        }
+        /* Updated Header */
+        .header-container {
+            background: linear-gradient(135deg, #2c3e50, #34495e); /* Darker gradient */
+            color: white;
+            padding: 30px 20px; /* Increased padding */
+            margin: -25px -25px 25px -25px;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+        }
+        .header-container h1 {
+            margin: 0;
+            color: white;
+            font-size: 2.2rem; /* Larger title */
+            font-weight: 600;
+            margin-bottom: 5px; /* Space below title */
+        }
+        .header-container div { /* Subtitle */
+             font-size: 1.2rem;
+             opacity: 0.9;
+             margin-top: 5px;
+             font-weight: 300; /* Lighter weight */
+        }
+
+        /* Topic Categories Section (Renamed from Directions) */
+        .categories-container { /* Renamed */
+            background-color: #e8f0f5; /* Slightly different blue */
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 5px solid #5dade2; /* Lighter blue border */
+            border-radius: 5px;
+        }
+        .categories-title { /* Renamed */
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .categories-grid { /* Renamed */
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+        .category-item { /* Renamed */
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background-color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid #d6e0ea; /* Border matching background */
+        }
+        .category-item:hover {
+            background-color: #5dade2; /* Lighter blue hover */
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-color: #5dade2;
+        }
+        .category-number { /* Renamed */
+            width: 30px;
+            height: 30px;
+            background-color: #5dade2; /* Lighter blue number */
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 12px;
+            font-weight: bold;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+        .category-item:hover .category-number {
+            background-color: white;
+            color: #5dade2;
+        }
+        .category-text { /* Renamed */
+            font-size: 0.95rem;
+        }
+
+        /* Focus Point Card Styling (Replaces Question Card) */
+        .focus-points-container { /* Renamed */
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px; /* Increased gap */
+        }
+        .focus-card { /* Renamed */
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 0; /* Remove padding here, apply to inner elements */
+            box-shadow: 0 4px 12px rgba(44, 62, 80, 0.1); /* Slightly stronger shadow */
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+            border: 1px solid #e0e0e0;
+            overflow: hidden; /* Ensure inner elements respect border radius */
+        }
+        .focus-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(44, 62, 80, 0.15);
+        }
+        .focus-header { /* Renamed */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px; /* Padding inside header */
+            background-color: #f8f9fa; /* Light header background */
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .focus-id { /* Renamed */
+            font-weight: bold;
+            color: #5dade2; /* Lighter blue ID */
+            font-size: 1rem;
+            background-color: #e8f0f5; /* Background for ID */
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+        .focus-importance { /* Renamed */
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .focus-topic-container { /* New container for the main topic */
+             padding: 25px 25px 20px 25px; /* Padding around the topic */
+             border-bottom: 1px dashed #eee; /* Separator line */
+        }
+
+        .focus-topic { /* Replaces question-content */
+            font-size: 1.5rem; /* Larger font for the topic */
+            font-weight: 600; /* Bolder */
+            margin-bottom: 0; /* Remove margin, handled by container padding */
+            line-height: 1.4;
+            color: #2c3e50; /* Dark blue-grey for topic */
+        }
+
+        /* Styling for terminology within topic/details */
+        /* English Full Name: Red, Bold */
+        .english-fullname {
+             color: #C00000; /* Red */
+             font-weight: bold;
+        }
+        /* English Abbreviation: Purple, Bold */
+        .english-abbr {
+            color: #7030A0; /* Purple */
+            font-weight: bold;
+        }
+        /* Chinese Term: Blue, Bold */
+        .chinese-term {
+            color: #0070C0; /* Blue */
+            font-weight: bold;
+        }
+        /* Highlight: Yellow Background */
+        .highlight {
+            background-color: #ffff0030; /* Yellow */
+            padding: 0.1em 0.2em;
+            border-radius: 3px;
+        }
+
+
+        /* Details Section Styling (Replaces Explanation) */
+        .focus-details-container { /* Renamed */
+            padding: 20px 25px 25px 25px; /* Padding for details */
+            /* background-color: #fdfefe; */ /* Optional subtle background, removing for cleaner look */
+        }
+        .details-header { /* Renamed */
+            font-weight: bold;
+            margin-bottom: 15px; /* Space below header */
+            color: #34495e;
+            font-size: 1.2rem; /* Slightly larger details header */
+            letter-spacing: 0.5px; /* Optional spacing */
+        }
+        .details-content { /* Renamed */
+            line-height: 1.75; /* Increased line height for readability */
+            color: #444;
+            font-size: 1.05rem; /* Slightly larger detail text */
+        }
+        .details-content ul { /* Style lists if used in details */
+             padding-left: 25px;
+             margin-top: 10px;
+             margin-bottom: 10px;
+        }
+        .responsive-img {
+            width: 100%;
+            max-width: 800px; /* 可自訂最大寬度 */
+            height: auto;
+            display: block; /* Center image */
+            margin: 15px auto; /* Add some margin */
+        }
+         .details-content li {
+             margin-bottom: 8px; /* Space between list items */
+         }
+
+        /* Controls Section Styling (Adjusted for Focus Points) */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 15px;
+            background-color: #fdfdfd;
+            border-radius: 5px;
+            border: 1px solid #eee;
+        }
+        .filter-container, .search-container, .star-filter-container { /* Removed .toggle-explanations */
+            margin-bottom: 0;
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            min-width: 200px;
+        }
+         .search-container { flex-grow: 2; }
+        .filter-label, .search-label, .star-filter-label {
+            font-weight: 600;
+            margin-right: 10px;
+            white-space: nowrap;
+            color: #555;
+            font-size: 0.95rem;
+        }
+        select, input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: inherit;
+            flex-grow: 1;
+            font-size: 0.95rem;
+            background-color: white;
+        }
+         input[type="text"] { min-width: 180px; }
+        button {
+            padding: 10px 18px;
+            background-color: #5dade2; /* Lighter blue buttons */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background-color 0.2s ease;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-left: 8px;
+            white-space: nowrap;
+        }
+        button:hover {
+            background-color: #3498db; /* Darker blue hover */
+        }
+
+        /* RWD Adjustments */
+        @media (max-width: 992px) {
+             .controls { flex-direction: column; align-items: stretch; }
+            .filter-container, .search-container, .star-filter-container { width: 100%; flex-grow: 0; }
+             select, input[type="text"] { width: 100%; }
+             button { margin-left: 0; margin-top: 5px; }
+             .search-container button { margin-left: 8px; margin-top: 0; }
+             #searchInput { width: calc(100% - 90px); }
+        }
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            .header-container { padding: 25px 15px; margin: -15px -15px 20px -15px; }
+            .categories-grid { grid-template-columns: 1fr; }
+            .focus-card { padding: 0; } /* Ensure no padding on card itself */
+             .focus-header, .focus-topic-container, .focus-details-container { padding-left: 20px; padding-right: 20px; } /* Adjust inner padding */
+            h1 { font-size: 1.8rem; }
+            .header-container h1 { font-size: 2rem; }
+            .focus-topic { font-size: 1.3rem; }
+            .details-header { font-size: 1.1rem; }
+            .details-content { font-size: 1rem; }
+        }
+
+        /* Back to Top Button & Progress Bar (No changes needed) */
+        .back-to-top {
+            position: fixed; bottom: 25px; right: 25px; background-color: #5dade2; color: white;
+            width: 45px; height: 45px; border-radius: 50%; display: none; justify-content: center;
+            align-items: center; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: background-color 0.3s, opacity 0.3s, transform 0.3s; z-index: 1000;
+            opacity: 0.8; font-size: 1.2rem;
+        }
+        .back-to-top:hover { background-color: #3498db; opacity: 1; transform: scale(1.1); }
+        .progress-container {
+            width: 100%; height: 5px; background-color: #e8f0f5; position: fixed;
+            top: 0; left: 0; z-index: 1001;
+        }
+        .progress-bar {
+            height: 5px; background: linear-gradient(90deg, #5dade2, #85c1e9); /* Adjusted gradient */
+            width: 0%; border-radius: 0 2px 2px 0; transition: width 0.1s linear;
+        }
+         #noResultsMessage {
+             text-align: center; padding: 20px; color: #777; display: none; font-style: italic;
+         }
+    </style>
+</head>
+<body>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="container">
+        <div class="header-container">
+            <h1>iPAS AI應用規劃師 考試重點</h1> <!-- Updated Title -->
+            <div>L21101 自然語言處理技術與應用</div> <!-- Updated Subtitle -->
+        </div>
+
+        <div class="controls">
+             <div class="filter-container">
+                 <!-- Updated Label -->
+                <label for="categoryFilter" class="filter-label">篩選主題：</label>
+                <select id="categoryFilter"> <!-- Updated ID -->
+                    <option value="all">全部主題</option>
+                    <option value="1">主題一</option>
+                    <option value="2">主題二</option>
+                    <option value="3">主題三</option>
+                    <option value="4">主題四</option>
+                    <option value="5">主題五</option>
+                    <option value="6">主題六</option>
+                    <option value="7">主題七</option>
+                    <option value="8">主題八</option>
+                </select>
+            </div>
+
+            <div class="star-filter-container">
+                <label for="starFilter" class="star-filter-label">重要性：</label>
+                <select id="starFilter">
+                    <option value="all">全部重要性</option>
+                    <option value="5">★★★★★</option>
+                    <option value="4">★★★★</option>
+                    <option value="3">★★★</option>
+                    <option value="2">★★</option>
+                    <option value="1">★</option>
+                </select>
+            </div>
+
+            <div class="search-container">
+                <label for="searchInput" class="search-label">搜尋：</label>
+                <input type="text" id="searchInput" placeholder="輸入關鍵字...">
+                <button id="searchButton">搜尋</button>
+            </div>
+            <!-- Removed Toggle Explanations Button -->
+        </div>
+
+        <div class="categories-container"> <!-- Renamed -->
+            <div class="categories-title">主題分類</div> <!-- Updated Title -->
+            <div class="categories-grid" id="categoriesGrid"> <!-- Renamed ID -->
+                <!-- Renamed classes and updated filter function call -->
+                <div class="category-item" onclick="filterByCategory(1)">
+                    <div class="category-number">1</div>
+                    <div class="category-text">NLP 基本概念與定義</div>
+                </div>
+                <div class="category-item" onclick="filterByCategory(2)">
+                    <div class="category-number">2</div>
+                    <div class="category-text">核心文本前處理技術</div>
+                </div>
+                <div class="category-item" onclick="filterByCategory(3)">
+                    <div class="category-number">3</div>
+                    <div class="category-text">關鍵 NLP 模型與演算法</div>
+                </div>
+                <div class="category-item" onclick="filterByCategory(4)">
+                    <div class="category-number">4</div>
+                    <div class="category-text">詞彙表達與語意理解</div>
+                </div>
+                 <div class="category-item" onclick="filterByCategory(5)">
+                    <div class="category-number">5</div>
+                    <div class="category-text">主要 NLP 應用場景</div>
+                </div>
+                <div class="category-item" onclick="filterByCategory(6)">
+                    <div class="category-number">6</div>
+                    <div class="category-text">序列模型與 Transformer 架構</div>
+                </div>
+                <div class="category-item" onclick="filterByCategory(7)">
+                    <div class="category-number">7</div>
+                    <div class="category-text">NLP 系統評估與挑戰</div>
+                </div>
+                <div class="category-item" onclick="filterByCategory(8)">
+                    <div class="category-number">8</div>
+                    <div class="category-text">NLP 工具與整合應用</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="focus-points-container" id="focusPointsContainer"> <!-- Renamed -->
+
+            <!-- Focus Point 1 -->
+            <div class="focus-card" data-category="1" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#1</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                         <span class="english-fullname">Natural Language Processing</span> (<span class="english-abbr">NLP</span>) - <span class="chinese-term">基本定義</span>
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <span class="english-fullname">Natural Language Processing</span> (<span class="english-abbr">NLP</span>) 是<span class="chinese-term">人工智慧</span> (<span class="english-abbr">AI</span>) 和<span class="chinese-term">語言學</span>領域的分支，專注於<span class="highlight">賦予電腦理解、解釋和生成人類語言的能力</span>。其目標是<span class="highlight">縮小人類自然語言與電腦形式語言之間的差距</span>，使人機互動更自然、更有效率。主要涉及兩個核心任務：<span class="english-fullname">Natural Language Understanding</span> (<span class="english-abbr">NLU</span>) 和 <span class="english-fullname">Natural Language Generation</span> (<span class="english-abbr">NLG</span>)。
+                    </div>
+                </div>
+                <br>
+                <img src="image/NLP_NLU_NLG.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 2 -->
+            <div class="focus-card" data-category="1" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#2</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="english-fullname">Natural Language Understanding</span> (<span class="english-abbr">NLU</span>) vs. <span class="english-fullname">Natural Language Generation</span> (<span class="english-abbr">NLG</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">主要區別</div>
+                    <div class="details-content">
+                        <ul>
+                            <li><span class="english-abbr">NLU</span> (<span class="chinese-term">自然語言理解</span>): 著重於讓電腦<span class="highlight">讀懂</span>人類語言，<span class="highlight">提取意義、意圖和結構</span>。例如：從句子中識別實體、判斷情感、理解指令。</li>
+                            <li><span class="english-abbr">NLG</span> (<span class="chinese-term">自然語言生成</span>): 著重於讓電腦以<span class="highlight">自然、流暢、符合語法</span>的方式<span class="highlight">產生</span>人類語言。例如：自動撰寫新聞摘要、生成對話回覆、產生產品描述。</li>
+                        </ul>
+                         <span class="english-abbr">NLP</span> 涵蓋了這兩個方面，許多應用（如聊天機器人）需要兩者結合。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 3 -->
+            <div class="focus-card" data-category="2" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#3</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">文本前處理</span> (<span class="english-fullname">Text Preprocessing</span>) - <span class="chinese-term">重要性</span>
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">目的與意義</div>
+                    <div class="details-content">
+                        <span class="chinese-term">文本前處理</span>是 <span class="english-abbr">NLP</span> 任務的<span class="highlight">基礎且關鍵步驟</span>。原始文本通常包含雜訊、不一致性和冗餘訊息，直接輸入模型效果不佳。前處理旨在：
+                        <ul>
+                            <li><span class="highlight">清理文本</span>：去除標點符號、特殊字元、HTML標籤等。</li>
+                            <li><span class="highlight">標準化文本</span>：轉換大小寫、處理縮寫、統一格式。</li>
+                            <li><span class="highlight">減少維度</span>：去除停用詞、詞幹提取/詞形還原。</li>
+                            <li><span class="highlight">結構化文本</span>：進行斷詞、詞性標註。</li>
+                        </ul>
+                        良好的前處理能<span class="highlight">顯著提升後續模型的效能與準確性</span>。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 4 -->
+            <div class="focus-card" data-category="2" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#4</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">斷詞</span> (<span class="english-fullname">Tokenization</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心技術</div>
+                    <div class="details-content">
+                        <span class="chinese-term">斷詞</span>是將<span class="highlight">連續的文本流</span>（句子、段落）<span class="highlight">分割成有意義的最小單元</span>，稱為<span class="chinese-term">詞元</span> (<span class="english-fullname">Token</span>)。這些詞元通常是單詞、數字或標點符號。<span class="highlight">這是大多數NLP任務的第一步</span>。
+                        <ul>
+                            <li>英文斷詞相對簡單，主要依賴空格和標點。</li>
+                            <li><span class="chinese-term">中文斷詞</span>更複雜，因為詞語間沒有明顯分隔符，需要依賴<span class="highlight">詞典或統計模型</span>來識別詞界。常見方法包括：基於詞典的最大匹配法、基於統計的隱馬可夫模型(<span class="english-abbr">HMM</span>)、條件隨機場(<span class="english-abbr">CRF</span>)等。</li>
+                        </ul>
+                        (參見樣題 - 中級 Q2)
+                    </div>
+                </div>
+                <br>
+                <img src="image/token.png" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 5 -->
+            <div class="focus-card" data-category="2" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#5</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">停用詞移除</span> (<span class="english-fullname">Stop Word Removal</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">概念與應用</div>
+                    <div class="details-content">
+                        <span class="chinese-term">停用詞</span>是指語言中<span class="highlight">出現頻率高但通常不攜帶太多實際語意</span>的詞語，例如 "的"、"是"、"在" (中文) 或 "the"、"a"、"is" (英文)。
+                        在某些 <span class="english-abbr">NLP</span> 任務中（如資訊檢索、文本分類），<span class="highlight">移除停用詞可以</span>：
+                        <ul>
+                            <li><span class="highlight">減少數據維度</span>，降低計算複雜度。</li>
+                            <li><span class="highlight">凸顯更具訊息量的關鍵詞</span>。</li>
+                        </ul>
+                        但<span class="highlight">並非所有任務都適合移除停用詞</span>，例如機器翻譯、情感分析等需要完整語境的任務。需要根據具體應用場景決定。(參見樣題 - 中級 Q2 Distractor)
+                    </div>
+                </div>
+                <br>
+                <img src="image/Stop Words.jpg" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 6 -->
+            <div class="focus-card" data-category="2" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#6</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">詞幹提取</span> (<span class="english-fullname">Stemming</span>) vs. <span class="chinese-term">詞形還原</span> (<span class="english-fullname">Lemmatization</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">目的與區別</div>
+                    <div class="details-content">
+                        兩者都是<span class="highlight">將詞語的不同屈折形式還原為其基本或詞典形式</span>，以減少詞彙量。
+                        <ul>
+                            <li><span class="chinese-term">詞幹提取</span> (<span class="english-fullname">Stemming</span>): 使用<span class="highlight">啟發式規則</span>去除詞語的後綴（有時是前綴），將詞語縮減為其<span class="chinese-term">詞幹</span> (<span class="english-fullname">Stem</span>)。速度快，但<span class="highlight">結果可能不是一個有效的詞</span> (e.g., "studies" -> "studi")。</li>
+                            <li><span class="chinese-term">詞形還原</span> (<span class="english-fullname">Lemmatization</span>): 考慮詞語的<span class="highlight">詞性</span> (<span class="english-abbr">POS</span>) 和上下文，利用<span class="highlight">詞典</span>將詞語還原為其<span class="chinese-term">詞元</span>或<span class="chinese-term">基本形式</span> (<span class="english-fullname">Lemma</span>)。結果<span class="highlight">更準確，是一個有效的詞</span> (e.g., "studies" -> "study")，但<span class="highlight">計算成本更高</span>。</li>
+                        </ul>
+                        (參見樣題 - 中級 Q2 Distractor - Lemmatization)
+                    </div>
+                </div>
+                <br>
+                <img src="image/Stemming_and_lemmatization.avif" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 7 -->
+            <div class="focus-card" data-category="3" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#7</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">詞袋模型</span> (<span class="english-fullname">Bag-of-Words</span>, <span class="english-abbr">BoW</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">基本概念</div>
+                    <div class="details-content">
+                        <span class="english-abbr">BoW</span> 是一種<span class="highlight">簡化</span>的文本表示方法。它將一段文本（如句子或文件）表示為一個<span class="highlight">無序的詞語集合（詞袋）</span>，<span class="highlight">忽略文法和詞語順序</span>，只關注詞語的<span class="highlight">出現頻率</span>。
+                        <ul>
+                            <li>步驟：1. 建立詞彙表(Vocabulary)。 2. 計算每個詞在文本中出現的次數。 3. 將文本表示為一個向量，向量的維度是詞彙表大小，每個維度的值是對應詞語的頻率（或其他權重，如TF-IDF）。</li>
+                            <li>優點：簡單、易於實現。</li>
+                            <li>缺點：<span class="highlight">丟失了詞語順序和語法結構訊息</span>，無法捕捉語意關聯。</li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <img src="image/bag_of_words.png" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 8 -->
+            <div class="focus-card" data-category="3" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#8</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">TF-IDF</span> (<span class="english-fullname">Term Frequency-Inverse Document Frequency</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">概念與計算</div>
+                    <div class="details-content">
+                        <span class="english-abbr">TF-IDF</span> 是一種常用的<span class="highlight">詞語權重計算方法</span>，用於評估一個詞語對於一份文件集或一個語料庫中的某份文件的重要程度。
+                        <ul>
+                            <li><span class="english-abbr">TF</span> (<span class="chinese-term">詞頻</span>, <span class="english-fullname">Term Frequency</span>): 一個詞語在<span class="highlight">單個文件</span>中出現的頻率。TF越高，表示該詞在該文件中越重要。</li>
+                            <li><span class="english-abbr">IDF</span> (<span class="chinese-term">逆向文件頻率</span>, <span class="english-fullname">Inverse Document Frequency</span>): 衡量一個詞語在<span class="highlight">整個文件集</span>中的普遍程度。計算方式通常是 `log(總文件數 / 包含該詞的文件數)`。如果一個詞在很多文件中都出現，其IDF值會較低，表示其區分度不高。</li>
+                            <li><span class="english-abbr">TF-IDF</span> = <span class="english-abbr">TF</span> * <span class="english-abbr">IDF</span>。一個詞的TF-IDF值越高，表示它在該文件中<span class="highlight">既常出現，又在整個文件集中不普遍</span>，因此更能代表該文件的<span class="highlight">關鍵特徵</span>。</li>
+                        </ul>
+                        常應用於資訊檢索、文本分類、關鍵詞提取等。 (參見樣題 - 中級 Q2 Distractor)
+                    </div>
+                </div>
+                <br>
+                <img src="image/TF-IDF.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 9 -->
+            <div class="focus-card" data-category="4" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#9</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">詞向量</span> / <span class="chinese-term">詞嵌入</span> (<span class="english-fullname">Word Embedding</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心思想</div>
+                    <div class="details-content">
+                        <span class="chinese-term">詞向量</span>是將詞語<span class="highlight">映射到一個低維、連續的向量空間</span>中的技術。其核心思想是：<span class="highlight">語意相近的詞語在向量空間中的距離也應該相近</span>。
+                        與 <span class="english-abbr">BoW</span> 或 <span class="english-abbr">TF-IDF</span> 不同，詞向量能夠<span class="highlight">捕捉詞語之間的語意關係</span>（如同義詞、反義詞、類比關係）。
+                        常見的詞向量模型包括：
+                        <ul>
+                            <li><span class="english-fullname">Word2Vec</span> (<span class="english-abbr">CBOW</span>, <span class="english-abbr">Skip-gram</span>)</li>
+                            <li><span class="english-fullname">GloVe</span> (<span class="english-fullname">Global Vectors for Word Representation</span>)</li>
+                            <li><span class="english-fullname">FastText</span></li>
+                        </ul>
+                         <span class="chinese-term">詞向量</span>是現代深度學習 <span class="english-abbr">NLP</span> 模型的<span class="highlight">基礎輸入表示</span>。
+                    </div>
+                </div>
+                <br>
+                <img src="image/Word Embedding.webp" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 10 -->
+            <div class="focus-card" data-category="4" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#10</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="english-fullname">Word2Vec</span> (<span class="english-abbr">CBOW</span> vs. <span class="english-abbr">Skip-gram</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">模型架構</div>
+                    <div class="details-content">
+                        <span class="english-fullname">Word2Vec</span> 是生成詞向量的代表性模型，包含兩種主要架構：
+                        <ul>
+                            <li><span class="english-abbr">CBOW</span> (<span class="english-fullname">Continuous Bag-of-Words</span>): <span class="highlight">根據上下文詞語來預測中心詞語</span>。訓練速度較快，對於高頻詞效果較好。</li>
+                            <li><span class="english-abbr">Skip-gram</span>: <span class="highlight">根據中心詞語來預測其上下文詞語</span>。訓練速度較慢，但對於低頻詞和捕捉複雜語意關係效果更好。</li>
+                        </ul>
+                        兩者都基於<span class="highlight">分佈式假設</span> (<span class="english-fullname">Distributional Hypothesis</span>)：<span class="highlight">上下文相似的詞語，其語意也相似</span>。
+                    </div>
+                </div>
+                <br>
+                <img src="image/Word2Vec.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 11 -->
+            <div class="focus-card" data-category="5" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#11</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">情感分析</span> (<span class="english-fullname">Sentiment Analysis</span>) / <span class="chinese-term">意見探勘</span> (<span class="english-fullname">Opinion Mining</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">主要應用</div>
+                    <div class="details-content">
+                        <span class="chinese-term">情感分析</span>旨在<span class="highlight">識別和提取文本中所表達的情感傾向</span>（如：正面、負面、中性）或<span class="highlight">主觀意見</span>。
+                        主要應用場景包括：
+                        <ul>
+                            <li><span class="highlight">產品/服務評論分析</span>：了解用戶滿意度。</li>
+                            <li><span class="highlight">品牌聲譽監控</span>：追蹤公眾對品牌的看法。</li>
+                            <li><span class="highlight">市場趨勢分析</span>：分析消費者對市場事件的情感反應。</li>
+                            <li><span class="highlight">社交媒體監控</span>：了解輿情動態。</li>
+                        </ul>
+                        這是 <span class="english-abbr">NLP</span> 在<span class="highlight">商業智慧</span>和<span class="highlight">客戶體驗管理</span>中的重要應用。(參見樣題 - 中級 Q3)
+                    </div>
+                </div>
+                <br>
+                <img src="image/Sentiment Analysis.jpg" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 12 -->
+            <div class="focus-card" data-category="5" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#12</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">文本分類</span> (<span class="english-fullname">Text Classification</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心任務</div>
+                    <div class="details-content">
+                        <span class="chinese-term">文本分類</span>是將文本文件<span class="highlight">分配到預定義的類別</span>中的過程。這是 <span class="english-abbr">NLP</span> 中最基本和廣泛應用的任務之一。
+                        常見應用：
+                        <ul>
+                            <li><span class="highlight">垃圾郵件檢測</span>：分類郵件為垃圾郵件或非垃圾郵件。</li>
+                            <li><span class="highlight">新聞主題分類</span>：將新聞文章分類到體育、政治、科技等類別。</li>
+                            <li><span class="highlight">情感分析</span>（也可視為一種文本分類）：將評論分類為正面、負面或中性。</li>
+                            <li><span class="highlight">意圖識別</span>：在聊天機器人中，將用戶輸入分類到不同的意圖（如查詢天氣、播放音樂）。</li>
+                        </ul>
+                        常用模型包括：<span class="english-fullname">Naive Bayes</span>, <span class="english-abbr">SVM</span>, <span class="english-abbr">Logistic Regression</span>, <span class="english-abbr">CNN</span>, <span class="english-abbr">RNN</span>, <span class="english-fullname">Transformers</span>。
+                    </div>
+                </div>
+                <br>
+                <img src="image/Text Classification.webp" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 13 -->
+            <div class="focus-card" data-category="5" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#13</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">命名實體識別</span> (<span class="english-fullname">Named Entity Recognition</span>, <span class="english-abbr">NER</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">任務目標</div>
+                    <div class="details-content">
+                        <span class="english-abbr">NER</span> 的目標是從非結構化文本中<span class="highlight">定位並分類</span>預先定義的<span class="chinese-term">命名實體</span>。常見的實體類別包括：
+                        <ul>
+                            <li><span class="highlight">人名</span> (<span class="english-fullname">Person</span>, <span class="english-abbr">PER</span>)</li>
+                            <li><span class="highlight">組織機構名</span> (<span class="english-fullname">Organization</span>, <span class="english-abbr">ORG</span>)</li>
+                            <li><span class="highlight">地名</span> (<span class="english-fullname">Location</span>, <span class="english-abbr">LOC</span> / <span class="english-abbr">GPE</span>)</li>
+                            <li><span class="highlight">日期</span> (<span class="english-fullname">Date</span>) / <span class="highlight">時間</span> (<span class="english-fullname">Time</span>)</li>
+                            <li><span class="highlight">貨幣</span> (<span class="english-fullname">Money</span>) / <span class="highlight">百分比</span> (<span class="english-fullname">Percent</span>)</li>
+                        </ul>
+                         <span class="english-abbr">NER</span> 是<span class="highlight">資訊提取</span> (<span class="english-fullname">Information Extraction</span>) 的關鍵基礎技術，常用於知識圖譜構建、問答系統、內容推薦等。常用模型有 <span class="english-abbr">CRF</span>, <span class="english-abbr">BiLSTM-CRF</span>, <span class="english-fullname">Transformers</span>。
+                    </div>
+                </div>
+                <br>
+                <img src="image/NER.jpg" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 14 -->
+             <div class="focus-card" data-category="5" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#14</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">機器翻譯</span> (<span class="english-fullname">Machine Translation</span>, <span class="english-abbr">MT</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">發展歷程</div>
+                    <div class="details-content">
+                        <span class="english-abbr">MT</span> 是利用電腦自動將一種自然語言（源語言）翻譯成另一種自然語言（目標語言）的技術。
+                        主要發展階段：
+                        <ul>
+                            <li><span class="highlight">基於規則的機器翻譯</span> (<span class="english-fullname">Rule-based Machine Translation</span>, <span class="english-abbr">RBMT</span>): 依賴人工編寫的雙語詞典和語法規則。</li>
+                            <li><span class="highlight">統計機器翻譯</span> (<span class="english-fullname">Statistical Machine Translation</span>, <span class="english-abbr">SMT</span>): 從大量平行語料庫中學習翻譯模式，代表模型是基於短語的模型 (<span class="english-fullname">Phrase-Based MT</span>)。</li>
+                            <li><span class="highlight">神經機器翻譯</span> (<span class="english-fullname">Neural Machine Translation</span>, <span class="english-abbr">NMT</span>): 使用深度學習模型（主要是基於<span class="english-abbr">RNN</span>的<span class="english-fullname">Sequence-to-Sequence</span>模型和<span class="english-fullname">Transformer</span>模型）進行端到端的翻譯，是目前的主流方法，翻譯品質顯著提升。</li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <img src="image/Machine Translation.png" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 15 -->
+            <div class="focus-card" data-category="5" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#15</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">問答系統</span> (<span class="english-fullname">Question Answering</span>, <span class="english-abbr">QA</span>) 與 <span class="chinese-term">聊天機器人</span> (<span class="english-fullname">Chatbot</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">互動式應用</div>
+                    <div class="details-content">
+                        <ul>
+                            <li><span class="chinese-term">問答系統</span> (<span class="english-abbr">QA</span>): 旨在根據用戶提出的<span class="highlight">自然語言問題</span>，從<span class="highlight">知識庫、文件集或網路</span>中找到或生成<span class="highlight">精確答案</span>。</li>
+                            <li><span class="chinese-term">聊天機器人</span> (<span class="english-fullname">Chatbot</span>): 能夠與用戶進行<span class="highlight">多輪自然語言對話</span>的系統。可以是<span class="highlight">任務導向</span>（如訂票、客服）或<span class="highlight">開放領域閒聊</span>。</li>
+                        </ul>
+                        兩者都高度依賴 <span class="english-abbr">NLU</span> (理解用戶意圖) 和 <span class="english-abbr">NLG</span> (生成回覆)。常用技術包括<span class="chinese-term">意圖識別</span>、<span class="chinese-term">槽位填充</span> (<span class="english-fullname">Slot Filling</span>)、<span class="chinese-term">對話管理</span> (<span class="english-fullname">Dialog Management</span>) 以及基於檢索或生成的回覆模型。 (參見樣題 - 基礎 Q7, Q21)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 16 -->
+            <div class="focus-card" data-category="6" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#16</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">遞迴神經網路</span> (<span class="english-fullname">Recurrent Neural Network</span>, <span class="english-abbr">RNN</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">序列處理模型</div>
+                    <div class="details-content">
+                        <span class="english-abbr">RNN</span> 是一類專門設計用於<span class="highlight">處理序列數據</span>（如文本、時間序列）的神經網路。其核心特點是網路中存在<span class="highlight">循環連接</span>，允許訊息在序列的不同時間步之間<span class="highlight">傳遞和持續存在</span>（具有記憶性）。
+                        <ul>
+                            <li>基本 <span class="english-abbr">RNN</span> 在處理長序列時容易出現<span class="chinese-term">梯度消失</span> (<span class="english-fullname">Vanishing Gradient</span>) 或<span class="chinese-term">梯度爆炸</span> (<span class="english-fullname">Exploding Gradient</span>) 問題。</li>
+                        </ul>
+                        (參見樣題 - 中級 Q5 - RNN 適合處理序列相關資料)
+                    </div>
+                </div>
+                <br>
+                <img src="image/RNN.webp" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 17 -->
+             <div class="focus-card" data-category="6" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#17</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="english-fullname">LSTM</span> (<span class="english-fullname">Long Short-Term Memory</span>) 與 <span class="english-abbr">GRU</span> (<span class="english-fullname">Gated Recurrent Unit</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">改進的RNN變體</div>
+                    <div class="details-content">
+                        <span class="english-fullname">LSTM</span> 和 <span class="english-abbr">GRU</span> 是 <span class="english-abbr">RNN</span> 的特殊變體，旨在<span class="highlight">解決梯度消失/爆炸問題</span>，從而更好地捕捉序列中的<span class="highlight">長期依賴關係</span>。
+                        <ul>
+                            <li><span class="english-fullname">LSTM</span>: 引入了<span class="highlight">輸入門、遺忘門、輸出門</span>和一個<span class="highlight">細胞狀態</span> (<span class="english-fullname">Cell State</span>) 來控制訊息的流動和保留。</li>
+                            <li><span class="english-abbr">GRU</span>: 是 <span class="english-fullname">LSTM</span> 的簡化版本，合併了輸入門和遺忘門為<span class="highlight">更新門</span>，並引入了<span class="highlight">重置門</span>。結構更簡單，參數更少，訓練可能更快。</li>
+                        </ul>
+                        這兩種模型在許多序列處理任務（如機器翻譯、文本生成）中表現優於基本 <span class="english-abbr">RNN</span>。
+                    </div>
+                </div>
+                <br>
+                <img src="image/LSTM_gate.png" class="responsive-img">
+                <br>
+                <img src="image/GRU.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 18 -->
+             <div class="focus-card" data-category="6" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#18</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">序列到序列模型</span> (<span class="english-fullname">Sequence-to-Sequence</span>, <span class="english-abbr">Seq2Seq</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">模型架構</div>
+                    <div class="details-content">
+                        <span class="english-abbr">Seq2Seq</span> 模型是一種<span class="highlight">端到端</span>的深度學習架構，用於處理<span class="highlight">輸入和輸出都是序列</span>的任務。它通常由兩部分組成：
+                        <ul>
+                            <li><span class="chinese-term">編碼器</span> (<span class="english-fullname">Encoder</span>): 讀取輸入序列，並將其壓縮成一個固定長度的<span class="highlight">上下文向量</span> (<span class="english-fullname">Context Vector</span>) 或一系列隱藏狀態，捕捉輸入序列的訊息。通常使用 <span class="english-abbr">RNN</span>, <span class="english-fullname">LSTM</span> 或 <span class="english-abbr">GRU</span>。</li>
+                            <li><span class="chinese-term">解碼器</span> (<span class="english-fullname">Decoder</span>): 接收編碼器的輸出（上下文向量/隱藏狀態），並<span class="highlight">逐步生成</span>目標輸出序列。也常使用 <span class="english-abbr">RNN</span>, <span class="english-fullname">LSTM</span> 或 <span class="english-abbr">GRU</span>。</li>
+                        </ul>
+                        廣泛應用於<span class="highlight">機器翻譯、文本摘要、對話生成</span>等。
+                    </div>
+                </div>
+                <br>
+                <img src="image/Seq2Seq.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 19 -->
+            <div class="focus-card" data-category="6" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#19</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">注意力機制</span> (<span class="english-fullname">Attention Mechanism</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心作用</div>
+                    <div class="details-content">
+                        <span class="chinese-term">注意力機制</span>是對 <span class="english-abbr">Seq2Seq</span> 模型的重要改進。傳統 <span class="english-abbr">Seq2Seq</span> 將整個輸入序列壓縮成<span class="highlight">單一固定長度的上下文向量</span>，這可能成為長序列處理的<span class="highlight">瓶頸</span>。
+                        注意力機制允許解碼器在生成每個輸出詞元時，能夠<span class="highlight">動態地、有選擇性地關注</span>輸入序列的不同部分（給予不同的<span class="chinese-term">注意力權重</span>）。
+                        <ul>
+                            <li>優點：<span class="highlight">有效處理長序列</span>，提升翻譯/生成品質，<span class="highlight">提供一定的可解釋性</span>（可視化注意力權重）。</li>
+                            <li>是 <span class="english-fullname">Transformer</span> 模型的核心組件之一。</li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <img src="image/attention-mechanism-deep-learning.webp" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 20 -->
+             <div class="focus-card" data-category="6" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#20</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="english-fullname">Transformer</span> 模型架構
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">架構特點</div>
+                    <div class="details-content">
+                        <span class="english-fullname">Transformer</span> 是由 Google 在 2017 年論文 "Attention Is All You Need" 中提出的模型架構，已成為現代 <span class="english-abbr">NLP</span> 的<span class="highlight">基石</span>。
+                        其核心特點：
+                        <ul>
+                            <li><span class="highlight">完全基於注意力機制</span>：摒棄了傳統的 <span class="english-abbr">RNN</span>/ <span class="english-abbr">CNN</span> 結構，僅使用<span class="chinese-term">自注意力</span> (<span class="english-fullname">Self-Attention</span>) 和<span class="chinese-term">交叉注意力</span> (<span class="english-fullname">Cross-Attention</span>)。</li>
+                            <li><span class="chinese-term">自注意力機制</span> (<span class="english-fullname">Self-Attention</span>): 允許模型在處理一個詞時，同時考慮到<span class="highlight">序列中所有其他詞</span>的影響，有效捕捉長距離依賴。</li>
+                            <li><span class="highlight">並行計算能力強</span>：相比 <span class="english-abbr">RNN</span> 的順序計算，<span class="english-fullname">Transformer</span> 的自注意力可以並行計算，大大<span class="highlight">提升訓練速度</span>。</li>
+                            <li><span class="chinese-term">位置編碼</span> (<span class="english-fullname">Positional Encoding</span>): 由於沒有遞迴結構，需要額外加入位置編碼來<span class="highlight">表示詞語在序列中的位置訊息</span>。</li>
+                            <li><span class="chinese-term">多頭注意力</span> (<span class="english-fullname">Multi-Head Attention</span>): 將注意力計算分散到多個子空間進行，捕捉不同方面的依賴關係。</li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <img src="image/Transformer.png" class="responsive-img">
+            </div>
+
+             <!-- Add points 21-60 following the same pattern -->
+             <!-- ... (Continuing with other important concepts) ... -->
+
+            <!-- Focus Point 21 -->
+            <div class="focus-card" data-category="6" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#21</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="english-fullname">BERT</span> (<span class="english-fullname">Bidirectional Encoder Representations from Transformers</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">預訓練語言模型</div>
+                    <div class="details-content">
+                        <span class="english-fullname">BERT</span> 是基於 <span class="english-fullname">Transformer</span> 編碼器 (<span class="english-fullname">Encoder</span>) 的<span class="highlight">預訓練語言模型</span> (<span class="english-fullname">Pre-trained Language Model</span>, <span class="english-abbr">PLM</span>)。
+                        主要特點：
+                        <ul>
+                            <li><span class="highlight">雙向性</span>：通過<span class="chinese-term">遮罩語言模型</span> (<span class="english-fullname">Masked Language Model</span>, <span class="english-abbr">MLM</span>) 任務，讓模型在預測被遮罩的詞時能夠<span class="highlight">同時考慮其左右兩側的上下文</span>。</li>
+                            <li><span class="highlight">下一句預測</span> (<span class="english-fullname">Next Sentence Prediction</span>, <span class="english-abbr">NSP</span>): 預訓練任務之一，判斷兩個句子是否是原文中連續的句子，幫助模型理解句子間關係。</li>
+                            <li><span class="highlight">遷移學習</span>：在大規模無標註文本上預訓練後，可以在各種下游 <span class="english-abbr">NLP</span> 任務（如分類、<span class="english-abbr">NER</span>、問答）上進行<span class="chinese-term">微調</span> (<span class="english-fullname">Fine-tuning</span>)，通常只需少量標註數據就能取得很好的效果。</li>
+                        </ul>
+                        <span class="english-fullname">BERT</span> 的出現極大地推動了 <span class="english-abbr">NLP</span> 領域的發展。
+                    </div>
+                </div>
+                <br>
+                <img src="image/BERT.jpg" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 22 -->
+            <div class="focus-card" data-category="6" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#22</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="english-fullname">GPT</span> (<span class="english-fullname">Generative Pre-trained Transformer</span>) 系列
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">生成式預訓練模型</div>
+                    <div class="details-content">
+                        <span class="english-fullname">GPT</span> 系列是由 OpenAI 開發的基於 <span class="english-fullname">Transformer</span> 解碼器 (<span class="english-fullname">Decoder</span>) 的<span class="highlight">生成式預訓練語言模型</span>。
+                        主要特點：
+                        <ul>
+                            <li><span class="highlight">單向性</span>：模型在預測下一個詞時，<span class="highlight">只能看到前面的詞</span>（自迴歸模式, <span class="english-fullname">Autoregressive</span>），特別適合<span class="highlight">文本生成</span>任務。</li>
+                            <li><span class="highlight">大規模預訓練</span>：在極大規模的文本數據上進行預訓練，學習廣泛的語言知識和模式。</li>
+                            <li><span class="highlight">少樣本/零樣本學習能力</span> (<span class="english-fullname">Few-shot/Zero-shot Learning</span>): 大型 <span class="english-fullname">GPT</span> 模型（如 <span class="english-abbr">GPT-3</span>, <span class="english-abbr">GPT-4</span>）展現出強大的少樣本甚至零樣本學習能力，即在沒有或只有少量示例的情況下完成新任務。</li>
+                        </ul>
+                        是當前<span class="chinese-term">大型語言模型</span> (<span class="english-abbr">LLM</span>) 的代表。
+                    </div>
+                </div>
+            </div>
+
+             <!-- Focus Point 23 -->
+            <div class="focus-card" data-category="7" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#23</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                         NLP <span class="chinese-term">模型評估指標</span> (<span class="english-fullname">Evaluation Metrics</span>) - <span class="chinese-term">分類任務</span>
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">常用指標</div>
+                    <div class="details-content">
+                        對於文本分類、情感分析等任務，常用評估指標包括：
+                        <ul>
+                            <li><span class="chinese-term">準確率</span> (<span class="english-fullname">Accuracy</span>): <span class="highlight">預測正確的樣本數 / 總樣本數</span>。在數據類別不平衡時可能具誤導性。</li>
+                            <li><span class="chinese-term">精確率</span> (<span class="english-fullname">Precision</span>): <span class="highlight">預測為正類的樣本中，實際為正類的比例</span> (TP / (TP + FP))。衡量預測的準確性。</li>
+                            <li><span class="chinese-term">召回率</span> (<span class="english-fullname">Recall</span>) / <span class="chinese-term">敏感度</span> (<span class="english-fullname">Sensitivity</span>): <span class="highlight">實際為正類的樣本中，被正確預測為正類的比例</span> (TP / (TP + FN))。衡量模型的查全率。</li>
+                            <li><span class="chinese-term">F1 分數</span> (<span class="english-fullname">F1-Score</span>): <span class="highlight">精確率和召回率的調和平均數</span> (2 * Precision * Recall / (Precision + Recall))。綜合考慮兩者。</li>
+                            <li><span class="chinese-term">混淆矩陣</span> (<span class="english-fullname">Confusion Matrix</span>): 詳細展示各類別的預測情況 (TP, FP, TN, FN)。</li>
+                            <li><span class="english-abbr">AUC-ROC</span>: <span class="highlight">ROC曲線下的面積</span>，衡量模型的整體分類性能。</li>
+                        </ul>
+                        (參見樣題 - 中級 Q7 - ROC曲線定義)
+                    </div>
+                </div>
+                <br>
+                <img src="image/Confusion-matrix-Precision-Recall-Accuracy-and-F1-score.png" class="responsive-img">
+                <br>
+                <img src="image/ROC.webp" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 24 -->
+            <div class="focus-card" data-category="7" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#24</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        NLP <span class="chinese-term">模型評估指標</span> (<span class="english-fullname">Evaluation Metrics</span>) - <span class="chinese-term">生成任務</span>
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">常用指標</div>
+                    <div class="details-content">
+                        對於機器翻譯、文本摘要等生成任務，常用評估指標包括：
+                        <ul>
+                            <li><span class="english-fullname">BLEU</span> (<span class="english-fullname">Bilingual Evaluation Understudy</span>): 主要用於<span class="highlight">機器翻譯</span>。比較機器翻譯結果與人工參考翻譯之間的 <span class="highlight">n-gram</span> (通常1到4) 匹配程度，並加入<span class="highlight">簡潔懲罰</span> (<span class="english-fullname">Brevity Penalty</span>)。</li>
+                            <li><span class="english-fullname">ROUGE</span> (<span class="english-fullname">Recall-Oriented Understudy for Gisting Evaluation</span>): 主要用於<span class="highlight">文本摘要</span>。比較機器生成摘要與人工參考摘要之間的<span class="highlight">n-gram</span>、<span class="highlight">最長公共子序列</span> (<span class="english-abbr">LCS</span>) 等的<span class="highlight">召回率</span>。</li>
+                            <li><span class="chinese-term">困惑度</span> (<span class="english-fullname">Perplexity</span>, <span class="english-abbr">PPL</span>): 衡量語言模型預測測試集的好壞，<span class="highlight">值越低表示模型性能越好</span>。</li>
+                            <li>人工評估 (<span class="english-fullname">Human Evaluation</span>): 評估生成文本的<span class="highlight">流暢度、相關性、準確性</span>等，通常是最可靠但成本最高的方法。</li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <img src="image/BLEU.png" class="responsive-img">
+                
+            </div>
+
+             <!-- Focus Point 25 -->
+            <div class="focus-card" data-category="7" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#25</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        NLP <span class="chinese-term">面臨的挑戰</span> (<span class="english-fullname">Challenges</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">主要困難</div>
+                    <div class="details-content">
+                        自然語言處理充滿挑戰，主要包括：
+                        <ul>
+                            <li><span class="highlight">歧義性</span> (<span class="english-fullname">Ambiguity</span>): 詞彙（一詞多義）、句法（結構歧義）、語意（指代不清）等層面都存在歧義。</li>
+                            <li><span class="highlight">上下文依賴</span> (<span class="english-fullname">Context Dependence</span>): 詞語或句子的意義高度依賴其上下文環境。</li>
+                            <li><span class="highlight">語言的多樣性與演化</span>：方言、俚語、新詞、拼寫錯誤、語法不規範等。</li>
+                            <li><span class="highlight">常識與世界知識</span> (<span class="english-fullname">Common Sense & World Knowledge</span>): 理解語言深層含義需要大量的背景知識。</li>
+                            <li><span class="highlight">數據稀疏性</span> (<span class="english-fullname">Data Sparsity</span>): 許多詞語或模式在語料庫中出現次數很少。</li>
+                            <li><span class="highlight">模型偏見</span> (<span class="english-fullname">Bias</span>): 訓練數據中存在的偏見可能被模型學習和放大。</li>
+                            <li><span class="highlight">可解釋性</span> (<span class="english-fullname">Interpretability</span>): 複雜模型（如深度學習）的決策過程難以解釋。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 26 -->
+            <div class="focus-card" data-category="8" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#26</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        常用 NLP <span class="chinese-term">工具庫</span> (<span class="english-fullname">Libraries</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">開發工具</div>
+                    <div class="details-content">
+                        一些常用的 Python NLP 工具庫：
+                        <ul>
+                            <li><span class="english-fullname">NLTK</span> (<span class="english-fullname">Natural Language Toolkit</span>): 學術界常用，功能全面，包含大量語料庫和基礎算法。</li>
+                            <li><span class="english-fullname">spaCy</span>: 專為<span class="highlight">工業級應用</span>設計，性能優越，提供預訓練模型，易於集成。</li>
+                            <li><span class="english-fullname">Gensim</span>: 專注於<span class="highlight">主題模型</span> (<span class="english-fullname">Topic Modeling</span>) 和<span class="highlight">詞向量</span>訓練。</li>
+                            <li><span class="english-fullname">Scikit-learn</span>: 包含許多<span class="highlight">傳統機器學習</span>算法，可用於文本分類等任務（常結合TF-IDF）。</li>
+                            <li><span class="english-fullname">Transformers (Hugging Face)</span>: 提供了大量<span class="highlight">預訓練的 Transformer 模型</span>（如 BERT, GPT）及相應的工具，是當前深度學習 NLP 的主流庫。</li>
+                            <li><span class="chinese-term">Jieba</span> (結巴): 流行的<span class="highlight">中文斷詞</span>工具庫。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 27 -->
+            <div class="focus-card" data-category="8" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#27</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        NLP <span class="chinese-term">與其他 AI 領域的整合</span>
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">跨領域應用</div>
+                    <div class="details-content">
+                        <span class="english-abbr">NLP</span> 經常與其他 <span class="english-abbr">AI</span> 領域結合，產生更強大的應用：
+                        <ul>
+                            <li><span class="highlight">NLP + 電腦視覺 (<span class="english-abbr">CV</span>)</span>: <span class="chinese-term">圖像描述生成</span> (<span class="english-fullname">Image Captioning</span>), <span class="chinese-term">視覺問答</span> (<span class="english-abbr">VQA</span>)。</li>
+                            <li><span class="highlight">NLP + 語音處理 (<span class="english-fullname">Speech Processing</span>)</span>: <span class="chinese-term">語音識別</span> (<span class="english-abbr">ASR</span> - 語音轉文字), <span class="chinese-term">語音合成</span> (<span class="english-abbr">TTS</span> - 文字轉語音)。</li>
+                            <li><span class="highlight">NLP + 資訊檢索 (<span class="english-abbr">IR</span>)</span>: 語意搜索、問答系統。</li>
+                            <li><span class="highlight">NLP + 數據挖掘 (<span class="english-fullname">Data Mining</span>)</span>: <span class="chinese-term">文本挖掘</span> (<span class="english-fullname">Text Mining</span>)，從大量文本中發現模式和知識。</li>
+                            <li><span class="highlight">NLP + 推薦系統 (<span class="english-fullname">Recommender Systems</span>)</span>: 利用用戶評論或內容描述進行推薦。</li>
+                        </ul>
+                        <span class="chinese-term">多模態 AI</span> (<span class="english-fullname">Multimodal AI</span>) 正是這種整合趨勢的體現 (參考 L21104)。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 28 -->
+            <div class="focus-card" data-category="5" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#28</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">文本摘要</span> (<span class="english-fullname">Text Summarization</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">任務類型</div>
+                    <div class="details-content">
+                        <span class="chinese-term">文本摘要</span>旨在從原始文本中生成一個<span class="highlight">簡短、精煉</span>的版本，同時保留<span class="highlight">核心訊息</span>。主要分為兩類：
+                        <ul>
+                            <li><span class="chinese-term">抽取式摘要</span> (<span class="english-fullname">Extractive Summarization</span>): <span class="highlight">直接從原文中選擇</span>重要的句子或短語組合而成。方法相對簡單，保證語法正確性，但可能缺乏連貫性。</li>
+                            <li><span class="chinese-term">生成式摘要</span> (<span class="english-fullname">Abstractive Summarization</span>): <span class="highlight">理解原文語意後，用模型自己的話重新組織和生成</span>摘要。可能產生更流暢、更自然的摘要，甚至包含原文未直接出現的詞語，但技術難度更高，可能產生事實錯誤 (<span class="english-fullname">Hallucination</span>)。<span class="english-abbr">Seq2Seq</span> 和 <span class="english-fullname">Transformer</span> 模型常用於此。</li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <img src="image/Summarization.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 29 -->
+            <div class="focus-card" data-category="3" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#29</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">主題模型</span> (<span class="english-fullname">Topic Modeling</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心目標</div>
+                    <div class="details-content">
+                        <span class="chinese-term">主題模型</span>是一種<span class="highlight">無監督學習</span>技術，用於從大量文檔集合中<span class="highlight">自動發現</span>潛在的<span class="chinese-term">主題結構</span>。它假設每篇文檔由多個主題混合而成，每個主題又由一系列相關的詞語表示。
+                        <ul>
+                            <li>代表性模型：<span class="english-fullname">Latent Dirichlet Allocation</span> (<span class="english-abbr">LDA</span>)。</li>
+                            <li>應用：文本聚類、文檔瀏覽、內容推薦、理解大規模文本數據的內容結構。</li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <img src="image/Topic Modeling_LDA.png" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 30 -->
+            <div class="focus-card" data-category="2" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#30</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">詞性標註</span> (<span class="english-fullname">Part-of-Speech Tagging</span>, <span class="english-abbr">POS Tagging</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">任務定義</div>
+                    <div class="details-content">
+                        <span class="english-abbr">POS Tagging</span> 是為句子中的<span class="highlight">每個詞語分配其對應的詞性標籤</span>（如：名詞、動詞、形容詞、副詞等）的過程。
+                        <ul>
+                            <li>作用：<span class="highlight">理解句子結構</span>、<span class="highlight">消除詞彙歧義</span>（如 "book" 可以是名詞或動詞）、作為後續語法分析 (<span class="english-fullname">Parsing</span>) 或資訊提取任務的<span class="highlight">基礎</span>。</li>
+                            <li>常用方法：基於規則、基於統計（如<span class="english-abbr">HMM</span>, <span class="english-abbr">CRF</span>）、基於深度學習（如<span class="english-abbr">BiLSTM-CRF</span>）。</li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <img src="image/Part-of-Speech Tagging.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 31 -->
+            <div class="focus-card" data-category="4" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#31</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">N-gram 模型</span>
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">統計語言模型</div>
+                    <div class="details-content">
+                        <span class="chinese-term">N-gram</span> 是一種基於<span class="highlight">統計</span>的<span class="chinese-term">語言模型</span> (<span class="english-fullname">Language Model</span>, <span class="english-abbr">LM</span>)。它假設一個詞的出現機率<span class="highlight">只與其前面的 N-1 個詞相關</span>（馬可夫假設）。
+                        <ul>
+                            <li><span class="english-fullname">Unigram</span> (N=1): 詞語獨立出現。</li>
+                            <li><span class="english-fullname">Bigram</span> (N=2): 詞語出現只與前一個詞相關。</li>
+                            <li><span class="english-fullname">Trigram</span> (N=3): 詞語出現與前兩個詞相關。</li>
+                        </ul>
+                        優點是簡單，但<span class="highlight">無法捕捉長距離依賴</span>，且面臨<span class="highlight">數據稀疏性</span>問題（很多 N-gram 組合在訓練數據中未出現）。常用於評估指標（如BLEU）計算或作為簡單基線。
+                    </div>
+                </div>
+                <br>
+                <img src="image/N-gram.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 32 -->
+            <div class="focus-card" data-category="5" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#32</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">資訊提取</span> (<span class="english-fullname">Information Extraction</span>, <span class="english-abbr">IE</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">目標與技術</div>
+                    <div class="details-content">
+                        <span class="english-abbr">IE</span> 的目標是從<span class="highlight">非結構化或半結構化文本</span>中自動提取<span class="highlight">結構化的訊息</span>。
+                        主要子任務包括：
+                        <ul>
+                            <li><span class="chinese-term">命名實體識別</span> (<span class="english-abbr">NER</span>): 提取人名、地名、組織名等。</li>
+                            <li><span class="chinese-term">關係提取</span> (<span class="english-fullname">Relation Extraction</span>): 識別實體之間的語意關係（如：某人<span class="highlight">工作於</span>某公司）。</li>
+                            <li><span class="chinese-term">事件提取</span> (<span class="english-fullname">Event Extraction</span>): 識別文本中描述的事件及其參與者、時間、地點等要素。</li>
+                        </ul>
+                        應用於構建知識圖譜、情報分析、自動化報告生成等。
+                    </div>
+                </div>
+                <br>
+                <img src="image/Information Extraction.png" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 33 -->
+            <div class="focus-card" data-category="3" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#33</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">條件隨機場</span> (<span class="english-fullname">Conditional Random Field</span>, <span class="english-abbr">CRF</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">序列標註模型</div>
+                    <div class="details-content">
+                        <span class="english-abbr">CRF</span> 是一種<span class="highlight">判別式</span>的<span class="highlight">概率圖模型</span>，常用於<span class="highlight">序列標註</span> (<span class="english-fullname">Sequence Labeling</span>) 任務，如 <span class="english-abbr">POS Tagging</span> 和 <span class="english-abbr">NER</span>。
+                        與<span class="chinese-term">隱馬可夫模型</span> (<span class="english-abbr">HMM</span>) 不同，<span class="english-abbr">CRF</span> 直接對給定觀測序列下的標籤序列進行建模，可以<span class="highlight">考慮整個觀測序列的全局特徵</span>，而不僅僅是局部特徵。它<span class="highlight">克服了 HMM 的條件獨立性假設</span>的限制，通常能獲得更好的性能。
+                        線性鏈 <span class="english-abbr">CRF</span> 是最常見的類型。
+                    </div>
+                </div>
+                <br>
+                <img src="image/CRF_Conditional Random Field.png" class="responsive-img">
+            </div>
+            </div>
+
+            <!-- Focus Point 34 -->
+            <div class="focus-card" data-category="6" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#34</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">遷移學習</span> (<span class="english-fullname">Transfer Learning</span>) 在 NLP 中的應用
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心思想</div>
+                    <div class="details-content">
+                        <span class="chinese-term">遷移學習</span>是指將在<span class="highlight">一個任務（源任務）上學到的知識</span>應用到<span class="highlight">另一個相關任務（目標任務）</span>上的技術。在 <span class="english-abbr">NLP</span> 中，這通常指：
+                        <ul>
+                            <li>使用<span class="highlight">預訓練的詞向量</span>（如 Word2Vec, GloVe）作為下游任務的輸入特徵。</li>
+                            <li>使用<span class="highlight">預訓練的語言模型</span>（如 BERT, GPT）作為基礎，然後在特定的下游任務數據上進行<span class="chinese-term">微調</span> (<span class="english-fullname">Fine-tuning</span>)。</li>
+                        </ul>
+                        優點：<span class="highlight">可以利用大規模無標註數據學習通用語言知識</span>，<span class="highlight">減少對特定任務標註數據的依賴</span>，<span class="highlight">加快模型收斂速度</span>，並<span class="highlight">提升模型在下游任務上的性能</span>，尤其是在數據量有限的情況下。
+                    </div>
+                </div>
+                <br>
+                <img src="image/Transfer Learning.webp" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 35 -->
+            <div class="focus-card" data-category="1" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#35</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                         NLP <span class="chinese-term">層次結構</span> (<span class="english-fullname">Levels of NLP</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">不同分析層面</div>
+                    <div class="details-content">
+                         <span class="english-abbr">NLP</span> 任務可以大致分為不同的分析層次：
+                        <ul>
+                            <li><span class="chinese-term">形態學分析</span> (<span class="english-fullname">Morphological Analysis</span>): 分析詞語的內部結構（詞根、詞綴）。</li>
+                            <li><span class="chinese-term">詞彙分析</span> (<span class="english-fullname">Lexical Analysis</span>): 斷詞、詞性標註、命名實體識別等。</li>
+                            <li><span class="chinese-term">句法分析</span> (<span class="english-fullname">Syntactic Analysis</span> / <span class="english-fullname">Parsing</span>): 分析句子的語法結構，如構建句法樹。</li>
+                            <li><span class="chinese-term">語意分析</span> (<span class="english-fullname">Semantic Analysis</span>): 理解詞語和句子的意義，如詞義消歧 (<span class="english-abbr">WSD</span>)、語意角色標註 (<span class="english-abbr">SRL</span>)。</li>
+                            <li><span class="chinese-term">語用分析</span> (<span class="english-fullname">Pragmatic Analysis</span>): 理解語言在特定語境下的意圖和含義，如指代消解、對話理解。</li>
+                        </ul>
+                        這些層次相互關聯，高層次的分析通常依賴於低層次的結果。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 36 -->
+            <div class="focus-card" data-category="5" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#36</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">語法分析</span> / <span class="chinese-term">句法剖析</span> (<span class="english-fullname">Parsing</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">結構分析</div>
+                    <div class="details-content">
+                        <span class="chinese-term">語法分析</span>的目標是<span class="highlight">確定句子的語法結構</span>，通常以<span class="chinese-term">語法樹</span>的形式表示。主要有兩種類型：
+                        <ul>
+                            <li><span class="chinese-term">成分句法分析</span> (<span class="english-fullname">Constituency Parsing</span>): 將句子分解成嵌套的<span class="highlight">短語結構</span>（如名詞短語 NP, 動詞短語 VP）。</li>
+                            <li><span class="chinese-term">依存句法分析</span> (<span class="english-fullname">Dependency Parsing</span>): 識別詞語之間的<span class="highlight">依存關係</span>（如主謂關係、動賓關係），表示為一個有向圖。</li>
+                        </ul>
+                        語法分析有助於深入理解句子結構和語意。
+                    </div>
+                </div>
+                <br>
+                <img src="image/Constituency Parsing and Dependency Parsing.jpeg" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 37 -->
+            <div class="focus-card" data-category="7" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#37</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">大型語言模型</span> (<span class="english-fullname">Large Language Model</span>, <span class="english-abbr">LLM</span>) <span class="chinese-term">的幻覺</span> (<span class="english-fullname">Hallucination</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">問題與挑戰</div>
+                    <div class="details-content">
+                        <span class="chinese-term">幻覺</span>是指 <span class="english-abbr">LLM</span> <span class="highlight">生成看似合理但實際上是錯誤的、不真實的或與來源訊息不符的內容</span>的現象。
+                        <ul>
+                            <li>原因可能包括：訓練數據中的噪聲或偏見、模型過度自信、對知識的內化不完全等。</li>
+                            <li>這是 <span class="english-abbr">LLM</span> 應用中的一個<span class="highlight">關鍵挑戰</span>，尤其是在需要高事實準確性的場景（如醫療、金融）。</li>
+                            <li>緩解方法：改進訓練數據、引入外部知識庫、增強事實核查機制、調整解碼策略（如降低 temperature）、提示工程 (<span class="english-fullname">Prompt Engineering</span>)。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 38 -->
+            <div class="focus-card" data-category="8" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#38</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">提示工程</span> (<span class="english-fullname">Prompt Engineering</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">與LLM互動</div>
+                    <div class="details-content">
+                        <span class="chinese-term">提示工程</span>是指<span class="highlight">設計和優化輸入提示</span> (<span class="english-fullname">Prompt</span>)，以引導<span class="highlight">大型語言模型</span> (<span class="english-abbr">LLM</span>) 產生<span class="highlight">期望輸出</span>的過程。
+                        <ul>
+                            <li>由於 <span class="english-abbr">LLM</span> 的輸出對輸入提示非常敏感，良好的提示設計至關重要。</li>
+                            <li>技巧包括：明確指令、提供示例（少樣本提示, <span class="english-fullname">Few-shot Prompting</span>）、設定角色、逐步思考 (<span class="english-fullname">Chain-of-Thought Prompting</span>)、控制輸出格式等。</li>
+                            <li>這是有效利用 <span class="english-abbr">LLM</span> 進行各種任務的<span class="highlight">關鍵技能</span>。</li>
+                        </ul>
+                         (參考 L12202 如何善用生成式AI工具 - Prompt)
+                    </div>
+                </div>
+            </div>
+
+             <!-- Focus Point 39 -->
+            <div class="focus-card" data-category="8" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#39</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">檢索增強生成</span> (<span class="english-fullname">Retrieval-Augmented Generation</span>, <span class="english-abbr">RAG</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">結合檢索與生成</div>
+                    <div class="details-content">
+                        <span class="english-abbr">RAG</span> 是一種結合了<span class="highlight">訊息檢索</span> (<span class="english-fullname">Information Retrieval</span>) 和<span class="highlight">語言生成</span> (<span class="english-abbr">LLM</span>) 的技術框架。
+                        <ul>
+                            <li>工作流程：當收到用戶提問時，先從<span class="highlight">外部知識庫</span>（如文檔數據庫、向量數據庫）中<span class="highlight">檢索</span>相關訊息片段，然後將這些檢索到的訊息<span class="highlight">連同原始提問一起</span>作為輸入提示，交給 <span class="english-abbr">LLM</span> 生成最終答案。</li>
+                            <li>優點：可以<span class="highlight">利用最新的、領域特定的外部知識</span>，<span class="highlight">減少 LLM 的幻覺</span>，提高答案的<span class="highlight">事實準確性</span>和<span class="highlight">相關性</span>，並<span class="highlight">提供答案來源</span>以供查證。</li>
+                        </ul>
+                         (參考 L12202 如何善用生成式AI工具 - RAG)
+                    </div>
+                </div>
+                <br>
+                <img src="image/RAG_Retrieval-Augmented-Generation.webp" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 40 -->
+            <div class="focus-card" data-category="4" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#40</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">語意相似度計算</span> (<span class="english-fullname">Semantic Similarity Calculation</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">衡量方法</div>
+                    <div class="details-content">
+                        計算兩個文本片段（詞語、句子、文檔）之間語意相似度的方法：
+                        <ul>
+                            <li>基於<span class="highlight">詞向量</span>：將文本轉換為向量表示（如詞向量平均、句向量），然後計算向量之間的<span class="chinese-term">餘弦相似度</span> (<span class="english-fullname">Cosine Similarity</span>) 或歐幾里得距離。</li>
+                            <li>基於<span class="highlight">知識圖譜</span>或<span class="highlight">語意網路</span>（如 <span class="english-fullname">WordNet</span>）：計算詞語在層次結構中的距離或共享訊息量。</li>
+                            <li>基於<span class="highlight">預訓練模型</span>（如 <span class="english-fullname">BERT</span>, <span class="english-abbr">Sentence-BERT</span>）：直接使用模型判斷句子對的相似度。</li>
+                        </ul>
+                        應用於資訊檢索、文本聚類、問答匹配等。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 41 -->
+            <div class="focus-card" data-category="7" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#41</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        NLP <span class="chinese-term">中的偏見與公平性</span> (<span class="english-fullname">Bias and Fairness</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">倫理考量</div>
+                    <div class="details-content">
+                         <span class="english-abbr">NLP</span> 模型可能從訓練數據中學習並放大社會偏見，導致不公平的結果。偏見可能體現在：
+                        <ul>
+                            <li><span class="highlight">詞向量</span>：某些詞語的向量表示可能帶有性別或種族偏見（如 "programmer" 更接近 "man"）。</li>
+                            <li><span class="highlight">情感分析</span>：對某些群體的名稱可能給出更負面的情感評分。</li>
+                            <li><span class="highlight">機器翻譯</span>：在翻譯無性別標記的詞語時，可能傾向於使用刻板印象的性別。</li>
+                            <li><span class="highlight">文本生成</span>：可能生成帶有歧視性或攻擊性的內容。</li>
+                        </ul>
+                        解決 <span class="english-abbr">NLP</span> 中的偏見和公平性問題是<span class="highlight">負責任 AI</span> (<span class="english-fullname">Responsible AI</span>) 的重要組成部分。需要從數據收集、模型設計、評估等多方面入手。 (參考 L21203 AI 風險管理 - AI 倫理)
+                    </div>
+                </div>
+            </div>
+
+             <!-- Focus Point 42 -->
+            <div class="focus-card" data-category="3" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#42</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">語言模型</span> (<span class="english-fullname">Language Model</span>, <span class="english-abbr">LM</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">基本功能</div>
+                    <div class="details-content">
+                        <span class="chinese-term">語言模型</span>的核心任務是<span class="highlight">計算一個詞語序列（句子）出現的概率</span> P(W) = P(w1, w2, ..., wn)。
+                        <ul>
+                            <li>應用：<span class="highlight">評估句子的流暢度</span>（概率越高越流暢）、<span class="highlight">預測下一個詞</span>（用於文本生成、輸入法提示）、<span class="highlight">語音識別</span>（選擇最可能的詞序列）等。</li>
+                            <li>類型：從早期的 <span class="english-abbr">N-gram</span> 模型到基於 <span class="english-abbr">RNN</span>、<span class="english-fullname">LSTM</span>、<span class="english-fullname">Transformer</span> 的神經語言模型。現代的<span class="highlight">預訓練語言模型</span> (<span class="english-abbr">PLM</span>) 是目前的主流。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+             <!-- Focus Point 43 -->
+            <div class="focus-card" data-category="6" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#43</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">編碼器-解碼器架構</span> (<span class="english-fullname">Encoder-Decoder Architecture</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">通用框架</div>
+                    <div class="details-content">
+                        這是 <span class="english-abbr">Seq2Seq</span> 模型的通用框架，不僅限於 <span class="english-abbr">RNN</span>。
+                        <ul>
+                            <li><span class="chinese-term">編碼器</span> (<span class="english-fullname">Encoder</span>): 負責<span class="highlight">理解輸入序列</span>，將其轉換成中間表示（如上下文向量）。</li>
+                            <li><span class="chinese-term">解碼器</span> (<span class="english-fullname">Decoder</span>): 負責<span class="highlight">基於中間表示生成輸出序列</span>。</li>
+                        </ul>
+                        <span class="english-fullname">Transformer</span> 模型本身也採用了<span class="highlight">編碼器-解碼器</span>結構（用於翻譯等任務），或者只使用其中一部分（<span class="english-fullname">BERT</span> 使用編碼器，<span class="english-fullname">GPT</span> 使用解碼器）。
+                    </div>
+                </div>
+                <br>
+                <img src="image/Seq2Seq.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 44 -->
+            <div class="focus-card" data-category="2" data-stars="2">
+                <div class="focus-header">
+                    <div class="focus-id">#44</div>
+                    <div class="focus-importance">★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">文本正規化</span> (<span class="english-fullname">Text Normalization</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">前處理步驟</div>
+                    <div class="details-content">
+                        <span class="chinese-term">文本正規化</span>是文本前處理的一部分，旨在將文本<span class="highlight">轉換為更標準、更一致的形式</span>。
+                        常見操作包括：
+                        <ul>
+                            <li><span class="highlight">大小寫轉換</span> (<span class="english-fullname">Case Folding</span>): 通常轉換為全小寫。</li>
+                            <li><span class="highlight">去除標點符號和數字</span>（視任務需求）。</li>
+                            <li><span class="highlight">處理縮寫和特殊符號</span>。</li>
+                            <li><span class="highlight">統一編碼</span>（如轉換為 UTF-8）。</li>
+                        </ul>
+                        目的是<span class="highlight">減少詞彙的多樣性</span>，使模型更容易學習模式。
+                    </div>
+                </div>
+                <br>
+                <img src="image/Text Normalization.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 45 -->
+            <div class="focus-card" data-category="4" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#45</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">上下文詞向量</span> (<span class="english-fullname">Contextualized Word Embeddings</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">與傳統詞向量的區別</div>
+                    <div class="details-content">
+                        傳統詞向量（如 Word2Vec, GloVe）為<span class="highlight">每個詞分配一個固定的向量</span>，無法處理<span class="highlight">一詞多義</span>問題（如 "bank" 在不同句子中意義不同）。
+                        <span class="chinese-term">上下文詞向量</span>技術（代表：<span class="english-fullname">ELMo</span>, <span class="english-fullname">BERT</span>, <span class="english-fullname">GPT</span>）生成的詞向量是<span class="highlight">動態的</span>，<span class="highlight">取決於詞語所在的具體上下文</span>。
+                        <ul>
+                            <li>同一個詞在不同句子中會有不同的向量表示，能更好地<span class="highlight">捕捉詞語的細微語意差異</span>。</li>
+                            <li>這是基於<span class="highlight">深度學習模型</span>（尤其是 Transformer）的重要進展。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 46 -->
+             <div class="focus-card" data-category="5" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#46</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">意圖識別</span> (<span class="english-fullname">Intent Recognition</span>) 與 <span class="chinese-term">槽位填充</span> (<span class="english-fullname">Slot Filling</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">對話系統核心</div>
+                    <div class="details-content">
+                        這是<span class="highlight">任務導向型對話系統</span>中 <span class="english-abbr">NLU</span> 的兩個核心任務：
+                        <ul>
+                            <li><span class="chinese-term">意圖識別</span>: <span class="highlight">判斷用戶輸入的主要目的或意圖</span>。通常作為一個<span class="highlight">文本分類</span>問題來處理（將用戶語句分類到預定義的意圖類別）。</li>
+                            <li><span class="chinese-term">槽位填充</span>: <span class="highlight">從用戶輸入中提取完成任務所需的關鍵訊息參數（槽位值）</span>。通常作為一個<span class="highlight">序列標註</span>問題來處理（為每個詞標註其對應的槽位類型，如時間、地點、數量）。</li>
+                        </ul>
+                        例如，用戶說 "幫我訂明天去台北的高鐵票"，意圖是 "訂高鐵票"，槽位包括：時間="明天",目的地="台北"。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 47 -->
+            <div class="focus-card" data-category="7" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#47</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">數據增強</span> (<span class="english-fullname">Data Augmentation</span>) 在 NLP 中的應用
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">擴充訓練數據</div>
+                    <div class="details-content">
+                        在標註數據有限的情況下，<span class="chinese-term">數據增強</span>技術可以<span class="highlight">人工生成</span>更多樣化的訓練樣本，以<span class="highlight">提高模型的泛化能力</span>和<span class="highlight">穩健性</span>。
+                        常用的 NLP 數據增強方法包括：
+                        <ul>
+                            <li><span class="highlight">同義詞替換</span> (<span class="english-fullname">Synonym Replacement</span>): 將句子中的某些詞替換為其同義詞。</li>
+                            <li><span class="highlight">隨機插入</span> (<span class="english-fullname">Random Insertion</span>): 在句子中隨機插入同義詞。</li>
+                            <li><span class="highlight">隨機交換</span> (<span class="english-fullname">Random Swap</span>): 隨機交換句子中兩個詞的位置。</li>
+                            <li><span class="highlight">隨機刪除</span> (<span class="english-fullname">Random Deletion</span>): 以一定概率隨機刪除句子中的詞。</li>
+                            <li><span class="highlight">回譯</span> (<span class="english-fullname">Back Translation</span>): 將句子翻譯成另一種語言再翻譯回來。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 48 -->
+            <div class="focus-card" data-category="3" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#48</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                         <span class="chinese-term">神經網路基礎</span> for NLP
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">相關概念</div>
+                    <div class="details-content">
+                         理解 <span class="english-abbr">NLP</span> 中的深度學習模型需要一些基礎神經網路知識：
+                        <ul>
+                            <li><span class="chinese-term">激活函數</span> (<span class="english-fullname">Activation Function</span>): 如 <span class="english-fullname">Sigmoid</span>, <span class="english-fullname">tanh</span>, <span class="english-fullname">ReLU</span> (及其變體)。引入非線性。(參見樣題 - 中級 Q4)</li>
+                            <li><span class="chinese-term">損失函數</span> (<span class="english-fullname">Loss Function</span>): 如交叉熵損失 (<span class="english-fullname">Cross-Entropy Loss</span>)。衡量模型預測與真實標籤的差距。</li>
+                            <li><span class="chinese-term">優化器</span> (<span class="english-fullname">Optimizer</span>): 如 <span class="english-abbr">SGD</span>, <span class="english-fullname">Adam</span>。用於更新模型參數以最小化損失函數。</li>
+                            <li><span class="chinese-term">嵌入層</span> (<span class="english-fullname">Embedding Layer</span>): 神經網路中用於學習詞向量的部分。</li>
+                            <li><span class="chinese-term">過擬合</span> (<span class="english-fullname">Overfitting</span>) 與 <span class="chinese-term">欠擬合</span> (<span class="english-fullname">Underfitting</span>): 模型在訓練集上表現好但在測試集上差（過擬合）；模型在訓練集上表現就不好（欠擬合）。(參見樣題 - 基礎 Q9, 中級 Q13)</li>
+                            <li><span class="chinese-term">正規化</span> (<span class="english-fullname">Regularization</span>): 如 L1/L2 正則化, <span class="english-fullname">Dropout</span>。用於防止過擬合。(參見樣題 - 基礎 Q3)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 49 -->
+            <div class="focus-card" data-category="5" data-stars="2">
+                <div class="focus-header">
+                    <div class="focus-id">#49</div>
+                    <div class="focus-importance">★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">共指消解</span> (<span class="english-fullname">Coreference Resolution</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">指代關係識別</div>
+                    <div class="details-content">
+                        <span class="chinese-term">共指消解</span>是指<span class="highlight">識別文本中指向同一個真實世界實體的所有表述</span>（指代語）的過程。
+                        例如，在句子 "愛因斯坦提出了相對論，他是一位偉大的物理學家" 中，"愛因斯坦" 和 "他" 指向同一個人。
+                        這是理解文本連貫性和深層語意的重要任務，對於問答、摘要、翻譯等有幫助。
+                    </div>
+                </div>
+                <br>
+                <img src="image/Coreference Resolution.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 50 -->
+            <div class="focus-card" data-category="8" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#50</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        NLP <span class="chinese-term">在實際應用中的部署考量</span>
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">工程實踐</div>
+                    <div class="details-content">
+                        將 <span class="english-abbr">NLP</span> 模型部署到實際應用中需要考慮：
+                        <ul>
+                            <li><span class="highlight">模型性能</span>：準確率、延遲 (<span class="english-fullname">Latency</span>)、吞吐量 (<span class="english-fullname">Throughput</span>)。</li>
+                            <li><span class="highlight">資源消耗</span>：計算資源 (<span class="english-abbr">CPU</span>/<span class="english-abbr">GPU</span>)、記憶體。</li>
+                            <li><span class="highlight">模型大小</span>：大型模型可能難以部署到資源受限的環境（如移動設備）。模型壓縮和量化技術可能需要。</li>
+                            <li><span class="highlight">可擴展性</span> (<span class="english-fullname">Scalability</span>): 系統能否處理不斷增長的請求量。</li>
+                            <li><span class="highlight">穩健性</span> (<span class="english-fullname">Robustness</span>): 模型對噪聲輸入或未見過數據的處理能力。</li>
+                            <li><span class="highlight">可維護性</span>：模型的更新、監控和迭代。</li>
+                            <li><span class="highlight">API 設計</span>：提供易於使用的接口供其他系統調用。</li>
+                        </ul>
+                         (參考 L213 AI 技術應用與系統部署)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 51 -->
+             <div class="focus-card" data-category="1" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#51</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        NLP <span class="chinese-term">與知識圖譜</span> (<span class="english-fullname">Knowledge Graph</span>, <span class="english-abbr">KG</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">關係與應用</div>
+                    <div class="details-content">
+                        <span class="english-abbr">NLP</span> 和 <span class="english-abbr">KG</span> 之間存在密切關係：
+                        <ul>
+                            <li><span class="highlight">NLP for KG Construction</span>: <span class="english-abbr">NLP</span> 技術（如 <span class="english-abbr">NER</span>, 關係提取）用於從非結構化文本中自動<span class="highlight">抽取實體和關係</span>，構建知識圖譜。</li>
+                            <li><span class="highlight">KG for NLP Enhancement</span>: 知識圖譜可以為 <span class="english-abbr">NLP</span> 任務（如問答、推薦、語意理解）<span class="highlight">提供結構化的背景知識和常識</span>，提升模型性能和可解釋性。例如，在 <span class="english-abbr">RAG</span> 中使用 <span class="english-abbr">KG</span> 作為外部知識源。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+             <!-- Focus Point 52 -->
+            <div class="focus-card" data-category="2" data-stars="2">
+                <div class="focus-header">
+                    <div class="focus-id">#52</div>
+                    <div class="focus-importance">★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">字符級模型</span> (<span class="english-fullname">Character-level Models</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">處理單位</div>
+                    <div class="details-content">
+                        除了以詞語為單位 (<span class="english-fullname">Word-level</span>)，有些 <span class="english-abbr">NLP</span> 模型直接以<span class="highlight">字符</span> (<span class="english-fullname">Character</span>) 作為基本處理單元。
+                        <ul>
+                            <li>優點：可以<span class="highlight">處理未登錄詞</span> (<span class="english-fullname">Out-of-Vocabulary</span>, <span class="english-abbr">OOV</span>)、<span class="highlight">拼寫錯誤</span>，並且<span class="highlight">詞彙表大小固定且較小</span>。對於形態豐富的語言或中文等可能更有優勢。</li>
+                            <li>缺點：序列長度大大增加，<span class="highlight">計算成本更高</span>，<span class="highlight">捕捉長距離語意關係更困難</span>。</li>
+                            <li><span class="english-fullname">FastText</span> 是一種結合了詞級和字符級訊息的詞向量模型。</li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <img src="image/Character-level Models.png" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 53 -->
+             <div class="focus-card" data-category="4" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#53</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                         <span class="chinese-term">句子向量</span> / <span class="chinese-term">句子嵌入</span> (<span class="english-fullname">Sentence Embedding</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">句子級表示</div>
+                    <div class="details-content">
+                        將<span class="highlight">整個句子映射到一個固定維度的向量</span>，以捕捉其整體語意。
+                        常見方法：
+                        <ul>
+                            <li><span class="highlight">詞向量平均/加權平均</span>：簡單但可能丟失順序訊息。</li>
+                            <li>使用 <span class="english-abbr">RNN</span>/<span class="english-fullname">LSTM</span> 的<span class="highlight">最後一個隱藏狀態</span>。</li>
+                            <li>使用 <span class="english-fullname">BERT</span> 等模型的<span class="highlight">特殊符號</span>（如 [CLS]）對應的輸出向量。</li>
+                            <li>專門的句子嵌入模型，如 <span class="english-abbr">Sentence-BERT</span> (<span class="english-abbr">SBERT</span>)，通過孿生網路 (<span class="english-fullname">Siamese Network</span>) 結構進行訓練，優化句子向量的相似度計算。</li>
+                        </ul>
+                        應用於句子相似度計算、文本聚類、資訊檢索等。
+                    </div>
+                </div>
+                <br>
+                <img src="image/Sentence Embedding.webp" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 54 -->
+            <div class="focus-card" data-category="7" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#54</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">交叉驗證</span> (<span class="english-fullname">Cross-Validation</span>) 在 NLP 中的應用
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">模型評估方法</div>
+                    <div class="details-content">
+                        <span class="chinese-term">交叉驗證</span>是一種<span class="highlight">評估模型泛化能力</span>的常用技術，尤其在<span class="highlight">數據量有限</span>時。
+                        <ul>
+                            <li>常用的是 <span class="chinese-term">K-摺交叉驗證</span> (<span class="english-fullname">K-Fold Cross-Validation</span>): 將數據集隨機分成 K 個互斥的子集（摺），每次使用 K-1 摺作為訓練集，剩下的 1 摺作為驗證集，重複 K 次，最後將 K 次的評估結果平均。</li>
+                            <li>優點：更<span class="highlight">穩定可靠</span>地評估模型性能，<span class="highlight">減少因單次數據劃分帶來的隨機性</span>，<span class="highlight">有助於發現過擬合</span>。 (參見樣題 - 基礎 Q9 - 交叉驗證主要目的)</li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <img src="image/Cross-validation.webp" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 55 -->
+            <div class="focus-card" data-category="1" data-stars="2">
+                <div class="focus-header">
+                    <div class="focus-id">#55</div>
+                    <div class="focus-importance">★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">語料庫</span> (<span class="english-fullname">Corpus</span> / <span class="english-fullname">Corpora</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">NLP 的基礎資源</div>
+                    <div class="details-content">
+                        <span class="chinese-term">語料庫</span>是指<span class="highlight">經過收集、整理、標註（可選）的大量文本集合</span>，是 <span class="english-abbr">NLP</span> 研究和應用的基礎。
+                        類型：
+                        <ul>
+                            <li><span class="highlight">原始語料庫</span> (<span class="english-fullname">Raw Corpus</span>): 未經標註的文本。</li>
+                            <li><span class="highlight">標註語料庫</span> (<span class="english-fullname">Annotated Corpus</span>): 帶有語言學標註（如詞性、句法結構、命名實體）的文本。</li>
+                            <li><span class="highlight">平行語料庫</span> (<span class="english-fullname">Parallel Corpus</span>): 包含兩種或多種語言相互對譯的文本，常用於機器翻譯。</li>
+                        </ul>
+                        語料庫的<span class="highlight">規模、質量和代表性</span>直接影響 <span class="english-abbr">NLP</span> 模型的性能。
+                    </div>
+                </div>
+                <br>
+                <img src="image/Corpus1.webp" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 56 -->
+            <div class="focus-card" data-category="5" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#56</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">文本風格轉換</span> (<span class="english-fullname">Text Style Transfer</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">內容保留與風格轉換</div>
+                    <div class="details-content">
+                        <span class="chinese-term">文本風格轉換</span>是指在<span class="highlight">保持文本主要內容不變</span>的情況下，將其<span class="highlight">風格轉換</span>為另一種風格。
+                        例如：
+                        <ul>
+                            <li>正式 <-> 非正式</li>
+                            <li>正面情感 <-> 負面情感</li>
+                            <li>莎士比亞風格 <-> 現代風格</li>
+                        </ul>
+                        這是一個具有挑戰性的 <span class="english-abbr">NLG</span> 任務，通常需要解耦內容和風格表示。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 57 -->
+            <div class="focus-card" data-category="7" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#57</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">模型可解釋性</span> (<span class="english-fullname">Interpretability</span>) in NLP
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">理解模型決策</div>
+                    <div class="details-content">
+                        隨著 <span class="english-abbr">NLP</span> 模型（尤其是深度學習模型）變得越來越複雜，理解其<span class="highlight">做出特定預測的原因</span>變得困難但重要。
+                        可解釋性方法旨在：
+                        <ul>
+                            <li><span class="highlight">識別影響預測的關鍵詞語或特徵</span>（如使用注意力權重、<span class="english-fullname">LIME</span>, <span class="english-abbr">SHAP</span>）。</li>
+                            <li><span class="highlight">理解模型的內部表示</span>。</li>
+                            <li><span class="highlight">為模型決策提供人類可理解的解釋</span>。</li>
+                        </ul>
+                        在金融、醫療、法律等高風險領域，模型的可解釋性尤為關鍵。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 58 -->
+            <div class="focus-card" data-category="8" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#58</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">雲端 NLP 服務</span> (<span class="english-fullname">Cloud NLP Services</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">常用平台</div>
+                    <div class="details-content">
+                        各大雲端服務商提供預建的 <span class="english-abbr">NLP API</span>，方便開發者快速集成 NLP 功能，無需自行訓練模型。
+                        常見服務包括：
+                        <ul>
+                            <li><span class="english-fullname">Google Cloud Natural Language API</span></li>
+                            <li><span class="english-fullname">Amazon Comprehend</span></li>
+                            <li><span class="english-fullname">Microsoft Azure Cognitive Service for Language</span></li>
+                            <li><span class="english-fullname">IBM Watson Natural Language Understanding</span></li>
+                        </ul>
+                        提供的功能通常涵蓋情感分析、實體識別、語法分析、文本分類等。
+                    </div>
+                </div>
+            </div>
+
+             <!-- Focus Point 59 -->
+            <div class="focus-card" data-category="6" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#59</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                         <span class="english-fullname">Transformer</span> <span class="chinese-term">的變體與發展</span>
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">模型演進</div>
+                    <div class="details-content">
+                        自 <span class="english-fullname">Transformer</span> 提出以來，出現了許多改進和變體：
+                        <ul>
+                            <li><span class="highlight">效率優化</span>：如 <span class="english-fullname">Reformer</span>, <span class="english-fullname">Linformer</span>, <span class="english-fullname">Longformer</span>，旨在降低自注意力機制的計算和記憶體複雜度，以處理更長的序列。</li>
+                            <li><span class="highlight">架構調整</span>：如 <span class="english-fullname">ALBERT</span> (共享參數), <span class="english-fullname">RoBERTa</span> (優化預訓練策略), <span class="english-fullname">DeBERTa</span> (解耦內容和位置表示)。</li>
+                            <li><span class="highlight">多模態應用</span>：將 <span class="english-fullname">Transformer</span> 應用於圖像 (<span class="english-abbr">ViT</span>)、語音等其他模態。</li>
+                            <li><span class="highlight">模型規模化</span>：<span class="english-abbr">LLM</span> 的發展趨勢，參數量不斷增大。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 60 -->
+            <div class="focus-card" data-category="1" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#60</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        NLP <span class="chinese-term">未來趨勢</span> (<span class="english-fullname">Future Trends</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">發展方向</div>
+                    <div class="details-content">
+                         <span class="english-abbr">NLP</span> 領域持續快速發展，一些重要趨勢包括：
+                        <ul>
+                            <li><span class="highlight">更大、更強的語言模型</span> (<span class="english-abbr">LLM</span>)。</li>
+                            <li><span class="highlight">多模態融合</span> (<span class="english-fullname">Multimodal Integration</span>): 結合文本、圖像、語音等多種訊息。</li>
+                            <li><span class="highlight">更強的常識推理和知識整合能力</span>。</li>
+                            <li><span class="highlight">更關注模型的效率、穩健性、公平性和可解釋性</span>。</li>
+                            <li><span class="highlight">低資源語言處理</span> (<span class="english-fullname">Low-resource NLP</span>)。</li>
+                            <li><span class="highlight">更自然、更具上下文感知能力的對話系統</span>。</li>
+                            <li><span class="highlight">負責任 AI</span> (<span class="english-fullname">Responsible AI</span>) 的實踐。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+             <!-- Placeholder for No Results -->
+             <div id="noResultsMessage">沒有找到符合條件的重點。</div>
+
+        </div><!-- end focus-points-container -->
+
+        <div class="back-to-top" id="backToTop">↑</div>
+    </div>
+
+    <script>
+        // Progress bar (no changes needed)
+        const progressBar = document.getElementById("progressBar");
+        window.onscroll = function() { updateProgressBar(); toggleBackToTopButton(); };
+        function updateProgressBar() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (height > 0) ? (winScroll / height) * 100 : 0;
+            progressBar.style.width = scrolled + "%";
+        }
+
+        // Back to top button (no changes needed)
+        const backToTopButton = document.getElementById("backToTop");
+        function toggleBackToTopButton() {
+             backToTopButton.style.display = (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) ? "flex" : "none";
+        }
+        backToTopButton.addEventListener("click", () => window.scrollTo({top: 0, behavior: 'smooth'}));
+
+        // Filter by category (Updated function name)
+        function filterByCategory(categoryNumber) {
+            document.getElementById('categoryFilter').value = categoryNumber === 'all' ? 'all' : String(categoryNumber);
+            document.getElementById('searchInput').value = ''; // Clear search on filter click
+            filterFocusPoints(); // Call updated filter function
+        }
+
+        // Event listeners for filters and search (Updated IDs/functions)
+        document.getElementById("categoryFilter").addEventListener("change", () => {
+             document.getElementById('searchInput').value = '';
+             filterFocusPoints();
+        });
+        document.getElementById("starFilter").addEventListener("change", () => {
+             document.getElementById('searchInput').value = '';
+             filterFocusPoints();
+        });
+        document.getElementById("searchButton").addEventListener("click", searchFocusPoints); // Updated function call
+        document.getElementById("searchInput").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                searchFocusPoints(); // Updated function call
+            }
+        });
+
+        const noResultsMessage = document.getElementById('noResultsMessage');
+
+        // Combined filter function (Updated variable/class names)
+        function filterFocusPoints() {
+            let category = document.getElementById("categoryFilter").value;
+            let stars = document.getElementById("starFilter").value;
+            let points = document.querySelectorAll(".focus-card"); // Target .focus-card
+            let anyVisible = false;
+
+            points.forEach(function(point) {
+                // Updated dataset attribute name
+                const matchesCategory = (category === "all" || point.dataset.category === category);
+                const matchesStars = (stars === "all" || point.dataset.stars === stars);
+
+                if (matchesCategory && matchesStars) {
+                    point.style.display = "block";
+                    anyVisible = true;
+                } else {
+                    point.style.display = "none";
+                }
+            });
+
+             if (noResultsMessage) {
+                 noResultsMessage.style.display = anyVisible ? 'none' : 'block';
+                 // Updated message text
+                 noResultsMessage.textContent = '沒有找到符合篩選條件的重點。';
+             }
+        }
+
+        // Search function (Updated variable/class names)
+        function searchFocusPoints() {
+            let searchText = document.getElementById("searchInput").value.toLowerCase().trim();
+            let points = document.querySelectorAll(".focus-card"); // Target .focus-card
+            let anyVisible = false;
+            let category = document.getElementById("categoryFilter").value;
+            let stars = document.getElementById("starFilter").value;
+
+            points.forEach(function(point) {
+                // Check filters first
+                const matchesCategory = (category === "all" || point.dataset.category === category);
+                const matchesStars = (stars === "all" || point.dataset.stars === stars);
+                let visibleBasedOnFilter = matchesCategory && matchesStars;
+
+                // Check search text
+                let pointText = point.textContent.toLowerCase();
+                let matchesSearch = (searchText === "" || pointText.includes(searchText));
+
+                // Show if matches filters AND search (or if search is empty)
+                if (visibleBasedOnFilter && matchesSearch) {
+                    point.style.display = "block";
+                    anyVisible = true;
+                } else {
+                    point.style.display = "none";
+                }
+            });
+
+             if (noResultsMessage) {
+                 if (searchText !== "") {
+                      noResultsMessage.style.display = anyVisible ? 'none' : 'block';
+                      // Updated message text
+                      noResultsMessage.textContent = '沒有找到符合目前篩選及搜尋條件的重點。';
+                 } else {
+                     // If search is empty, rely on filter results
+                     filterFocusPoints();
+                 }
+             }
+        }
+
+         // Initial setup
+         toggleBackToTopButton();
+         updateProgressBar();
+         filterFocusPoints(); // Apply default filters on load
+
+    </script>
+</body>
+</html>

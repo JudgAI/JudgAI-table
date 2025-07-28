@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>iPAS AI應用規劃師 考試重點整理 - L23101 機率統計在機器學習中的應用</title> <!-- Changed Title -->
+    <style>
+        /* RWD設定，讓整體版面在不同裝置都有良好顯示 */
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Microsoft JhengHei", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto; /* Added top/bottom margin */
+            padding: 25px;
+            background: #ffffff;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border-radius: 8px;
+        }
+        .responsive-img {
+            width: 100%;
+            max-width: 800px; /* 可自訂最大寬度 */
+            height: auto;
+            display: block; /* Center image */
+            margin: 15px auto; /* Add some margin */
+        }
+        /* Updated Header */
+        .header-container {
+            background: linear-gradient(135deg, #2c3e50, #34495e); /* Darker gradient */
+            color: white;
+            padding: 30px 20px; /* Increased padding */
+            margin: -25px -25px 25px -25px;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+        }
+        .header-container h1 {
+            margin: 0;
+            color: white;
+            font-size: 2.2rem; /* Larger title */
+            font-weight: 600;
+            margin-bottom: 5px; /* Space below title */
+        }
+        .header-container div { /* Subtitle */
+             font-size: 1.2rem;
+             opacity: 0.9;
+             margin-top: 5px;
+             font-weight: 300; /* Lighter weight */
+        }
+
+        /* Topic Categories Section (Renamed from Directions) */
+        .categories-container { /* Renamed */
+            background-color: #e8f0f5; /* Slightly different blue */
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 5px solid #5dade2; /* Lighter blue border */
+            border-radius: 5px;
+        }
+        .categories-title { /* Renamed */
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .categories-grid { /* Renamed */
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+        .category-item { /* Renamed */
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background-color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid #d6e0ea; /* Border matching background */
+        }
+        .category-item:hover {
+            background-color: #5dade2; /* Lighter blue hover */
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-color: #5dade2;
+        }
+        .category-number { /* Renamed */
+            width: 30px;
+            height: 30px;
+            background-color: #5dade2; /* Lighter blue number */
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 12px;
+            font-weight: bold;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+        .category-item:hover .category-number {
+            background-color: white;
+            color: #5dade2;
+        }
+        .category-text { /* Renamed */
+            font-size: 0.95rem;
+        }
+
+        /* Focus Point Card Styling (Replaces Question Card) */
+        .focus-points-container { /* Renamed */
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px; /* Increased gap */
+        }
+        .focus-card { /* Renamed */
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 0; /* Remove padding here, apply to inner elements */
+            box-shadow: 0 4px 12px rgba(44, 62, 80, 0.1); /* Slightly stronger shadow */
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+            border: 1px solid #e0e0e0;
+            overflow: hidden; /* Ensure inner elements respect border radius */
+        }
+        .focus-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(44, 62, 80, 0.15);
+        }
+        .focus-header { /* Renamed */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px; /* Padding inside header */
+            background-color: #f8f9fa; /* Light header background */
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .focus-id { /* Renamed */
+            font-weight: bold;
+            color: #5dade2; /* Lighter blue ID */
+            font-size: 1rem;
+            background-color: #e8f0f5; /* Background for ID */
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+        .focus-importance { /* Renamed */
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .focus-topic-container { /* New container for the main topic */
+             padding: 25px 25px 20px 25px; /* Padding around the topic */
+             border-bottom: 1px dashed #eee; /* Separator line */
+        }
+
+        .focus-topic { /* Replaces question-content */
+            font-size: 1.5rem; /* Larger font for the topic */
+            font-weight: 600; /* Bolder */
+            margin-bottom: 0; /* Remove margin, handled by container padding */
+            line-height: 1.4;
+            color: #2c3e50; /* Dark blue-grey for topic */
+        }
+
+        /* Styling for terminology within topic/details (CUSTOM) */
+        .term-cn { color: blue; font-weight: bold; }
+        .term-en-abbr { color: purple; font-weight: bold; }
+        .term-en-full { color: red; font-weight: bold; }
+        .keyword-highlight {
+            background-color: #ffff0030; /* Light yellow background */
+            /* padding: 1px 3px; */ /* Optional padding */
+            /* border-radius: 3px; */ /* Optional rounded corners */
+        }
+
+
+        /* Details Section Styling (Replaces Explanation) */
+        .focus-details-container { /* Renamed */
+            padding: 20px 25px 25px 25px; /* Padding for details */
+            /* background-color: #fdfefe; */ /* Optional subtle background, removing for cleaner look */
+        }
+        .details-header { /* Renamed */
+            font-weight: bold;
+            margin-bottom: 15px; /* Space below header */
+            color: #34495e;
+            font-size: 1.2rem; /* Slightly larger details header */
+            /* text-transform: uppercase; */ /* Optional styling */
+            letter-spacing: 0.5px; /* Optional spacing */
+            /* border-bottom: 2px solid #5dade2; */ /* Optional underline */
+            /* display: inline-block; */ /* If using underline */
+            /* padding-bottom: 5px; */ /* If using underline */
+        }
+        .details-content { /* Renamed */
+            line-height: 1.75; /* Increased line height for readability */
+            color: #444;
+            font-size: 1.05rem; /* Slightly larger detail text */
+        }
+        .details-content ul { /* Style lists if used in details */
+             padding-left: 25px;
+             margin-top: 10px;
+             margin-bottom: 10px;
+        }
+         .details-content li {
+             margin-bottom: 8px; /* Space between list items */
+         }
+
+        /* Controls Section Styling (Adjusted for Focus Points) */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 15px;
+            background-color: #fdfdfd;
+            border-radius: 5px;
+            border: 1px solid #eee;
+        }
+        .filter-container, .search-container, .star-filter-container { /* Removed .toggle-explanations */
+            margin-bottom: 0;
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            min-width: 200px;
+        }
+         .search-container { flex-grow: 2; }
+        .filter-label, .search-label, .star-filter-label {
+            font-weight: 600;
+            margin-right: 10px;
+            white-space: nowrap;
+            color: #555;
+            font-size: 0.95rem;
+        }
+        select, input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: inherit;
+            flex-grow: 1;
+            font-size: 0.95rem;
+            background-color: white;
+        }
+         input[type="text"] { min-width: 180px; }
+        button {
+            padding: 10px 18px;
+            background-color: #5dade2; /* Lighter blue buttons */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background-color 0.2s ease;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-left: 8px;
+            white-space: nowrap;
+        }
+        button:hover {
+            background-color: #3498db; /* Darker blue hover */
+        }
+
+        /* RWD Adjustments */
+        @media (max-width: 992px) {
+             .controls { flex-direction: column; align-items: stretch; }
+            .filter-container, .search-container, .star-filter-container { width: 100%; flex-grow: 0; }
+             select, input[type="text"] { width: 100%; }
+             button { margin-left: 0; margin-top: 5px; }
+             .search-container button { margin-left: 8px; margin-top: 0; }
+             #searchInput { width: calc(100% - 90px); }
+        }
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            .header-container { padding: 25px 15px; margin: -15px -15px 20px -15px; }
+            .categories-grid { grid-template-columns: 1fr; }
+            .focus-card { padding: 0; } /* Ensure no padding on card itself */
+             .focus-header, .focus-topic-container, .focus-details-container { padding-left: 20px; padding-right: 20px; } /* Adjust inner padding */
+            h1 { font-size: 1.8rem; }
+            .header-container h1 { font-size: 2rem; }
+            .focus-topic { font-size: 1.3rem; }
+            .details-header { font-size: 1.1rem; }
+            .details-content { font-size: 1rem; }
+        }
+
+        /* Back to Top Button & Progress Bar (No changes needed) */
+        .back-to-top {
+            position: fixed; bottom: 25px; right: 25px; background-color: #5dade2; color: white;
+            width: 45px; height: 45px; border-radius: 50%; display: none; justify-content: center;
+            align-items: center; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: background-color 0.3s, opacity 0.3s, transform 0.3s; z-index: 1000;
+            opacity: 0.8; font-size: 1.2rem;
+        }
+        .back-to-top:hover { background-color: #3498db; opacity: 1; transform: scale(1.1); }
+        .progress-container {
+            width: 100%; height: 5px; background-color: #e8f0f5; position: fixed;
+            top: 0; left: 0; z-index: 1001;
+        }
+        .progress-bar {
+            height: 5px; background: linear-gradient(90deg, #5dade2, #85c1e9); /* Adjusted gradient */
+            width: 0%; border-radius: 0 2px 2px 0; transition: width 0.1s linear;
+        }
+         #noResultsMessage {
+             text-align: center; padding: 20px; color: #777; display: none; font-style: italic;
+         }
+    </style>
+</head>
+<body>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="container">
+        <div class="header-container">
+            <h1>iPAS AI應用規劃師 考試重點</h1> <!-- Updated Title -->
+            <div>L23101 機率統計在機器學習中的應用</div> <!-- Updated Subtitle -->
+        </div>
+
+        <div class="controls">
+             <div class="filter-container">
+                 <!-- Updated Label -->
+                <label for="categoryFilter" class="filter-label">篩選主題：</label>
+                <select id="categoryFilter"> <!-- Updated ID -->
+                    <option value="all">全部主題</option>
+                    <option value="1">機率論基礎</option>
+                    <option value="2">統計量與抽樣分佈</option>
+                    <option value="3">參數估計</option>
+                    <option value="4">假設檢定</option>
+                    <option value="5">相關性與迴歸分析基礎</option>
+                    <option value="6">貝氏定理與應用</option>
+                    <option value="7">資訊理論基礎</option>
+                    <option value="8">機率統計於模型評估之應用</option>
+                </select>
+            </div>
+
+            <div class="star-filter-container">
+                <label for="starFilter" class="star-filter-label">重要性：</label>
+                <select id="starFilter">
+                    <option value="all">全部重要性</option>
+                    <option value="5">★★★★★</option>
+                    <option value="4">★★★★</option>
+                    <option value="3">★★★</option>
+                    <option value="2">★★</option>
+                    <option value="1">★</option>
+                </select>
+            </div>
+
+            <div class="search-container">
+                <label for="searchInput" class="search-label">搜尋：</label>
+                <input type="text" id="searchInput" placeholder="輸入關鍵字...">
+                <button id="searchButton">搜尋</button>
+            </div>
+            <!-- Removed Toggle Explanations Button -->
+        </div>
+
+        <div class="categories-container"> <!-- Renamed -->
+            <div class="categories-title">主題分類</div> <!-- Updated Title -->
+            <div class="categories-grid" id="categoriesGrid"> <!-- Renamed ID -->
+                <!-- Renamed classes and updated filter function call -->
+                <div class="category-item" onclick="filterByCategory(1)">
+                    <div class="category-number">1</div>
+                    <div class="category-text">機率論基礎</div>
+                </div>
+                <div class="category-item" onclick="filterByCategory(2)">
+                    <div class="category-number">2</div>
+                    <div class="category-text">統計量與抽樣分佈</div>
+                </div>
+                <div class="category-item" onclick="filterByCategory(3)">
+                    <div class="category-number">3</div>
+                    <div class="category-text">參數估計</div>
+                </div>
+                <div class="category-item" onclick="filterByCategory(4)">
+                    <div class="category-number">4</div>
+                    <div class="category-text">假設檢定</div>
+                </div>
+                 <div class="category-item" onclick="filterByCategory(5)">
+                    <div class="category-number">5</div>
+                    <div class="category-text">相關性與迴歸分析基礎</div>
+                </div>
+                <div class="category-item" onclick="filterByCategory(6)">
+                    <div class="category-number">6</div>
+                    <div class="category-text">貝氏定理與應用</div>
+                </div>
+                <div class="category-item" onclick="filterByCategory(7)">
+                    <div class="category-number">7</div>
+                    <div class="category-text">資訊理論基礎</div>
+                </div>
+                <div class="category-item" onclick="filterByCategory(8)">
+                    <div class="category-number">8</div>
+                    <div class="category-text">機率統計於模型評估之應用</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="focus-points-container" id="focusPointsContainer"> <!-- Renamed -->
+
+            <!-- Focus Point 1 -->
+            <div class="focus-card" data-category="1" data-stars="2">
+                <div class="focus-header">
+                    <div class="focus-id">#1</div>
+                    <div class="focus-importance">★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">機率</span> (<span class="term-en-full">Probability</span>) - 基本定義
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <span class="term-cn">機率</span> 是衡量<span class="keyword-highlight">某一事件發生可能性大小</span>的數值，其值<span class="keyword-highlight">介於 0 和 1 之間</span>（包含 0 和 1）。0 表示事件不可能發生，1 表示事件必然發生。
+                        <ul>
+                            <li><span class="term-cn">樣本空間</span> (<span class="term-en-full">Sample Space</span>): 隨機試驗所有可能結果的集合。</li>
+                            <img src="image/Sample Space.png" class="responsive-img">
+                            <li><span class="term-cn">事件</span> (<span class="term-en-full">Event</span>): 樣本空間的一個子集。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 2 -->
+            <div class="focus-card" data-category="1" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#2</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">條件機率</span> (<span class="term-en-full">Conditional Probability</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <span class="term-cn">條件機率</span> 指的是在<span class="keyword-highlight">事件 B 已經發生的條件下，事件 A 發生的機率</span>，表示為 <span class="term-en-abbr">P(A|B)</span>。<br/>
+                        計算公式為：<span class="term-en-abbr">P(A|B) = P(A ∩ B) / P(B)</span>，其中 <span class="term-en-abbr">P(B) > 0</span>。<br/>
+                        這是許多<span class="term-cn">機器學習</span> (<span class="term-en-abbr">ML</span>) 模型的基礎，如<span class="term-cn">貝氏分類器</span>。
+                    </div>
+                </div>
+                <img src="image/Conditional Probability.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 3 -->
+            <div class="focus-card" data-category="1" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#3</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">獨立事件</span> (<span class="term-en-full">Independent Events</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        若兩個事件 A 和 B 的發生<span class="keyword-highlight">互不影響</span>，則稱它們為<span class="term-cn">獨立事件</span>。<br/>
+                        數學定義：<span class="term-en-abbr">P(A ∩ B) = P(A) * P(B)</span>。<br/>
+                        或者，若 <span class="term-en-abbr">P(B) > 0</span>，則 <span class="term-en-abbr">P(A|B) = P(A)</span>；若 <span class="term-en-abbr">P(A) > 0</span>，則 <span class="term-en-abbr">P(B|A) = P(B)</span>。<br/>
+                        <span class="term-cn">樸素貝氏</span> (<span class="term-en-full">Naive Bayes</span>) 算法的核心假設就是特徵之間相互獨立。
+                    </div>
+                </div>
+                <img src="image/mutually-exclusive-vs-independent-event.jpg" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 4 -->
+            <div class="focus-card" data-category="1" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#4</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">隨機變數</span> (<span class="term-en-full">Random Variable</span>) 與 <span class="term-cn">機率分佈</span> (<span class="term-en-full">Probability Distribution</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <span class="term-cn">隨機變數</span> (<span class="term-en-abbr">RV</span>) 是<span class="keyword-highlight">一個變數，其值是隨機現象的數值結果</span>。<br/>
+                        分為：
+                        <ul>
+                            <li><span class="term-cn">離散隨機變數</span> (<span class="term-en-full">Discrete RV</span>): 值只能取有限個或可數無限個。其分佈由<span class="term-cn">機率質量函數</span> (<span class="term-en-full">Probability Mass Function</span>, <span class="term-en-abbr">PMF</span>) 描述。</li>
+                            <li><span class="term-cn">連續隨機變數</span> (<span class="term-en-full">Continuous RV</span>): 值可以取某一區間內的任何值。其分佈由<span class="term-cn">機率密度函數</span> (<span class="term-en-full">Probability Density Function</span>, <span class="term-en-abbr">PDF</span>) 描述。</li>
+                        </ul>
+                        <span class="term-cn">累積分布函數</span> (<span class="term-en-full">Cumulative Distribution Function</span>, <span class="term-en-abbr">CDF</span>) 則描述了隨機變數小於或等於某個值的機率。理解資料的分佈對於選擇合適的<span class="term-cn">機器學習</span>模型至關重要。
+                    </div>
+                </div>
+                <img src="image/Discrete RV Continuous RV.png" class="responsive-img">
+                <br>
+                <img src="image/Probability Density Function (PDF) Probability Mass Function (PMF).png" class="responsive-img">
+                <br>
+                <img src="image/Probability Density Function (PDF) Probability Mass Function (PMF) Cumulative Distribution Function (CDF).jpg" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 5 -->
+            <div class="focus-card" data-category="1" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#5</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">期望值</span> (<span class="term-en-full">Expected Value</span>) 與 <span class="term-cn">變異數</span> (<span class="term-en-full">Variance</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <ul>
+                            <li><span class="term-cn">期望值</span> (<span class="term-en-abbr">E[X]</span>): 隨機變數<span class="keyword-highlight">所有可能值的加權平均</span>，權重為其對應的機率。代表隨機變數的<span class="keyword-highlight">平均水平</span>或中心趨勢。</li>
+                            <img src="image/Expected Value.jpg" class="responsive-img">
+                            <li><span class="term-cn">變異數</span> (<span class="term-en-abbr">Var(X)</span>): 衡量隨機變數<span class="keyword-highlight">取值偏離其期望值的程度</span>。計算公式為 <span class="term-en-abbr">E[(X - E[X])²]</span>。</li>
+                            <img src="image/variance-formula.png" class="responsive-img">
+                            <li><span class="term-cn">標準差</span> (<span class="term-en-full">Standard Deviation</span>, <span class="term-en-abbr">SD</span>): 變異數的平方根，與原始數據單位相同，<span class="keyword-highlight">更易於解釋離散程度</span>。</li>
+                            <img src="image/standard-deviation-formula.png" class="responsive-img">
+                        </ul>
+                        這些概念在理解資料特性、模型風險評估中非常重要。
+                    </div>
+                </div>
+            </div>
+
+             <!-- Focus Point 6 -->
+            <div class="focus-card" data-category="2" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#6</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">描述性統計</span> vs <span class="term-cn">推論性統計</span>
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <ul>
+                            <li><span class="term-cn">描述性統計</span> (<span class="term-en-full">Descriptive Statistics</span>): 使用<span class="keyword-highlight">圖表和摘要統計量</span>（如平均數、中位數、標準差）來<span class="keyword-highlight">描述數據集的基本特徵</span>。是<span class="term-cn">探索性數據分析</span> (<span class="term-en-abbr">EDA</span>) 的核心。</li>
+                            <li><span class="term-cn">推論性統計</span> (<span class="term-en-full">Inferential Statistics</span>): 使用<span class="keyword-highlight">樣本數據來推斷母體參數</span>或對母體進行假設檢定。機器學習中的模型訓練和評估大量依賴推論統計。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+             <!-- Focus Point 7 -->
+            <div class="focus-card" data-category="2" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#7</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">集中趨勢量數</span> 與 <span class="term-cn">離散趨勢量數</span>
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <ul>
+                            <li><span class="term-cn">集中趨勢量數</span> (<span class="term-en-full">Measures of Central Tendency</span>): 描述數據<span class="keyword-highlight">中心位置</span>。
+                                <ul>
+                                    <li><span class="term-cn">平均數</span> (<span class="term-en-full">Mean</span>): 總和除以個數，易受極端值影響。</li>
+                                    <li><span class="term-cn">中位數</span> (<span class="term-en-full">Median</span>): 排序後位於中間的值，對極端值不敏感。</li>
+                                    <li><span class="term-cn">眾數</span> (<span class="term-en-full">Mode</span>): 出現次數最多的值。</li>
+                                </ul>
+                            </li>
+                             <li><span class="term-cn">離散趨勢量數</span> (<span class="term-en-full">Measures of Dispersion/Variability</span>): 描述數據<span class="keyword-highlight">分散程度</span>。
+                                <ul>
+                                    <li><span class="term-cn">全距</span> (<span class="term-en-full">Range</span>): 最大值減最小值。</li>
+                                    <li><span class="term-cn">四分位距</span> (<span class="term-en-abbr">IQR</span>): Q3 - Q1，不易受極端值影響。</li>
+                                    <li><span class="term-cn">變異數</span> (<span class="term-en-full">Variance</span>) / <span class="term-cn">標準差</span> (<span class="term-en-full">Standard Deviation</span>)。</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        這些是<span class="term-cn">探索性數據分析</span> (<span class="term-en-abbr">EDA</span>) 的基礎。
+                    </div>
+                </div>
+            </div>
+
+             <!-- Focus Point 8 -->
+            <div class="focus-card" data-category="2" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#8</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        常見<span class="term-cn">機率分佈</span> (<span class="term-en-full">Common Probability Distributions</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        理解數據的潛在分佈對模型選擇和假設檢定至關重要：
+                        <ul>
+                            <li><span class="term-cn">常態分佈</span> (<span class="term-en-full">Normal/Gaussian Distribution</span>): <span class="keyword-highlight">鐘形曲線</span>，由平均數 (μ) 和標準差 (σ) 定義。許多自然現象和統計量近似服從常態分佈。</li>
+                            <img src="image/Normal Distribution.png" class="responsive-img">
+                            <li><span class="term-cn">二項分佈</span> (<span class="term-en-full">Binomial Distribution</span>): n 次獨立<span class="keyword-highlight">伯努利試驗</span>中成功的次數。</li>
+                            <img src="image/Binomial Distribution.png" class="responsive-img">
+                            <img src="image/Binomial Distribution2.png" class="responsive-img">
+                            <li><span class="term-cn">卜瓦松分佈</span> (<span class="term-en-full">Poisson Distribution</span>): 描述單位時間或空間內<span class="keyword-highlight">事件發生次數</span>的分佈。</li>
+                            <img src="image/poisson-distribution.png" class="responsive-img">
+                            <img src="image/poisson-distribution2.png" class="responsive-img">
+                            <li><span class="term-cn">均勻分佈</span> (<span class="term-en-full">Uniform Distribution</span>): 在一個區間內，<span class="keyword-highlight">所有值的機率密度相等</span>。</li>
+                            <img src="image/Uniform Distribution.png" class="responsive-img">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 9 -->
+            <div class="focus-card" data-category="2" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#9</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">中央極限定理</span> (<span class="term-en-full">Central Limit Theorem</span>, <span class="term-en-abbr">CLT</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <span class="term-cn">CLT</span> 指出，<span class="keyword-highlight">無論母體分佈為何</span>，只要樣本量 n 足夠大（通常 n ≥ 30），<span class="keyword-highlight">樣本平均數</span> (<span class="term-en-abbr">Sample Mean</span>) 的<span class="term-cn">抽樣分佈</span> (<span class="term-en-full">Sampling Distribution</span>) <span class="keyword-highlight">會趨近於常態分佈</span>。<br/>
+                        此分佈的平均數等於母體平均數 (μ)，標準差（稱為<span class="term-cn">標準誤</span> <span class="term-en-full">Standard Error</span>, <span class="term-en-abbr">SE</span>）等於母體標準差 (σ) 除以樣本量的平方根 (σ/√n)。<br/>
+                        <span class="term-cn">CLT</span> 是許多<span class="term-cn">推論統計</span>方法（如信賴區間、假設檢定）的理論基礎。
+                    </div>
+                </div>
+                <img src="image/Central Limit Theorem.png" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 10 -->
+            <div class="focus-card" data-category="3" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#10</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">參數估計</span>: <span class="term-cn">點估計</span> vs <span class="term-cn">區間估計</span>
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <span class="term-cn">參數估計</span> (<span class="term-en-full">Parameter Estimation</span>) 是使用樣本統計量來估計未知的母體參數。
+                        <ul>
+                            <li><span class="term-cn">點估計</span> (<span class="term-en-full">Point Estimation</span>): 用<span class="keyword-highlight">單一數值</span>（點估計量）來估計母體參數（如用樣本平均數估計母體平均數）。</li>
+                            <li><span class="term-cn">區間估計</span> (<span class="term-en-full">Interval Estimation</span>): 提供一個<span class="keyword-highlight">數值區間</span>（<span class="term-cn">信賴區間</span> <span class="term-en-full">Confidence Interval</span>, <span class="term-en-abbr">CI</span>），並伴隨一個<span class="term-cn">信賴水準</span> (<span class="term-en-full">Confidence Level</span>)，表示該區間包含真實母體參數的可能性。</li>
+                        </ul>
+                        區間估計提供了估計的不確定性訊息，比點估計更具參考價值。
+                    </div>
+                </div>
+                <img src="image/Point Estimation_Interval Estimation.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 11 -->
+            <div class="focus-card" data-category="3" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#11</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">估計量的性質</span> (<span class="term-en-full">Properties of Estimators</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        評估一個估計量好壞的標準：
+                        <ul>
+                            <li><span class="term-cn">不偏性</span> (<span class="term-en-full">Unbiasedness</span>): 估計量的<span class="keyword-highlight">期望值等於</span>被估計的母體參數。</li>
+                            <li><span class="term-cn">有效性</span> (<span class="term-en-full">Efficiency</span>): 在所有不偏估計量中，具有<span class="keyword-highlight">最小變異數</span>者。</li>
+                            <li><span class="term-cn">一致性</span> (<span class="term-en-full">Consistency</span>): 隨著<span class="keyword-highlight">樣本量增大</span>，估計量的值<span class="keyword-highlight">趨近於</span>母體參數。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 12 -->
+            <div class="focus-card" data-category="3" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#12</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">最大概似估計</span> (<span class="term-en-full">Maximum Likelihood Estimation</span>, <span class="term-en-abbr">MLE</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <span class="term-cn">MLE</span> 是一種常用的<span class="keyword-highlight">參數估計方法</span>。<br/>
+                        其核心思想是：<span class="keyword-highlight">找到一組參數值，使得觀察到的樣本數據出現的機率（概似函數 Likelihood Function）最大化</span>。<br/>
+                        在<span class="term-cn">機器學習</span>中，許多模型的參數（如線性迴歸的係數、邏輯斯迴歸的係數）都是通過<span class="term-cn">MLE</span> 或其變形（如最小化負對數概似）來求解的。
+                    </div>
+                </div>
+                <img src="image/Maximum Likelihood Estimation vs. Expectation Maximization.jpg" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 13 -->
+            <div class="focus-card" data-category="4" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#13</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">假設檢定</span> (<span class="term-en-full">Hypothesis Testing</span>) - 基本流程
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <span class="term-cn">假設檢定</span> 是利用樣本數據來<span class="keyword-highlight">判斷關於母體的某個假設是否成立</span>的統計方法。<br/>
+                        基本步驟：
+                        <ol>
+                            <li>建立<span class="term-cn">虛無假設</span> (<span class="term-en-full">Null Hypothesis</span>, <span class="term-en-abbr">H0</span>) 和<span class="term-cn">對立假設</span> (<span class="term-en-full">Alternative Hypothesis</span>, <span class="term-en-abbr">H1</span>)。<span class="term-en-abbr">H0</span> 通常是想要推翻的假設（如無效果、無差異）。</li>
+                            <li>選擇<span class="term-cn">顯著水準</span> (<span class="term-en-full">Significance Level</span>, <span class="term-en-abbr">α</span>)，通常為 0.05 或 0.01。</li>
+                            <li>選擇合適的<span class="term-cn">檢定統計量</span> (<span class="term-en-full">Test Statistic</span>) 並計算其值。</li>
+                            <li>計算 <span class="term-cn">p 值</span> (<span class="term-en-full">p-value</span>) 或確定拒絕域。</li>
+                            <li>做出決策：若 <span class="keyword-highlight">p 值 < α</span> (或檢定統計量落在拒絕域)，則<span class="keyword-highlight">拒絕 H0</span>；否則，不拒絕 H0。</li>
+                        </ol>
+                        常用於比較模型性能、A/B 測試等。
+                    </div>
+                </div>
+                <img src="image/Null Hypothesis and Alternative Hypothesis.png" class="responsive-img">
+                <img src="image/hypothesis testing_error.png" class="responsive-img">
+               
+            </div>
+
+             <!-- Focus Point 14 -->
+            <div class="focus-card" data-category="4" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#14</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">第一型錯誤</span> (<span class="term-en-full">Type I Error</span>) 與 <span class="term-cn">第二型錯誤</span> (<span class="term-en-full">Type II Error</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        在假設檢定中可能犯的兩種錯誤：
+                        <ul>
+                            <li><span class="term-cn">第一型錯誤</span> (α): <span class="keyword-highlight">H0 為真時卻拒絕 H0</span> (偽陽性, <span class="term-en-full">False Positive</span>)。其發生的機率上限由<span class="term-cn">顯著水準</span> α 控制。</li>
+                            <li><span class="term-cn">第二型錯誤</span> (β): <span class="keyword-highlight">H0 為假時卻未拒絕 H0</span> (偽陰性, <span class="term-en-full">False Negative</span>)。</li>
+                        </ul>
+                        <span class="term-cn">檢定力</span> (<span class="term-en-full">Power of a Test</span>) = 1 - β，表示<span class="keyword-highlight">正確拒絕錯誤的 H0</span> 的機率。<br/>
+                        α 和 β 之間存在<span class="keyword-highlight">權衡關係</span>，降低一種錯誤的機率通常會增加另一種錯誤的機率。
+                    </div>
+                </div>
+                <img src="image/hypothesis testing_error.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 15 -->
+            <div class="focus-card" data-category="4" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#15</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">p 值</span> (<span class="term-en-full">p-value</span>) 的意義與判讀
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <span class="term-cn">p 值</span> 是在<span class="keyword-highlight">假設 H0 為真</span>的前提下，<span class="keyword-highlight">觀察到當前樣本結果或更極端結果的機率</span>。<br/>
+                        判讀：
+                        <ul>
+                            <li><span class="keyword-highlight">p 值 < α</span> (顯著水準): 結果具有統計顯著性，<span class="keyword-highlight">拒絕 H0</span>。表示觀察到的結果在 H0 為真的情況下不太可能發生。</li>
+                            <li><span class="keyword-highlight">p 值 ≥ α</span>: 結果不具有統計顯著性，<span class="keyword-highlight">不拒絕 H0</span>。表示沒有足夠證據推翻 H0。</li>
+                        </ul>
+                        注意：p 值<span class="keyword-highlight">不是 H0 為真的機率</span>，也不是 H1 為真的機率。
+                    </div>
+                </div>
+            </div>
+
+             <!-- Focus Point 16 -->
+            <div class="focus-card" data-category="4" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#16</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        常用<span class="term-cn">假設檢定方法</span> (t-檢定, F-檢定, 卡方檢定)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        根據數據類型和研究問題選擇不同的檢定方法：
+                        <ul>
+                            <li><span class="term-cn">t-檢定</span> (<span class="term-en-full">t-test</span>): 用於比較<span class="keyword-highlight">一或兩個樣本的平均數</span>。例如：比較兩種模型預測誤差的平均值是否有顯著差異（需注意樣本是否獨立、變異數是否相等）。樣本數較小且母體標準差未知時常用。</li>
+                            <img src="image/t-test z-test1.png" class="responsive-img">
+                            <li><span class="term-cn">F-檢定</span> (<span class="term-en-full">F-test</span>): 通常用於<span class="keyword-highlight">比較兩個或多個群體的變異數</span>（<span class="term-cn">變異數分析</span> <span class="term-en-abbr">ANOVA</span> 的基礎），或在迴歸分析中檢定<span class="keyword-highlight">整體模型的顯著性</span>。</li>
+                            <img src="image/F_Test_Formula.jpg" class="responsive-img">
+                            <li><span class="term-cn">卡方檢定</span> (<span class="term-en-full">Chi-squared Test</span>, <span class="term-en-abbr">χ²</span>): 用於檢定<span class="keyword-highlight">類別變數之間的關聯性</span>（獨立性檢定）或<span class="keyword-highlight">觀察頻次與期望頻次是否一致</span>（適合度檢定）。例如：檢定模型預測的類別分佈是否與實際分佈一致。</li>
+                            <img src="image/Chi-squared Test.png" class="responsive-img">
+                        </ul>
+                        *樣題曾出現 t-檢定, F-檢定, 卡方檢定的適用情境判斷。*
+                    </div>
+                </div>
+            </div>
+
+             <!-- Focus Point 17 -->
+            <div class="focus-card" data-category="5" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#17</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">相關係數</span> (<span class="term-en-full">Correlation Coefficient</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <span class="term-cn">相關係數</span> (通常指<span class="term-cn">皮爾森相關係數</span> <span class="term-en-full">Pearson Correlation Coefficient</span>, r) 衡量<span class="keyword-highlight">兩個連續變數之間線性關係的強度和方向</span>。<br/>
+                        <ul>
+                            <li>值域：<span class="keyword-highlight">-1 到 +1</span>。</li>
+                            <li>+1：完全正相關。</li>
+                            <li>-1：完全負相關。</li>
+                            <li>0：無線性相關。</li>
+                        </ul>
+                        重要：<span class="keyword-highlight">相關不等於因果</span> (<span class="term-en-full">Correlation does not imply causation</span>)。<br/>
+                        在特徵工程中，常用於<span class="keyword-highlight">檢測特徵之間的共線性</span>。
+                    </div>
+                </div>
+                <img src="image/Correlation Coefficient.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 18 -->
+            <div class="focus-card" data-category="5" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#18</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">簡單線性迴歸</span> (<span class="term-en-full">Simple Linear Regression</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <span class="term-cn">簡單線性迴歸</span> 試圖找到一條直線 (<span class="term-en-abbr">Y = β0 + β1X + ε</span>) 來<span class="keyword-highlight">最佳擬合一個自變數 (X) 和一個應變數 (Y) 之間的關係</span>。<br/>
+                        <ul>
+                            <li><span class="term-cn">β0</span>: 截距 (<span class="term-en-full">Intercept</span>)，表示當自變數 X = 0 時，應變數 Y 的預測值。</li>
+                            <li><span class="term-cn">β1</span>: 斜率 (<span class="term-en-full">Slope</span>)，表示 X 每增加一單位，Y 的平均變化量。</li>
+                            <img src="image/slope.png" class="responsive-img">
+                            <li><span class="term-cn">ε</span>: 誤差項 (<span class="term-en-full">Error Term</span>)，代表模型無法解釋的變異。</li>
+                        </ul>
+                        參數通常使用<span class="term-cn">最小平方法</span> (<span class="term-en-full">Least Squares Method</span>) 來估計。
+                    </div>
+                </div>
+                <img src="image/What-is-Simple-Linear-Regression.png" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 19 -->
+            <div class="focus-card" data-category="5" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#19</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">決定係數</span> (<span class="term-en-full">Coefficient of Determination</span>, <span class="term-en-abbr">R²</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <span class="term-cn">R²</span> 是迴歸分析中衡量<span class="keyword-highlight">模型擬合優度</span>的指標。<br/>
+                        其值<span class="keyword-highlight">介於 0 和 1 之間</span>，表示應變數 (Y) 的總變異中，<span class="keyword-highlight">可以被自變數 (X) 解釋的比例</span>。<br/>
+                        R² 越高，表示模型對數據的解釋能力越強。<br/>
+                        例如，R² = 0.7 表示應變數 70% 的變異可以由模型解釋。<br/>
+                        注意：R² 會隨著自變數數量的增加而增加（即使新增的變數無關），因此在多元迴歸中常使用<span class="term-cn">調整後 R²</span> (<span class="term-en-full">Adjusted R²</span>)。 *樣題曾考 R² 定義*
+                    </div>
+                </div>
+                <img src="image/R-squared.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 20 -->
+            <div class="focus-card" data-category="6" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#20</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">貝氏定理</span> (<span class="term-en-full">Bayes' Theorem</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <span class="term-cn">貝氏定理</span> 描述了在獲得新證據後，<span class="keyword-highlight">更新事件發生機率</span>的方法。<br/>
+                        公式： <span class="term-en-abbr">P(A|B) = [P(B|A) * P(A)] / P(B)</span><br/>
+                        <ul>
+                            <li><span class="term-en-abbr">P(A|B)</span>: <span class="term-cn">後驗機率</span> (<span class="term-en-full">Posterior Probability</span>) - 在已知 B 發生的情況下，A 發生的機率。</li>
+                            <li><span class="term-en-abbr">P(B|A)</span>: <span class="term-cn">概似度</span> (<span class="term-en-full">Likelihood</span>) - 在已知 A 發生的情況下，B 發生的機率。</li>
+                            <li><span class="term-en-abbr">P(A)</span>: <span class="term-cn">先驗機率</span> (<span class="term-en-full">Prior Probability</span>) - 在觀察到 B 之前，A 發生的機率。</li>
+                            <li><span class="term-en-abbr">P(B)</span>: <span class="term-cn">證據</span> (<span class="term-en-full">Evidence</span>) - B 發生的邊際機率。</li>
+                        </ul>
+                        是<span class="term-cn">貝氏統計</span>和許多<span class="term-cn">機器學習</span>算法（如<span class="term-cn">樸素貝氏分類器</span>、<span class="term-cn">貝氏網絡</span>）的基礎。
+                    </div>
+                </div>
+                <img src="image/Bayes-Theorem-for-Conditional-Probability.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 21 -->
+             <div class="focus-card" data-category="6" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#21</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">貝氏定理</span> 在<span class="term-cn">機器學習</span>中的應用: <span class="term-cn">樸素貝氏分類器</span>
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <span class="term-cn">樸素貝氏分類器</span> (<span class="term-en-full">Naive Bayes Classifier</span>) 是一種基於<span class="term-cn">貝氏定理</span>的<span class="keyword-highlight">簡單有效的分類算法</span>。<br/>
+                        核心思想：對於給定的待分類項 X（具有特徵 x1, x2, ..., xn），計算它屬於每個類別 Ck 的<span class="term-cn">後驗機率</span> <span class="term-en-abbr">P(Ck|X)</span>，並將其歸類到後驗機率最大的那個類別。<br/>
+                        計算 <span class="term-en-abbr">P(Ck|X)</span> 使用貝氏定理：<span class="term-en-abbr">P(Ck|X) ∝ P(X|Ck) * P(Ck)</span>。<br/>
+                        "樸素"之處在於它假設<span class="keyword-highlight">所有特徵之間相互獨立</span>（<span class="term-en-full">Conditional Independence Assumption</span>）：<span class="term-en-abbr">P(X|Ck) = P(x1|Ck) * P(x2|Ck) * ... * P(xn|Ck)</span>。<br/>
+                        儘管這個假設在現實中通常不成立，但<span class="term-cn">樸素貝氏</span>在許多應用（如文本分類、垃圾郵件過濾）中表現良好，且計算效率高。
+                    </div>
+                </div>
+                <img src="image/Naive Bayes.webp" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 22 -->
+            <div class="focus-card" data-category="6" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#22</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">最大後驗機率估計</span> (<span class="term-en-full">Maximum A Posteriori</span>, <span class="term-en-abbr">MAP</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <span class="term-cn">MAP</span> 估計是<span class="term-cn">貝氏統計</span>中的一種<span class="keyword-highlight">點估計方法</span>。<br/>
+                        它尋找使<span class="term-cn">後驗機率</span> <span class="term-en-abbr">P(θ|Data)</span> <span class="keyword-highlight">最大化</span>的參數 θ 值。<br/>
+                        與<span class="term-cn">最大概似估計</span> (<span class="term-en-abbr">MLE</span>) 的區別在於，<span class="term-cn">MAP</span> <span class="keyword-highlight">考慮了參數的先驗分佈</span> <span class="term-en-abbr">P(θ)</span>：<br/>
+                        <span class="term-en-abbr">P(θ|Data) ∝ P(Data|θ) * P(θ)</span><br/>
+                        <span class="term-cn">MAP</span> 可以看作是<span class="term-cn">帶有正規化項</span>的 <span class="term-cn">MLE</span>，有助於防止過擬合，特別是在數據量較少時。
+                    </div>
+                </div>
+                <img src="image/generalize-ml-estimation-maximum-a-posteriori-estimator-map-l.jpg" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 23 -->
+            <div class="focus-card" data-category="7" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#23</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">熵</span> (<span class="term-en-full">Entropy</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        在<span class="term-cn">資訊理論</span>中，<span class="term-cn">熵</span> 用來衡量一個<span class="keyword-highlight">隨機變數的不確定性或資訊量</span>。<br/>
+                        對於離散隨機變數 X，其熵 H(X) 定義為：<span class="term-en-abbr">H(X) = - Σ P(xi) * logb(P(xi))</span>，其中 P(xi) 是 X 取值 xi 的機率，b 通常取 2（單位為位元 bits）或 e（單位為納特 nats）。<br/>
+                        <span class="keyword-highlight">熵越大，表示隨機變數的不確定性越高</span>，包含的平均資訊量越多。<br/>
+                        在<span class="term-cn">決策樹</span> (<span class="term-en-full">Decision Tree</span>) 算法中，<span class="term-cn">資訊增益</span> (<span class="term-en-full">Information Gain</span>) 就是基於熵來計算的，用於選擇最佳劃分特徵。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 24 -->
+            <div class="focus-card" data-category="7" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#24</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">交叉熵</span> (<span class="term-en-full">Cross-Entropy</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <span class="term-cn">交叉熵</span> 用於<span class="keyword-highlight">衡量兩個機率分佈之間的差異</span>。<br/>
+                        在<span class="term-cn">機器學習</span>中，特別是分類問題，<span class="term-cn">交叉熵</span> 常被用作<span class="term-cn">損失函數</span> (<span class="term-en-full">Loss Function</span>)。<br/>
+                        它衡量的是<span class="keyword-highlight">模型預測的機率分佈 Q</span> 與<span class="keyword-highlight">真實的機率分佈 P</span> 之間的差異。<br/>
+                        公式為：<span class="term-en-abbr">H(P, Q) = - Σ P(xi) * logb(Q(xi))</span>。<br/>
+                        目標是<span class="keyword-highlight">最小化交叉熵損失</span>，使模型預測的分佈盡可能接近真實分佈。常用的有<span class="term-cn">二元交叉熵</span> (<span class="term-en-full">Binary Cross-Entropy</span>) 和<span class="term-cn">分類交叉熵</span> (<span class="term-en-full">Categorical Cross-Entropy</span>)。
+                    </div>
+                </div>
+                <img src="image/Cross-Entropy.jpg" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 25 -->
+            <div class="focus-card" data-category="7" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#25</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">KL 散度</span> (<span class="term-en-full">Kullback-Leibler Divergence</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <span class="term-cn">KL 散度</span>（也稱相對熵 Relative Entropy）是<span class="keyword-highlight">衡量兩個機率分佈 P 和 Q 之間差異</span>的另一種方法。<br/>
+                        公式為：<span class="term-en-abbr">DKL(P || Q) = Σ P(xi) * log(P(xi) / Q(xi))</span>。<br/>
+                        它衡量的是用分佈 Q 來近似分佈 P 時，<span class="keyword-highlight">所損失的資訊量</span>。<br/>
+                        KL 散度<span class="keyword-highlight">非負</span>，且當 P = Q 時為 0。<br/>
+                        KL 散度<span class="keyword-highlight">不具有對稱性</span>，即 DKL(P || Q) ≠ DKL(Q || P)。<br/>
+                        與交叉熵的關係：<span class="term-en-abbr">H(P, Q) = H(P) + DKL(P || Q)</span>。最小化交叉熵等價於最小化 KL 散度（因為 H(P) 是固定的）。常用於<span class="term-cn">變分自編碼器</span> (<span class="term-en-abbr">VAE</span>)。
+                    </div>
+                </div>
+                <img src="image/Kullback-Leibler Divergence.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 26 -->
+             <div class="focus-card" data-category="8" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#26</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">混淆矩陣</span> (<span class="term-en-full">Confusion Matrix</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <span class="term-cn">混淆矩陣</span> 是評估<span class="keyword-highlight">分類模型性能</span>的可視化工具。<br/>
+                        對於二元分類，它包含四個值：
+                        <ul>
+                            <li><span class="term-cn">真陽性</span> (<span class="term-en-full">True Positive</span>, <span class="term-en-abbr">TP</span>): 實際為正，預測也為正。</li>
+                            <li><span class="term-cn">真陰性</span> (<span class="term-en-full">True Negative</span>, <span class="term-en-abbr">TN</span>): 實際為負，預測也為負。</li>
+                            <li><span class="term-cn">偽陽性</span> (<span class="term-en-full">False Positive</span>, <span class="term-en-abbr">FP</span>): 實際為負，預測為正 (<span class="term-cn">第一型錯誤</span>)。</li>
+                            <li><span class="term-cn">偽陰性</span> (<span class="term-en-full">False Negative</span>, <span class="term-en-abbr">FN</span>): 實際為正，預測為負 (<span class="term-cn">第二型錯誤</span>)。</li>
+                        </ul>
+                        混淆矩陣是計算<span class="term-cn">準確率</span>、<span class="term-cn">精確率</span>、<span class="term-cn">召回率</span>、<span class="term-cn">F1 分數</span>等指標的基礎。
+                    </div>
+                </div>
+                <img src="image/confusion-matrix.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 27 -->
+            <div class="focus-card" data-category="8" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#27</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        分類模型評估指標 (<span class="term-cn">Accuracy</span>, <span class="term-cn">Precision</span>, <span class="term-cn">Recall</span>, <span class="term-cn">F1-Score</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        基於混淆矩陣計算的常用分類評估指標：
+                        <ul>
+                            <li><span class="term-cn">準確率</span> (<span class="term-en-full">Accuracy</span>): (TP+TN) / (TP+TN+FP+FN)。<span class="keyword-highlight">整體預測正確的比例</span>。在<span class="keyword-highlight">類別不平衡</span>時可能具誤導性。</li>
+                            <li><span class="term-cn">精確率</span> (<span class="term-en-full">Precision</span>): TP / (TP+FP)。在<span class="keyword-highlight">所有預測為正的樣本中，實際為正的比例</span>。關注預測的準確性（<span class="keyword-highlight">寧缺勿濫</span>）。</li>
+                            <li><span class="term-cn">召回率</span> (<span class="term-en-full">Recall</span> / <span class="term-en-full">Sensitivity</span> / <span class="term-en-full">True Positive Rate</span>, <span class="term-en-abbr">TPR</span>): TP / (TP+FN)。在<span class="keyword-highlight">所有實際為正的樣本中，被正確預測為正的比例</span>。關注是否能找出所有正樣本（<span class="keyword-highlight">寧可錯殺一百，不可放過一個</span>）。</li>
+                            <li><span class="term-cn">F1 分數</span> (<span class="term-en-full">F1-Score</span>): 2 * (Precision * Recall) / (Precision + Recall)。<span class="keyword-highlight">精確率和召回率的調和平均數</span>，用於綜合考量兩者。</li>
+                            <li><span class="term-cn">特異度</span> (<span class="term-en-full">Specificity</span> / <span class="term-en-full">True Negative Rate</span>, <span class="term-en-abbr">TNR</span>): TN / (TN+FP)。在所有實際為負的樣本中，被正確預測為負的比例。</li>
+                        </ul>
+                    </div>
+                </div>
+                <img src="image/Confusion-matrix-Precision-Recall-Accuracy-and-F1-score.png" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 28 -->
+            <div class="focus-card" data-category="8" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#28</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">ROC 曲線</span> 與 <span class="term-cn">AUC</span>
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <ul>
+                            <li><span class="term-cn">ROC 曲線</span> (<span class="term-en-full">Receiver Operating Characteristic Curve</span>): 以<span class="keyword-highlight">偽陽性率</span> (<span class="term-en-full">False Positive Rate</span>, <span class="term-en-abbr">FPR</span> = 1 - Specificity) 為橫軸，<span class="keyword-highlight">真陽性率</span> (<span class="term-en-full">True Positive Rate</span>, <span class="term-en-abbr">TPR</span> = Recall) 為縱軸，<span class="keyword-highlight">繪製不同分類閾值下的點</span>所形成的曲線。</li>
+                            <li><span class="term-cn">AUC</span> (<span class="term-en-full">Area Under the Curve</span>): ROC 曲線<span class="keyword-highlight">下方的面積</span>。值<span class="keyword-highlight">介於 0 和 1 之間</span>。AUC 越<span class="keyword-highlight">接近 1</span>，表示模型<span class="keyword-highlight">區分正負樣本的能力越強</span>。AUC = 0.5 表示模型沒有區分能力（隨機猜測）。</li>
+                        </ul>
+                        ROC/AUC 對於<span class="keyword-highlight">類別不平衡</span>的數據集是<span class="keyword-highlight">較為穩健</span>的評估指標。 *樣題曾考 ROC 曲線定義*
+                    </div>
+                </div>
+                <img src="image/ROC.webp" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 29 -->
+            <div class="focus-card" data-category="8" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#29</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">交叉驗證</span> (<span class="term-en-full">Cross-Validation</span>, <span class="term-en-abbr">CV</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <span class="term-cn">交叉驗證</span> 是一種<span class="keyword-highlight">評估模型泛化能力</span>的統計方法，旨在<span class="keyword-highlight">減少模型評估結果的隨機性</span>，更可靠地估計模型在<span class="term-cn">未見數據</span>上的表現。<br/>
+                        最常用的是 <span class="term-cn">k 折交叉驗證</span> (<span class="term-en-full">k-fold Cross-Validation</span>):
+                        <ol>
+                            <li>將原始數據集<span class="keyword-highlight">隨機劃分為 k 個大小相似的子集</span>（折）。</li>
+                            <li>進行 k 次迴圈：每次選擇<span class="keyword-highlight">其中一個子集作為驗證集</span>，其餘 k-1 個子集作為訓練集。</li>
+                            <li>在訓練集上訓練模型，在驗證集上評估性能。</li>
+                            <li>將 k 次評估結果<span class="keyword-highlight">平均</span>，得到最終的模型性能估計。</li>
+                        </ol>
+                        有助於<span class="keyword-highlight">更穩定地評估模型</span>，並進行模型選擇和超參數調優。 *樣題曾考交叉驗證的目的*
+                    </div>
+                </div>
+                <img src="image/Cross-validation.webp" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 30 -->
+            <div class="focus-card" data-category="8" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#30</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="term-cn">偏差-變異數權衡</span> (<span class="term-en-full">Bias-Variance Tradeoff</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <span class="term-cn">偏差</span> (<span class="term-en-full">Bias</span>): 模型預測值與真實值之間的<span class="keyword-highlight">系統性差異</span>。高偏差通常源於<span class="keyword-highlight">模型過於簡單</span>，未能捕捉數據的複雜性（<span class="term-cn">欠擬合</span> <span class="term-en-full">Underfitting</span>）。<br/>
+                        <span class="term-cn">變異數</span> (<span class="term-en-full">Variance</span>): 模型預測<span class="keyword-highlight">對於不同訓練數據集的敏感度</span>。高變異數通常源於<span class="keyword-highlight">模型過於複雜</span>，過度擬合了訓練數據中的噪聲（<span class="term-cn">過擬合</span> <span class="term-en-full">Overfitting</span>）。<br/>
+                        模型的總誤差可以分解為 偏差² + 變異數 + 不可避免誤差。<br/>
+                        目標是找到一個模型，使其在<span class="keyword-highlight">偏差和變異數之間達到良好的平衡</span>，從而最小化總誤差，獲得最佳的泛化能力。
+                    </div>
+                </div>
+                <img src="image/Bias-Variance Trade-off.svg" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 31 -->
+            <div class="focus-card" data-category="2" data-stars="3">
+                 <div class="focus-header">
+                     <div class="focus-id">#31</div>
+                     <div class="focus-importance">★★★</div>
+                 </div>
+                 <div class="focus-topic-container">
+                     <div class="focus-topic">
+                         <span class="term-cn">數據洩漏</span> (<span class="term-en-full">Data Leakage</span>)
+                     </div>
+                 </div>
+                 <div class="focus-details-container">
+                     <div class="details-header">核心概念</div>
+                     <div class="details-content">
+                         <span class="term-cn">數據洩漏</span>是指在模型訓練過程中，<span class="keyword-highlight">不應出現的來自測試集或未來的訊息被意外地引入</span>到訓練數據或特徵工程中，導致模型在評估時<span class="keyword-highlight">表現虛高</span>，但在實際部署時效果不佳。<br/>
+                         例子：在進行特徵縮放時，使用了包含測試集數據計算出的均值或標準差；將預測目標本身或其衍生訊息作為了輸入特徵。<br/>
+                         必須在數據準備和模型訓練流程中<span class="keyword-highlight">嚴格區分訓練數據和測試數據</span>，避免數據洩漏。
+                     </div>
+                 </div>
+                 
+             </div>
+
+            <!-- Focus Point 32 -->
+            <div class="focus-card" data-category="5" data-stars="3">
+                 <div class="focus-header">
+                     <div class="focus-id">#32</div>
+                     <div class="focus-importance">★★★</div>
+                 </div>
+                 <div class="focus-topic-container">
+                     <div class="focus-topic">
+                         <span class="term-cn">線性迴歸</span> (<span class="term-en-full">Linear Regression</span>) 的假設
+                     </div>
+                 </div>
+                 <div class="focus-details-container">
+                     <div class="details-header">核心概念</div>
+                     <div class="details-content">
+                         雖然線性迴歸簡單，但其有效性依賴於一些基本假設：
+                         <ul>
+                             <li><span class="term-cn">線性關係</span> (<span class="term-en-full">Linearity</span>)：自變數與應變數之間存在線性關係。</li>
+                             <li><span class="term-cn">獨立性</span> (<span class="term-en-full">Independence</span>)：觀測值之間相互獨立。</li>
+                             <li><span class="term-cn">同質變異性</span> (<span class="term-en-full">Homoscedasticity</span>)：誤差項的變異數對於所有自變數的值都是恆定的。</li>
+                             <li><span class="term-cn">常態性</span> (<span class="term-en-full">Normality</span>)：誤差項服從常態分佈。</li>
+                             <li><span class="term-cn">無多重共線性</span> (<span class="term-en-full">No Multicollinearity</span>)：自變數之間不存在高度線性相關。</li>
+                         </ul>
+                          在大數據應用中，需要檢查這些假設是否大致滿足，否則模型結果可能不可靠。
+                     </div>
+                 </div>
+                 <img src="image/Linear Regression.jpg" class="responsive-img">
+             </div>
+
+            <!-- Focus Point 33 -->
+            <div class="focus-card" data-category="6" data-stars="3">
+                  <div class="focus-header">
+                      <div class="focus-id">#33</div>
+                      <div class="focus-importance">★★★</div>
+                  </div>
+                  <div class="focus-topic-container">
+                      <div class="focus-topic">
+                          模型選擇標準 (<span class="term-en-abbr">AIC</span>, <span class="term-en-abbr">BIC</span>)
+                  </div>
+                  </div>
+                  <div class="focus-details-container">
+                      <div class="details-header">核心概念</div>
+                      <div class="details-content">
+                          除了交叉驗證，還可以使用訊息準則來輔助模型選擇，這些準則<span class="keyword-highlight">在擬合優度與模型複雜度之間進行權衡</span>：
+                          <ul>
+                              <li><span class="term-cn">赤池訊息量準則</span> (<span class="term-en-abbr">AIC</span>, <span class="term-en-full">Akaike Information Criterion</span>)：<span class="keyword-highlight">AIC = -2 * log-likelihood + 2 * k</span>，其中 k 是模型參數數量。</li>
+                              <li><span class="term-cn">貝氏訊息量準則</span> (<span class="term-en-abbr">BIC</span>, <span class="term-en-full">Bayesian Information Criterion</span>)：<span class="keyword-highlight">BIC = -2 * log-likelihood + k * log(n)</span>，其中 n 是樣本量。</li>
+                          </ul>
+                           目標是選擇 <span class="keyword-highlight">AIC 或 BIC 值最小</span>的模型。<span class="term-cn">BIC</span> 對模型複雜度的懲罰通常比 AIC 更重。
+                      </div>
+                  </div>
+                  <img src="image/model-selection-using-AIC-and-BIC.png" class="responsive-img">
+              </div>
+
+
+             <!-- Placeholder for No Results -->
+             <div id="noResultsMessage">沒有找到符合條件的重點。</div>
+
+        </div><!-- end focus-points-container -->
+
+        <div class="back-to-top" id="backToTop">↑</div>
+    </div>
+
+    <script>
+        // Progress bar (no changes needed)
+        const progressBar = document.getElementById("progressBar");
+        window.onscroll = function() { updateProgressBar(); toggleBackToTopButton(); };
+        function updateProgressBar() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (height > 0) ? (winScroll / height) * 100 : 0;
+            progressBar.style.width = scrolled + "%";
+        }
+
+        // Back to top button (no changes needed)
+        const backToTopButton = document.getElementById("backToTop");
+        function toggleBackToTopButton() {
+             backToTopButton.style.display = (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) ? "flex" : "none";
+        }
+        backToTopButton.addEventListener("click", () => window.scrollTo({top: 0, behavior: 'smooth'}));
+
+        // Filter by category (Updated function name)
+        function filterByCategory(categoryNumber) {
+            document.getElementById('categoryFilter').value = categoryNumber === 'all' ? 'all' : String(categoryNumber);
+            document.getElementById('searchInput').value = ''; // Clear search on filter click
+            filterFocusPoints(); // Call updated filter function
+        }
+
+        // Event listeners for filters and search (Updated IDs/functions)
+        document.getElementById("categoryFilter").addEventListener("change", () => {
+             document.getElementById('searchInput').value = '';
+             filterFocusPoints();
+        });
+        document.getElementById("starFilter").addEventListener("change", () => {
+             document.getElementById('searchInput').value = '';
+             filterFocusPoints();
+        });
+        document.getElementById("searchButton").addEventListener("click", searchFocusPoints); // Updated function call
+        document.getElementById("searchInput").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                searchFocusPoints(); // Updated function call
+            }
+        });
+
+        const noResultsMessage = document.getElementById('noResultsMessage');
+
+        // Combined filter function (Updated variable/class names)
+        function filterFocusPoints() {
+            let category = document.getElementById("categoryFilter").value;
+            let stars = document.getElementById("starFilter").value;
+            let points = document.querySelectorAll(".focus-card"); // Target .focus-card
+            let anyVisible = false;
+
+            points.forEach(function(point) {
+                // Updated dataset attribute name
+                const matchesCategory = (category === "all" || point.dataset.category === category);
+                const matchesStars = (stars === "all" || point.dataset.stars === stars);
+
+                if (matchesCategory && matchesStars) {
+                    point.style.display = "block";
+                    anyVisible = true;
+                } else {
+                    point.style.display = "none";
+                }
+            });
+
+             if (noResultsMessage) {
+                 noResultsMessage.style.display = anyVisible ? 'none' : 'block';
+                 // Updated message text
+                 noResultsMessage.textContent = '沒有找到符合篩選條件的重點。';
+             }
+        }
+
+        // Search function (Updated variable/class names)
+        function searchFocusPoints() {
+            let searchText = document.getElementById("searchInput").value.toLowerCase().trim();
+            let points = document.querySelectorAll(".focus-card"); // Target .focus-card
+            let anyVisible = false;
+            let category = document.getElementById("categoryFilter").value;
+            let stars = document.getElementById("starFilter").value;
+
+            points.forEach(function(point) {
+                // Check filters first
+                const matchesCategory = (category === "all" || point.dataset.category === category);
+                const matchesStars = (stars === "all" || point.dataset.stars === stars);
+                let visibleBasedOnFilter = matchesCategory && matchesStars;
+
+                // Check search text
+                let pointText = point.textContent.toLowerCase();
+                let matchesSearch = (searchText === "" || pointText.includes(searchText));
+
+                // Show if matches filters AND search (or if search is empty)
+                if (visibleBasedOnFilter && matchesSearch) {
+                    point.style.display = "block";
+                    anyVisible = true;
+                } else {
+                    point.style.display = "none";
+                }
+            });
+
+             if (noResultsMessage) {
+                 if (searchText !== "") {
+                      noResultsMessage.style.display = anyVisible ? 'none' : 'block';
+                      // Updated message text
+                      noResultsMessage.textContent = '沒有找到符合目前篩選及搜尋條件的重點。';
+                 } else {
+                     // If search is empty, rely on filter results
+                     filterFocusPoints();
+                 }
+             }
+        }
+
+        // Removed Toggle Explanations Logic
+
+         // Initial setup
+         toggleBackToTopButton();
+         updateProgressBar();
+         filterFocusPoints(); // Apply default filters on load
+
+    </script>
+</body>
+</html>

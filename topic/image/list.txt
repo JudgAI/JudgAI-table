@@ -1,0 +1,365 @@
+AB testing.png
+ACID.png
+Activation Function.png
+AdaBoost.png
+adam-optimization.webp
+Adversarial Example.png
+Adversarial Examples.jpg
+AI ACT.webp
+AlexNet.png
+alpha_go.jpg
+ANN.gif
+anomaly_detect.webp
+Apriori-Algorithm.png
+association-rule-learning.webp
+attention-mechanism-deep-learning.webp
+AUC.png
+Autoencoder.png
+AutoML.png
+autoregressive.png
+Backpropagation.png
+Bag-of-Words.png
+bag_of_words.png
+Bar-chart-versus-histogram-chart.png
+Batch Normalization.png
+Batch Size.png
+Bayesian Network.jpg
+Bayesian Network.png
+Bayesian Optimization.PNG
+Bayesian-Decision-Theory.png
+Bernoulli Distribution.png
+BERT.jpg
+BERT_MLM.webp
+bias-and-variance.png
+Bias-Variance Trade Off.png
+bias.png
+Bigtable.png
+big_data.png
+Bimodal Distribution.png
+Binary Classification.webp
+Binomial Distribution.png
+BLEU.png
+Blue-Green-Deployment.jpg
+bootstrap.png
+Box Plot.jpg
+Boxplot.png
+c31161d1-4b31-4a04-8f28-b3e482df8a79_1280x720.gif
+Canary Release.png
+canary.png
+Canny Edge Detection.png
+CatBoost.png
+categories of ML.jpg
+CBOW Skip-gram.png
+CDF_Cumulative Distribution Function.png
+Central Limit Theorem.png
+Chaos Engineering.jpg
+Character-level Models.png
+CI-CD.png
+CLIP_Contrastive Language¡VImage Pre-training.png
+clustering.png
+CNN.webp
+CNN_ReLU.png
+cold-start-problem.webp
+Collaborative Filtering.png
+Collaborative Filtering.webp
+Concept Drift.png
+Conditional GAN.png
+Conditional Probability.png
+Confusion-matrix-Precision-Recall-Accuracy-and-F1-score.png
+confusion-matrix.png
+confusion_matrix_precision_recall.png
+Constituency Parsing and Dependency Parsing.jpeg
+Contingency Table.png
+contingency.png
+Contrastive Learning.jpg
+Convex Optimization.svg
+Coreference Resolution.png
+corpus.webp
+Corpus1.webp
+Correlation Analysis.png
+Correlation Coefficient.png
+Cosine Similarity.jpg
+CoT_Chain-of-Thought Prompting.png
+CRF_Conditional Random Field.png
+CRISP-DM.png
+Cross-Entropy Loss.png
+Cross-validation.webp
+Curse-of-Dimensionality.webp
+CV_coefficient of variation.png
+cycleGAN.jpg
+Data Augmentation.png
+Data Contracts.png
+Data Drift.png
+Data Lake.jpg
+Data Mart.png
+Data Poisoning.png
+Data Splitting.webp
+Data Visualization.png
+data-preprocessing.webp
+data-warehouse.png
+DBSCAN.png
+Decision-Tree.webp
+Deep Reinforcement Learning.png
+Deep-Learning-subset-of-Machine-Learning-subset-of-Artificial-Intelligence.jpg
+DeepFake.png
+Deep_Learning_vs_Machine_Learning.jpeg
+Dependency Parsing.png
+Dependency Parsing.webp
+Differential Privacy.jpeg
+Diffusion Model.png
+dimensionality_reduction.jpeg
+dirty-data-problems.png
+Discriminative AI Generative AI.jpg
+docker.png
+DQN.png
+dropout.webp
+Early Stopping.webp
+EDA.jpeg
+Edge Detection.png
+embedding.webp
+End-to-End Machine Learning.webp
+ensemble-learning.png
+Ensemble_Learning_Bagging_Boosting.avif
+Entity_Linking.png
+ETL.jpg
+ETL.png
+Event Extraction.webp
+EV_Expected Value.png
+Exploration_Exploitation.jpg
+Exponential Distribution.png
+Facial Landmark Detection.png
+FailoverFailback.png
+Fault Tolerance.png
+Feature Crossing.png
+Feature Discretization.png
+Feature Flags.png
+Feature Hashing.png
+Feature Selection.png
+Feature-Engineering.png
+Federated Learning.png
+Few-Shot Learning.jpg
+Function Calling.webp
+GAN.png
+Gaussian Blur.jpg
+Gaussian Mixture Model.jpg
+gaussian-mixture-model.jpg
+Geometric Mean.png
+gigo.gif
+GoogLeNet.png
+GoogLeNet1.jpg
+gpt_Autoregressive.png
+gpt_canva.png
+Gradient Boosting Tree.webp
+Gradient Descent.png
+Grayscale Conversion.jpeg
+Grid random Search.png
+GRU.png
+Heatmap.png
+Hierarchical Clustering.webp
+Homomorphic Encryption.png
+Huber-loss-and-outliers.png
+Hybrid Intelligence.png
+Hyperparameters.png
+IaC_Infrastructure-as-code.webp
+Image Filtering.png
+Image Histogram.jpg
+Image Segmentation.jpg
+image-segmentation.webp
+Independent Events.png
+Information Extraction.png
+Interquartile Range.png
+Intersection over Union_IoU.png
+Inverse Reinforcement Learning.png
+IoU.png
+Isolation Forest.webp
+iteration-and-epoch.ppm
+k-means++.png
+K-Means.avif
+k8S_Kubernetes.png
+KNN.webp
+Knowledge Graph.svg
+Knowledge-Distillation.webp
+Kurtosis.jpg
+Kurtosis_eng.png
+L1-and-L2-Regularization-Penalty.png
+Label Encoding.jpg
+label.png
+Lasso ridge.png
+Lasso_Ridge_regression.png
+Latent Dirichlet Allocation.png
+LDA.png
+Learning Rate Scheduler.png
+learning rate.png
+Learning Rate2.png
+learning-curve.webp
+LeNet-5.PNG
+LightGBM.png
+Line Chart.png
+Linear Regression.jpg
+Linear-Regression-vs-Polynomial-Regression.webp
+line_qr_code.png
+list.txt
+LLM.jpg
+load-balancing.png
+logistic Regression Sigmoid.png
+Logistic Regression.png
+loss function.png
+Lowercasing.png
+LSTM_gate.png
+machine learning vs deep learning.png
+Machine Translation.png
+Machine-Learning.webp
+MAD.png
+MAE.jpeg
+map_mean Average Precision.webp
+Markov Decision Process.svg
+Microservices.jpg
+Mini-Batch Gradient Descent.webp
+MLOps.png
+MLOps_Machine-Learning-Operations.jpg
+Model Drift.png
+Model Selection.jpg
+Model Serving Framework.png
+MSE.jpeg
+Multilayer Perceptron.avif
+Multimodal AI.webp
+Multimodal Learning.png
+Multimodal Sentiment Analysis.gif
+Multiple Linear Regression.png
+multi_label.png
+N-gram.png
+Naive Bayes.webp
+Neo4j_The Graph Database.png
+NER.jpg
+NER_Named Entity Recognition.jpg
+neural network activation function.jpg
+Neural Network.jpg
+NLP.webp
+NLP_NLU_NLG.png
+NMT.jpg
+Normal Distribution.png
+NoSQL.png
+NoSQL_BASE.png
+NPV.png
+N_Gram.png
+Object Detection Models.jpg
+Object Detection.png
+Occam's Razor.jpg
+One-Class SVM.png
+One-Hot Encoding.png
+Out-of-Bag.jpg
+overfitting underfitting.png
+Overfitting.svg
+overfitting2.svg
+oversampling undersampling.png
+OvO OvR.jpg
+Part-of-Speech Tagging.png
+Payback Period.jpg
+PCA.jpg
+PCA_variance.png
+perceptron.png
+pie-chart.png
+PMF_Probability Mass Function.jpg
+Point Anomaly.png
+poisson-distribution.png
+policy.webp
+Pose Estimation.png
+Pre-training and Fine-tuning.png
+pre-training fine-tuning.png
+Pruning.png
+Quantile-Quantile Plot.png
+Quantization.png
+R-squared.png
+Radar Chart.png
+RAG_Retrieval-Augmented-Generation.webp
+Random Forest.webp
+Regression Testing.png
+regression-vs-classification.webp
+Reinforcement Learning.jpg
+Relationship-Extraction.png
+Requirement Traceability Matrix.png
+Resnet.webp
+reward function.png
+Risk Matrix.webp
+RLHF.jpg
+RNN.webp
+ROC.webp
+ROI.png
+scaling.png
+Scatter Plot.png
+Self-Supervised Learning.png
+Self-Supervised Learning.webp
+Semantic Role Labeling.png
+Semi-supervised Learning.png
+Sentence Embedding.webp
+Sentiment Analysis.jpg
+Sentiment Analysis2.jpg
+Seq2Seq.png
+Serverless and FaaS.jpg
+Shadow Deployment.png
+Shadow IT.png
+shadow_it.png
+SHAP.webp
+skewness-left-right-positive-negative.png
+Slot Filling.png
+SOA.png
+Softmax-function-in-MLP.png
+softmax.png
+Spearman Rank Correlation.jpg
+stacking.png
+Standard-Deviation-Formula.png
+Standard-Normal-Distribution.png
+Standardization and Normalization for feature scaling.webp
+Stemming_and_lemmatization.avif
+Stop Words.jpg
+Stratified K-Fold.png
+StyleGAN.jpg
+Summarization.png
+suno.png
+Supervised_and_unsupervised_learning.png
+support-vector-regression-svr.webp
+surveillance.png
+svm Kernel.png
+SVM One-Class Classifier For Anomaly Detection.png
+SVM.png
+SVM_gamma.png
+SVM_L1_L2.png
+SWOT.png
+Symbolic AI.webp
+t-SNE.jpg
+t-SNE.webp
+Technical Debt.jpeg
+Text Classification.png
+Text Classification.webp
+Text Normalization.png
+Text Summarization.png
+Textual Entailment.png
+TF-IDF.png
+Three-types-for-multimodal-representation-a-Joint-representation-b-Coordinated.png
+token.png
+Topic Model.png
+Topic Modeling_LDA.png
+train validation and test set.webp
+Transfer Learning.webp
+Transformer.png
+Turing Test.png
+UMAP_Uniform Manifold Approximation and Projection.jpg
+Uniform Distribution.png
+VAE.png
+Vanishing_Gradient.png
+variance-formula.png
+VGGNet.jpg
+WBS.png
+Weak Learner.png
+web-crawler.png
+Weight Sharing.png
+Word Embedding.webp
+Word2Vec.png
+Word_Sense_Disambiguation.png
+XAI.png
+XGBoost.png
+You Only Look Once.png
+Z-score.png
+Zero-shot Learning.png
+Zero-shot Prompting.webp
+ZTA.png

@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>iPAS AI應用規劃師 考試重點整理 - L22101 敘述性統計與資料摘要技術</title> <!-- Changed Title -->
+    <style>
+        /* RWD設定，讓整體版面在不同裝置都有良好顯示 */
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Microsoft JhengHei", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto; /* Added top/bottom margin */
+            padding: 25px;
+            background: #ffffff;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border-radius: 8px;
+        }
+        /* Updated Header */
+        .header-container {
+            background: linear-gradient(135deg, #2c3e50, #34495e); /* Darker gradient */
+            color: white;
+            padding: 30px 20px; /* Increased padding */
+            margin: -25px -25px 25px -25px;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+        }
+        .header-container h1 {
+            margin: 0;
+            color: white;
+            font-size: 2.2rem; /* Larger title */
+            font-weight: 600;
+            margin-bottom: 5px; /* Space below title */
+        }
+        .header-container div { /* Subtitle */
+             font-size: 1.2rem;
+             opacity: 0.9;
+             margin-top: 5px;
+             font-weight: 300; /* Lighter weight */
+        }
+
+        /* Topic Categories Section (Renamed from Directions) */
+        .categories-container { /* Renamed */
+            background-color: #e8f0f5; /* Slightly different blue */
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 5px solid #5dade2; /* Lighter blue border */
+            border-radius: 5px;
+        }
+        .categories-title { /* Renamed */
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .categories-grid { /* Renamed */
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+        .category-item { /* Renamed */
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background-color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid #d6e0ea; /* Border matching background */
+        }
+        .category-item:hover {
+            background-color: #5dade2; /* Lighter blue hover */
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-color: #5dade2;
+        }
+        .category-number { /* Renamed */
+            width: 30px;
+            height: 30px;
+            background-color: #5dade2; /* Lighter blue number */
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 12px;
+            font-weight: bold;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+        .category-item:hover .category-number {
+            background-color: white;
+            color: #5dade2;
+        }
+        .responsive-img {
+            width: 100%;
+            max-width: 800px; /* 可自訂最大寬度 */
+            height: auto;
+            display: block; /* Center image */
+            margin: 15px auto; /* Add some margin */
+        }
+        .category-text { /* Renamed */
+            font-size: 0.95rem;
+        }
+
+        /* Focus Point Card Styling (Replaces Question Card) */
+        .focus-points-container { /* Renamed */
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px; /* Increased gap */
+        }
+        .focus-card { /* Renamed */
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 0; /* Remove padding here, apply to inner elements */
+            box-shadow: 0 4px 12px rgba(44, 62, 80, 0.1); /* Slightly stronger shadow */
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+            border: 1px solid #e0e0e0;
+            overflow: hidden; /* Ensure inner elements respect border radius */
+        }
+        .focus-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(44, 62, 80, 0.15);
+        }
+        .focus-header { /* Renamed */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px; /* Padding inside header */
+            background-color: #f8f9fa; /* Light header background */
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .focus-id { /* Renamed */
+            font-weight: bold;
+            color: #5dade2; /* Lighter blue ID */
+            font-size: 1rem;
+            background-color: #e8f0f5; /* Background for ID */
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+        .focus-importance { /* Renamed */
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .focus-topic-container { /* New container for the main topic */
+             padding: 25px 25px 20px 25px; /* Padding around the topic */
+             border-bottom: 1px dashed #eee; /* Separator line */
+        }
+
+        .focus-topic { /* Replaces question-content */
+            font-size: 1.5rem; /* Larger font for the topic */
+            font-weight: 600; /* Bolder */
+            margin-bottom: 0; /* Remove margin, handled by container padding */
+            line-height: 1.4;
+            color: #2c3e50; /* Dark blue-grey for topic */
+        }
+
+        /* Styling for terminology within topic/details */
+        /* Using example's classes, applying blue color via style attribute for Chinese terms */
+        .english-abbr {
+            color: #2980b9; /* Darker blue for abbreviations */
+            font-weight: 600;
+        }
+        .english-fullname {
+            color: #c0392b; /* Darker red for full names/concepts */
+            font-weight: 500;
+        }
+        /* Adding specific style for Chinese Terminology as requested */
+        .chinese-term {
+            color: #0000FF; /* Blue */
+            font-weight: bold;
+        }
+
+
+        /* Details Section Styling (Replaces Explanation) */
+        .focus-details-container { /* Renamed */
+            padding: 20px 25px 25px 25px; /* Padding for details */
+            /* background-color: #fdfefe; */ /* Optional subtle background, removing for cleaner look */
+        }
+        .details-header { /* Renamed */
+            font-weight: bold;
+            margin-bottom: 15px; /* Space below header */
+            color: #34495e;
+            font-size: 1.2rem; /* Slightly larger details header */
+            /* text-transform: uppercase; */ /* Optional styling */
+            letter-spacing: 0.5px; /* Optional spacing */
+            /* border-bottom: 2px solid #5dade2; */ /* Optional underline */
+            /* display: inline-block; */ /* If using underline */
+            /* padding-bottom: 5px; */ /* If using underline */
+        }
+        .details-content { /* Renamed */
+            line-height: 1.75; /* Increased line height for readability */
+            color: #444;
+            font-size: 1.05rem; /* Slightly larger detail text */
+        }
+        .details-content ul { /* Style lists if used in details */
+             padding-left: 25px;
+             margin-top: 10px;
+             margin-bottom: 10px;
+        }
+         .details-content li {
+             margin-bottom: 8px; /* Space between list items */
+         }
+
+        /* Controls Section Styling (Adjusted for Focus Points) */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 15px;
+            background-color: #fdfdfd;
+            border-radius: 5px;
+            border: 1px solid #eee;
+        }
+        .filter-container, .search-container, .star-filter-container { /* Removed .toggle-explanations */
+            margin-bottom: 0;
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            min-width: 200px;
+        }
+         .search-container { flex-grow: 2; }
+        .filter-label, .search-label, .star-filter-label {
+            font-weight: 600;
+            margin-right: 10px;
+            white-space: nowrap;
+            color: #555;
+            font-size: 0.95rem;
+        }
+        select, input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: inherit;
+            flex-grow: 1;
+            font-size: 0.95rem;
+            background-color: white;
+        }
+         input[type="text"] { min-width: 180px; }
+        button {
+            padding: 10px 18px;
+            background-color: #5dade2; /* Lighter blue buttons */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background-color 0.2s ease;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-left: 8px;
+            white-space: nowrap;
+        }
+        button:hover {
+            background-color: #3498db; /* Darker blue hover */
+        }
+
+        /* RWD Adjustments */
+        @media (max-width: 992px) {
+             .controls { flex-direction: column; align-items: stretch; }
+            .filter-container, .search-container, .star-filter-container { width: 100%; flex-grow: 0; }
+             select, input[type="text"] { width: 100%; }
+             button { margin-left: 0; margin-top: 5px; }
+             .search-container button { margin-left: 8px; margin-top: 0; }
+             #searchInput { width: calc(100% - 90px); }
+        }
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            .header-container { padding: 25px 15px; margin: -15px -15px 20px -15px; }
+            .categories-grid { grid-template-columns: 1fr; }
+            .focus-card { padding: 0; } /* Ensure no padding on card itself */
+             .focus-header, .focus-topic-container, .focus-details-container { padding-left: 20px; padding-right: 20px; } /* Adjust inner padding */
+            h1 { font-size: 1.8rem; }
+            .header-container h1 { font-size: 2rem; }
+            .focus-topic { font-size: 1.3rem; }
+            .details-header { font-size: 1.1rem; }
+            .details-content { font-size: 1rem; }
+        }
+
+        /* Back to Top Button & Progress Bar (No changes needed) */
+        .back-to-top {
+            position: fixed; bottom: 25px; right: 25px; background-color: #5dade2; color: white;
+            width: 45px; height: 45px; border-radius: 50%; display: none; justify-content: center;
+            align-items: center; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: background-color 0.3s, opacity 0.3s, transform 0.3s; z-index: 1000;
+            opacity: 0.8; font-size: 1.2rem;
+        }
+        .back-to-top:hover { background-color: #3498db; opacity: 1; transform: scale(1.1); }
+        .progress-container {
+            width: 100%; height: 5px; background-color: #e8f0f5; position: fixed;
+            top: 0; left: 0; z-index: 1001;
+        }
+        .progress-bar {
+            height: 5px; background: linear-gradient(90deg, #5dade2, #85c1e9); /* Adjusted gradient */
+            width: 0%; border-radius: 0 2px 2px 0; transition: width 0.1s linear;
+        }
+         #noResultsMessage {
+             text-align: center; padding: 20px; color: #777; display: none; font-style: italic;
+         }
+         /* Keyword highlighting style */
+         .highlight {
+             background-color: #ffff0030; /* Light yellow background */
+         }
+    </style>
+</head>
+<body>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="container">
+        <div class="header-container">
+            <h1>iPAS AI應用規劃師 考試重點</h1> <!-- Updated Title -->
+            <div>L22101 敘述性統計與資料摘要技術</div> <!-- Updated Subtitle -->
+        </div>
+
+        <div class="controls">
+             <div class="filter-container">
+                 <!-- Updated Label -->
+                <label for="categoryFilter" class="filter-label">篩選主題：</label>
+                <select id="categoryFilter"> <!-- Updated ID -->
+                    <option value="all">全部主題</option>
+                    <option value="1">敘述統計基本概念與目的</option>
+                    <option value="2">資料類型與整理</option>
+                    <option value="3">集中趨勢量數</option>
+                    <option value="4">離散趨勢量數</option>
+                    <option value="5">資料分佈與形狀</option>
+                    <option value="6">資料摘要技術</option>
+                    <option value="7">資料視覺化</option>
+                    <option value="8">相關性與離群值</option>
+                </select>
+            </div>
+
+            <div class="star-filter-container">
+                <label for="starFilter" class="star-filter-label">重要性：</label>
+                <select id="starFilter">
+                    <option value="all">全部重要性</option>
+                    <option value="5">★★★★★</option>
+                    <option value="4">★★★★</option>
+                    <option value="3">★★★</option>
+                    <option value="2">★★</option>
+                    <option value="1">★</option>
+                </select>
+            </div>
+
+            <div class="search-container">
+                <label for="searchInput" class="search-label">搜尋：</label>
+                <input type="text" id="searchInput" placeholder="輸入關鍵字...">
+                <button id="searchButton">搜尋</button>
+            </div>
+            <!-- Removed Toggle Explanations Button -->
+        </div>
+
+        <div class="categories-container"> <!-- Renamed -->
+            <div class="categories-title">主題分類</div> <!-- Updated Title -->
+            <div class="categories-grid" id="categoriesGrid"> <!-- Renamed ID -->
+                <!-- Renamed classes and updated filter function call -->
+                <div class="category-item" onclick="filterByCategory(1)">
+                    <div class="category-number">1</div>
+                    <div class="category-text">敘述統計基本概念與目的</div>
+                </div>
+                <div class="category-item" onclick="filterByCategory(2)">
+                    <div class="category-number">2</div>
+                    <div class="category-text">資料類型與整理</div>
+                </div>
+                <div class="category-item" onclick="filterByCategory(3)">
+                    <div class="category-number">3</div>
+                    <div class="category-text">集中趨勢量數</div>
+                </div>
+                <div class="category-item" onclick="filterByCategory(4)">
+                    <div class="category-number">4</div>
+                    <div class="category-text">離散趨勢量數</div>
+                </div>
+                 <div class="category-item" onclick="filterByCategory(5)">
+                    <div class="category-number">5</div>
+                    <div class="category-text">資料分佈與形狀</div>
+                </div>
+                <div class="category-item" onclick="filterByCategory(6)">
+                    <div class="category-number">6</div>
+                    <div class="category-text">資料摘要技術</div>
+                </div>
+                <div class="category-item" onclick="filterByCategory(7)">
+                    <div class="category-number">7</div>
+                    <div class="category-text">資料視覺化</div>
+                </div>
+                <div class="category-item" onclick="filterByCategory(8)">
+                    <div class="category-number">8</div>
+                    <div class="category-text">相關性與離群值</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="focus-points-container" id="focusPointsContainer"> <!-- Renamed -->
+
+            <!-- Focus Point 1 -->
+            <div class="focus-card" data-category="1" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#1</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                       <span class="chinese-term">敘述統計學</span> (<span class="english-fullname">Descriptive Statistics</span>) - 定義與目的
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">核心概念</div>
+                    <div class="details-content">
+                        <span class="chinese-term">敘述統計學</span>是統計學的一個分支，專注於<span class="highlight">整理、呈現和總結資料的主要特徵</span>。其主要目的不是進行推論或預測，而是提供對<span class="highlight">資料集本身的清晰描述</span>。
+                        <ul>
+                            <li><span class="highlight">目的</span>：描述資料的基本情況、找出資料的模式或趨勢、為後續的推論統計分析奠定基礎。</li>
+                            <li><span class="highlight">方法</span>：使用圖表（如直方圖、盒鬚圖）和數值（如平均數、標準差）來呈現資料。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 2 -->
+            <div class="focus-card" data-category="1" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#2</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">敘述統計</span> vs <span class="chinese-term">推論統計</span>
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">主要區別</div>
+                    <div class="details-content">
+                        <ul>
+                            <li><span class="chinese-term">敘述統計</span> (<span class="english-fullname">Descriptive Statistics</span>)：<span class="highlight">描述</span>現有資料的特性（樣本或母體）。</li>
+                            <li><span class="chinese-term">推論統計</span> (<span class="english-fullname">Inferential Statistics</span>)：<span class="highlight">從樣本資料推斷母體的特性</span>，進行假設檢定、估計或預測。</li>
+                        </ul>
+                        AI應用規劃師需要理解敘述統計來<span class="highlight">初步探索和理解數據</span>，這是建立模型的基礎。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 3 -->
+            <div class="focus-card" data-category="2" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#3</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">資料類型</span> - <span class="chinese-term">數值型</span> vs <span class="chinese-term">類別型</span>
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">基本分類</div>
+                    <div class="details-content">
+                        理解資料類型是選擇合適統計方法和視覺化的前提。
+                        <ul>
+                            <li><span class="chinese-term">數值型資料</span> (<span class="english-fullname">Numerical Data</span>)：<span class="highlight">可測量的量化數據</span>。可再分為：
+                                <ul>
+                                    <li><span class="chinese-term">連續型</span> (<span class="english-fullname">Continuous</span>)：可取範圍內任意值（如：身高、溫度）。</li>
+                                    <li><span class="chinese-term">離散型</span> (<span class="english-fullname">Discrete</span>)：只能取特定整數值（如：人數、汽車數量）。</li>
+                                </ul>
+                            </li>
+                            <li><span class="chinese-term">類別型資料</span> (<span class="english-fullname">Categorical Data</span>)：<span class="highlight">描述品質或特性的數據</span>，代表不同的組別或類別。可再分為：
+                                <ul>
+                                    <li><span class="chinese-term">名目型</span> (<span class="english-fullname">Nominal</span>)：類別間無順序（如：顏色、性別）。</li>
+                                    <li><span class="chinese-term">次序型</span> (<span class="english-fullname">Ordinal</span>)：類別間有順序關係（如：教育程度、滿意度評級）。</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+             <!-- Focus Point 4 -->
+            <div class="focus-card" data-category="2" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#4</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">資料整理</span> (<span class="english-fullname">Data Organization</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">常用技術</div>
+                    <div class="details-content">
+                        整理原始資料是進行敘述統計分析的第一步。
+                        <ul>
+                            <li><span class="chinese-term">頻率分佈表</span> (<span class="english-fullname">Frequency Distribution Table</span>)：顯示各數值或類別出現的次數。</li>
+                            <li><span class="chinese-term">分組</span> (<span class="english-fullname">Grouping</span>)：將連續型資料劃分成不同的區間（組別）。</li>
+                            <li><span class="chinese-term">排序</span> (<span class="english-fullname">Sorting</span>)：將資料依數值大小或類別排序。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 5 -->
+            <div class="focus-card" data-category="3" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#5</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">集中趨勢量數</span> - <span class="chinese-term">平均數</span> (<span class="english-fullname">Mean</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">定義與特性</div>
+                    <div class="details-content">
+                        <span class="chinese-term">平均數</span>是最常用的集中趨勢量數，代表資料的<span class="highlight">算術平均值</span>。
+                        <ul>
+                            <li><span class="highlight">計算</span>：所有數值總和除以數值個數。</li>
+                            <li><span class="highlight">優點</span>：計算簡單，納入所有資料點的資訊。</li>
+                            <li><span class="highlight">缺點</span>：<span class="highlight">容易受到極端值（離群值）的影響</span>。</li>
+                            <li>適用：主要用於<span class="highlight">對稱分佈</span>的數值型資料。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 6 -->
+            <div class="focus-card" data-category="3" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#6</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">集中趨勢量數</span> - <span class="chinese-term">中位數</span> (<span class="english-fullname">Median</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">定義與特性</div>
+                    <div class="details-content">
+                        <span class="chinese-term">中位數</span>是將資料<span class="highlight">排序後位於中間位置</span>的數值。
+                        <ul>
+                            <li><span class="highlight">計算</span>：奇數個數時取中間值；偶數個數時取中間兩個數的平均值。</li>
+                            <li><span class="highlight">優點</span>：<span class="highlight">不受極端值的影響</span>，適用於偏態分佈。</li>
+                            <li><span class="highlight">缺點</span>：計算相對複雜（需排序），未利用所有數據的數值大小。</li>
+                            <li>適用：<span class="highlight">偏態分佈</span>的數值型資料、次序型資料。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 7 -->
+            <div class="focus-card" data-category="3" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#7</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">集中趨勢量數</span> - <span class="chinese-term">眾數</span> (<span class="english-fullname">Mode</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">定義與特性</div>
+                    <div class="details-content">
+                        <span class="chinese-term">眾數</span>是資料集中<span class="highlight">出現次數最多</span>的數值或類別。
+                        <ul>
+                            <li><span class="highlight">特性</span>：可能沒有眾數，也可能有多個眾數（單峰、雙峰、多峰）。</li>
+                            <li><span class="highlight">優點</span>：<span class="highlight">適用於所有資料類型</span>（數值型、類別型），不受極端值影響，易於理解。</li>
+                            <li><span class="highlight">缺點</span>：不穩定，可能不存在或不唯一，未考慮數據的數值大小。</li>
+                            <li>適用：<span class="highlight">類別型資料</span>（尤其是名目型），或想找出最常見數值時。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+             <!-- Focus Point 8 -->
+            <div class="focus-card" data-category="3" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#8</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        選擇<span class="chinese-term">集中趨勢量數</span>的考量
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">適用情境</div>
+                    <div class="details-content">
+                        選擇哪種量數取決於資料類型和分佈形狀：
+                        <ul>
+                            <li><span class="highlight">對稱分佈</span>：平均數、中位數、眾數通常很接近，<span class="highlight">平均數</span>最常用。</li>
+                            <li><span class="highlight">偏態分佈</span>：<span class="highlight">中位數</span>通常是比平均數更好的代表。</li>
+                            <li><span class="highlight">類別型資料</span>：通常使用<span class="highlight">眾數</span>。</li>
+                            <li><span class="highlight">有極端值</span>：<span class="highlight">中位數</span>比平均數更穩健。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 9 -->
+            <div class="focus-card" data-category="4" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#9</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">離散趨勢量數</span> - <span class="chinese-term">全距</span> (<span class="english-fullname">Range</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">定義與特性</div>
+                    <div class="details-content">
+                        <span class="chinese-term">全距</span>是衡量資料分散程度的最簡單方法。
+                        <ul>
+                            <li><span class="highlight">計算</span>：最大值減去最小值。</li>
+                            <li><span class="highlight">優點</span>：計算非常簡單。</li>
+                            <li><span class="highlight">缺點</span>：<span class="highlight">只考慮最大和最小值，極易受極端值影響</span>，無法反映資料內部的分散情況。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 10 -->
+            <div class="focus-card" data-category="4" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#10</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">離散趨勢量數</span> - <span class="chinese-term">變異數</span> (<span class="english-fullname">Variance</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">定義與特性</div>
+                    <div class="details-content">
+                       <span class="chinese-term">變異數</span>衡量資料點<span class="highlight">相對於平均數的分散程度的平均值</span>。
+                        <ul>
+                            <li><span class="highlight">計算</span>：每個資料點與平均數差值的平方和，再除以資料點總數（母體變異數 <span class="english-fullname">σ²</span>）或總數減一（樣本變異數 <span class="english-fullname">s²</span>）。</li>
+                            <li><span class="highlight">特性</span>：單位是原始資料單位的平方，<span class="highlight">不易直觀解釋</span>。值越大，表示資料越分散。</li>
+                            <li><span class="highlight">使用樣本變異數 (n-1) 的原因</span>：對母體變異數的<span class="highlight">不偏估計</span>。</li>
+                        </ul>
+                    </div>
+                </div>
+                <img src="image/variance-formula.png" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 11 -->
+            <div class="focus-card" data-category="4" data-stars="5">
+                <div class="focus-header">
+                    <div class="focus-id">#11</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">離散趨勢量數</span> - <span class="chinese-term">標準差</span> (<span class="english-fullname">Standard Deviation</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">定義與特性</div>
+                    <div class="details-content">
+                       <span class="chinese-term">標準差</span>是<span class="highlight">變異數的平方根</span>，是最常用的離散趨勢量數。
+                        <ul>
+                            <li><span class="highlight">計算</span>：√變異數 (母體: σ, 樣本: s)。</li>
+                            <li><span class="highlight">優點</span>：<span class="highlight">單位與原始資料相同，易於解釋</span>。衡量資料點偏離平均數的典型距離。</li>
+                            <li><span class="highlight">特性</span>：值越大，表示資料越分散。對於常態分佈，有經驗法則（68-95-99.7法則）。</li>
+                            <li><span class="highlight">缺點</span>：<span class="highlight">同樣會受到極端值的影響</span>。</li>
+                        </ul>
+                    </div>
+                </div>
+                <img src="image/Standard-Deviation-Formula.png" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 12 -->
+            <div class="focus-card" data-category="4" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#12</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">離散趨勢量數</span> - <span class="chinese-term">四分位距</span> (<span class="english-fullname">Interquartile Range</span>, <span class="english-abbr">IQR</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">定義與特性</div>
+                    <div class="details-content">
+                       <span class="chinese-term">四分位距</span>描述資料<span class="highlight">中間50%範圍</span>的分散程度。
+                        <ul>
+                            <li><span class="highlight">計算</span>：第三四分位數 (<span class="english-abbr">Q3</span>) 減去 第一四分位數 (<span class="english-abbr">Q1</span>)。(<span class="highlight">IQR = Q3 - Q1</span>)</li>
+                            <li><span class="chinese-term">四分位數</span> (<span class="english-fullname">Quartiles</span>)：將排序後的資料分成四等份的數值點 (Q1: 25%, Q2: 50% (即中位數), Q3: 75%)。</li>
+                            <li><span class="highlight">優點</span>：<span class="highlight">不受極端值的影響</span>，適用於偏態分佈。常用於<span class="highlight">盒鬚圖</span>和<span class="highlight">離群值檢測</span>。</li>
+                        </ul>
+                    </div>
+                </div>
+                <img src="image/Interquartile Range.png" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 13 -->
+             <div class="focus-card" data-category="4" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#13</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                       <span class="chinese-term">變異係數</span> (<span class="english-fullname">Coefficient of Variation</span>, <span class="english-abbr">CV</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">定義與目的</div>
+                    <div class="details-content">
+                       <span class="chinese-term">變異係數</span>是標準差與平均數的比值，用來<span class="highlight">比較不同單位或不同平均數的資料集之間的相對離散程度</span>。
+                        <ul>
+                            <li><span class="highlight">計算</span>：(標準差 / 平均數) * 100%。</li>
+                            <li><span class="highlight">特性</span>：<span class="highlight">無單位</span>，是一個相對值。</li>
+                            <li>適用：比較公斤和公分資料的離散程度，或比較平均銷售額差異很大的兩組產品的銷售額穩定性。</li>
+                        </ul>
+                    </div>
+                </div>
+                <img src="image/CV_coefficient of variation.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 14 -->
+            <div class="focus-card" data-category="5" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#14</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">資料分佈形狀</span> - <span class="chinese-term">偏態</span> (<span class="english-fullname">Skewness</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">定義與判斷</div>
+                    <div class="details-content">
+                       <span class="chinese-term">偏態</span>描述資料分佈的<span class="highlight">不對稱性</span>。
+                        <ul>
+                            <li><span class="chinese-term">右偏態</span> (<span class="english-fullname">Right-skewed</span> / <span class="english-fullname">Positive Skewness</span>)：<span class="highlight">尾巴向右延伸</span>，眾數 < 中位數 < 平均數。</li>
+                            <li><span class="chinese-term">左偏態</span> (<span class="english-fullname">Left-skewed</span> / <span class="english-fullname">Negative Skewness</span>)：<span class="highlight">尾巴向左延伸</span>，平均數 < 中位數 < 眾數。</li>
+                            <li><span class="chinese-term">對稱分佈</span> (<span class="english-fullname">Symmetric Distribution</span>)：左右對稱，平均數 ≈ 中位數 ≈ 眾數。</li>
+                        </ul>
+                        偏態影響集中趨勢量數的選擇（偏態時用中位數較佳）。
+                    </div>
+                </div>
+                <img src="image/skewness-left-right-positive-negative.png" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 15 -->
+            <div class="focus-card" data-category="5" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#15</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">資料分佈形狀</span> - <span class="chinese-term">峰度</span> (<span class="english-fullname">Kurtosis</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">定義與類型</div>
+                    <div class="details-content">
+                       <span class="chinese-term">峰度</span>描述資料分佈<span class="highlight">峰部的尖銳程度</span>以及<span class="highlight">尾部的厚重程度</span>（相對於常態分佈）。
+                        <ul>
+                            <li><span class="chinese-term">高狹峰</span> (<span class="english-fullname">Leptokurtic</span>)：比常態分佈更尖峭，尾部更厚重（峰度 > 3 或 超額峰度 > 0）。表示離群值較多。</li>
+                            <li><span class="chinese-term">低闊峰</span> (<span class="english-fullname">Platykurtic</span>)：比常態分佈更平坦，尾部更輕薄（峰度 < 3 或 超額峰度 < 0）。表示離群值較少。</li>
+                            <li><span class="chinese-term">常態峰</span> (<span class="english-fullname">Mesokurtic</span>)：峰度接近常態分佈（峰度 ≈ 3 或 超額峰度 ≈ 0）。</li>
+                        </ul>
+                       <span class="highlight">超額峰度 (Excess Kurtosis) = 峰度 - 3</span>。
+                    </div>
+                </div>
+                <img src="image/Kurtosis_eng.png" class="responsive-img">
+                <img src="image/Kurtosis.jpg" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 16 -->
+            <div class="focus-card" data-category="6" data-stars="4">
+                <div class="focus-header">
+                    <div class="focus-id">#16</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">資料摘要技術</span> - <span class="chinese-term">頻率分佈</span> (<span class="english-fullname">Frequency Distribution</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">應用</div>
+                    <div class="details-content">
+                        用於<span class="highlight">總結類別型資料或分組後的數值型資料</span>中各個值或組別出現的次數。
+                        <ul>
+                            <li><span class="chinese-term">絕對頻率</span>：實際出現的次數。</li>
+                            <li><span class="chinese-term">相對頻率</span>：次數佔總數的比例或百分比。</li>
+                            <li><span class="chinese-term">累積頻率</span>：小於等於某個值或組別上限的次數累加。</li>
+                        </ul>
+                        是製作長條圖、圓餅圖、直方圖的基礎。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 17 -->
+            <div class="focus-card" data-category="6" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#17</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">資料摘要技術</span> - <span class="chinese-term">百分位數</span> (<span class="english-fullname">Percentiles</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">定義與應用</div>
+                    <div class="details-content">
+                        <span class="chinese-term">百分位數</span>（如P90, P50, P25）表示<span class="highlight">資料集中有多少百分比的數值小於該數值</span>。
+                        <ul>
+                            <li>例如，第90百分位數（P90）表示90%的資料小於此值。</li>
+                            <li>第50百分位數（P50）即為<span class="highlight">中位數</span>。</li>
+                            <li>第25百分位數（P25）為第一四分位數（Q1），第75百分位數（P75）為第三四分位數（Q3）。</li>
+                        </ul>
+                        常用於描述資料點在整體中的相對位置（如考試成績排名）。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 18 -->
+            <div class="focus-card" data-category="6" data-stars="4">
+                 <div class="focus-header">
+                    <div class="focus-id">#18</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">資料摘要技術</span> - <span class="chinese-term">列聯表</span> (<span class="english-fullname">Contingency Table</span> / <span class="english-fullname">Cross-Tabulation</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">應用</div>
+                    <div class="details-content">
+                        用於<span class="highlight">總結兩個或多個類別型變數之間的關係</span>。表格顯示了變數組合的頻率。
+                        <ul>
+                            <li>例如，分析不同性別（變數1）購買不同產品類別（變數2）的人數。</li>
+                            <li>可以計算<span class="highlight">聯合頻率、邊際頻率和條件頻率</span>。</li>
+                        </ul>
+                        是進行卡方檢定等分析的基礎。
+                    </div>
+                </div>
+                <img src="image/contingency.png" class="responsive-img">
+                <img src="image/Contingency Table.png" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 19 -->
+            <div class="focus-card" data-category="7" data-stars="5">
+                 <div class="focus-header">
+                    <div class="focus-id">#19</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">資料視覺化</span> - <span class="chinese-term">長條圖</span> (<span class="english-fullname">Bar Chart</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">適用情境與判讀</div>
+                    <div class="details-content">
+                        <ul>
+                            <li><span class="highlight">用途</span>：比較不同<span class="highlight">類別型資料</span>的頻率或數值大小。</li>
+                            <li><span class="highlight">構成</span>：X軸代表類別，Y軸代表頻率或數值，使用<span class="highlight">分離的長條</span>表示。</li>
+                            <li>判讀：比較長條的高度來判斷各類別的相對大小。</li>
+                            <li>注意：與直方圖不同，長條圖的長條之間有間隔。</li>
+                        </ul>
+                    </div>
+                </div>
+                <img src="image/Bar-chart-versus-histogram-chart.png" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 20 -->
+            <div class="focus-card" data-category="7" data-stars="4">
+                 <div class="focus-header">
+                    <div class="focus-id">#20</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">資料視覺化</span> - <span class="chinese-term">圓餅圖</span> (<span class="english-fullname">Pie Chart</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">適用情境與判讀</div>
+                    <div class="details-content">
+                         <ul>
+                            <li><span class="highlight">用途</span>：顯示<span class="highlight">類別型資料</span>各部分佔<span class="highlight">整體</span>的比例或百分比。</li>
+                            <li><span class="highlight">構成</span>：整個圓代表總體 (100%)，扇形面積大小代表各類別的比例。</li>
+                            <li>判讀：比較扇形面積來了解各部分的相對重要性。</li>
+                            <li><span class="highlight">缺點</span>：當類別過多或比例接近時，<span class="highlight">不易精確比較</span>，長條圖通常是更好的選擇。</li>
+                        </ul>
+                    </div>
+                </div>
+                <img src="image/pie-chart.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 21 -->
+            <div class="focus-card" data-category="7" data-stars="5">
+                 <div class="focus-header">
+                    <div class="focus-id">#21</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">資料視覺化</span> - <span class="chinese-term">直方圖</span> (<span class="english-fullname">Histogram</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">適用情境與判讀</div>
+                    <div class="details-content">
+                         <ul>
+                            <li><span class="highlight">用途</span>：顯示<span class="highlight">數值型資料</span>（通常是連續型）的<span class="highlight">頻率分佈</span>。</li>
+                            <li><span class="highlight">構成</span>：X軸代表數值區間（組距），Y軸代表該區間內的頻率，使用<span class="highlight">相鄰的長條</span>表示。</li>
+                            <li>判讀：觀察圖形的<span class="highlight">整體形狀（對稱、偏態）、中心位置和分散程度</span>。</li>
+                            <li>注意：長條之間<span class="highlight">沒有間隔</span>（除非某區間頻率為0）。選擇合適的組距很重要。</li>
+                        </ul>
+                    </div>
+                </div>
+                <img src="image/Bar-chart-versus-histogram-chart.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 22 -->
+            <div class="focus-card" data-category="7" data-stars="5">
+                 <div class="focus-header">
+                    <div class="focus-id">#22</div>
+                    <div class="focus-importance">★★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">資料視覺化</span> - <span class="chinese-term">盒鬚圖</span> (<span class="english-fullname">Box Plot</span> / <span class="english-fullname">Box-and-Whisker Plot</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">適用情境與判讀</div>
+                    <div class="details-content">
+                         <ul>
+                            <li><span class="highlight">用途</span>：顯示<span class="highlight">數值型資料</span>的<span class="highlight">五數摘要</span>（最小值、Q1、中位數(Q2)、Q3、最大值），並可用於<span class="highlight">比較不同組別的分佈</span>。</li>
+                            <li><span class="highlight">構成</span>：
+                                <ul>
+                                    <li>盒子：包含中間50%的資料（從Q1到Q3），盒內的線代表中位數(Q2)。</li>
+                                    <li>盒鬚 (Whiskers)：從盒子延伸出去，通常代表資料的主要範圍（如延伸到距離Q1/Q3 1.5倍IQR內的點）。</li>
+                                    <li>離群值 (Outliers)：超出盒鬚範圍的點，通常單獨標示。</li>
+                                </ul>
+                            </li>
+                            <li>判讀：觀察<span class="highlight">中位數位置、盒子長度（IQR，分散程度）、盒鬚長度、對稱性以及是否有離群值</span>。</li>
+                        </ul>
+                    </div>
+                </div>
+                <img src="image/Box Plot.jpg" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 23 -->
+            <div class="focus-card" data-category="7" data-stars="4">
+                 <div class="focus-header">
+                    <div class="focus-id">#23</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">資料視覺化</span> - <span class="chinese-term">散佈圖</span> (<span class="english-fullname">Scatter Plot</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">適用情境與判讀</div>
+                    <div class="details-content">
+                         <ul>
+                            <li><span class="highlight">用途</span>：顯示<span class="highlight">兩個數值型變數</span>之間的<span class="highlight">關係</span>。</li>
+                            <li><span class="highlight">構成</span>：每個資料點對應一對(X, Y)值，繪製在二維座標系上。</li>
+                            <li>判讀：觀察點的分佈模式，判斷變數間是否存在<span class="highlight">正相關、負相關、無相關或非線性關係</span>，以及關係的<span class="highlight">強度</span>。</li>
+                         </ul>
+                    </div>
+                </div>
+                <img src="image/Scatter Plot.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 24 -->
+            <div class="focus-card" data-category="8" data-stars="4">
+                 <div class="focus-header">
+                    <div class="focus-id">#24</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">相關係數</span> (<span class="english-fullname">Correlation Coefficient</span>) - <span class="chinese-term">皮爾森相關係數</span> (<span class="english-abbr">Pearson</span> r)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">定義與判讀</div>
+                    <div class="details-content">
+                         <ul>
+                            <li><span class="highlight">用途</span>：量化<span class="highlight">兩個數值型變數</span>之間<span class="highlight">線性關係</span>的強度和方向。</li>
+                            <li><span class="highlight">範圍</span>：介於 -1 到 +1 之間。
+                                <ul>
+                                    <li>+1：完全正相關。</li>
+                                    <li>-1：完全負相關。</li>
+                                     <li>0：無線性相關。</li>
+                                </ul>
+                            </li>
+                             <li><span class="highlight">強度</span>：絕對值越接近1，線性關係越強。</li>
+                             <li><span class="highlight">注意</span>：相關<span class="highlight">不等於因果關係</span>。僅衡量線性關係，無法反映非線性關係。</li>
+                         </ul>
+                    </div>
+                </div>
+                <img src="image/Correlation Coefficient.png" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 25 -->
+            <div class="focus-card" data-category="8" data-stars="4">
+                 <div class="focus-header">
+                    <div class="focus-id">#25</div>
+                    <div class="focus-importance">★★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">離群值</span> (<span class="english-fullname">Outliers</span>) - 偵測方法
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">常用技術</div>
+                    <div class="details-content">
+                         <span class="chinese-term">離群值</span>是指顯著偏離資料集中其他觀測值的數值。
+                         <ul>
+                            <li><span class="chinese-term">視覺化方法</span>：<span class="highlight">盒鬚圖</span> (<span class="english-fullname">Box Plot</span>) 是最常用的方法，超出盒鬚的點被視為離群值。散佈圖也可觀察。</li>
+                            <li><span class="chinese-term">IQR 法則</span>：常用的離群值判斷標準是小於 <span class="highlight">Q1 - 1.5 * IQR</span> 或大於 <span class="highlight">Q3 + 1.5 * IQR</span> 的值。</li>
+                            <li><span class="chinese-term">標準差法 (Z-score)</span>：將資料標準化後（計算Z分數），通常認為 Z 分數<span class="highlight">絕對值大於 2 或 3</span> 的值為離群值。此法假設資料接近常態分佈。</li>
+                         </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 26 -->
+            <div class="focus-card" data-category="8" data-stars="3">
+                 <div class="focus-header">
+                    <div class="focus-id">#26</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">離群值</span> (<span class="english-fullname">Outliers</span>) - 處理方式
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">應對策略</div>
+                    <div class="details-content">
+                         處理離群值需謹慎，應先了解其成因。
+                         <ul>
+                            <li><span class="highlight">識別與驗證</span>：確認是否為<span class="highlight">輸入錯誤或測量誤差</span>。若是，則予以修正或刪除。</li>
+                            <li><span class="highlight">保留</span>：若離群值是<span class="highlight">真實且重要的觀測值</span>（如欺詐檢測中的異常交易），則應保留。</li>
+                            <li><span class="highlight">轉換</span>：對資料進行<span class="highlight">數學轉換</span>（如對數轉換），可能減輕離群值的影響。</li>
+                            <li><span class="highlight">設限 (Capping/Winsorizing)</span>：將離群值替換為某個預設的<span class="highlight">最大值或最小值</span>（如第99百分位數）。</li>
+                             <li><span class="highlight">刪除</span>：若確定為錯誤且無法修正，或對模型有極大負面影響，可考慮刪除，但需<span class="highlight">記錄原因和影響</span>。</li>
+                         </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add more points up to ~60, covering variations, nuances, comparisons -->
+
+             <!-- Focus Point 27 -->
+            <div class="focus-card" data-category="1" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#27</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">母體</span> (<span class="english-fullname">Population</span>) vs <span class="chinese-term">樣本</span> (<span class="english-fullname">Sample</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">基本定義</div>
+                    <div class="details-content">
+                        <ul>
+                            <li><span class="chinese-term">母體</span>：研究<span class="highlight">感興趣的所有個體</span>的集合。</li>
+                            <li><span class="chinese-term">樣本</span>：從母體中<span class="highlight">抽取的一部分個體</span>的集合。</li>
+                        </ul>
+                       <span class="chinese-term">敘述統計</span>可以用來描述樣本資料，也可以用來描述整個母體資料（如果可得）。推論統計則是用樣本來推論母體。
+                    </div>
+                </div>
+            </div>
+
+             <!-- Focus Point 28 -->
+            <div class="focus-card" data-category="2" data-stars="2">
+                <div class="focus-header">
+                    <div class="focus-id">#28</div>
+                    <div class="focus-importance">★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">時間序列資料</span> (<span class="english-fullname">Time Series Data</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">特性</div>
+                    <div class="details-content">
+                        <span class="chinese-term">時間序列資料</span>是<span class="highlight">按時間順序</span>收集的觀測值（如每日股價、每月銷售額）。雖然有特定的分析方法（如移動平均），但基本的敘述統計（如計算趨勢線、描述季節性波動）也適用於初步探索。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Point 29 -->
+             <div class="focus-card" data-category="5" data-stars="3">
+                 <div class="focus-header">
+                     <div class="focus-id">#29</div>
+                     <div class="focus-importance">★★★</div>
+                 </div>
+                 <div class="focus-topic-container">
+                     <div class="focus-topic">
+                        <span class="chinese-term">常態分佈</span> (<span class="english-fullname">Normal Distribution</span>) 特性
+                     </div>
+                 </div>
+                 <div class="focus-details-container">
+                     <div class="details-header">關鍵特徵</div>
+                     <div class="details-content">
+                         <span class="chinese-term">常態分佈</span>（又稱高斯分佈）是一種常見的連續機率分佈。
+                         <ul>
+                            <li><span class="highlight">形狀</span>：鐘形 (<span class="english-fullname">Bell-shaped</span>)、單峰 (<span class="english-fullname">Unimodal</span>)、左右對稱 (<span class="english-fullname">Symmetric</span>)。</li>
+                            <li><span class="highlight">集中趨勢</span>：平均數 = 中位數 = 眾數。</li>
+                            <li><span class="highlight">經驗法則 (68-95-99.7 Rule)</span>：約68%的資料落在平均數±1個標準差內；約95%落在±2個標準差內；約99.7%落在±3個標準差內。</li>
+                         </ul>
+                         許多統計推論方法假設資料來自常態分佈。
+                     </div>
+                 </div>
+                 <img src="image/Normal Distribution.png" class="responsive-img">
+             </div>
+
+            <!-- Focus Point 30 -->
+            <div class="focus-card" data-category="7" data-stars="3">
+                 <div class="focus-header">
+                     <div class="focus-id">#30</div>
+                     <div class="focus-importance">★★★</div>
+                 </div>
+                 <div class="focus-topic-container">
+                     <div class="focus-topic">
+                        <span class="chinese-term">資料視覺化</span> - <span class="chinese-term">線圖</span> (<span class="english-fullname">Line Chart</span>)
+                     </div>
+                 </div>
+                 <div class="focus-details-container">
+                     <div class="details-header">適用情境</div>
+                     <div class="details-content">
+                         <ul>
+                            <li><span class="highlight">用途</span>：顯示資料（通常是數值型）<span class="highlight">隨時間變化的趨勢</span>。</li>
+                            <li><span class="highlight">構成</span>：X軸通常代表時間，Y軸代表數值，用線連接各時間點的數值。</li>
+                            <li>判讀：觀察線的<span class="highlight">上升、下降、波動</span>等趨勢。</li>
+                         </ul>
+                     </div>
+                 </div>
+                 <img src="image/Line Chart.png" class="responsive-img">
+             </div>
+
+            <!-- Continue adding points... -->
+
+             <!-- Focus Point 31 -->
+            <div class="focus-card" data-category="4" data-stars="2">
+                <div class="focus-header">
+                    <div class="focus-id">#31</div>
+                    <div class="focus-importance">★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">標準分數</span> (<span class="english-fullname">Standard Score</span> / <span class="english-abbr">Z-score</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">定義與用途</div>
+                    <div class="details-content">
+                        <span class="chinese-term">Z分數</span>表示一個數值<span class="highlight">距離平均數有多少個標準差</span>。
+                        <ul>
+                           <li><span class="highlight">計算</span>：Z = (觀測值 - 平均數) / 標準差。</li>
+                           <li><span class="highlight">用途</span>：
+                               <ul>
+                                   <li><span class="highlight">比較</span>不同單位或不同分佈的數值。</li>
+                                   <li><span class="highlight">偵測離群值</span>（如 |Z| > 3）。</li>
+                                   <li>資料標準化，用於某些機器學習演算法。</li>
+                               </ul>
+                           </li>
+                           <li><span class="highlight">特性</span>：標準化後的資料平均數為0，標準差為1。</li>
+                        </ul>
+                    </div>
+                </div>
+                <img src="image/Z-score.png" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 32 -->
+            <div class="focus-card" data-category="7" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#32</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">視覺化選擇原則</span>
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">考量因素</div>
+                    <div class="details-content">
+                        選擇合適的圖表需考慮：
+                        <ul>
+                           <li><span class="highlight">分析目的</span>：是比較、看分佈、看關係、還是看組成？</li>
+                           <li><span class="highlight">資料類型</span>：是數值型還是類別型？是一個變數還是多個變數？</li>
+                           <li><span class="highlight">受眾</span>：圖表是否清晰易懂？</li>
+                           <li>避免誤導：例如，Y軸不從0開始可能誇大差異。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+             <!-- Focus Point 33 -->
+             <div class="focus-card" data-category="8" data-stars="2">
+                <div class="focus-header">
+                    <div class="focus-id">#33</div>
+                    <div class="focus-importance">★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">斯皮爾曼等級相關係數</span> (<span class="english-fullname">Spearman Rank Correlation</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">定義與用途</div>
+                    <div class="details-content">
+                        <span class="chinese-term">斯皮爾曼相關</span>是<span class="highlight">非參數</span>的相關性度量，評估兩個變數<span class="highlight">等級之間單調關係</span>的強度。
+                        <ul>
+                           <li><span class="highlight">計算</span>：基於變數的排序（等級）而非原始數值。</li>
+                           <li><span class="highlight">用途</span>：
+                               <ul>
+                                   <li>當變數是<span class="highlight">次序型資料</span>時。</li>
+                                   <li>當數值型變數的關係是<span class="highlight">非線性但單調</span>（即一個變數增加時，另一個變數也傾向於增加或減少，但不一定是直線）時。</li>
+                                   <li>對<span class="highlight">離群值較不敏感</span>。</li>
+                               </ul>
+                           </li>
+                           <li>範圍與解釋：同皮爾森相關係數 (-1 到 +1)。</li>
+                        </ul>
+                    </div>
+                </div>
+                <img src="image/Spearman Rank Correlation.jpg" class="responsive-img">
+            </div>
+
+            <!-- ... adding more points ... -->
+
+             <!-- Focus Point 34 -->
+            <div class="focus-card" data-category="3" data-stars="2">
+                <div class="focus-header">
+                    <div class="focus-id">#34</div>
+                    <div class="focus-importance">★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">幾何平均數</span> (<span class="english-fullname">Geometric Mean</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">定義與用途</div>
+                    <div class="details-content">
+                        <span class="chinese-term">幾何平均數</span>用於計算一組數值的<span class="highlight">中心趨勢</span>，特別適用於<span class="highlight">比率或百分比變化率</span>的平均。
+                        <ul>
+                            <li><span class="highlight">計算</span>：n個數值乘積的n次方根。</li>
+                            <li><span class="highlight">用途</span>：計算平均<span class="highlight">年增長率</span>、投資報酬率等。</li>
+                            <li><span class="highlight">特性</span>：受極小值影響大，若有0則結果為0。數值必須為正。</li>
+                        </ul>
+                    </div>
+                </div>
+                <img src="image/Geometric Mean.png" class="responsive-img">
+            </div>
+
+            <!-- Focus Point 35 -->
+            <div class="focus-card" data-category="4" data-stars="1">
+                <div class="focus-header">
+                    <div class="focus-id">#35</div>
+                    <div class="focus-importance">★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">平均絕對離差</span> (<span class="english-fullname">Mean Absolute Deviation</span>, <span class="english-abbr">MAD</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">定義</div>
+                    <div class="details-content">
+                        <span class="chinese-term">MAD</span>是另一種衡量資料分散程度的方法，計算<span class="highlight">每個資料點與平均數差值的絕對值的平均</span>。
+                        <ul>
+                            <li>相較於標準差，它<span class="highlight">對離群值的敏感度較低</span>（因為沒有平方）。</li>
+                            <li>但數學性質不如標準差好，較少用於推論統計。</li>
+                        </ul>
+                    </div>
+                </div>
+                <img src="image/MAD.png" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 36 -->
+            <div class="focus-card" data-category="7" data-stars="2">
+                <div class="focus-header">
+                    <div class="focus-id">#36</div>
+                    <div class="focus-importance">★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                        <span class="chinese-term">熱力圖</span> (<span class="english-fullname">Heatmap</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">視覺化目的</div>
+                    <div class="details-content">
+                        <span class="chinese-term">熱力圖</span>使用<span class="highlight">顏色強度</span>來表示矩陣中數值的大小。
+                        <ul>
+                            <li><span class="highlight">用途</span>：常應用於視覺化<span class="highlight">相關係數矩陣</span>、列聯表中的數值、或地理空間資料的密度。</li>
+                            <li>可以快速識別矩陣中的<span class="highlight">高值和低值區域</span>以及模式。</li>
+                        </ul>
+                    </div>
+                </div>
+                <img src="image/Heatmap.png" class="responsive-img">
+            </div>
+
+             <!-- Focus Point 37 -->
+            <div class="focus-card" data-category="1" data-stars="3">
+                <div class="focus-header">
+                    <div class="focus-id">#37</div>
+                    <div class="focus-importance">★★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                       <span class="chinese-term">敘述統計在AI專案中的角色</span>
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">重要性</div>
+                    <div class="details-content">
+                        在建立AI模型前，敘述統計是<span class="highlight">探索性資料分析</span>(<span class="english-fullname">Exploratory Data Analysis</span>, <span class="english-abbr">EDA</span>) 的關鍵環節。
+                        <ul>
+                            <li><span class="highlight">理解資料</span>：了解變數的分佈、中心點、離散程度。</li>
+                            <li><span class="highlight">資料清理</span>：識別錯誤值、缺失值、離群值。</li>
+                            <li><span class="highlight">特徵工程</span>：提供選擇或轉換特徵的依據。</li>
+                            <li><span class="highlight">溝通發現</span>：用圖表和摘要統計向利害關係人展示資料洞見。</li>
+                        </ul>
+                    </div>
+                </div>
+                
+            </div>
+
+            <!-- Focus Point 38 -->
+            <div class="focus-card" data-category="5" data-stars="2">
+                <div class="focus-header">
+                    <div class="focus-id">#38</div>
+                    <div class="focus-importance">★★</div>
+                </div>
+                <div class="focus-topic-container">
+                    <div class="focus-topic">
+                       <span class="chinese-term">雙峰分佈</span> (<span class="english-fullname">Bimodal Distribution</span>)
+                    </div>
+                </div>
+                <div class="focus-details-container">
+                    <div class="details-header">特性與意義</div>
+                    <div class="details-content">
+                       <span class="chinese-term">雙峰分佈</span>是指資料分佈中<span class="highlight">出現兩個明顯的峰值</span>（兩個眾數）。
+                        <ul>
+                            <li>這通常暗示資料可能來自<span class="highlight">兩個不同的潛在群體或過程</span>。</li>
+                            <li>例如，混合了男性和女性身高的資料集可能呈現雙峰。</li>
+                            <li>遇到雙峰分佈時，單一的集中趨勢量數（如平均數）可能<span class="highlight">不具代表性</span>，可能需要分開分析兩個群體。</li>
+                        </ul>
+                    </div>
+                </div>
+                <img src="image/Bimodal Distribution.png" class="responsive-img">
+            </div>
+            <!-- ... up to 60 points ... -->
+
+             <!-- Placeholder for No Results -->
+             <div id="noResultsMessage">沒有找到符合條件的重點。</div>
+
+        </div><!-- end focus-points-container -->
+
+        <div class="back-to-top" id="backToTop">↑</div>
+    </div>
+
+    <script>
+        // Progress bar (no changes needed)
+        const progressBar = document.getElementById("progressBar");
+        window.onscroll = function() { updateProgressBar(); toggleBackToTopButton(); };
+        function updateProgressBar() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (height > 0) ? (winScroll / height) * 100 : 0;
+            progressBar.style.width = scrolled + "%";
+        }
+
+        // Back to top button (no changes needed)
+        const backToTopButton = document.getElementById("backToTop");
+        function toggleBackToTopButton() {
+             backToTopButton.style.display = (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) ? "flex" : "none";
+        }
+        backToTopButton.addEventListener("click", () => window.scrollTo({top: 0, behavior: 'smooth'}));
+
+        // Filter by category (Updated function name)
+        function filterByCategory(categoryNumber) {
+            document.getElementById('categoryFilter').value = categoryNumber === 'all' ? 'all' : String(categoryNumber);
+            document.getElementById('searchInput').value = ''; // Clear search on filter click
+            filterFocusPoints(); // Call updated filter function
+        }
+
+        // Event listeners for filters and search (Updated IDs/functions)
+        document.getElementById("categoryFilter").addEventListener("change", () => {
+             document.getElementById('searchInput').value = '';
+             filterFocusPoints();
+        });
+        document.getElementById("starFilter").addEventListener("change", () => {
+             document.getElementById('searchInput').value = '';
+             filterFocusPoints();
+        });
+        document.getElementById("searchButton").addEventListener("click", searchFocusPoints); // Updated function call
+        document.getElementById("searchInput").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                searchFocusPoints(); // Updated function call
+            }
+        });
+
+        const noResultsMessage = document.getElementById('noResultsMessage');
+        const pointsContainer = document.getElementById('focusPointsContainer');
+
+        // Combined filter function (Updated variable/class names)
+        function filterFocusPoints() {
+            let category = document.getElementById("categoryFilter").value;
+            let stars = document.getElementById("starFilter").value;
+            let points = pointsContainer.querySelectorAll(".focus-card"); // Target .focus-card within the container
+            let anyVisible = false;
+
+            points.forEach(function(point) {
+                // Updated dataset attribute name
+                const matchesCategory = (category === "all" || point.dataset.category === category);
+                const matchesStars = (stars === "all" || point.dataset.stars === stars);
+
+                if (matchesCategory && matchesStars) {
+                    point.style.display = "block";
+                    anyVisible = true;
+                } else {
+                    point.style.display = "none";
+                }
+            });
+
+             if (noResultsMessage) {
+                 noResultsMessage.style.display = anyVisible ? 'none' : 'block';
+                 // Updated message text
+                 noResultsMessage.textContent = '沒有找到符合篩選條件的重點。';
+                 // Ensure noResultsMessage is placed correctly relative to points
+                 if (!anyVisible) pointsContainer.appendChild(noResultsMessage); // Append if not visible
+                 else if (noResultsMessage.parentNode === pointsContainer) pointsContainer.removeChild(noResultsMessage); // Remove if points are visible
+
+             }
+        }
+
+        // Search function (Updated variable/class names)
+        function searchFocusPoints() {
+            let searchText = document.getElementById("searchInput").value.toLowerCase().trim();
+            let points = pointsContainer.querySelectorAll(".focus-card"); // Target .focus-card within the container
+            let anyVisible = false;
+            let category = document.getElementById("categoryFilter").value;
+            let stars = document.getElementById("starFilter").value;
+
+
+            points.forEach(function(point) {
+                // Check filters first
+                const matchesCategory = (category === "all" || point.dataset.category === category);
+                const matchesStars = (stars === "all" || point.dataset.stars === stars);
+                let visibleBasedOnFilter = matchesCategory && matchesStars;
+
+                // Check search text
+                let pointText = point.textContent.toLowerCase();
+                let matchesSearch = (searchText === "" || pointText.includes(searchText));
+
+                // Show if matches filters AND search (or if search is empty)
+                if (visibleBasedOnFilter && matchesSearch) {
+                    point.style.display = "block";
+                    anyVisible = true;
+                } else {
+                    point.style.display = "none";
+                }
+            });
+
+             if (noResultsMessage) {
+                 if (searchText !== "") {
+                      noResultsMessage.style.display = anyVisible ? 'none' : 'block';
+                      // Updated message text
+                      noResultsMessage.textContent = '沒有找到符合目前篩選及搜尋條件的重點。';
+                 } else {
+                     // If search is empty, rely on filter results
+                     filterFocusPoints(); // Call filter function to handle visibility based on filters only
+                     // Check visibility again after filtering
+                     anyVisible = Array.from(points).some(p => p.style.display === 'block');
+                 }
+                 // Ensure noResultsMessage is placed correctly relative to points
+                 if (!anyVisible) pointsContainer.appendChild(noResultsMessage);
+                 else if (noResultsMessage.parentNode === pointsContainer) pointsContainer.removeChild(noResultsMessage);
+             }
+        }
+
+        // Removed Toggle Explanations Logic
+
+         // Initial setup
+         document.addEventListener('DOMContentLoaded', () => {
+            toggleBackToTopButton();
+            updateProgressBar();
+            // Ensure noResultsMessage is initially hidden and outside the container
+            if (noResultsMessage.parentNode === pointsContainer) pointsContainer.removeChild(noResultsMessage);
+            noResultsMessage.style.display = 'none';
+            filterFocusPoints(); // Apply default filters on load
+         });
+
+
+    </script>
+</body>
+</html>
