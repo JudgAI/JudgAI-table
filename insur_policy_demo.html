@@ -69,11 +69,11 @@
         }
         body {
             font-family: 'Noto Sans TC', 'Orbitron', 'Segoe UI', Arial, sans-serif;
-            background-color: #0f172a;
+            background-color: #0a0e1a;
             /* 動態網格+星空粒子背景 */
             background-image:
-                repeating-linear-gradient(90deg, rgba(56,189,248,0.08) 0, rgba(56,189,248,0.08) 1px, transparent 1px, transparent 2rem),
-                repeating-linear-gradient(180deg, rgba(168,139,250,0.08) 0, rgba(168,139,250,0.08) 1px, transparent 1px, transparent 2rem);
+                repeating-linear-gradient(90deg, rgba(56,189,248,0.12) 0, rgba(56,189,248,0.12) 1px, transparent 1px, transparent 2rem),
+                repeating-linear-gradient(180deg, rgba(168,139,250,0.12) 0, rgba(168,139,250,0.12) 1px, transparent 1px, transparent 2rem);
             background-size: 2rem 2rem;
             background-position: 0 0, 0 0;
             overflow-x: hidden;
@@ -82,24 +82,24 @@
         /* 卡片懸停效果與輝光 */
         .stage-card {
             position: relative;
-            background: linear-gradient(135deg, rgba(30,41,59,0.92) 60%, rgba(56,189,248,0.10) 100%);
-            backdrop-filter: blur(16px) saturate(1.2);
-            border: 1.5px solid rgba(56,189,248,0.18);
-            box-shadow: 0 0 32px 0 rgba(56,189,248,0.10), 0 0 0 1.5px rgba(168,139,250,0.10);
+            background: linear-gradient(135deg, rgba(30,41,59,0.96) 60%, rgba(56,189,248,0.15) 100%);
+            backdrop-filter: blur(20px) saturate(1.3);
+            border: 2px solid rgba(56,189,248,0.25);
+            box-shadow: 0 0 40px 0 rgba(56,189,248,0.15), 0 0 0 2px rgba(168,139,250,0.15);
             transition: transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s;
         }
         .stage-card::before {
             content: '';
             position: absolute;
-            inset: -2px;
+            inset: -3px;
             z-index: 0;
             border-radius: 1.25rem;
-            background: radial-gradient(circle at 60% 20%, rgba(56,189,248,0.18) 0%, rgba(168,139,250,0.10) 100%);
+            background: radial-gradient(circle at 60% 20%, rgba(56,189,248,0.22) 0%, rgba(168,139,250,0.15) 100%);
             pointer-events: none;
         }
         .stage-card:hover {
-            transform: translateY(-10px) scale(1.025) rotateX(2deg);
-            box-shadow: 0 0 40px 0 #38bdf8, 0 0 16px 0 #a78bfa;
+            transform: translateY(-12px) scale(1.03) rotateX(2deg);
+            box-shadow: 0 0 50px 0 #38bdf8, 0 0 20px 0 #a78bfa;
         }
         .stage-card > * { position: relative; z-index: 1; }
         
@@ -118,8 +118,8 @@
         
         /* 圖示容器 */
         .icon-wrapper {
-            background: radial-gradient(circle, rgba(56,189,248,0.18) 0%, rgba(168,139,250,0.10) 100%);
-            box-shadow: 0 0 24px 0 #38bdf8aa, 0 0 8px 0 #a78bfa88;
+            background: radial-gradient(circle, rgba(56,189,248,0.25) 0%, rgba(168,139,250,0.15) 100%);
+            box-shadow: 0 0 30px 0 #38bdf8aa, 0 0 12px 0 #a78bfa88;
         }
         /* 動態星空粒子 */
         #star-bg {
@@ -187,16 +187,16 @@
 
         /* Showcase Card Styles */
         .showcase-card {
-            background: linear-gradient(145deg, rgba(30,41,59,0.9) 0%, rgba(56,189,248,0.1) 100%);
-            backdrop-filter: blur(16px) saturate(1.2);
-            border: 1.5px solid rgba(56,189,248,0.15);
+            background: linear-gradient(145deg, rgba(30,41,59,0.95) 0%, rgba(56,189,248,0.15) 100%);
+            backdrop-filter: blur(20px) saturate(1.3);
+            border: 2px solid rgba(56,189,248,0.2);
             transition: all 0.4s cubic-bezier(.4,2,.6,1);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 20px rgba(56,189,248,0.1);
         }
         .showcase-card:hover {
-            transform: translateY(-12px) scale(1.04);
-            border-color: rgba(56, 189, 248, 0.4);
-            box-shadow: 0 0 30px 0 rgba(56, 189, 248, 0.2), 0 0 50px 0 rgba(167, 139, 250, 0.15);
+            transform: translateY(-15px) scale(1.05);
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: 0 0 40px 0 rgba(56, 189, 248, 0.3), 0 0 60px 0 rgba(167, 139, 250, 0.2);
         }
         .image-placeholder {
             overflow: hidden;
@@ -226,6 +226,32 @@
         .neon-btn-small:hover {
             box-shadow: 0 0 24px #38bdf8, 0 0 8px #818cf8;
             transform: scale(1.05);
+        }
+        
+        /* 增強文字清晰度 */
+        h1, h2, h3, h4, h5, h6 {
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        p, span {
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 增強對比度 */
+        .text-white {
+            color: #ffffff !important;
+        }
+        
+        .text-slate-200 {
+            color: #e2e8f0 !important;
+        }
+        
+        .text-slate-300 {
+            color: #cbd5e1 !important;
+        }
+        
+        .text-sky-200 {
+            color: #bae6fd !important;
         }
     </style>
     <!-- Orbitron 字型 for 科技感 -->
@@ -260,8 +286,8 @@
                     </div>
                 </div>
             </div>
-            <h1 class="text-4xl md:text-5xl font-bold text-sky-400 mb-4 tracking-wide tech-title">保單條款居然變成銷售手冊？</h1>
-            <p class="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 tracking-wide tech-title drop-shadow-lg">保單條款居然變成銷售手冊？</h1>
+            <p class="text-lg md:text-xl text-slate-200 max-w-3xl mx-auto font-medium">
                 保單條款煉金術：奇點智匯將深奧的保單條款，淬鍊成引爆客戶興趣的互動網頁、銷售手冊與 Podcast，讓您的專業無往不利。
             </p>
         </header>
@@ -288,10 +314,10 @@
                         </svg>
                     </div>
                 </div>
-                <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">1. 複雜的保單</h2>
-                <p class="text-slate-400 leading-relaxed">
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-3 drop-shadow-md">1. 複雜的保單</h2>
+                <p class="text-slate-300 leading-relaxed font-medium">
                     看似複雜的表單，如何在 1-3 分鐘內容快速轉換成業務得力的武器？<br>
-                    <span class="block mt-4 text-base md:text-lg text-sky-300 font-semibold">以「QQ人壽 真的好紅 外幣終身壽險定額給付型」-條款為例：</span>
+                    <span class="block mt-4 text-base md:text-lg text-sky-200 font-semibold">以「QQ人壽 真的好紅 外幣終身壽險定額給付型」-條款為例：</span>
                     <a href="https://drive.google.com/open?id=1hSGqI41HIgzUCciLFmAxfzJgVf7Ma1Y6&usp=drive_copy" target="_blank" rel="noopener noreferrer" class="inline-block mt-2 px-4 py-1 rounded-lg bg-gradient-to-r from-sky-500 to-indigo-400 text-white font-bold shadow hover:from-sky-400 hover:to-indigo-500 transition">查看條款範例 </a>
                 </p>
                 <button id="open-video-modal" class="mt-6 px-5 py-2 neon-btn rounded-lg shadow transition">觀看相關影片</button>
@@ -342,8 +368,8 @@
             }
         }
         </style>
-                    <h2 class="text-2xl md:text-3xl font-bold text-sky-300 mb-2 tracking-wide drop-shadow tech-title">善用奇點智匯</h2>
-                    <p class="text-slate-300 text-base md:text-lg max-w-3xl mx-auto flex justify-center">
+                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-2 tracking-wide drop-shadow tech-title">善用奇點智匯</h2>
+                    <p class="text-slate-200 text-base md:text-lg max-w-3xl mx-auto flex justify-center font-medium">
                         <span class="gradient-emph text-center w-full">快速讓保單條款變成銷售手冊，2分鐘搞定10種以上銷售手冊！</span>
                     </p>
                 </div>
@@ -371,8 +397,8 @@
                         </svg>
                     </div>
                 </div>
-                <h2 class="text-2xl md:text-3xl font-bold text-white mb-3 tech-title">2. 互動網頁</h2>
-                <p class="text-slate-400 leading-relaxed">
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-3 tech-title drop-shadow-md">2. 互動網頁</h2>
+                <p class="text-slate-300 leading-relaxed font-medium">
                     將複雜的保單內容轉化為視覺化、易於操作的網頁。使用者可以透過點擊、篩選與計算，直觀地理解保障範圍與權益，提升參與感與透明度。
                 </p>
                 
@@ -383,9 +409,9 @@
                         <div class="image-placeholder rounded-lg mb-4">
                             <img src="保險銷售手冊AI網頁.png" alt="保險銷售手冊AI網頁" class="w-full h-auto rounded-lg enlargeable-image">
                         </div>
-                        <h3 class="font-bold text-lg text-sky-300 mb-2">保險銷售手冊AI網頁</h3>
-                        <p class="text-slate-400 text-sm mb-4 flex-grow">
-                            <strong>秒懂保單大局觀，業績起飛！</strong><br>
+                        <h3 class="font-bold text-lg text-sky-200 mb-2">保險銷售手冊AI網頁</h3>
+                        <p class="text-slate-300 text-sm mb-4 flex-grow font-medium">
+                            <strong class="text-white">秒懂保單大局觀，業績起飛！</strong><br>
                             AI為您剖析保單，提煉黃金賣點，搭配實戰話術，讓您面對客戶時，字字珠璣，輕鬆成交！
                         </p>
                         <div class="text-center">
@@ -397,9 +423,9 @@
                         <div class="image-placeholder rounded-lg mb-4">
                             <img src="年輕族群銷售戰略AI網頁.png" alt="年輕族群銷售戰略AI網頁" class="w-full h-auto rounded-lg enlargeable-image">
                         </div>
-                        <h3 class="font-bold text-lg text-sky-300 mb-2">年輕族群銷售戰略AI網頁</h3>
-                        <p class="text-slate-400 text-sm mb-4 flex-grow">
-                            <strong>攻佔Z世代心房的秘密武器！</strong><br>
+                        <h3 class="font-bold text-lg text-sky-200 mb-2">年輕族群銷售戰略AI網頁</h3>
+                        <p class="text-slate-300 text-sm mb-4 flex-grow font-medium">
+                            <strong class="text-white">攻佔Z世代心房的秘密武器！</strong><br>
                             深入年輕人關注的議題，提供量身打造的銷售劇本，讓您不再是賣保險，而是他們的人生規劃師。
                         </p>
                         <div class="text-center">
@@ -411,9 +437,9 @@
                         <div class="image-placeholder rounded-lg mb-4">
                             <img src="不同年齡層攻略AI網頁.png" alt="不同年齡層攻略AI網頁" class="w-full h-auto rounded-lg enlargeable-image">
                         </div>
-                        <h3 class="font-bold text-lg text-sky-300 mb-2">不同年齡層攻略AI網頁</h3>
-                        <p class="text-slate-400 text-sm mb-4 flex-grow">
-                            <strong>客戶分層，精準打擊！</strong><br>
+                        <h3 class="font-bold text-lg text-sky-200 mb-2">不同年齡層攻略AI網頁</h3>
+                        <p class="text-slate-300 text-sm mb-4 flex-grow font-medium">
+                            <strong class="text-white">客戶分層，精準打擊！</strong><br>
                             從社會新鮮人到家庭支柱，AI提供細膩的族群洞察與溝通模板，讓您的每一句話都說到客戶心坎裡。
                         </p>
                         <div class="text-center">
@@ -446,8 +472,8 @@
                         </svg>
                     </div>
                 </div>
-                <h2 class="text-2xl md:text-3xl font-bold text-white mb-3 tech-title">3. 業務手冊</h2>
-                <p class="text-slate-400 leading-relaxed">
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-3 tech-title drop-shadow-md">3. 業務手冊</h2>
+                <p class="text-slate-300 leading-relaxed font-medium">
                     提煉互動網頁中的核心賣點與客戶常見問題，整合成一本結構化、系統化的銷售指南。為業務團隊提供標準化的話術、策略與應對方案，強化專業形象。
                 </p>
 
@@ -456,9 +482,9 @@
                     <!-- Card 1 -->
                     <div class="showcase-card rounded-2xl p-6 flex flex-col justify-between">
                         <div>
-                            <h3 class="font-bold text-lg text-sky-300 mb-2">保險銷售手冊AI文檔</h3>
-                            <p class="text-slate-400 text-sm mb-4">
-                                <strong>轉化複雜條款為成交利器！</strong><br>
+                            <h3 class="font-bold text-lg text-sky-200 mb-2">保險銷售手冊AI文檔</h3>
+                            <p class="text-slate-300 text-sm mb-4 font-medium">
+                                <strong class="text-white">轉化複雜條款為成交利器！</strong><br>
                                 將保單轉為結構清晰的銷售文檔，詳列關鍵賣點、客戶問答與專業話術，讓您從容應對提問，把握每個成交機會。
                             </p>
                         </div>
@@ -469,9 +495,9 @@
                     <!-- Card 2 -->
                     <div class="showcase-card rounded-2xl p-6 flex flex-col justify-between">
                         <div>
-                            <h3 class="font-bold text-lg text-sky-300 mb-2">年輕族群銷售戰略AI文檔</h3>
-                            <p class="text-slate-400 text-sm mb-4">
-                                <strong>成為Z世代信賴的財務夥伴！</strong><br>
+                            <h3 class="font-bold text-lg text-sky-200 mb-2">年輕族群銷售戰略AI文檔</h3>
+                            <p class="text-slate-300 text-sm mb-4 font-medium">
+                                <strong class="text-white">成為Z世代信賴的財務夥伴！</strong><br>
                                 此文檔剖析Z世代價值觀，提供針對性溝通策略。詳盡腳本與案例助您建立深度連結，讓成交水到渠成。
                             </p>
                         </div>
@@ -482,9 +508,9 @@
                     <!-- Card 3 -->
                     <div class="showcase-card rounded-2xl p-6 flex flex-col justify-between">
                         <div>
-                            <h3 class="font-bold text-lg text-sky-300 mb-2">不同年齡層攻略AI文檔</h3>
-                            <p class="text-slate-400 text-sm mb-4">
-                                <strong>您的客戶分層擊破寶典！</strong><br>
+                            <h3 class="font-bold text-lg text-sky-200 mb-2">不同年齡層攻略AI文檔</h3>
+                            <p class="text-slate-300 text-sm mb-4 font-medium">
+                                <strong class="text-white">您的客戶分層擊破寶典！</strong><br>
                                 手冊詳列各年齡層的財務痛點與保障缺口。透過精準的數據洞察與情境模擬，讓您的每次推薦都正中要害，顯著提升成交率。
                             </p>
                         </div>
@@ -518,8 +544,8 @@
                         </svg>
                     </div>
                 </div>
-                <h2 class="text-2xl md:text-3xl font-bold text-white mb-3 tech-title">4. Podcast</h2>
-                <p class="text-slate-400 leading-relaxed">
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-3 tech-title drop-shadow-md">4. Podcast</h2>
+                <p class="text-slate-300 leading-relaxed font-medium">
                     將業務手冊中的精華內容，以對談、故事或案例分享的形式錄製成音頻節目。這不僅擴大了觸及範圍，也讓聽眾能在通勤、運動等碎片化時間中，輕鬆吸收知識。
                 </p>
 
@@ -528,9 +554,9 @@
                     <!-- Card 1 -->
                     <div class="showcase-card rounded-2xl p-6 flex flex-col justify-between">
                         <div>
-                            <h3 class="font-bold text-lg text-sky-300 mb-2">保險銷售手冊AI音檔</h3>
-                            <p class="text-slate-400 text-sm mb-4">
-                                <strong>隨時隨地，聲入人心。</strong><br>
+                            <h3 class="font-bold text-lg text-sky-200 mb-2">保險銷售手冊AI音檔</h3>
+                            <p class="text-slate-300 text-sm mb-4 font-medium">
+                                <strong class="text-white">隨時隨地，聲入人心。</strong><br>
                                 將銷售策略化為動聽音檔，無論在何處，都能輕鬆學習，讓專業知識與銷售技巧內化於心。
                             </p>
                         </div>
@@ -541,9 +567,9 @@
                     <!-- Card 2 -->
                     <div class="showcase-card rounded-2xl p-6 flex flex-col justify-between">
                         <div>
-                            <h3 class="font-bold text-lg text-sky-300 mb-2">年輕族群銷售戰略AI音檔</h3>
-                            <p class="text-slate-400 text-sm mb-4">
-                                <strong>用聲音，和Z世代同頻共振。</strong><br>
+                            <h3 class="font-bold text-lg text-sky-200 mb-2">年輕族群銷售戰略AI音檔</h3>
+                            <p class="text-slate-300 text-sm mb-4 font-medium">
+                                <strong class="text-white">用聲音，和Z世代同頻共振。</strong><br>
                                 透過新潮的音頻內容，傳遞符合年輕族群的價值觀與生活態度，讓他們在聆聽中感受您的專業與溫度。
                             </p>
                         </div>
@@ -554,9 +580,9 @@
                     <!-- Card 3 -->
                     <div class="showcase-card rounded-2xl p-6 flex flex-col justify-between">
                         <div>
-                            <h3 class="font-bold text-lg text-sky-300 mb-2">不同年齡層攻略AI音檔</h3>
-                            <p class="text-slate-400 text-sm mb-4">
-                                <strong>聲動策略，層層擊破。</strong><br>
+                            <h3 class="font-bold text-lg text-sky-200 mb-2">不同年齡層攻略AI音檔</h3>
+                            <p class="text-slate-300 text-sm mb-4 font-medium">
+                                <strong class="text-white">聲動策略，層層擊破。</strong><br>
                                 針對不同年齡客戶的音頻攻略，讓您在開車或休息時也能精進銷售戰術，隨時準備好迎接下一次挑戰。
                             </p>
                         </div>
@@ -588,8 +614,8 @@
                         </svg>
                     </div>
                 </div>
-                <h2 class="text-2xl md:text-3xl font-bold text-white mb-3 tech-title">5. 看具體簡易操作步驟</h2>
-                <p class="text-slate-400 leading-relaxed">
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-3 tech-title drop-shadow-md">5. 看具體簡易操作步驟</h2>
+                <p class="text-slate-300 leading-relaxed font-medium">
                     觀看操作影片，了解如何透過簡單的步驟，快速將複雜的保單轉化為強大的銷售武器。
                 </p>
                 <div class="mt-8">
@@ -711,7 +737,7 @@ audioModal.addEventListener('click', function(e) {
 </script>
 
         <!-- 頁腳 -->
-        <footer class="text-center mt-16 md:mt-24 text-slate-500">
+        <footer class="text-center mt-16 md:mt-24 text-slate-400">
             <p>&copy; 2025 奇點智匯. All rights reserved.</p>
         </footer>
 
