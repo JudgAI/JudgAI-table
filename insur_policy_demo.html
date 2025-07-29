@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>內容轉化流程：從保單到 Podcast</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 響應式設計加強 */
+        @media (max-width: 900px) {
+            .stage-card {
+                padding: 1.5rem !important;
+                max-width: 98vw !important;
+            }
+            .gradient-emph, .gradient-emph2 {
+                font-size: 1em !important;
+                padding: 0.25em 0.7em !important;
+            }
+        }
+        @media (max-width: 600px) {
+            .stage-card {
+                padding: 0.7rem !important;
+                max-width: 100vw !important;
+            }
+            .gradient-emph, .gradient-emph2 {
+                font-size: 0.98em !important;
+                padding: 0.18em 0.4em !important;
+            }
+            .tech-title {
+                font-size: 1.1em !important;
+            }
+            .icon-wrapper {
+                padding: 0.7rem !important;
+            }
+        }
+        /* 科技感漸層強調 */
+        .gradient-emph {
+            background: linear-gradient(90deg, #38bdf8 0%, #a78bfa 100%);
+            color: #fff;
+            box-shadow: 0 0 16px #38bdf8cc, 0 0 12px #a78bfa99;
+            text-shadow: 0 2px 12px #a78bfa, 0 1px 2px #38bdf8;
+            padding: 0.35em 1.2em;
+            border-radius: 0.8em;
+            font-size: 1.18em;
+            font-family: 'Orbitron', 'Noto Sans TC', Arial, sans-serif;
+            letter-spacing: 0.06em;
+            display: inline-block;
+        }
+        .gradient-emph2 {
+            background: linear-gradient(90deg, #6366f1 0%, #38bdf8 100%);
+            color: #fff;
+            padding: 0.32em 1.1em;
+            border-radius: 0.8em;
+            box-shadow: 0 0 20px #38bdf899, 0 0 10px #6366f1aa;
+            text-shadow: 0 2px 16px #38bdf8, 0 1px 2px #6366f1;
+            font-size: 1.25em;
+            font-family: 'Orbitron', 'Noto Sans TC', Arial, sans-serif;
+            letter-spacing: 0.08em;
+            display: inline-block;
+        }
+        body {
+            font-family: 'Noto Sans TC', 'Orbitron', 'Segoe UI', Arial, sans-serif;
+            background-color: #0f172a;
+            /* 動態網格+星空粒子背景 */
+            background-image:
+                repeating-linear-gradient(90deg, rgba(56,189,248,0.08) 0, rgba(56,189,248,0.08) 1px, transparent 1px, transparent 2rem),
+                repeating-linear-gradient(180deg, rgba(168,139,250,0.08) 0, rgba(168,139,250,0.08) 1px, transparent 1px, transparent 2rem);
+            background-size: 2rem 2rem;
+            background-position: 0 0, 0 0;
+            overflow-x: hidden;
+        }
+        
+        /* 卡片懸停效果與輝光 */
+        .stage-card {
+            position: relative;
+            background: linear-gradient(135deg, rgba(30,41,59,0.92) 60%, rgba(56,189,248,0.10) 100%);
+            backdrop-filter: blur(16px) saturate(1.2);
+            border: 1.5px solid rgba(56,189,248,0.18);
+            box-shadow: 0 0 32px 0 rgba(56,189,248,0.10), 0 0 0 1.5px rgba(168,139,250,0.10);
+            transition: transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s;
+        }
+        .stage-card::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            z-index: 0;
+            border-radius: 1.25rem;
+            background: radial-gradient(circle at 60% 20%, rgba(56,189,248,0.18) 0%, rgba(168,139,250,0.10) 100%);
+            pointer-events: none;
+        }
+        .stage-card:hover {
+            transform: translateY(-10px) scale(1.025) rotateX(2deg);
+            box-shadow: 0 0 40px 0 #38bdf8, 0 0 16px 0 #a78bfa;
+        }
+        .stage-card > * { position: relative; z-index: 1; }
+        
+        /* 流程線改為漸層 */
+        .flow-arrow::after {
+            content: '';
+            position: absolute;
+            bottom: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 16px solid #a78bfa;
+            filter: drop-shadow(0 0 8px #a78bfa88);
+        }
+        
+        /* 圖示容器 */
+        .icon-wrapper {
+            background: radial-gradient(circle, rgba(56,189,248,0.18) 0%, rgba(168,139,250,0.10) 100%);
+            box-shadow: 0 0 24px 0 #38bdf8aa, 0 0 8px 0 #a78bfa88;
+        }
+        /* 動態星空粒子 */
+        #star-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 0;
+        }
+
+        /* 霓虹按鈕 */
+        .neon-btn {
+            background: linear-gradient(90deg, #38bdf8 0%, #a78bfa 100%);
+            color: #fff;
+            border: none;
+            box-shadow: 0 0 12px #38bdf8cc, 0 0 4px #a78bfa99;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .neon-btn:hover {
+            box-shadow: 0 0 32px #38bdf8, 0 0 12px #a78bfa;
+            transform: scale(1.05);
+        }
+        /* Logo 科技感動畫效果 */
+        @keyframes pulse-glow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(56, 189, 248, 0.3), 0 0 40px rgba(168, 139, 250, 0.2);
+                filter: brightness(1) contrast(1.1);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(56, 189, 248, 0.5), 0 0 60px rgba(168, 139, 250, 0.3);
+                filter: brightness(1.2) contrast(1.3);
+            }
+        }
+        
+        @keyframes rotate-gradient {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes scale-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .logo-container {
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+        
+        .logo-container:hover {
+            transform: scale(1.1);
+            filter: brightness(1.3) contrast(1.2);
+        }
+        
+        .logo-rotating-border {
+            animation: rotate-gradient 3s linear infinite;
+        }
+        
+        .logo-pulse-bg {
+            animation: scale-pulse 2s ease-in-out infinite;
+        }
+        
+        .logo-image {
+            animation: pulse-glow 2.5s ease-in-out infinite;
+        }
+
+        /* Showcase Card Styles */
+        .showcase-card {
+            background: linear-gradient(145deg, rgba(30,41,59,0.9) 0%, rgba(56,189,248,0.1) 100%);
+            backdrop-filter: blur(16px) saturate(1.2);
+            border: 1.5px solid rgba(56,189,248,0.15);
+            transition: all 0.4s cubic-bezier(.4,2,.6,1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        .showcase-card:hover {
+            transform: translateY(-12px) scale(1.04);
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 0 30px 0 rgba(56, 189, 248, 0.2), 0 0 50px 0 rgba(167, 139, 250, 0.15);
+        }
+        .image-placeholder {
+            overflow: hidden;
+            border: 1px solid rgba(56,189,248,0.1);
+            transition: border-color 0.3s;
+        }
+        .showcase-card:hover .image-placeholder {
+            border-color: rgba(56, 189, 248, 0.4);
+        }
+        .image-placeholder img {
+            transition: transform 0.4s cubic-bezier(.4,2,.6,1);
+        }
+        .showcase-card:hover img {
+            transform: scale(1.1);
+        }
+        .neon-btn-small {
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            color: #fff;
+            border: none;
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.7), 0 0 4px rgba(129, 140, 248, 0.6);
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+        .neon-btn-small:hover {
+            box-shadow: 0 0 24px #38bdf8, 0 0 8px #818cf8;
+            transform: scale(1.05);
+        }
+    </style>
+    <!-- Orbitron 字型 for 科技感 -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+</head>
+<body class="text-white antialiased">
+
+    <div class="container mx-auto px-6 py-16 md:py-24">
+
+        <!-- 頁面標題 -->
+        <header class="text-center mb-16 md:mb-24">
+            <div class="flex flex-col items-center mb-8">
+                <div class="relative mb-4">
+                    <div class="logo-container relative flex items-center justify-center" style="width: 9rem; aspect-ratio: 1/1; min-width: 9rem; min-height: 9rem; max-width: 9rem; max-height: 9rem;">
+                        <!-- 外層旋轉漸層邊框 -->
+                        <span class="logo-rotating-border absolute inset-0 rounded-full" style="background: conic-gradient(from 0deg at 50% 50%, #38bdf8 0%, #818cf8 25%, #a78bfa 50%, #f472b6 75%, #38bdf8 100%); filter: blur(8px) brightness(1.3); opacity: 0.8; aspect-ratio: 1/1;"></span>
+                        
+                        <!-- 中層脈動背景 -->
+                        <span class="logo-pulse-bg absolute inset-1 rounded-full" style="background: radial-gradient(circle at 30% 30%, rgba(56,189,248,0.8), rgba(17,24,39,0.9), rgba(168,139,250,0.6)); box-shadow: inset 0 2px 8px rgba(56,189,248,0.3), 0 4px 32px rgba(56,189,248,0.2); backdrop-filter: blur(8px); aspect-ratio: 1/1;"></span>
+                        
+                        <!-- 內層發光圓環 -->
+                        <span class="absolute inset-2 rounded-full" style="background: transparent; border: 2px solid rgba(56,189,248,0.6); box-shadow: 0 0 15px rgba(56,189,248,0.4), inset 0 0 15px rgba(168,139,250,0.2); aspect-ratio: 1/1;"></span>
+                        
+                        <!-- Logo 圖片 -->
+                        <img src="奇點.png" alt="JudgAI Logo" class="logo-image relative z-10 object-cover rounded-full" style="width: 7.5rem; height: 7.5rem; min-width: 7.5rem; min-height: 7.5rem; max-width: 7.5rem; max-height: 7.5rem; border-radius: 50%; aspect-ratio: 1/1; border: 3px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.02);">
+                        
+                        <!-- 頂部玻璃反光 -->
+                        <span class="absolute z-20 left-1/2 top-2 -translate-x-1/2" style="width: 65%; height: 30%; border-radius: 100% 100% 50% 50%/90% 90% 30% 30%; background: linear-gradient(180deg,rgba(255,255,255,0.4) 0%,rgba(255,255,255,0.1) 60%, transparent 100%); filter: blur(1px); opacity: 0.8;"></span>
+                        
+                        <!-- 底部科技光暈 -->
+                        <span class="absolute z-0 left-1/2 bottom-0 -translate-x-1/2" style="width: 80%; height: 30%; border-radius: 100% 100% 50% 50%/70% 70% 40% 40%; background: radial-gradient(ellipse at center, rgba(56,189,248,0.3) 0%, rgba(168,139,250,0.2) 50%, transparent 100%); filter: blur(6px);"></span>
+                    </div>
+                </div>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-sky-400 mb-4 tracking-wide tech-title">保單條款居然變成銷售手冊？</h1>
+            <p class="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto">
+                將一份負責的保單文件，逐步轉化為引人入勝、易於傳播的多媒體內容。
+            </p>
+        </header>
+
+        <!-- 流程容器 -->
+        <main class="flex flex-col items-center">
+
+            <!-- 階段一: 複雜的保單 -->
+            <section id="stage-1" class="stage-card w-full max-w-4xl rounded-2xl p-8 shadow-lg text-center">
+                <div class="flex justify-center mb-6">
+                    <div class="icon-wrapper p-4 rounded-full">
+                        <!-- 全新科技感文件圖示 -->
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#38bdf8;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#a78bfa;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="url(#grad1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M14 2V8H20" stroke="url(#grad1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 13H16" stroke="#94a3b8" stroke-width="1" stroke-linecap="round"/>
+                            <path d="M8 17H12" stroke="#94a3b8" stroke-width="1" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">1. 複雜的保單</h2>
+                <p class="text-slate-400 leading-relaxed">
+                    看似複雜的表單，如何在 1-3 分鐘內容快速轉換成業務得力的武器？<br>
+                    <span class="block mt-4 text-base md:text-lg text-sky-300 font-semibold">以「QQ人壽 真的好紅 外幣終身壽險定額給付型」-條款為例：</span>
+                    <a href="https://drive.google.com/open?id=1hSGqI41HIgzUCciLFmAxfzJgVf7Ma1Y6&usp=drive_copy" target="_blank" rel="noopener noreferrer" class="inline-block mt-2 px-4 py-1 rounded-lg bg-gradient-to-r from-sky-500 to-indigo-400 text-white font-bold shadow hover:from-sky-400 hover:to-indigo-500 transition">查看條款範例 </a>
+                </p>
+                <button id="open-video-modal" class="mt-6 px-5 py-2 neon-btn rounded-lg shadow transition">觀看相關影片</button>
+            <!-- 向下箭頭，指向流程首頁圖片 -->
+            <div class="flex justify-center mt-4 mb-2">
+                <a href="#flow-homepage" class="transition transform hover:scale-125">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="arrowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#38bdf8;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#a78bfa;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M12 5V19" stroke="url(#arrowGrad)" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M6 13L12 19L18 13" stroke="url(#arrowGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+            </div>
+            </section>
+
+    <!-- 浮動影片視窗 -->
+    <div id="video-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 hidden">
+        <div class="bg-slate-900 rounded-2xl shadow-2xl p-0 md:p-6 relative max-w-2xl w-full mx-4">
+            <button id="close-video-modal" class="absolute top-2 right-2 text-slate-400 hover:text-white text-2xl font-bold">&times;</button>
+            <div class="aspect-w-16 aspect-h-9 w-full h-64 md:h-96">
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/U4BfA08MOMg" title="YouTube video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="rounded-xl w-full h-full"></iframe>
+            </div>
+        </div>
+    </div>
+
+            <!-- 流程箭頭 -->
+
+            <!-- 新增流程頁面：judgal_homepage.png -->
+            <section id="flow-homepage" class="stage-card w-full max-w-4xl rounded-2xl p-8 shadow-lg text-center mb-8 bg-gradient-to-br from-sky-900/80 to-indigo-900/80 border border-sky-700 relative overflow-hidden">
+                <div class="flex flex-col items-center justify-center">
+                    <a href="https://judgai.com/JudgAI.html" target="_blank" rel="noopener noreferrer">
+                        <img src="judgal_homepage.png" alt="流程首頁" class="rounded-xl shadow-2xl border-2 border-sky-500/40 mb-6 max-w-full h-auto cursor-pointer transition hover:scale-105 hover:shadow-[0_0_60px_0_#38bdf8,0_0_20px_0_#a78bfa] object-contain responsive-img" style="box-shadow:0 0 40px 0 #38bdf8,0 0 10px 0 #a78bfa; background:radial-gradient(circle at 50% 30%,rgba(56,189,248,0.15) 0%,rgba(67,56,202,0.10) 100%);max-width:100%;height:auto;">
+                    </a>
+        <style>
+        @media (max-width: 900px) {
+            .responsive-img {
+                max-width: 95vw !important;
+            }
+        }
+        @media (max-width: 600px) {
+            .responsive-img {
+                max-width: 99vw !important;
+            }
+        }
+        </style>
+                    <h2 class="text-2xl md:text-3xl font-bold text-sky-300 mb-2 tracking-wide drop-shadow tech-title">善用奇點智匯</h2>
+                    <p class="text-slate-300 text-base md:text-lg max-w-3xl mx-auto flex justify-center">
+                        <span class="gradient-emph text-center w-full">快速讓保單條款變成銷售手冊，2分鐘搞定10種以上銷售手冊！</span>
+                    </p>
+                </div>
+            </section>
+            <div class="flex justify-center my-8">
+                <a href="#stage-2" class="transition transform hover:scale-125">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5V19" stroke="url(#arrowGrad)" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M6 13L12 19L18 13" stroke="url(#arrowGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- 階段二: 互動網頁 -->
+            <section id="stage-2" class="stage-card w-full max-w-4xl rounded-2xl p-8 shadow-lg text-center">
+                <div class="flex justify-center mb-6">
+                    <div class="icon-wrapper p-4 rounded-full">
+                        <!-- 全新科技感網頁圖示 -->
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                           <defs><linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#38bdf8;stop-opacity:1" /><stop offset="100%" style="stop-color:#a78bfa;stop-opacity:1" /></linearGradient></defs>
+                           <path d="M3 15.5V8.5C3 6.567 4.567 5 6.5 5H17.5C19.433 5 21 6.567 21 8.5V15.5C21 17.433 19.433 19 17.5 19H6.5C4.567 19 3 17.433 3 15.5Z" stroke="url(#grad2)" stroke-width="1.5"/>
+                           <path d="M3 9H21" stroke="url(#grad2)" stroke-width="1.5" stroke-opacity="0.5"/>
+                           <path d="M7.5 14L9 12.5L10.5 14L12 12.5L13.5 14L15 12.5L16.5 14" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                           <circle cx="6" cy="7" r="1" fill="#94a3b8"/>
+                        </svg>
+                    </div>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-3 tech-title">2. 互動網頁</h2>
+                <p class="text-slate-400 leading-relaxed">
+                    將複雜的保單內容轉化為視覺化、易於操作的網頁。使用者可以透過點擊、篩選與計算，直觀地理解保障範圍與權益，提升參與感與透明度。
+                </p>
+                
+                <!-- Showcase Section -->
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                    <!-- Card 1 -->
+                    <div class="showcase-card rounded-2xl p-6 flex flex-col">
+                        <div class="image-placeholder rounded-lg mb-4">
+                            <img src="保險銷售手冊AI網頁.png" alt="保險銷售手冊AI網頁" class="w-full h-auto rounded-lg enlargeable-image">
+                        </div>
+                        <h3 class="font-bold text-lg text-sky-300 mb-2">保險銷售手冊AI網頁</h3>
+                        <p class="text-slate-400 text-sm mb-4 flex-grow">
+                            <strong>秒懂保單大局觀，業績起飛！</strong><br>
+                            AI為您剖析保單，提煉黃金賣點，搭配實戰話術，讓您面對客戶時，字字珠璣，輕鬆成交！
+                        </p>
+                        <div class="text-center">
+                            <a href="https://dev-box3.taiwanmds.com/insurance_robot_share/share?type=policy&id=MjY6Y2FlZGIyZDI=" target="_blank" class="neon-btn-small px-4 py-2 rounded-lg">看互動網頁</a>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="showcase-card rounded-2xl p-6 flex flex-col">
+                        <div class="image-placeholder rounded-lg mb-4">
+                            <img src="年輕族群銷售戰略AI網頁.png" alt="年輕族群銷售戰略AI網頁" class="w-full h-auto rounded-lg enlargeable-image">
+                        </div>
+                        <h3 class="font-bold text-lg text-sky-300 mb-2">年輕族群銷售戰略AI網頁</h3>
+                        <p class="text-slate-400 text-sm mb-4 flex-grow">
+                            <strong>攻佔Z世代心房的秘密武器！</strong><br>
+                            深入年輕人關注的議題，提供量身打造的銷售劇本，讓您不再是賣保險，而是他們的人生規劃師。
+                        </p>
+                        <div class="text-center">
+                            <a href="https://dev-box3.taiwanmds.com/insurance_robot_share/share?type=policy&id=Mjc6YTMxYzUwODk=" target="_blank" class="neon-btn-small px-4 py-2 rounded-lg">看互動網頁</a>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="showcase-card rounded-2xl p-6 flex flex-col">
+                        <div class="image-placeholder rounded-lg mb-4">
+                            <img src="不同年齡層攻略AI網頁.png" alt="不同年齡層攻略AI網頁" class="w-full h-auto rounded-lg enlargeable-image">
+                        </div>
+                        <h3 class="font-bold text-lg text-sky-300 mb-2">不同年齡層攻略AI網頁</h3>
+                        <p class="text-slate-400 text-sm mb-4 flex-grow">
+                            <strong>客戶分層，精準打擊！</strong><br>
+                            從社會新鮮人到家庭支柱，AI提供細膩的族群洞察與溝通模板，讓您的每一句話都說到客戶心坎裡。
+                        </p>
+                        <div class="text-center">
+                            <a href="https://dev-box3.taiwanmds.com/insurance_robot_share/share?type=policy&id=Mjg6OWM5YzZmNmU=" target="_blank" class="neon-btn-small px-4 py-2 rounded-lg">看互動網頁</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="flex justify-center my-8">
+                <a href="#stage-3" class="transition transform hover:scale-125">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5V19" stroke="url(#arrowGrad)" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M6 13L12 19L18 13" stroke="url(#arrowGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- 階段三: 業務手冊 -->
+            <section id="stage-3" class="stage-card w-full max-w-4xl rounded-2xl p-8 shadow-lg text-center">
+                <div class="flex justify-center mb-6">
+                    <div class="icon-wrapper p-4 rounded-full">
+                        <!-- 全新科技感手冊圖示 -->
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs><linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#38bdf8;stop-opacity:1" /><stop offset="100%" style="stop-color:#a78bfa;stop-opacity:1" /></linearGradient></defs>
+                            <path d="M4 19.5C4 18.1193 5.11929 17 6.5 17H20" stroke="url(#grad3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M6.5 2H19C20.1046 2 21 2.89543 21 4V19C21 20.1046 20.1046 21 19 21H6.5C5.11929 21 4 19.8807 4 18.5V5.5C4 3.84315 5.34315 2.5 7 2.5H6.5" stroke="url(#grad3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 7H15" stroke="#94a3b8" stroke-width="1" stroke-linecap="round"/>
+                            <path d="M8 11H17" stroke="#94a3b8" stroke-width="1" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-3 tech-title">3. 業務手冊</h2>
+                <p class="text-slate-400 leading-relaxed">
+                    提煉互動網頁中的核心賣點與客戶常見問題，整合成一本結構化、系統化的銷售指南。為業務團隊提供標準化的話術、策略與應對方案，強化專業形象。
+                </p>
+
+                <!-- PDF Showcase Section -->
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                    <!-- Card 1 -->
+                    <div class="showcase-card rounded-2xl p-6 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-bold text-lg text-sky-300 mb-2">保險銷售手冊AI網頁</h3>
+                            <p class="text-slate-400 text-sm mb-4">
+                                <strong>秒懂保單，業績起飛！</strong><br>
+                                AI為您剖析保單，提煉黃金賣點，搭配實戰話術，讓您面對客戶時，字字珠璣，輕鬆成交！
+                            </p>
+                        </div>
+                        <div class="text-center mt-4">
+                            <a href="保險銷售手冊AI網頁.pdf" target="_blank" class="neon-btn-small px-4 py-2 rounded-lg">下載PDF</a>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="showcase-card rounded-2xl p-6 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-bold text-lg text-sky-300 mb-2">年輕族群銷售戰略AI網頁</h3>
+                            <p class="text-slate-400 text-sm mb-4">
+                                <strong>攻佔Z世代心房的秘密武器！</strong><br>
+                                深入年輕人關注的議題，提供量身打造的銷售劇本，讓您不再是賣保險，而是他們的人生規劃師。
+                            </p>
+                        </div>
+                        <div class="text-center mt-4">
+                            <a href="年輕族群在不同重點主軸的銷售戰略AI網頁.pdf" target="_blank" class="neon-btn-small px-4 py-2 rounded-lg">下載PDF</a>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="showcase-card rounded-2xl p-6 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-bold text-lg text-sky-300 mb-2">不同年齡層攻略AI網頁</h3>
+                            <p class="text-slate-400 text-sm mb-4">
+                                <strong>客戶分層，精準打擊！</strong><br>
+                                從社會新鮮人到家庭支柱，AI提供細膩的族群洞察與溝通模板，讓您的每一句話都說到客戶心坎裡。
+                            </p>
+                        </div>
+                        <div class="text-center mt-4">
+                            <a href="不同年齡層的年輕客戶群組攻略AI網頁.pdf" target="_blank" class="neon-btn-small px-4 py-2 rounded-lg">下載PDF</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="flex justify-center my-8">
+                <a href="#stage-4" class="transition transform hover:scale-125">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5V19" stroke="url(#arrowGrad)" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M6 13L12 19L18 13" stroke="url(#arrowGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- 階段四: Podcast -->
+            <section id="stage-4" class="stage-card w-full max-w-4xl rounded-2xl p-8 shadow-lg text-center">
+                <div class="flex justify-center mb-6">
+                    <div class="icon-wrapper p-4 rounded-full">
+                        <!-- 全新科技感Podcast圖示 -->
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs><linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#38bdf8;stop-opacity:1" /><stop offset="100%" style="stop-color:#a78bfa;stop-opacity:1" /></linearGradient></defs>
+                            <rect x="9" y="2" width="6" height="12" rx="3" stroke="url(#grad4)" stroke-width="1.5"/>
+                            <path d="M5 10V11C5 14.866 8.13401 18 12 18C15.866 18 19 14.866 19 11V10" stroke="url(#grad4)" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M12 18V22" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M8 22H16" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-3 tech-title">4. Podcast</h2>
+                <p class="text-slate-400 leading-relaxed">
+                    將業務手冊中的精華內容，以對談、故事或案例分享的形式錄製成音頻節目。這不僅擴大了觸及範圍，也讓聽眾能在通勤、運動等碎片化時間中，輕鬆吸收知識。
+                </p>
+            </section>
+
+        </main>
+
+<!-- Image Modal -->
+<div id="image-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 hidden">
+    <div class="max-w-4xl max-h-full p-4">
+        <img id="modal-image" src="" alt="Enlarged image" class="max-w-full max-h-full rounded-lg shadow-2xl">
+    </div>
+    <button id="close-image-modal" class="absolute top-4 right-6 text-white text-4xl font-bold">&times;</button>
+</div>
+
+<!-- 星空粒子背景 -->
+<canvas id="star-bg"></canvas>
+<script>
+// ... (星空粒子動畫代碼保持不變) ...
+
+// Modal 開關邏輯
+document.getElementById('open-video-modal').addEventListener('click', function() {
+    document.getElementById('video-modal').classList.remove('hidden');
+});
+document.getElementById('close-video-modal').addEventListener('click', function() {
+    document.getElementById('video-modal').classList.add('hidden');
+});
+document.getElementById('video-modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        this.classList.add('hidden');
+    }
+});
+
+// Image Modal 邏輯
+const imageModal = document.getElementById('image-modal');
+const modalImage = document.getElementById('modal-image');
+const closeImageModalBtn = document.getElementById('close-image-modal');
+
+document.querySelectorAll('.enlargeable-image').forEach(img => {
+    img.addEventListener('click', function() {
+        modalImage.src = this.src;
+        imageModal.classList.remove('hidden');
+    });
+});
+
+function closeImageModal() {
+    imageModal.classList.add('hidden');
+}
+
+closeImageModalBtn.addEventListener('click', closeImageModal);
+imageModal.addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeImageModal();
+    }
+});
+</script>
+
+        <!-- 頁腳 -->
+        <footer class="text-center mt-16 md:mt-24 text-slate-500">
+            <p>&copy; 2024 內容轉化流程展示. All rights reserved.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
