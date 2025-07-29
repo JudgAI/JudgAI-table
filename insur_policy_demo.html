@@ -532,7 +532,7 @@
                             </p>
                         </div>
                         <div class="text-center mt-4">
-                            <a href="保險銷售手冊AI音檔.wav" target="_blank" class="neon-btn-small px-4 py-2 rounded-lg">聽AI音檔</a>
+                            <a href="保險銷售手冊AI音檔.wav" class="neon-btn-small px-4 py-2 rounded-lg play-audio-btn">聽AI音檔</a>
                         </div>
                     </div>
                     <!-- Card 2 -->
@@ -545,7 +545,7 @@
                             </p>
                         </div>
                         <div class="text-center mt-4">
-                            <a href="年輕族群銷售戰略AI音檔.wav" target="_blank" class="neon-btn-small px-4 py-2 rounded-lg">聽AI音檔</a>
+                            <a href="年輕族群銷售戰略AI音檔.wav" class="neon-btn-small px-4 py-2 rounded-lg play-audio-btn">聽AI音檔</a>
                         </div>
                     </div>
                     <!-- Card 3 -->
@@ -558,7 +558,7 @@
                             </p>
                         </div>
                         <div class="text-center mt-4">
-                            <a href="不同年齡層攻略AI音檔.wav" target="_blank" class="neon-btn-small px-4 py-2 rounded-lg">聽AI音檔</a>
+                            <a href="不同年齡層攻略AI音檔.wav" class="neon-btn-small px-4 py-2 rounded-lg play-audio-btn">聽AI音檔</a>
                         </div>
                     </div>
                 </div>
@@ -572,6 +572,18 @@
         <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
     </svg>
 </a>
+
+<!-- Audio Modal -->
+<div id="audio-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 hidden backdrop-blur-sm">
+    <div class="bg-slate-900 border border-sky-500/20 rounded-2xl shadow-2xl p-6 relative max-w-lg w-full mx-4">
+        <button id="close-audio-modal" class="absolute top-3 right-4 text-slate-400 hover:text-white text-3xl font-bold">&times;</button>
+        <h3 id="audio-modal-title" class="text-xl font-bold text-sky-300 mb-4">播放音檔</h3>
+        <audio id="modal-audio" controls autoplay class="w-full">
+            <source src="" type="audio/wav">
+            您的瀏覽器不支援音訊播放。
+        </audio>
+    </div>
+</div>
 
 <!-- Image Modal -->
 <div id="image-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 hidden">
@@ -629,6 +641,38 @@ window.addEventListener('scroll', () => {
         toTopBtn.classList.remove('hidden');
     } else {
         toTopBtn.classList.add('hidden');
+    }
+});
+
+// Audio Modal Logic
+const audioModal = document.getElementById('audio-modal');
+const modalAudio = document.getElementById('modal-audio');
+const audioModalTitle = document.getElementById('audio-modal-title');
+const closeAudioModalBtn = document.getElementById('close-audio-modal');
+
+document.querySelectorAll('.play-audio-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const audioSrc = this.href;
+        const cardTitle = this.closest('.showcase-card').querySelector('h3').textContent;
+        
+        audioModalTitle.textContent = cardTitle;
+        modalAudio.querySelector('source').src = audioSrc;
+        modalAudio.load(); // Reload the audio element to apply the new source
+        audioModal.classList.remove('hidden');
+    });
+});
+
+function closeAudioModal() {
+    audioModal.classList.add('hidden');
+    modalAudio.pause(); // Stop playing when modal is closed
+    modalAudio.querySelector('source').src = ""; // Clear source
+}
+
+closeAudioModalBtn.addEventListener('click', closeAudioModal);
+audioModal.addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeAudioModal();
     }
 });
 </script>
