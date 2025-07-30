@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>奇點智匯 x 台灣行銷研究 - AI行銷與業務專欄</title>
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:image" content="./column_article.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:title" content="奇點智匯 x 台灣行銷研究 - AI行銷與業務專欄" />
+    <meta property="og:description" content="深度探討AI在行銷與業務領域的創新應用，奇點智匯與台灣行銷研究共同撰寫的專業內容。" />
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="奇點.png">
+    
+    <style>
+        body {
+            font-family: 'Noto Sans TC', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #38bdf8, #a78bfa);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-section {
+            background: radial-gradient(ellipse at top, rgba(29, 78, 216, 0.15), transparent 50%),
+                        radial-gradient(ellipse at bottom, rgba(139, 92, 246, 0.15), transparent 50%);
+        }
+        
+        .content-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .collaboration-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        
+        .article-preview {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .article-preview:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .embed-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        
+        .embed-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            border-radius: 12px;
+        }
+        
+        /* Header 導航樣式 - 與 index.html 統一 */
+        .header-nav {
+            background: rgba(5, 8, 22, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+        }
+        
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #38bdf8, #a78bfa);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link:hover::before {
+            width: 100%;
+        }
+        
+        .nav-link:hover {
+            color: #38bdf8;
+            transform: translateY(-2px);
+        }
+        
+        .mobile-menu {
+            background: rgba(5, 8, 22, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+        
+        .cta-button {
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .cta-button:hover {
+            box-shadow: 0 0 20px #38bdf8;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header 導航 - 與 index.html 統一 -->
+    <header class="header-nav fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo 和品牌名稱 -->
+                <div class="flex items-center space-x-3">
+                    <img src="奇點.png" alt="JudgAI Logo" class="h-10 w-10 rounded-full">
+                    <span class="font-orbitron text-xl font-bold gradient-text">JudgAI</span>
+                </div>
+                
+                <!-- 桌面版導航 -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">
+                        首頁
+                    </a>
+                    <a href="column_article.html" class="nav-link text-blue-400 font-medium py-2 px-3">
+                        AI行銷與業務專欄
+                    </a>
+                    <a href="insur_policy_demo.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">
+                        AI保單銷售手冊
+                    </a>
+                    <a href="index.html#live-sharing" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">
+                        直播分享
+                    </a>
+                </nav>
+                
+                <!-- CTA 按鈕 -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="https://line.me/ti/p/ECTAxiLRSh" target="_blank" class="cta-button text-white font-medium py-2 px-6 rounded-lg text-sm">
+                        聯絡我們
+                    </a>
+                </div>
+                
+                <!-- 手機版菜單按鈕 -->
+                <button id="mobile-menu-button" class="md:hidden text-gray-200 hover:text-blue-400 focus:outline-none">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- 手機版導航菜單 -->
+            <div id="mobile-menu" class="md:hidden hidden mobile-menu rounded-lg mt-2 py-4">
+                <div class="flex flex-col space-y-3 px-4">
+                    <a href="index.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2">
+                        首頁
+                    </a>
+                    <a href="column_article.html" class="nav-link text-blue-400 font-medium py-2">
+                        AI行銷與業務專欄
+                    </a>
+                    <a href="insur_policy_demo.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2">
+                        AI保單銷售手冊
+                    </a>
+                    <a href="index.html#live-sharing" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2">
+                        直播分享
+                    </a>
+                    <div class="pt-3 border-t border-gray-700">
+                        <a href="https://aistudy.pse.is/insurance-bot" target="_blank" class="cta-button block text-center text-white font-medium py-2 px-6 rounded-lg text-sm">
+                            免費試用
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section py-20 pt-28">
+        <div class="container mx-auto px-6">
+            <div class="text-center max-w-4xl mx-auto">
+                <div class="collaboration-badge">
+                    奇點智匯 × 台灣行銷研究 聯合撰寫
+                </div>
+                <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
+                    AI行銷與業務
+                    <span class="gradient-text font-orbitron">專業專欄</span>
+                </h1>
+                <p class="text-xl text-gray-200 mb-8 leading-relaxed">
+                    深度探討人工智慧在行銷與業務領域的創新應用<br>
+                    結合奇點智匯的AI技術專長與台灣行銷研究的深厚經驗
+                </p>
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8">
+                    <img src="column_article.png" alt="AI行銷與業務專欄" class="max-w-xl w-full rounded-lg shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Collaboration Section -->
+    <section id="about" class="py-16 bg-white bg-opacity-10">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto">
+                <div class="content-card rounded-2xl p-8 mb-12">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">關於我們的合作</h2>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="text-center">
+                            <img src="judgai_logo.png" alt="奇點智匯" class="h-16 mx-auto mb-4">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-3">奇點智匯 JudgAI</h3>
+                            <p class="text-gray-600">
+                                專注於保險科技與AI應用的創新公司，致力於將人工智慧技術應用於保險業務流程，提升專業效率與客戶體驗。
+                            </p>
+                        </div>
+                        <div class="text-center">
+                            <div class="h-16 mx-auto mb-4 flex items-center justify-center">
+                                <span class="text-2xl font-bold text-blue-600">TMR</span>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-3">台灣行銷研究</h3>
+                            <p class="text-gray-600">
+                                深耕台灣行銷研究領域多年，擁有豐富的市場洞察與行銷策略經驗，專精於消費者行為分析與品牌策略規劃。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-8 p-6 bg-blue-50 rounded-xl">
+                        <h4 class="text-lg font-semibold text-gray-800 mb-3">合作宗旨</h4>
+                        <p class="text-gray-700 leading-relaxed">
+                            本專欄結合奇點智匯在AI技術領域的專業優勢，以及台灣行銷研究在市場分析與消費者洞察的深厚經驗，
+                            共同探討人工智慧如何重塑現代行銷與業務流程，為讀者提供最前沿的AI應用案例與實務指南。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TMR Articles Embed Section -->
+    <section id="articles" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="max-w-full mx-auto">
+                <div class="content-card rounded-2xl p-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+                        台灣行銷研究專欄文章
+                    </h2>
+                    <p class="text-center text-gray-600 mb-8">
+                        探索更多AI在行銷與業務領域的深度分析與案例研究
+                    </p>
+                    
+                    <!-- Embedded TMR Articles -->
+                    <div class="embed-container mb-8">
+                        <iframe src="https://tmrmds.co/article-type/" 
+                                title="台灣行銷研究專欄文章"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    
+                    <div class="text-center">
+                        <a href="https://tmrmds.co/article-type/" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">
+                            前往台灣行銷研究查看更多文章 →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Topics Section -->
+    <section class="py-16 bg-white bg-opacity-10">
+        <div class="container mx-auto px-6">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold text-white text-center mb-12">專欄重點主題</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="content-card rounded-xl p-6 article-preview">
+                        <div class="text-blue-600 text-3xl mb-4">🤖</div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">AI技術應用</h3>
+                        <p class="text-gray-600">
+                            深入探討機器學習、自然語言處理、預測分析等AI技術在行銷與業務中的實際應用場景。
+                        </p>
+                    </div>
+                    <div class="content-card rounded-xl p-6 article-preview">
+                        <div class="text-green-600 text-3xl mb-4">📊</div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">數據驅動行銷</h3>
+                        <p class="text-gray-600">
+                            分析如何運用大數據和AI算法優化行銷策略，提升客戶轉換率與投資報酬率。
+                        </p>
+                    </div>
+                    <div class="content-card rounded-xl p-6 article-preview">
+                        <div class="text-purple-600 text-3xl mb-4">🎯</div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">個人化體驗</h3>
+                        <p class="text-gray-600">
+                            探索AI如何創造更精準的個人化行銷體驗，增強客戶黏著度與滿意度。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="content-card rounded-2xl p-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">聯絡我們</h2>
+                    <p class="text-gray-600 mb-8">
+                        對於AI行銷與業務應用有任何疑問或合作需求，歡迎與我們聯繫
+                    </p>
+                    <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
+                        <a href="index.html" 
+                           class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">
+                            回到 JudgAI 首頁
+                        </a>
+                        <a href="https://tmrmds.co/article-type/" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">
+                            台灣行銷研究官網
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="text-center">
+                <div class="flex justify-center items-center space-x-4 mb-4">
+                    <img src="judgai_logo.png" alt="JudgAI" class="h-8">
+                    <span class="text-gray-400">×</span>
+                    <span class="font-semibold">台灣行銷研究</span>
+                </div>
+                <p class="text-gray-400 mb-4">
+                    © 2024 奇點智匯 JudgAI × 台灣行銷研究 聯合專欄
+                </p>
+                <p class="text-sm text-gray-500">
+                    致力於推動AI技術在行銷與業務領域的創新應用
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add loading state for iframe
+        const iframe = document.querySelector('iframe');
+        if (iframe) {
+            iframe.addEventListener('load', function() {
+                console.log('TMR articles loaded successfully');
+            });
+        }
+        
+        // 手機版菜單切換
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // 點擊菜單項目後關閉手機版菜單
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+        }
+        
+        // 滾動時修改導航樣式
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (header) {
+                if (window.scrollY > 50) {
+                    header.style.background = 'rgba(5, 8, 22, 0.98)';
+                } else {
+                    header.style.background = 'rgba(5, 8, 22, 0.95)';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

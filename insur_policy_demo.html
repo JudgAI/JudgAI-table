@@ -253,13 +253,139 @@
         .text-sky-200 {
             color: #bae6fd !important;
         }
+        
+        /* Header 導航樣式 - 與其他頁面統一 */
+        .header-nav {
+            background: rgba(5, 8, 22, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+        }
+        
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #38bdf8, #a78bfa);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link:hover::before {
+            width: 100%;
+        }
+        
+        .nav-link:hover {
+            color: #38bdf8;
+            transform: translateY(-2px);
+        }
+        
+        .mobile-menu {
+            background: rgba(5, 8, 22, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+        
+        .cta-button {
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .cta-button:hover {
+            box-shadow: 0 0 20px #38bdf8;
+            transform: scale(1.05);
+        }
+        
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #38bdf8, #a78bfa);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
     <!-- Orbitron 字型 for 科技感 -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
 </head>
 <body class="text-white antialiased">
+    <!-- Header 導航 - 與其他頁面統一 -->
+    <header class="header-nav fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo 和品牌名稱 -->
+                <div class="flex items-center space-x-3">
+                    <img src="奇點.png" alt="JudgAI Logo" class="h-10 w-10 rounded-full">
+                    <span class="font-orbitron text-xl font-bold gradient-text">JudgAI</span>
+                </div>
+                
+                <!-- 桌面版導航 -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">
+                        首頁
+                    </a>
+                    <a href="column_article.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">
+                        AI行銷與業務專欄
+                    </a>
+                    <a href="insur_policy_demo.html" class="nav-link text-blue-400 font-medium py-2 px-3">
+                        AI保單銷售手冊
+                    </a>
+                    <a href="index.html#live-sharing" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">
+                        直播分享
+                    </a>
+                </nav>
+                
+                <!-- CTA 按鈕 -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="https://line.me/ti/p/ECTAxiLRSh" target="_blank" class="cta-button text-white font-medium py-2 px-6 rounded-lg text-sm">
+                        聯絡我們
+                    </a>
+                </div>
+                
+                <!-- 手機版菜單按鈕 -->
+                <button id="mobile-menu-button" class="md:hidden text-gray-200 hover:text-blue-400 focus:outline-none">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- 手機版導航菜單 -->
+            <div id="mobile-menu" class="md:hidden hidden mobile-menu rounded-lg mt-2 py-4">
+                <div class="flex flex-col space-y-3 px-4">
+                    <a href="index.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2">
+                        首頁
+                    </a>
+                    <a href="column_article.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2">
+                        AI行銷與業務專欄
+                    </a>
+                    <a href="insur_policy_demo.html" class="nav-link text-blue-400 font-medium py-2">
+                        AI保單銷售手冊
+                    </a>
+                    <a href="index.html#live-sharing" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2">
+                        直播分享
+                    </a>
+                    <div class="pt-3 border-t border-gray-700">
+                        <a href="https://aistudy.pse.is/insurance-bot" target="_blank" class="cta-button block text-center text-white font-medium py-2 px-6 rounded-lg text-sm">
+                            免費試用
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 
-    <div class="container mx-auto px-6 py-16 md:py-24">
+    <div class="container mx-auto px-6 py-16 md:py-24 pt-28">
 
         <!-- 頁面標題 -->
         <header class="text-center mb-16 md:mb-24">
@@ -820,6 +946,55 @@ audioModal.addEventListener('click', function(e) {
     if (e.target === this) {
         closeAudioModal();
     }
+});
+
+// 手機版菜單切換
+const mobileMenuButton = document.getElementById('mobile-menu-button');
+const mobileMenu = document.getElementById('mobile-menu');
+
+if (mobileMenuButton && mobileMenu) {
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+    
+    // 點擊菜單項目後關閉手機版菜單
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+        link.addEventListener('click', () => {
+            if (!mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    });
+}
+
+// 滾動時修改導航樣式
+window.addEventListener('scroll', () => {
+    const header = document.querySelector('header');
+    if (header) {
+        if (window.scrollY > 50) {
+            header.style.background = 'rgba(5, 8, 22, 0.98)';
+        } else {
+            header.style.background = 'rgba(5, 8, 22, 0.95)';
+        }
+    }
+});
+
+// 平滑滾動到錨點
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+            // 如果是手機版，點擊後關閉菜單
+            if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+            }
+        }
+    });
 });
 </script>
 
