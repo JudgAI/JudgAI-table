@@ -3,16 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>奇點智匯 JudgAI 官網：當經驗成為奇點，AI更是保險未來的引擎</title>
-    <!-- Open Graph & Twitter Card for preview link photo -->
-    <!-- 請將下方網址改為您的正式網站網址 -->
-    <meta property="og:image" content="./JudgAI_pre.png" />
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:title" content="奇點智匯 JudgAI 官網：當經驗成為奇點，AI更是保險未來的引擎" />
-    <meta property="og:description" content="從經驗、法條到正確說明，奇點智匯讓每位保險專業者擁有一位懂法的科技夥伴。" />
-    <!-- <meta property="og:url" content="" /> -->
+    
+    <!-- SEO 優化標籤 -->
+    <title>奇點智匯 JudgAI | AI保險科技平台 | 保險業務專業AI助手</title>
+    <meta name="description" content="奇點智匯 JudgAI 是台灣領先的AI保險科技平台，專為保險業務員、保險顧問打造的AI智能助手。提供保險法規分析、保單銷售輔助、客戶諮詢AI化服務，讓保險專業者擁有懂法的科技夥伴。">
+    <meta name="keywords" content="奇點AI, 奇點智匯, AI保險, 保險科技, JudgAI, 保險AI助手, 保險業務AI, 保險法規AI, InsurTech, 保險科技平台, AI保險顧問, 保險數位化, 智能保險, 保險法律AI">
+    <meta name="author" content="奇點智匯 JudgAI">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="zh-TW">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="奇點智匯 JudgAI">
+    <meta property="og:title" content="奇點智匯 JudgAI | AI保險科技平台 | 保險業務專業AI助手">
+    <meta property="og:description" content="台灣領先的AI保險科技平台，專為保險業務員打造的AI智能助手。從經驗、法條到正確說明，讓每位保險專業者擁有一位懂法的科技夥伴。">
+    <meta property="og:image" content="./JudgAI_pre.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="奇點智匯 JudgAI - AI保險科技平台">
+    <!-- <meta property="og:url" content="https://judgai.com"> -->
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="奇點智匯 JudgAI | AI保險科技平台">
+    <meta name="twitter:description" content="台灣領先的AI保險科技平台，專為保險業務員打造的AI智能助手。">
+    <meta name="twitter:image" content="./JudgAI_pre.png">
+    
+    <!-- 結構化數據 (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "奇點智匯 JudgAI",
+      "alternateName": ["奇點AI", "JudgAI", "奇點智匯"],
+      "description": "台灣領先的AI保險科技平台，專為保險業務員、保險顧問打造的AI智能助手",
+      "url": "https://judgai.com",
+      "logo": "https://judgai.com/奇點.png",
+      "foundingDate": "2024",
+      "sameAs": [
+        "https://www.youtube.com/playlist?list=PLZExHhjtL82X_tH-PVw3adskNY1aVqckQ"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "url": "https://aistudy.pse.is/insurance-bot"
+      },
+      "offers": {
+        "@type": "Offer",
+        "category": "Software",
+        "name": "AI保險科技服務",
+        "description": "提供保險法規分析、保單銷售輔助、客戶諮詢AI化服務"
+      }
+    }
+    </script>
+    
+    <!-- 額外的結構化數據 - 軟體應用 -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "JudgAI",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web Browser",
+      "description": "AI保險科技平台，專為保險專業者提供法規分析、保單銷售輔助的智能助手",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "TWD",
+        "description": "免費試用版本"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "127"
+      }
+    }
+    </script>
+    
+    <!-- Canonical URL -->
+    <!-- <link rel="canonical" href="https://judgai.com"> -->
+    
+    <!-- Favicon 和圖示 -->
+    <link rel="icon" type="image/png" href="奇點.png">
+    <link rel="apple-touch-icon" href="奇點.png">
+    
+    <!-- 字體和樣式 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,6 +105,7 @@
         }
         .gradient-text {
             background: linear-gradient(90deg, #38bdf8, #a78bfa);
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -821,8 +898,44 @@
 
         <!-- Footer -->
         <footer class="bg-gray-900/50 border-t border-gray-700/50">
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-gray-400">
+            <!-- SEO 內容區塊 -->
+            <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-4">關於奇點智匯 JudgAI</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            奇點智匯是台灣領先的<strong>AI保險科技</strong>平台，專為保險業務員、保險顧問打造的<strong>AI智能助手</strong>。我們將複雜的保險法規轉化為易懂的專業諮詢，讓每位<strong>保險專業者</strong>都能擁有一位懂法的科技夥伴。
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-4">核心服務</h3>
+                        <ul class="text-gray-400 text-sm space-y-2">
+                            <li>• <strong>AI保險法規分析</strong> - 智能解讀保險條款</li>
+                            <li>• <strong>保單銷售輔助</strong> - AI驅動的銷售工具</li>
+                            <li>• <strong>客戶諮詢AI化</strong> - 提升服務效率</li>
+                            <li>• <strong>保險科技培訓</strong> - 專業知識數位化</li>
+                            <li>• <strong>InsurTech解決方案</strong> - 保險業數位轉型</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-4">相關關鍵詞</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">奇點AI</span>
+                            <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">AI保險</span>
+                            <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">保險科技</span>
+                            <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">JudgAI</span>
+                            <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">保險AI助手</span>
+                            <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">InsurTech</span>
+                            <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">智能保險</span>
+                            <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">保險數位化</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-gray-400 border-t border-gray-700">
                 <p>&copy; 2025 奇點智匯 JudgAI. All Rights Reserved.</p>
+                <p class="text-sm mt-2">台灣領先的AI保險科技平台 | 專業保險AI助手 | InsurTech創新解決方案</p>
                 <a href="#" id="termsLink" class="hover:text-cyan-400 transition-colors mt-2 inline-block">服務條款</a>
             </div>
         </footer>

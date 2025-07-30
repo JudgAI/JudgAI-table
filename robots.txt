@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# 主要頁面
+Allow: /index.html
+Allow: /column_article.html
+Allow: /insur_policy_demo.html
+
+# 圖片和資源
+Allow: /JudgAI_pre.png
+Allow: /奇點.png
+Allow: /judgai_logo.png
+
+# 禁止索引的文件
+Disallow: /JudgAI.html
+
+# Sitemap 位置
+Sitemap: https://judgai.com/sitemap.xml
+
+# 爬取延遲 (可選)
+Crawl-delay: 1
