@@ -16,8 +16,15 @@
     
     <!-- 自動轉跳到 index.html -->
     <script>
-        // 立即轉跳到 index.html
-        window.location.replace("index.html");
+        // 獲取當前頁面的參數和錨點
+        const searchParams = window.location.search; // 例如 ?param=123
+        const hash = window.location.hash; // 例如 #section
+        
+        // 構建新的 index.html URL，保留原有的參數和錨點
+        const newURL = "index.html" + searchParams + hash;
+        
+        // 立即轉跳到 index.html（保留參數和錨點）
+        window.location.replace(newURL);
     </script>
     
     <script src="https://cdn.tailwindcss.com"></script>
