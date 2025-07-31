@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>復盛股份有限公司【2025年度盛典】邀請函</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Noto Sans TC -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #200000;
+            color: #f0f0f0;
+            overflow: hidden; /* Initially hide scrollbar */
+        }
+        h1, h2, h3, .invitation-title {
+            font-family: 'Noto Serif TC', serif;
+        }
+
+        /* --- Cover Section --- */
+        #cover {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            display: flex;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .gate {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            /* Silky red background effect */
+            background: linear-gradient(160deg, #600000 0%, #c12121 50%, #500000 100%);
+            transition: transform 1.2s cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        #left-gate {
+            left: 0;
+        }
+        #right-gate {
+            right: 0;
+        }
+        #cover-content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 101;
+            padding: 2rem;
+            transition: opacity 0.5s ease;
+        }
+        
+        .invitation-title {
+            font-size: clamp(6rem, 20vw, 12rem);
+            font-weight: 700;
+            color: #E6A23C; /* A rich gold color */
+            position: relative;
+            line-height: 1.1;
+            text-shadow: 3px 3px 0px #420202, 6px 6px 10px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+        /* Flowing light effect on title */
+        .invitation-title::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 20%;
+            height: 200%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            transform: rotate(25deg);
+            animation: light-sweep 4s ease-in-out infinite;
+        }
+        @keyframes light-sweep {
+            0% { left: -50%; }
+            100% { left: 130%; }
+        }
+
+        #click-prompt {
+            position: absolute;
+            bottom: 5%;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.5rem;
+            animation: pulse-arrow 2s infinite;
+        }
+        @keyframes pulse-arrow {
+            0%, 100% { transform: translateY(0); opacity: 0.7; }
+            50% { transform: translateY(10px); opacity: 1; }
+        }
+
+        /* State when cover is opened */
+        body.cover-opened #left-gate { transform: translateX(-100%); }
+        body.cover-opened #right-gate { transform: translateX(100%); }
+        body.cover-opened #cover-content { opacity: 0; }
+
+
+        /* --- Main Content Sections --- */
+        .section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .bg-dark-red-gradient {
+            background: linear-gradient(to bottom, #300000, #200000);
+        }
+        .bg-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(180deg, rgba(120, 20, 20, 0.6) 0%, rgba(20, 0, 0, 0.8) 100%);
+            z-index: 1;
+        }
+        .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+            max-width: 1000px;
+        }
+        .red-text { color: #E53935; }
+        .red-border { border-color: #E53935; }
+        .countdown-box {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(229, 57, 53, 0.4);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .cta-button {
+            background: linear-gradient(145deg, #F44336, #C62828);
+            color: #fff;
+            font-weight: bold;
+            border-radius: 50px;
+            padding: 1rem 3rem;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(229, 57, 53, 0.5);
+        }
+        .cta-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(229, 57, 53, 0.7);
+        }
+        .scroll-down-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-20px); }
+            60% { transform: translateX(-50%) translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cover Section -->
+    <div id="cover">
+        <div id="left-gate" class="gate"></div>
+        <div id="right-gate" class="gate"></div>
+        <div id="cover-content">
+            <div class="text-center text-white">
+                <img src="https://assets.fusheng.com/49021a40-f944-4860-8df1-e3902b406548" alt="復盛股份有限公司 Logo" class="mx-auto h-12 mb-4">
+                <h3 class="text-xl md:text-2xl tracking-widest mb-8">復盛股份有限公司 2025 年度盛典</h3>
+                <h1 class="invitation-title">邀請函</h1>
+                <p class="text-lg tracking-[0.2em] mt-8 opacity-80">SINCERELY INVITE YOU</p>
+            </div>
+            <div id="click-prompt">
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 1: Hero -->
+    <section id="hero" class="section bg-cover bg-center bg-fixed bg-overlay" style="background-image: url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1932&auto=format&fit=crop');">
+        <div class="content text-white">
+            <img src="https://assets.fusheng.com/49021a40-f944-4860-8df1-e3902b406548" alt="復盛股份有限公司 Logo" class="mx-auto h-16 mb-8 reveal">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 reveal" style="transition-delay: 0.2s;">
+                <span class="red-text">時代啟航</span> 共創盛世
+            </h1>
+            <h2 class="text-2xl md:text-3xl mb-12 reveal" style="transition-delay: 0.4s;">
+                復盛股份有限公司 2025 年度盛典
+            </h2>
+            <div id="countdown" class="flex justify-center gap-4 md:gap-8 text-white mb-12 reveal" style="transition-delay: 0.6s;">
+                <div class="countdown-box"><div id="days" class="text-3xl md:text-5xl font-bold">00</div><div class="text-xs md:text-sm">天</div></div>
+                <div class="countdown-box"><div id="hours" class="text-3xl md:text-5xl font-bold">00</div><div class="text-xs md:text-sm">時</div></div>
+                <div class="countdown-box"><div id="minutes" class="text-3xl md:text-5xl font-bold">00</div><div class="text-xs md:text-sm">分</div></div>
+                <div class="countdown-box"><div id="seconds" class="text-3xl md:text-5xl font-bold">00</div><div class="text-xs md:text-sm">秒</div></div>
+            </div>
+            <a href="#register" class="cta-button text-xl reveal" style="transition-delay: 0.8s;">立即報名</a>
+        </div>
+        <div class="scroll-down-indicator text-white text-3xl">
+            <i class="fa-solid fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Section 2: Foreword -->
+    <section id="foreword" class="section bg-dark-red-gradient">
+        <div class="content reveal">
+            <h2 class="text-3xl md:text-5xl font-bold red-text mb-8">誠摯獻詞</h2>
+            <div class="max-w-3xl mx-auto text-lg md:text-xl leading-relaxed text-left space-y-6 text-gray-300">
+                <p>尊敬的貴賓：</p>
+                <p>在全球產業迅速變革的浪潮之巔，復盛始終秉持著「追求卓越，豐富人生」的信念，與各位夥伴攜手並進，共同譜寫了輝煌的篇章。</p>
+                <p>為感謝您長久以來的支持與信賴，我們將舉辦一場前所未有的年度盛典。這不僅是一次回顧與感恩，更是一場展望未來、共創藍圖的盛會。誠摯邀請您撥冗蒞臨，與我們一同見證榮耀，啟動未來！</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Highlights -->
+    <section id="highlights" class="section bg-dark-red-gradient">
+        <div class="content reveal">
+            <h2 class="text-3xl md:text-5xl font-bold red-text mb-12">盛典亮點</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 text-center">
+                <div class="reveal" style="transition-delay: 0.2s;">
+                    <div class="text-5xl red-text mb-4"><i class="fa-solid fa-lightbulb"></i></div>
+                    <h3 class="text-2xl font-bold mb-2">未來趨勢洞察</h3>
+                    <p class="text-gray-400">業界領袖分享前瞻觀點，剖析未來十年的產業動態與技術革新。</p>
+                </div>
+                <div class="reveal" style="transition-delay: 0.4s;">
+                    <div class="text-5xl red-text mb-4"><i class="fa-solid fa-handshake-angle"></i></div>
+                    <h3 class="text-2xl font-bold mb-2">菁英網絡交流</h3>
+                    <p class="text-gray-400">匯聚各界菁英，提供高端交流平台，拓展無限商機與合作可能。</p>
+                </div>
+                <div class="reveal" style="transition-delay: 0.6s;">
+                    <div class="text-5xl red-text mb-4"><i class="fa-solid fa-star"></i></div>
+                    <h3 class="text-2xl font-bold mb-2">尊榮晚宴體驗</h3>
+                    <p class="text-gray-400">米其林星級主廚打造極致饗宴，伴隨精彩表演，共度難忘夜晚。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Details -->
+    <section id="details" class="section bg-cover bg-center bg-fixed bg-overlay" style="background-image: url('https://images.unsplash.com/photo-1599436439833-d7134591575a?q=80&w=1770&auto=format&fit=crop');">
+        <div class="content reveal">
+            <h2 class="text-3xl md:text-5xl font-bold text-white mb-12">活動資訊</h2>
+            <div class="bg-white/90 backdrop-blur-sm text-gray-800 rounded-2xl shadow-2xl p-8 md:p-12 max-w-4xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="text-left space-y-6">
+                        <h3 class="text-2xl font-bold red-text border-b red-border pb-2">時間地點</h3>
+                        <div class="flex items-start"><i class="fa-solid fa-calendar-days fa-fw w-6 red-text mt-1"></i><span><strong>日期：</strong> 2025 年 9 月 26 日 (五)</span></div>
+                        <div class="flex items-start"><i class="fa-solid fa-clock fa-fw w-6 red-text mt-1"></i><span><strong>時間：</strong> 晚上 6:00 迎賓酒會｜6:30 晚宴開始</span></div>
+                        <div class="flex items-start"><i class="fa-solid fa-location-dot fa-fw w-6 red-text mt-1"></i><span><strong>地點：</strong> 台北萬豪酒店大宴會廳 (台北市中山區樂群二路199號)</span></div>
+                         <button id="calendar-btn" class="mt-4 w-full bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                            <i class="fa-solid fa-calendar-plus mr-2"></i> 加入行事曆
+                        </button>
+                    </div>
+                    <div class="rounded-lg overflow-hidden border-2 red-border h-64 md:h-auto">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3614.127885796206!2d121.55936787609208!3d25.06366017780011!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442ab82714659bb%3A0x83464a09a986155e!2sTaipei%20Marriott%20Hotel!5e0!3m2!1sen!2stw!4v1690867891234!5m2!1sen!2stw" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Register -->
+    <section id="register" class="section bg-dark-red-gradient">
+        <div class="content reveal">
+            <h2 class="text-3xl md:text-5xl font-bold red-text mb-4">名額有限 敬邀及時回覆</h2>
+            <p class="text-lg md:text-xl text-gray-300 mb-10">為預留您的專屬席位，懇請於 2025 年 9 月 12 日前回覆</p>
+            <a href="#register" class="cta-button text-2xl">立即報名</a>
+             <p class="text-sm text-gray-500 mt-12">&copy; 2025 復盛股份有限公司. All Rights Reserved.</p>
+        </div>
+    </section>
+    
+    <!-- Calendar Modal -->
+    <div id="calendar-modal" class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white rounded-xl shadow-2xl p-6 sm:p-8 max-w-sm w-full text-gray-800 transform scale-95 transition-all duration-300">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold red-text">加入您的行事曆</h3>
+                <button id="modal-close-btn" class="text-gray-400 hover:text-gray-800 text-2xl">&times;</button>
+            </div>
+            <p class="mb-6 text-gray-600">請選擇要將此活動加入的行事曆類型：</p>
+            <div class="flex flex-col space-y-3">
+                <button id="google-calendar-btn" class="flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                    <i class="fab fa-google"></i> Google 日曆
+                </button>
+                <button id="ical-download-btn" class="flex items-center justify-center gap-2 bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                    <i class="fa-solid fa-file-arrow-down"></i> 下載 iCal/Outlook
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Cover Opening Logic ---
+        const cover = document.getElementById('cover');
+        cover.addEventListener('click', () => {
+            document.body.classList.add('cover-opened');
+            document.body.style.overflow = 'auto'; // Allow scrolling
+            setTimeout(() => {
+                cover.style.display = 'none'; // Remove cover from DOM
+            }, 1300);
+        }, { once: true }); // Ensure the event only fires once
+
+        // --- Countdown Timer ---
+        const countdownDate = new Date("2025-09-26T18:00:00").getTime();
+        const countdownElement = document.getElementById('countdown');
+        if (countdownElement) {
+            const interval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = countdownDate - now;
+
+                if (distance < 0) {
+                    clearInterval(interval);
+                    countdownElement.innerHTML = "<div class='text-2xl font-bold'>活動已圓滿結束</div>";
+                    return;
+                }
+
+                document.getElementById('days').innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+                document.getElementById('hours').innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+                document.getElementById('minutes').innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+                document.getElementById('seconds').innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+            }, 1000);
+        }
+
+        // --- Scroll-triggered Animations ---
+        const revealElements = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        revealElements.forEach(el => observer.observe(el));
+
+        // --- Calendar Modal Logic ---
+        const calendarBtn = document.getElementById('calendar-btn');
+        const modal = document.getElementById('calendar-modal');
+        const modalContent = modal.querySelector('div');
+        const closeModalBtn = document.getElementById('modal-close-btn');
+
+        const showModal = () => {
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-95');
+        };
+
+        const hideModal = () => {
+            modalContent.classList.add('scale-95');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        };
+
+        calendarBtn.addEventListener('click', showModal);
+        closeModalBtn.addEventListener('click', hideModal);
+        modal.addEventListener('click', (e) => (e.target === modal) && hideModal());
+        
+        const eventDetails = {
+            title: '復盛股份有限公司【2025年度盛典】',
+            location: '台北萬豪酒店大宴會廳 (台北市中山區樂群二路199號)',
+            description: '誠摯邀請您參與復盛股份有限公司2025年度盛典，與我們一同見證榮耀，啟動未來！'
+        };
+
+        document.getElementById('google-calendar-btn').addEventListener('click', () => {
+            const googleUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventDetails.title)}&dates=20250926T180000/20250926T210000&details=${encodeURIComponent(eventDetails.description)}&location=${encodeURIComponent(eventDetails.location)}&ctz=Asia/Taipei`;
+            window.open(googleUrl, '_blank');
+            hideModal();
+        });
+
+        document.getElementById('ical-download-btn').addEventListener('click', () => {
+            const icsContent = [
+                'BEGIN:VCALENDAR', 'VERSION:2.0', 'BEGIN:VEVENT',
+                `URL:${document.URL}`,
+                `DTSTART;TZID=Asia/Taipei:20250926T180000`,
+                `DTEND;TZID=Asia/Taipei:20250926T210000`,
+                `SUMMARY:${eventDetails.title}`,
+                `DESCRIPTION:${eventDetails.description}`,
+                `LOCATION:${eventDetails.location}`,
+                'END:VEVENT', 'END:VCALENDAR'
+            ].join('\r\n');
+            
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'Fusheng-Gala-2025.ics';
+            link.click();
+            URL.revokeObjectURL(link.href);
+            hideModal();
+        });
+    </script>
+
+</body>
+</html>
