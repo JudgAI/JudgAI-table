@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>誠摯邀請｜[您的活動名稱]</title>
+    <style>
+        /* --- Google Fonts 字體引用 --- */
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Sans+TC:wght@400;700&display=swap');
+
+        /* --- 整體頁面樣式 --- */
+        body {
+            font-family: 'Noto Sans TC', sans-serif; /* 主要字體，適合中文閱讀 */
+            background-color: #fdf6f6; /* 柔和的淡粉色背景 */
+            color: #333;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* --- 邀請卡主體 --- */
+        .invitation-card {
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.1);
+            max-width: 650px;
+            width: 100%;
+            text-align: center;
+            padding: 50px 40px;
+            border-top: 10px solid #c0392b; /* 優雅的紅色邊框 */
+            box-sizing: border-box;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- 標題區塊 --- */
+        .header h1 {
+            font-family: 'Great Vibes', cursive; /* 藝術草寫字體 */
+            font-size: 4.5em;
+            color: #a93226; /* 深紅色 */
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .header h2 {
+            font-size: 1.2em;
+            color: #777;
+            margin: 0 0 30px 0;
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+
+        /* --- 活動詳情 --- */
+        .event-details h3 {
+            font-size: 2em;
+            color: #333;
+            margin: 20px 0 10px 0;
+            font-weight: 700;
+        }
+
+        .event-details p {
+            font-size: 1.1em;
+            color: #555;
+            line-height: 1.6;
+            margin: 0 auto 30px auto;
+            max-width: 90%;
+        }
+
+        /* --- 時間地點資訊 --- */
+        .details-section {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+            border-left: 5px solid #c0392b; /* 優雅的紅色邊框 */
+            text-align: left;
+        }
+
+        .details-section p {
+            font-size: 1em;
+            line-height: 1.8;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .details-section strong {
+            color: #a93226; /* 深紅色 */
+        }
+
+        /* --- 額外訊息 --- */
+        .message {
+            margin: 30px 0;
+            font-style: italic;
+            color: #666;
+        }
+
+        /* --- RSVP 按鈕 --- */
+        .cta {
+            margin-top: 40px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #e74c3c, #c0392b); /* 紅色漸層 */
+            color: white;
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        /* --- 頁腳 --- */
+        .footer {
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #999;
+        }
+
+        /* 響應式設計：在小螢幕上調整間距 */
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem;
+            }
+            .invitation-card {
+                padding: 40px 25px;
+            }
+            .header h1 {
+                font-size: 3.5em;
+            }
+            .event-details h3 {
+                font-size: 1.6em;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="invitation-card">
+
+        <div class="header">
+            <h1>You're Invited</h1>
+            <h2>誠摯邀請</h2>
+        </div>
+
+        <div class="event-details">
+            <p>誠摯邀請您參加我們的</p>
+            <h3>[活動主題名稱，例如：年度感恩晚宴]</h3>
+            <p>與我們共度一段充滿歡樂與感動的時光</p>
+        </div>
+
+        <div class="details-section">
+            <p>📅 <strong>日期與時間：</strong> [2025年10月26日], [星期六], [晚上 6:00]</p>
+            <p>📍 <strong>地點：</strong> [您的活動地點全址]</p>
+            <p>👗 <strong>服裝建議：</strong> [例如：半正式、商務休閒]</p>
+        </div>
+
+        <div class="message">
+            <p>"[此處可填寫溫馨提醒或想對賓客說的話。例如：您的蒞臨將是我們最大的榮幸，期待與您分享這份喜悅。]"</p>
+        </div>
+
+        <div class="cta">
+            <!-- 將 # 替換成您的 RSVP 連結，例如 Google 表單或 email -->
+            <a href="#" class="cta-button">敬請回覆 (RSVP)</a>
+        </div>
+        
+        <div class="footer">
+            <p>期待您的光臨！</p>
+        </div>
+
+    </div>
+
+</body>
+</html>
