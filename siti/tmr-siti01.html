@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 創新引擎 | 引領行銷科技未來</title>
+    <title>AI 創新引擎 | 引領行銷與保險科技未來</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,8 +12,10 @@
     <style>
         body {
             font-family: 'Inter', 'Noto Sans TC', sans-serif;
-            background-color: #0a0a0a;
-            color: #e2e8f0;
+            background-color: #f8fafc; /* slate-50 */
+            color: #0f172a; /* slate-900 */
+            background-image: radial-gradient(circle at 1px 1px, #e2e8f0 1px, transparent 0);
+            background-size: 2rem 2rem;
         }
         .gradient-text {
             background: linear-gradient(90deg, #4f46e5, #a855f7, #ec4899);
@@ -21,29 +23,42 @@
             -webkit-text-fill-color: transparent;
         }
         .card {
-            background-color: rgba(30, 41, 59, 0.5);
-            border: 1px solid rgba(51, 65, 85, 0.7);
-            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 1px solid #e2e8f0; /* slate-200 */
+            backdrop-filter: blur(12px);
             transition: all 0.3s ease-in-out;
         }
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            border-color: #a855f7;
+            box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.07), 0 8px 10px -6px rgb(0 0 0 / 0.07);
+            border-color: #818cf8; /* indigo-400 */
         }
         .stat-number {
             font-weight: 900;
             font-family: 'Inter', sans-serif;
         }
         .section-icon {
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(168, 85, 247, 0.1));
-            border: 1px solid rgba(124, 58, 237, 0.3);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
+            border: 1px solid rgba(196, 181, 253, 0.5); /* violet-200 */
             border-radius: 0.75rem;
             padding: 0.75rem;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 1rem;
+        }
+        .challenge-card {
+             background-color: #ffffff;
+             border: 1px solid #e2e8f0; /* slate-200 */
+             border-radius: 1rem;
+             padding: 1.5rem;
+             height: 100%;
+             transition: all 0.3s ease-in-out;
+        }
+        .challenge-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.07), 0 8px 10px -6px rgb(0 0 0 / 0.07);
+            border-color: #5eead4; /* teal-300 */
         }
         @keyframes count-up {
             from { transform: translateY(15px); opacity: 0; }
@@ -57,18 +72,19 @@
 <body class="antialiased">
 
     <!-- Header -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-lg border-b border-slate-800">
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-slate-200">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-bold text-white">
+            <h1 class="text-xl font-bold text-slate-900">
                 <span class="gradient-text">AI</span> 創新引擎
             </h1>
             <nav class="hidden md:flex space-x-8">
-                <a href="#ai-modules" class="text-slate-300 hover:text-white transition-colors">AI 模組</a>
-                <a href="#platform" class="text-slate-300 hover:text-white transition-colors">技術架構</a>
-                <a href="#market" class="text-slate-300 hover:text-white transition-colors">市場實績</a>
-                <a href="#revenue" class="text-slate-300 hover:text-white transition-colors">營運成效</a>
+                <a href="#ai-modules" class="text-slate-600 hover:text-slate-900 transition-colors">AI 模組</a>
+                <a href="#insurance" class="text-slate-600 hover:text-slate-900 transition-colors">保險應用</a>
+                <a href="#platform" class="text-slate-600 hover:text-slate-900 transition-colors">技術架構</a>
+                <a href="#market" class="text-slate-600 hover:text-slate-900 transition-colors">市場實績</a>
+                <a href="#revenue" class="text-slate-600 hover:text-slate-900 transition-colors">營運成效</a>
             </nav>
-            <button class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+            <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">
                 聯絡我們
             </button>
         </div>
@@ -77,17 +93,16 @@
     <main class="pt-24">
         <!-- Hero Section -->
         <section class="text-center py-20 md:py-32 px-6 relative overflow-hidden">
-            <div class="absolute inset-0 bg-grid-slate-800/40 [mask-image:linear-gradient(to_bottom,white_20%,transparent_100%)]"></div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-indigo-900/40 rounded-full blur-[120px]"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50rem] h-[50rem] bg-indigo-100/60 rounded-full blur-[120px]"></div>
             <div class="relative z-10 container mx-auto">
-                <h2 class="text-4xl md:text-6xl font-black text-white leading-tight mb-4">
+                <h2 class="text-4xl md:text-6xl font-black text-slate-900 leading-tight mb-4">
                     用 <span class="gradient-text">AI</span> 賦能，重塑商業價值
                 </h2>
-                <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-8">
-                    我們整合頂尖生成式 AI 技術，打造全方位行銷解決方案，驅動企業實現前所未有的成長。
+                <p class="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto mb-8">
+                    我們整合頂尖生成式 AI 技術，打造全方位行銷與產業解決方案，驅動企業實現前所未有的成長。
                 </p>
                 <div class="flex justify-center gap-4">
-                    <a href="#ai-modules" class="bg-white text-slate-900 font-bold py-3 px-6 rounded-lg hover:bg-slate-200 transition-all transform hover:scale-105">探索核心技術</a>
+                    <a href="#ai-modules" class="bg-slate-900 text-white font-bold py-3 px-6 rounded-lg hover:bg-slate-700 transition-all transform hover:scale-105">探索核心技術</a>
                 </div>
             </div>
         </section>
@@ -97,133 +112,184 @@
             <div class="container mx-auto">
                 <div class="text-center max-w-3xl mx-auto mb-12">
                      <div class="section-icon">
-                        <i data-lucide="brain-circuit" class="w-8 h-8 text-violet-400"></i>
+                        <i data-lucide="brain-circuit" class="w-8 h-8 text-violet-500"></i>
                     </div>
-                    <h3 class="text-3xl md:text-4xl font-bold text-white mb-4">AI 行銷模組開發</h3>
-                    <p class="text-slate-400">整合 NLP 與圖像生成模型，打造 13 項高效 AI 工具，顯著提升產能並降低成本。</p>
+                    <h3 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">AI 行銷模組開發</h3>
+                    <p class="text-slate-600">整合 NLP 與圖像生成模型，打造 13 項高效 AI 工具，顯著提升產能並降低成本。</p>
                 </div>
 
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <!-- Card 1: Productivity -->
                     <div class="card p-8 rounded-2xl">
-                        <div class="flex items-center text-green-400 mb-4">
+                        <div class="flex items-center text-green-600 mb-4">
                             <i data-lucide="trending-up" class="w-8 h-8 mr-3"></i>
                             <span class="text-lg font-semibold">產能躍升</span>
                         </div>
-                        <p class="text-5xl stat-number text-white">2-5 倍</p>
-                        <p class="text-slate-400 mt-2">文案與設計平均產能提升幅度，加速創意實現。</p>
+                        <p class="text-5xl stat-number text-slate-900">2-5 倍</p>
+                        <p class="text-slate-500 mt-2">文案與設計平均產能提升幅度，加速創意實現。</p>
                     </div>
                     <!-- Card 2: Cost Reduction -->
                     <div class="card p-8 rounded-2xl">
-                        <div class="flex items-center text-blue-400 mb-4">
+                        <div class="flex items-center text-blue-600 mb-4">
                             <i data-lucide="shield-check" class="w-8 h-8 mr-3"></i>
                             <span class="text-lg font-semibold">成本優化</span>
                         </div>
-                        <p class="text-5xl stat-number text-white">>50%</p>
-                        <p class="text-slate-400 mt-2">作業成本顯著降低，將資源投入核心業務。</p>
+                        <p class="text-5xl stat-number text-slate-900">>50%</p>
+                        <p class="text-slate-500 mt-2">作業成本顯著降低，將資源投入核心業務。</p>
                     </div>
                     <!-- Card 3: Module Count -->
                     <div class="card p-8 rounded-2xl">
-                        <div class="flex items-center text-purple-400 mb-4">
+                        <div class="flex items-center text-purple-600 mb-4">
                             <i data-lucide="cubes" class="w-8 h-8 mr-3"></i>
                             <span class="text-lg font-semibold">多元模組</span>
                         </div>
-                        <p class="text-5xl stat-number text-white">13 項</p>
-                        <p class="text-slate-400 mt-2">涵蓋金句、文案、設計、SEO 等全方位行銷需求。</p>
+                        <p class="text-5xl stat-number text-slate-900">13 項</p>
+                        <p class="text-slate-500 mt-2">涵蓋金句、文案、設計、SEO 等全方位行銷需求。</p>
                     </div>
                 </div>
-                <div class="mt-12 text-center text-slate-300">
+                <div class="mt-12 text-center text-slate-700">
                     <p class="font-semibold text-lg">核心技術包含：</p>
-                    <p class="text-slate-400">GPT 自然語言處理、Diffusion 圖像生成、多層級參數引導與優化介面</p>
+                    <p class="text-slate-500">GPT 自然語言處理、Diffusion 圖像生成、多層級參數引導與優化介面</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Insurance Industry Section -->
+        <section id="insurance" class="py-16 md:py-24 px-6 bg-white">
+            <div class="container mx-auto">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <div class="section-icon">
+                        <i data-lucide="shield-plus" class="w-8 h-8 text-teal-500"></i>
+                    </div>
+                    <h3 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">產業聚焦：打造<span class="gradient-text">保險業專屬</span> AI 服務</h3>
+                    <p class="text-slate-600">將成功的驗證經驗，放大應用於保險產業，進行更深度的商模驗證與市場滲透，應對台灣保險業數位轉型的挑戰與機會。</p>
+                </div>
+                <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-8 text-left">
+                    <!-- Challenge 1 -->
+                    <div class="challenge-card">
+                        <div class="flex items-center mb-4">
+                            <i data-lucide="file-warning" class="w-7 h-7 text-teal-500 mr-3"></i>
+                            <h4 class="text-xl font-bold text-slate-800">數位化壓力與知識斷層</h4>
+                        </div>
+                        <ul class="space-y-3 text-slate-500 list-disc list-inside">
+                            <li>理賠及核保流程數位化不足，依賴人工與紙本。</li>
+                            <li>專業知識傳承困難，資深經驗無法有效系統化。</li>
+                            <li>客戶對即時、數位化服務的期望日益增長。</li>
+                        </ul>
+                    </div>
+                    <!-- Challenge 2 -->
+                    <div class="challenge-card">
+                        <div class="flex items-center mb-4">
+                            <i data-lucide="puzzle" class="w-7 h-7 text-teal-500 mr-3"></i>
+                            <h4 class="text-xl font-bold text-slate-800">AI 應用資源缺口</h4>
+                        </div>
+                        <ul class="space-y-3 text-slate-500 list-disc list-inside">
+                            <li>缺乏能快速導入且兼顧保險專業的 AI 平台。</li>
+                            <li>通用型 AI 工具專業性不足，存在誤用風險。</li>
+                            <li>高昂的導入與維護成本構成進入門檻。</li>
+                        </ul>
+                    </div>
+                    <!-- Challenge 3 -->
+                    <div class="challenge-card">
+                        <div class="flex items-center mb-4">
+                            <i data-lucide="users-round" class="w-7 h-7 text-teal-500 mr-3"></i>
+                            <h4 class="text-xl font-bold text-slate-800">人才流動與培訓挑戰</h4>
+                        </div>
+                        <ul class="space-y-3 text-slate-500 list-disc list-inside">
+                            <li>員工離職造成專業智慧資產流失。</li>
+                            <li>新進人員培訓耗時，服務品質不一。</li>
+                            <li>難以提供即時、客製化且專業的銷售輔助。</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Platform Section -->
-        <section id="platform" class="py-16 md:py-24 px-6 bg-slate-900/50">
+        <section id="platform" class="py-16 md:py-24 px-6">
             <div class="container mx-auto grid md:grid-cols-2 gap-12 items-center">
                 <div class="pr-8">
                     <div class="section-icon">
-                        <i data-lucide="server-cog" class="w-8 h-8 text-cyan-400"></i>
+                        <i data-lucide="server-cog" class="w-8 h-8 text-cyan-500"></i>
                     </div>
-                    <h3 class="text-3xl md:text-4xl font-bold text-white mb-4">平台建置與營運架構</h3>
-                    <p class="text-slate-400 mb-6">打造高併發、高安全性的 SaaS 平台，整合金流與雲端架構，奠定穩固的發展基石。</p>
-                    <ul class="space-y-4">
+                    <h3 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">平台建置與營運架構</h3>
+                    <p class="text-slate-600 mb-6">打造高併發、高安全性的 SaaS 平台，整合金流與雲端架構，奠定穩固的發展基石。</p>
+                    <ul class="space-y-4 text-slate-600">
                         <li class="flex items-start">
-                            <i data-lucide="users" class="w-5 h-5 text-cyan-400 mr-3 mt-1 flex-shrink-0"></i>
-                            <span><strong class="text-white">高併發會員系統：</strong>支援大規模用戶同時操作，確保流暢體驗。</span>
+                            <i data-lucide="users" class="w-5 h-5 text-cyan-500 mr-3 mt-1 flex-shrink-0"></i>
+                            <span><strong class="text-slate-800">高併發會員系統：</strong>支援大規模用戶同時操作，確保流暢體驗。</span>
                         </li>
                         <li class="flex items-start">
-                            <i data-lucide="credit-card" class="w-5 h-5 text-cyan-400 mr-3 mt-1 flex-shrink-0"></i>
-                            <span><strong class="text-white">金流整合：</strong>無縫串接支付系統，簡化交易流程。</span>
+                            <i data-lucide="credit-card" class="w-5 h-5 text-cyan-500 mr-3 mt-1 flex-shrink-0"></i>
+                            <span><strong class="text-slate-800">金流整合：</strong>無縫串接支付系統，簡化交易流程。</span>
                         </li>
                         <li class="flex items-start">
-                            <i data-lucide="lock" class="w-5 h-5 text-cyan-400 mr-3 mt-1 flex-shrink-0"></i>
-                            <span><strong class="text-white">頂級資安防護：</strong>從資料加密到防駭機制，全方位保護用戶資產。</span>
+                            <i data-lucide="lock" class="w-5 h-5 text-cyan-500 mr-3 mt-1 flex-shrink-0"></i>
+                            <span><strong class="text-slate-800">頂級資安防護：</strong>從資料加密到防駭機制，全方位保護用戶資產。</span>
                         </li>
                          <li class="flex items-start">
-                            <i data-lucide="cloud" class="w-5 h-5 text-cyan-400 mr-3 mt-1 flex-shrink-0"></i>
-                            <span><strong class="text-white">彈性雲端架構：</strong>穩定支援跨端登入與 API 串接，具備高度擴展性。</span>
+                            <i data-lucide="cloud" class="w-5 h-5 text-cyan-500 mr-3 mt-1 flex-shrink-0"></i>
+                            <span><strong class="text-slate-800">彈性雲端架構：</strong>穩定支援跨端登入與 API 串接，具備高度擴展性。</span>
                         </li>
                     </ul>
                 </div>
                 <div class="card rounded-2xl p-4">
-                    <img src="https://placehold.co/600x400/1e293b/e2e8f0?text=SaaS+Platform+Architecture" alt="SaaS 平台架構示意圖" class="rounded-lg w-full h-auto">
+                    <img src="https://placehold.co/600x400/e2e8f0/475569?text=SaaS+Platform+Architecture" alt="SaaS 平台架構示意圖" class="rounded-lg w-full h-auto">
                 </div>
             </div>
         </section>
 
         <!-- Market & Awards Section -->
-        <section id="market" class="py-16 md:py-24 px-6">
+        <section id="market" class="py-16 md:py-24 px-6 bg-white">
             <div class="container mx-auto">
                 <div class="text-center max-w-3xl mx-auto mb-12">
                     <div class="section-icon">
-                        <i data-lucide="trophy" class="w-8 h-8 text-amber-400"></i>
+                        <i data-lucide="trophy" class="w-8 h-8 text-amber-500"></i>
                     </div>
-                    <h3 class="text-3xl md:text-4xl font-bold text-white mb-4">市場推廣與產業鏈結</h3>
-                    <p class="text-slate-400">透過教學活動與競賽肯定，驗證平台的創新潛力與市場高度關注。</p>
+                    <h3 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">市場推廣與產業鏈結</h3>
+                    <p class="text-slate-600">透過教學活動與競賽肯定，驗證平台的創新潛力與市場高度關注。</p>
                 </div>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <div class="card p-6 rounded-2xl text-center">
-                        <i data-lucide="star" class="w-10 h-10 text-amber-400 mx-auto mb-4"></i>
-                        <h4 class="text-lg font-bold text-white mb-2">聯發科 AI 行銷生態系</h4>
-                        <p class="text-slate-400">唯一合作夥伴</p>
+                        <i data-lucide="star" class="w-10 h-10 text-amber-500 mx-auto mb-4"></i>
+                        <h4 class="text-lg font-bold text-slate-800 mb-2">聯發科 AI 行銷生態系</h4>
+                        <p class="text-slate-500">唯一合作夥伴</p>
                     </div>
                     <div class="card p-6 rounded-2xl text-center">
-                        <i data-lucide="award" class="w-10 h-10 text-amber-400 mx-auto mb-4"></i>
-                        <h4 class="text-lg font-bold text-white mb-2">GenAI Stars 選拔</h4>
-                        <p class="text-slate-400">晉級前 7% 決賽團隊</p>
+                        <i data-lucide="award" class="w-10 h-10 text-amber-500 mx-auto mb-4"></i>
+                        <h4 class="text-lg font-bold text-slate-800 mb-2">GenAI Stars 選拔</h4>
+                        <p class="text-slate-500">晉級前 7% 決賽團隊</p>
                     </div>
                     <div class="card p-6 rounded-2xl text-center">
-                        <i data-lucide="gem" class="w-10 h-10 text-amber-400 mx-auto mb-4"></i>
-                        <h4 class="text-lg font-bold text-white mb-2">經濟部智慧創新大賞</h4>
-                        <p class="text-slate-400">晉級前 4% 肯定</p>
+                        <i data-lucide="gem" class="w-10 h-10 text-amber-500 mx-auto mb-4"></i>
+                        <h4 class="text-lg font-bold text-slate-800 mb-2">經濟部智慧創新大賞</h4>
+                        <p class="text-slate-500">晉級前 4% 肯定</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- IP & Revenue Section -->
-        <section id="revenue" class="py-16 md:py-24 px-6 bg-gradient-to-b from-slate-900/50 to-transparent">
+        <section id="revenue" class="py-16 md:py-24 px-6">
              <div class="container mx-auto grid lg:grid-cols-5 gap-12 items-center">
                 <div class="lg:col-span-2">
                      <div class="section-icon">
-                        <i data-lucide="file-text" class="w-8 h-8 text-rose-400"></i>
+                        <i data-lucide="file-text" class="w-8 h-8 text-rose-500"></i>
                     </div>
-                    <h3 class="text-3xl md:text-4xl font-bold text-white mb-4">智財佈局與營運成效</h3>
-                    <p class="text-slate-400 mb-6">我們不僅專注技術深耕與專利佈局，更以驚人的營收表現，證明了 AI 產品的巨大市場潛力與商業價值。</p>
+                    <h3 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">智財佈局與營運成效</h3>
+                    <p class="text-slate-600 mb-6">我們不僅專注技術深耕與專利佈局，更以驚人的營收表現，證明了 AI 產品的巨大市場潛力與商業價值。</p>
                     <div class="mt-4">
-                        <p class="text-white font-semibold">與國立臺北科技大學產學合作，積極進行專利與商標保護。</p>
+                        <p class="text-slate-800 font-semibold">與國立臺北科技大學產學合作，積極進行專利與商標保護。</p>
                     </div>
                 </div>
                 <div class="lg:col-span-3 card rounded-2xl p-8 md:p-12 text-center">
-                    <p class="text-lg text-slate-300 mb-2">本期營收達成</p>
+                    <p class="text-lg text-slate-600 mb-2">本期營收達成</p>
                     <div id="revenue-counter" class="counter-viewport text-5xl md:text-7xl font-black gradient-text my-4" data-target="4353884">
                         NT$ 0
                     </div>
                     <div class="mt-6">
-                        <p class="text-xl text-white">遠超 2025/Q1 預期目標 <span class="font-bold">(175萬元)</span></p>
-                        <p class="text-slate-400 mt-1">驗證 AI 工具的強大市場需求與轉化潛力。</p>
+                        <p class="text-xl text-slate-800">遠超 2025/Q1 預期目標 <span class="font-bold">(175萬元)</span></p>
+                        <p class="text-slate-500 mt-1">驗證 AI 工具的強大市場需求與轉化潛力。</p>
                     </div>
                 </div>
             </div>
@@ -231,7 +297,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-slate-800 mt-16">
+    <footer class="border-t border-slate-200 mt-16">
         <div class="container mx-auto px-6 py-8 text-center text-slate-500">
             <p>&copy; 2025 AI 創新引擎. All Rights Reserved.</p>
             <p class="text-sm mt-2">本頁面為概念展示，由 Gemini 生成。</p>
@@ -284,7 +350,9 @@
             });
         }, { threshold: 0.5 });
         
-        observer.observe(revenueCounter);
+        if(revenueCounter) {
+            observer.observe(revenueCounter);
+        }
 
     </script>
 </body>
