@@ -30,6 +30,7 @@
         }
         .gradient-text {
             background: linear-gradient(90deg, #38bdf8, #a78bfa);
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -149,6 +150,42 @@
 <body class="text-gray-200">
 
     <div class="min-h-screen w-full flex flex-col">
+        <!-- Navigation -->
+        <nav class="bg-gray-900/80 backdrop-filter backdrop-blur-lg border-b border-gray-700/50 sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <div class="flex items-center">
+                        <!-- 圓形 Logo -->
+                        <div class="relative mr-3">
+                            <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-cyan-400/30 bg-gradient-to-br from-cyan-400/20 to-blue-600/20 backdrop-blur-sm">
+                                <img src="SayMind_LOGO.png" alt="SayMind Logo" class="w-full h-full object-cover rounded-full">
+                            </div>
+                            <!-- 外層光暈效果 -->
+                            <div class="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 opacity-20 blur-sm"></div>
+                        </div>
+                        <span class="font-orbitron text-xl font-bold text-white">SayMind</span>
+                    </div>
+                    <div class="flex items-center space-x-8">
+                        <!-- 導航連結 -->
+                        <a href="#saymind-core" class="nav-link text-gray-300 hover:text-cyan-400 font-medium transition-all duration-300">功能介紹</a>
+                        <a href="changelog.html" class="nav-link text-gray-300 hover:text-cyan-400 font-medium transition-all duration-300">更新日誌</a>
+                        
+                        <!-- 聯絡我們按鈕 - 參考 index.html 風格 -->
+                        <a href="https://line.me/ti/p/ECTAxiLRSh" target="_blank" 
+                           class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-medium py-2 px-6 rounded-lg text-sm transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-cyan-500/25">
+                            聯絡我們
+                        </a>
+                        
+                        <!-- 立即使用按鈕 -->
+                        <a href="https://dev-box3.taiwanmds.com/speech2text_free_registry/" target="_blank" 
+                           class="border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 font-medium py-2 px-6 rounded-lg text-sm transition-all duration-300">
+                            立即使用
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
         <main class="flex-grow">
             <!-- Hero Section -->
             <section class="hero-section text-white">
@@ -690,6 +727,9 @@
             });
         });
     </script>
+
+    <!-- Header 統一管理腳本 -->
+    <script src="js/header-manager.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SayMind 更新日誌 - 功能升級與優化記錄</title>
+    <!-- Open Graph & Twitter Card for preview link photo -->
+    <meta property="og:title" content="SayMind 更新日誌 - 功能升級與優化記錄" />
+    <meta property="og:description" content="查看 SayMind 最新功能更新，包含 Podcast、AI 筆記整理、語音轉錄等全面進化內容。" />
+    <meta property="og:image" content="../SayMind_LOGO_preview.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SayMind 更新日誌 - 功能升級與優化記錄" />
+    <meta name="twitter:description" content="查看 SayMind 最新功能更新，包含 Podcast、AI 筆記整理、語音轉錄等全面進化內容。" />
+    <meta name="twitter:image" content="../SayMind_LOGO_preview.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../SayMind_light.png">
+    <style>
+        /* 自定義樣式 */
+        body {
+            font-family: 'Noto Sans TC', 'Inter', sans-serif;
+            background-color: #050816; /* 深邃星空背景 */
+        }
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #38bdf8, #a78bfa);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-section {
+            position: relative;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+            overflow: hidden;
+        }
+        .update-card {
+            background-color: rgba(17, 24, 39, 0.8); /* 半透明玻璃效果 */
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+        .update-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(56, 189, 248, 0.6);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
+        }
+        .feature-badge {
+            background: linear-gradient(90deg, #38bdf8, #a78bfa);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+        }
+        .cta-button {
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            transition: all 0.3s ease-in-out;
+        }
+        .cta-button:hover {
+            box-shadow: 0 0 20px #38bdf8;
+            transform: scale(1.05);
+        }
+        .nav-link {
+            transition: all 0.3s ease-in-out;
+        }
+        .nav-link:hover {
+            color: #38bdf8;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+        /* Logo 科技感效果 */
+        .logo-container {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .logo-container:hover {
+            transform: scale(1.08);
+            filter: brightness(1.1);
+        }
+        .logo-rotating-border {
+            animation: logoRotate 4s linear infinite;
+        }
+        .logo-pulse-bg {
+            animation: logoPulse 2s ease-in-out infinite alternate;
+        }
+        .logo-image {
+            transition: all 0.3s ease-in-out;
+            filter: brightness(1.1) contrast(1.05) saturate(1.1);
+        }
+        .logo-container:hover .logo-image {
+            transform: scale(1.02);
+            filter: brightness(1.15) contrast(1.1) saturate(1.15);
+        }
+        @keyframes logoRotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes logoPulse {
+            0% {
+                opacity: 0.7;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0.9;
+                transform: scale(1.02);
+            }
+        }
+        /* 時間軸樣式 */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(45deg, #38bdf8, #a78bfa);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+        .timeline-line {
+            position: absolute;
+            left: -1px;
+            top: 12px;
+            bottom: -20px;
+            width: 2px;
+            background: linear-gradient(180deg, rgba(56, 189, 248, 0.8) 0%, rgba(168, 139, 250, 0.2) 100%);
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <div class="min-h-screen w-full flex flex-col">
+        <!-- Navigation -->
+        <nav class="bg-gray-900/80 backdrop-filter backdrop-blur-lg border-b border-gray-700/50 sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <div class="flex items-center">
+                        <!-- 圓形 Logo -->
+                        <div class="relative mr-3">
+                            <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-cyan-400/30 bg-gradient-to-br from-cyan-400/20 to-blue-600/20 backdrop-blur-sm">
+                                <img src="../SayMind_LOGO.png" alt="SayMind Logo" class="w-full h-full object-cover rounded-full">
+                            </div>
+                            <!-- 外層光暈效果 -->
+                            <div class="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 opacity-20 blur-sm"></div>
+                        </div>
+                        <span class="font-orbitron text-xl font-bold text-white">SayMind</span>
+                    </div>
+                    <div class="flex items-center space-x-8">
+                        <!-- 導航連結 -->
+                        <a href="../saymind.html" class="nav-link text-gray-300 hover:text-cyan-400 font-medium transition-all duration-300">首頁</a>
+                        <a href="#latest-updates" class="nav-link text-cyan-400 font-medium transition-all duration-300">最新更新</a>
+                        
+                        <!-- 聯絡我們按鈕 - 參考 index.html 風格 -->
+                        <a href="https://line.me/ti/p/ECTAxiLRSh" target="_blank" 
+                           class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-medium py-2 px-6 rounded-lg text-sm transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-cyan-500/25">
+                            聯絡我們
+                        </a>
+                        
+                        <!-- 立即使用按鈕 -->
+                        <a href="https://dev-box3.taiwanmds.com/speech2text_free_registry/" target="_blank" 
+                           class="border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 font-medium py-2 px-6 rounded-lg text-sm transition-all duration-300">
+                            立即使用
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="flex-grow">
+            <!-- Hero Section -->
+            <section class="hero-section text-white py-16 md:py-24">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <div class="flex flex-col items-center mb-8">
+                        <div class="relative mb-6">
+                            <div class="logo-container relative flex items-center justify-center" style="width: 6rem; height: 6rem;">
+                                <!-- 外層旋轉漸層邊框 -->
+                                <span class="logo-rotating-border absolute inset-0 rounded-full" style="background: conic-gradient(from 0deg at 50% 50%, #38bdf8 0%, #818cf8 25%, #a78bfa 50%, #f472b6 75%, #38bdf8 100%); filter: blur(8px) brightness(1.3); opacity: 0.8;"></span>
+                                
+                                <!-- 中層脈動背景 -->
+                                <span class="logo-pulse-bg absolute inset-1 rounded-full" style="background: radial-gradient(circle at 30% 30%, rgba(56,189,248,0.8), rgba(17,24,39,0.9), rgba(168,139,250,0.6)); box-shadow: inset 0 2px 8px rgba(56,189,248,0.3), 0 4px 32px rgba(56,189,248,0.2); backdrop-filter: blur(8px);"></span>
+                                
+                                <!-- Logo 圖片 -->
+                                <img src="../SayMind_LOGO.png" alt="SayMind Logo" class="logo-image relative z-10 w-16 h-16 object-cover rounded-full" style="border: 2px solid rgba(255,255,255,0.3);">
+                            </div>
+                        </div>
+                        <h1 class="font-orbitron text-4xl md:text-5xl font-bold tracking-wider mb-4">
+                            更新日誌
+                        </h1>
+                        <span class="gradient-text block text-2xl md:text-3xl font-bold">SayMind 功能升級與優化記錄</span>
+                    </div>
+                    <p class="mt-6 max-w-3xl mx-auto text-lg text-gray-300">
+                        持續創新，為您帶來更強大的 AI 語音轉錄與筆記整理體驗
+                    </p>
+                </div>
+            </section>
+
+            <!-- Updates Timeline Section -->
+            <section id="latest-updates" class="py-16 md:py-24">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="font-orbitron text-3xl md:text-4xl font-bold gradient-text text-center mb-16">
+                        功能更新時間軸
+                    </h2>
+
+                    <!-- Timeline Container -->
+                    <div class="relative pl-8">
+                        <!-- Vertical Line -->
+                        <div class="absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-cyan-400 via-blue-500 to-purple-600"></div>
+
+                        <!-- Update Item: 2025/8/4 -->
+                        <div class="relative timeline-item mb-16">
+                            <div class="timeline-line"></div>
+                            <div class="update-card rounded-2xl p-8 ml-6">
+                                <div class="flex items-center mb-6">
+                                    <span class="feature-badge text-white text-sm font-bold px-4 py-2 rounded-full mr-4">
+                                        🚀 最新更新
+                                    </span>
+                                    <span class="text-cyan-300 font-bold text-lg">2025/8/4</span>
+                                </div>
+                                
+                                <h3 class="text-2xl font-bold text-white mb-4">
+                                    功能全新升級！Podcast、AI筆記整理、語音轉錄全面進化
+                                </h3>
+                                
+                                <p class="text-gray-300 mb-6 leading-relaxed">
+                                    感謝各位用戶的正面回饋與支持！我們持續推出與優化功能，讓 AI 幫助您更加高效的學習與整理知識：
+                                </p>
+
+                                <!-- 語音轉錄一站式功能 -->
+                                <div class="mb-8">
+                                    <h4 class="text-xl font-bold text-cyan-300 mb-4 flex items-center">
+                                        <span class="text-2xl mr-2">📌</span>
+                                        語音轉錄一站式功能、AI 筆記整理
+                                    </h4>
+                                    
+                                    <div class="bg-gray-800/50 rounded-lg p-6 border border-cyan-500/20">
+                                        <h5 class="text-lg font-bold text-white mb-3 flex items-center">
+                                            <span class="text-xl mr-2">🖋️</span>
+                                            超級筆記補充
+                                        </h5>
+                                        <div class="text-gray-300 space-y-3">
+                                            <p>根據逐字稿內容，AI 為你自動補全筆記架構，從內容延伸、觀點補強到邏輯推展，一氣呵成。</p>
+                                            <p>不只摘要，更像是替你多寫了一篇完整的觀點整理，幫助你快速掌握核心、延伸思考，產出更具深度的輸出內容。</p>
+                                            <p>適用於講座紀錄、課程複習、演講整理與會議回顧，讓每段語音、每份文件都能升級為可應用、可再創的知識資產。</p>
+                                        </div>
+                                        <div class="mt-4 flex flex-wrap gap-2">
+                                            <a href="https://drive.google.com/file/d/1-BYSzzn9aCP5So99xvdw4x1f4Ar11jfX/view?usp=drive_link" target="_blank" class="bg-cyan-900/30 text-cyan-300 px-3 py-1 rounded-full text-sm hover:bg-cyan-800/40 transition-colors cursor-pointer">影音測試檔案</a>
+                                            <a href="https://docs.google.com/document/d/1fuWovmus8oqF22EYPNq6aVsOufblXKFwwiE3jG2T6ao/edit?usp=drive_link" target="_blank" class="bg-cyan-900/30 text-cyan-300 px-3 py-1 rounded-full text-sm hover:bg-cyan-800/40 transition-colors cursor-pointer">文件測試檔案</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Podcast 功能 -->
+                                <div class="mb-8">
+                                    <h4 class="text-xl font-bold text-cyan-300 mb-4 flex items-center">
+                                        <span class="text-2xl mr-2">📌</span>
+                                        深入探索 Podcast
+                                    </h4>
+                                    
+                                    <div class="space-y-4">
+                                        <!-- Podcast 來源上傳 -->
+                                        <div class="bg-gray-800/50 rounded-lg p-6 border border-purple-500/20">
+                                            <h5 class="text-lg font-bold text-white mb-3 flex items-center">
+                                                <span class="text-xl mr-2">📤</span>
+                                                Podcast來源上傳
+                                            </h5>
+                                            <p class="text-gray-300 mb-3">
+                                                支援各種格式，無論是上傳影音、文件或直接貼上逐字稿，都能一鍵轉換為可編輯的 Podcast 腳本，為 Podcast 製作提供乾淨素材。
+                                            </p>
+                                            <a href="https://drive.google.com/file/d/1-BYSzzn9aCP5So99xvdw4x1f4Ar11jfX/view?usp=drive_link" target="_blank" class="bg-purple-900/30 text-purple-300 px-3 py-1 rounded-full text-sm hover:bg-purple-800/40 transition-colors cursor-pointer">影音測試檔案</a>
+                                        </div>
+
+                                        <!-- Podcast 生成 -->
+                                        <div class="bg-gray-800/50 rounded-lg p-6 border border-green-500/20">
+                                            <h5 class="text-lg font-bold text-white mb-3 flex items-center">
+                                                <span class="text-xl mr-2">📣</span>
+                                                Podcast
+                                            </h5>
+                                            <p class="text-gray-300">
+                                                根據逐字稿內容，產出自然流暢的 Podcast 音檔，除了可以選擇各種聲音之外，音檔時長亦不受限制，讓您可以隨心打造專屬的 AI 說書人，非常適用於內部分享、對外發佈，或是知識再利用。
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 歷程記錄功能 -->
+                                <div class="mb-6">
+                                    <h4 class="text-xl font-bold text-cyan-300 mb-4 flex items-center">
+                                        <span class="text-2xl mr-2">📌</span>
+                                        歷程記錄優化
+                                    </h4>
+                                    
+                                    <div class="space-y-4">
+                                        <div class="bg-gray-800/50 rounded-lg p-6 border border-yellow-500/20">
+                                            <h5 class="text-lg font-bold text-white mb-3 flex items-center">
+                                                <span class="text-xl mr-2">🗂️</span>
+                                                歷程記錄
+                                            </h5>
+                                            <p class="text-gray-300">
+                                                現在加入了超級筆記補充的內容，方便您回顧所有超級筆記補充的產出。
+                                            </p>
+                                        </div>
+
+                                        <div class="bg-gray-800/50 rounded-lg p-6 border border-orange-500/20">
+                                            <h5 class="text-lg font-bold text-white mb-3 flex items-center">
+                                                <span class="text-xl mr-2">🗂️</span>
+                                                Podcast 歷程記錄
+                                            </h5>
+                                            <p class="text-gray-300">
+                                                將Podcast音檔獨立管理，可同時查看Podcast逐字稿與音檔，查看與管理更方便。
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Placeholder for future updates -->
+                        <div class="relative timeline-item">
+                            <div class="update-card rounded-2xl p-8 ml-6 border-dashed border-gray-600">
+                                <div class="text-center text-gray-500">
+                                    <svg class="w-12 h-12 mx-auto mb-4 opacity-50" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+                                    <p class="text-lg font-medium">更多精彩更新即將到來...</p>
+                                    <p class="text-sm mt-2">我們將持續為您帶來更強大的功能與體驗</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="py-16 bg-gray-900/50">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h2 class="font-orbitron text-3xl font-bold gradient-text mb-6">
+                        立即體驗最新功能
+                    </h2>
+                    <p class="text-lg text-gray-300 mb-8">
+                        馬上使用 SayMind，享受全新升級的 AI 語音轉錄與筆記整理體驗
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <a href="https://dev-box3.taiwanmds.com/speech2text_free_registry/" target="_blank" 
+                           class="cta-button inline-block text-white font-bold py-3 px-8 rounded-lg text-lg">
+                            立即開始使用 →
+                        </a>
+                        <a href="../saymind.html" 
+                           class="inline-block bg-transparent border border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 font-bold py-3 px-8 rounded-lg text-lg transition-all">
+                            返回首頁
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-900/50 border-t border-gray-700/50">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-gray-400">
+                <p>&copy; 2025 SayMind JudgAI. All Rights Reserved.</p>
+                <div class="mt-4 flex justify-center space-x-6">
+                    <a href="../saymind.html" class="hover:text-cyan-400 transition-colors">首頁</a>
+                    <a href="https://line.me/ti/p/ECTAxiLRSh" target="_blank" class="hover:text-cyan-400 transition-colors">聯絡我們</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('a[href^="#"]');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Add scroll animation for timeline items
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateX(0)';
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-20px)';
+                item.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+                observer.observe(item);
+            });
+        });
+    </script>
+
+    <!-- Header 統一管理腳本 -->
+    <script src="../js/header-manager.js"></script>
+
+</body>
+</html>
