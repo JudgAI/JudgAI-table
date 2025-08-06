@@ -19,22 +19,50 @@ const headerTemplate = `
                 </div>
                 <span class="font-orbitron text-xl font-bold text-white">SayMind</span>
             </div>
-            <div class="flex items-center space-x-8">
+            
+            <!-- 手機版菜單按鈕 -->
+            <button id="mobile-menu-toggle" class="md:hidden text-gray-300 hover:text-cyan-400 focus:outline-none focus:text-cyan-400 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+            
+            <!-- 桌面版導航 -->
+            <div class="hidden md:flex items-center space-x-6 lg:space-x-8">
                 <!-- 導航連結 - 根據當前頁面自動調整 -->
                 <a href="saymind.html" class="nav-link text-gray-300 hover:text-cyan-400 font-medium transition-all duration-300" data-nav="home">首頁</a>
-                <a href="changelog.html" class="nav-link text-gray-300 hover:text-cyan-400 font-medium transition-all duration-300" data-nav="changelog">更新日誌</a>
+                <a href="saymind/changelog.html" class="nav-link text-gray-300 hover:text-cyan-400 font-medium transition-all duration-300" data-nav="changelog">更新日誌</a>
                 
                 <!-- 聯絡我們按鈕 - 參考 index.html 風格 -->
                 <a href="https://line.me/ti/p/ECTAxiLRSh" target="_blank" 
-                   class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-medium py-2 px-6 rounded-lg text-sm transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-cyan-500/25">
+                   class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-medium py-2 px-4 lg:px-6 rounded-lg text-xs lg:text-sm transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-cyan-500/25">
                     聯絡我們
                 </a>
                 
                 <!-- 立即使用按鈕 -->
                 <a href="https://dev-box3.taiwanmds.com/speech2text_free_registry/" target="_blank" 
-                   class="border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 font-medium py-2 px-6 rounded-lg text-sm transition-all duration-300">
+                   class="border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 font-medium py-2 px-4 lg:px-6 rounded-lg text-xs lg:text-sm transition-all duration-300">
                     立即使用
                 </a>
+            </div>
+        </div>
+        
+        <!-- 手機版菜單 -->
+        <div id="mobile-menu" class="md:hidden hidden border-t border-gray-700/50 pt-4 pb-4">
+            <div class="flex flex-col space-y-3">
+                <a href="saymind.html" class="nav-link text-gray-300 hover:text-cyan-400 font-medium transition-all duration-300 px-2 py-2" data-nav="home">首頁</a>
+                <a href="saymind/changelog.html" class="nav-link text-gray-300 hover:text-cyan-400 font-medium transition-all duration-300 px-2 py-2" data-nav="changelog">更新日誌</a>
+                
+                <div class="flex flex-col space-y-2 pt-2">
+                    <a href="https://line.me/ti/p/ECTAxiLRSh" target="_blank" 
+                       class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-medium py-3 px-6 rounded-lg text-sm text-center transition-all duration-300">
+                        聯絡我們
+                    </a>
+                    <a href="https://dev-box3.taiwanmds.com/speech2text_free_registry/" target="_blank" 
+                       class="border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 font-medium py-3 px-6 rounded-lg text-sm text-center transition-all duration-300">
+                        立即使用
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -56,6 +84,39 @@ function initializeHeader() {
         
         // 添加滾動效果
         addScrollEffects();
+        
+        // 初始化手機版菜單
+        initializeMobileMenu();
+    }
+}
+
+// 初始化手機版菜單
+function initializeMobileMenu() {
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (mobileMenuToggle && mobileMenu) {
+        mobileMenuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            
+            // 切換漢堡菜單圖標
+            const icon = mobileMenuToggle.querySelector('svg path');
+            if (mobileMenu.classList.contains('hidden')) {
+                icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+            } else {
+                icon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+            }
+        });
+        
+        // 點擊菜單項目後關閉菜單
+        const mobileNavLinks = mobileMenu.querySelectorAll('a');
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                const icon = mobileMenuToggle.querySelector('svg path');
+                icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+            });
+        });
     }
 }
 
