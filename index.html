@@ -798,62 +798,318 @@
                                 </table>
                             </div>
 
-                            <!-- Examples Section -->
+                            <!-- Examples Section with Visual Timeline -->
                             <div class="mt-12">
-                                <h3 class="text-2xl font-bold text-center mb-8 gradient-text">情境範例說明</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                                <h3 class="text-2xl font-bold text-center mb-8 gradient-text">💡 情境範例說明</h3>
+                                <div class="grid grid-cols-1 gap-8 text-left">
                                     
-                                    <!-- Example 1: Experience to Pro (多時點升級，優化版面) -->
-                                    <div class="bg-gray-900/50 p-6 rounded-lg border border-gray-700 flex flex-col gap-4 md:col-span-2">
-                                        <h4 class="font-bold text-lg text-cyan-300 mb-3">📘 範例一：從體驗到超值升級</h4>
-                                        <p class="text-gray-300 mb-2">
-                                            <strong>情境：</strong>小美於 2025/7/25 購買 NT$800 體驗版，使用期至 2025/8/24。期間推薦 30 位好友，獲得 15 個月體驗延長，總體驗期至 2026/11/24。
-                                        </p>
-                                        <div class="grid grid-cols-1 gap-4">
-                                            <!-- 8/24 升級 -->
-                                            <div class="bg-gray-800/60 rounded-lg p-4 border border-cyan-800">
-                                                <div class="flex items-center mb-2">
-                                                    <span class="inline-block px-3 py-1 bg-cyan-700/30 text-cyan-200 rounded-full text-xs font-bold mr-2">8/24 升級</span>
-                                                    <span class="text-gray-200 text-sm">五折 NT$9,444 升級年費專業版</span>
+                                    <!-- Example 1: Experience to Pro with Timeline -->
+                                    <div class="bg-gradient-to-br from-gray-900/80 to-gray-800/60 p-8 rounded-2xl border border-cyan-500/30 shadow-2xl">
+                                        <div class="flex items-center mb-6">
+                                            <div class="bg-cyan-600 rounded-full p-3 mr-4">
+                                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                                </svg>
+                                            </div>
+                                            <h4 class="font-bold text-2xl text-cyan-300">📈 範例一：從體驗到超值升級</h4>
+                                        </div>
+                                        
+                                        <!-- User Info -->
+                                        <div class="bg-blue-900/30 p-4 rounded-lg border border-blue-500/30 mb-6">
+                                            <div class="flex items-center">
+                                                <div class="bg-blue-500 rounded-full w-10 h-10 flex items-center justify-center mr-3">
+                                                    <span class="text-white font-bold">美</span>
                                                 </div>
-                                                <div class="text-gray-300 text-sm">
-                                                    <span class="text-white font-bold">✅ 結果：</span>
-                                                    原有 <span class="text-yellow-200 font-bold">15 個月</span>體驗期
-                                                    <span class="text-green-400">全部免費升級為專業版</span>，到期後再接續 12 個月專業版。<br>
-                                                    <span class="text-cyan-200">總計支付 NT$10,244，享有 <span class="text-yellow-300 font-bold">27 個月</span>專業版服務！</span>
+                                                <div>
+                                                    <p class="text-white font-bold">小美的推薦歷程</p>
+                                                    <p class="text-gray-300 text-sm">2025/7/25 購買體驗版 NT$800 → 期間推薦 30 位好友</p>
                                                 </div>
                                             </div>
-                                            <!-- 10/24 升級 -->
-                                            <div class="bg-gray-800/60 rounded-lg p-4 border border-cyan-800">
-                                                <div class="flex items-center mb-2">
-                                                    <span class="inline-block px-3 py-1 bg-cyan-700/30 text-cyan-200 rounded-full text-xs font-bold mr-2">10/24 升級</span>
-                                                    <span class="text-gray-200 text-sm">五折 NT$9,444 升級年費專業版</span>
+                                        </div>
+
+                                        <!-- Timeline -->
+                                        <div class="relative">
+                                            <!-- Timeline Line -->
+                                            <div class="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-cyan-400 to-green-400"></div>
+                                            
+                                            <!-- Timeline Steps -->
+                                            <div class="space-y-8">
+                                                <!-- Step 1: Initial Purchase -->
+                                                <div class="relative flex items-start">
+                                                    <div class="bg-cyan-500 rounded-full w-16 h-16 flex items-center justify-center border-4 border-cyan-300 z-10">
+                                                        <span class="text-white font-bold text-sm">開始</span>
+                                                    </div>
+                                                    <div class="ml-6 bg-cyan-900/40 p-4 rounded-lg border border-cyan-600/50 flex-1">
+                                                        <div class="flex items-center justify-between mb-2">
+                                                            <span class="text-cyan-200 font-bold">2025/7/25</span>
+                                                            <span class="bg-cyan-600 px-3 py-1 rounded-full text-white text-xs">購買體驗版</span>
+                                                        </div>
+                                                        <p class="text-gray-200">支付 NT$800，體驗期至 2025/8/24</p>
+                                                    </div>
                                                 </div>
-                                                <div class="text-gray-300 text-sm">
-                                                    <span class="text-white font-bold">✅ 結果：</span>
-                                                    原有 <span class="text-yellow-200 font-bold">13 個月</span>體驗期
-                                                    <span class="text-green-400">全部免費升級為專業版</span>，到期後再接續 12 個月專業版。<br>
-                                                    <span class="text-cyan-200">總計支付 NT$10,244，享有 <span class="text-yellow-300 font-bold">25 個月</span>專業版服務！</span>
+
+                                                <!-- Step 2: Referrals -->
+                                                <div class="relative flex items-start">
+                                                    <div class="bg-yellow-500 rounded-full w-16 h-16 flex items-center justify-center border-4 border-yellow-300 z-10">
+                                                        <span class="text-white font-bold text-xs">推薦</span>
+                                                    </div>
+                                                    <div class="ml-6 bg-yellow-900/40 p-4 rounded-lg border border-yellow-600/50 flex-1">
+                                                        <div class="flex items-center justify-between mb-2">
+                                                            <span class="text-yellow-200 font-bold">推薦期間</span>
+                                                            <span class="bg-yellow-600 px-3 py-1 rounded-full text-white text-xs">累積推薦</span>
+                                                        </div>
+                                                        <div class="grid grid-cols-2 gap-4">
+                                                            <div class="text-center">
+                                                                <div class="text-3xl font-bold text-yellow-300">30</div>
+                                                                <div class="text-gray-300 text-sm">推薦好友</div>
+                                                            </div>
+                                                            <div class="text-center">
+                                                                <div class="text-3xl font-bold text-green-300">+15</div>
+                                                                <div class="text-gray-300 text-sm">延長月數</div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- 重要規則突出顯示 -->
+                                                        <div class="mt-4 bg-gradient-to-r from-yellow-600/20 to-green-600/20 border-2 border-yellow-400/60 rounded-lg p-3">
+                                                            <div class="flex items-center justify-center mb-2">
+                                                                <svg class="w-5 h-5 text-yellow-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                                                </svg>
+                                                                <span class="text-yellow-300 font-bold text-sm">重要規則</span>
+                                                            </div>
+                                                            <p class="text-center text-white font-bold text-lg leading-relaxed">
+                                                                <span class="bg-yellow-500/30 px-2 py-1 rounded">每推薦2人獲得1個月延長</span>
+                                                            </p>
+                                                            <p class="text-center text-green-300 font-bold text-base mt-2">
+                                                                ✨ 總體驗期延至 <span class="text-yellow-300 text-lg">2026/11/24</span> ✨
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Step 3: Upgrade Options -->
+                                                <div class="grid md:grid-cols-2 gap-6">
+                                                    <!-- Option A -->
+                                                    <div class="relative flex items-start">
+                                                        <div class="bg-green-500 rounded-full w-16 h-16 flex items-center justify-center border-4 border-green-300 z-10">
+                                                            <span class="text-white font-bold text-xs">A</span>
+                                                        </div>
+                                                        <div class="ml-6 bg-green-900/40 p-4 rounded-lg border border-green-600/50 flex-1">
+                                                            <div class="flex items-center justify-between mb-2">
+                                                                <span class="text-green-200 font-bold">8/24 升級</span>
+                                                                <span class="bg-green-600 px-2 py-1 rounded text-white text-xs">方案A</span>
+                                                            </div>
+                                                            <div class="space-y-2">
+                                                                <p class="text-gray-200 text-sm">五折升級 NT$9,444</p>
+                                                                <div class="bg-green-800/50 p-2 rounded text-center">
+                                                                    <div class="text-yellow-300 font-bold text-lg">27個月</div>
+                                                                    <div class="text-gray-300 text-xs">專業版服務</div>
+                                                                </div>
+                                                                <p class="text-green-300 text-xs">總支付: NT$10,244</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Option B -->
+                                                    <div class="relative flex items-start">
+                                                        <div class="bg-purple-500 rounded-full w-16 h-16 flex items-center justify-center border-4 border-purple-300 z-10">
+                                                            <span class="text-white font-bold text-xs">B</span>
+                                                        </div>
+                                                        <div class="ml-6 bg-purple-900/40 p-4 rounded-lg border border-purple-600/50 flex-1">
+                                                            <div class="flex items-center justify-between mb-2">
+                                                                <span class="text-purple-200 font-bold">10/24 升級</span>
+                                                                <span class="bg-purple-600 px-2 py-1 rounded text-white text-xs">方案B</span>
+                                                            </div>
+                                                            <div class="space-y-2">
+                                                                <p class="text-gray-200 text-sm">五折升級 NT$9,444</p>
+                                                                <div class="bg-purple-800/50 p-2 rounded text-center">
+                                                                    <div class="text-yellow-300 font-bold text-lg">25個月</div>
+                                                                    <div class="text-gray-300 text-xs">專業版服務</div>
+                                                                </div>
+                                                                <p class="text-purple-300 text-xs">總支付: NT$10,244</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- Example 2: Standard User -->
-                                    <div class="bg-gray-900/50 p-6 rounded-lg border border-gray-700">
-                                        <h4 class="font-bold text-lg text-cyan-300 mb-3">📘 範例二：標準版用戶推薦</h4>
-                                        <p class="text-gray-300 mb-2"><strong>情境：</strong>小王是標準版年費會員。他推薦了 1 位朋友購買專業版，並推薦了 2 位朋友使用體驗版。</p>
-                                        <div class="mt-4 pt-3 border-t border-gray-700">
-                                            <p class="font-bold text-white">✅ <span class="text-yellow-300">結果：</span>推薦 1 位專業版，獲得 <span class="text-green-400">2 個月</span>標準版；推薦 2 位體驗版，獲得 <span class="text-green-400">1 個月</span>標準版。總計免費延長了 3 個月的標準版使用期，推薦越多，累計越多！</p>
+                                    <!-- Example 2: Standard User with Flow Chart -->
+                                    <div class="bg-gradient-to-br from-gray-900/80 to-gray-800/60 p-8 rounded-2xl border border-cyan-500/30 shadow-2xl">
+                                        <div class="flex items-center mb-6">
+                                            <div class="bg-blue-600 rounded-full p-3 mr-4">
+                                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                                </svg>
+                                            </div>
+                                            <h4 class="font-bold text-2xl text-cyan-300">👥 範例二：標準版用戶推薦流程</h4>
+                                        </div>
+                                        
+                                        <!-- User Info -->
+                                        <div class="bg-blue-900/30 p-4 rounded-lg border border-blue-500/30 mb-6">
+                                            <div class="flex items-center">
+                                                <div class="bg-blue-500 rounded-full w-10 h-10 flex items-center justify-center mr-3">
+                                                    <span class="text-white font-bold">王</span>
+                                                </div>
+                                                <div>
+                                                    <p class="text-white font-bold">小王 - 標準版年費會員</p>
+                                                    <p class="text-gray-300 text-sm">推薦好友，享受延長福利</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Flow Chart -->
+                                        <div class="grid md:grid-cols-3 gap-6">
+                                            <!-- Input -->
+                                            <div class="text-center">
+                                                <div class="bg-blue-600 rounded-lg p-4 mb-4">
+                                                    <h5 class="text-white font-bold mb-2">推薦對象</h5>
+                                                    <div class="space-y-2">
+                                                        <div class="bg-blue-800 p-2 rounded flex items-center justify-between">
+                                                            <span class="text-sm">專業版</span>
+                                                            <span class="bg-yellow-500 text-black px-2 py-1 rounded text-xs font-bold">1人</span>
+                                                        </div>
+                                                        <div class="bg-blue-800 p-2 rounded flex items-center justify-between">
+                                                            <span class="text-sm">體驗版</span>
+                                                            <span class="bg-yellow-500 text-black px-2 py-1 rounded text-xs font-bold">2人</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Process -->
+                                            <div class="text-center">
+                                                <div class="bg-yellow-600 rounded-lg p-4 mb-4">
+                                                    <h5 class="text-white font-bold mb-2">計算獎勵</h5>
+                                                    <div class="space-y-2">
+                                                        <div class="bg-yellow-800 p-2 rounded text-sm">
+                                                            <span>1 專業版 → </span>
+                                                            <span class="text-green-300 font-bold">2個月</span>
+                                                        </div>
+                                                        <div class="bg-yellow-800 p-2 rounded text-sm">
+                                                            <span>2 體驗版 → </span>
+                                                            <span class="text-green-300 font-bold">1個月</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Output -->
+                                            <div class="text-center">
+                                                <div class="bg-green-600 rounded-lg p-4 mb-4">
+                                                    <h5 class="text-white font-bold mb-2">總獎勵</h5>
+                                                    <div class="bg-green-800 p-4 rounded">
+                                                        <div class="text-3xl font-bold text-yellow-300">+3</div>
+                                                        <div class="text-white text-sm">個月標準版</div>
+                                                        <div class="text-green-200 text-xs mt-1">免費延長！</div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <!-- Example 3: Pro User -->
-                                    <div class="bg-gray-900/50 p-6 rounded-lg border border-gray-700">
-                                        <h4 class="font-bold text-lg text-cyan-300 mb-3">📘 範例三：專業版用戶推薦</h4>
-                                        <p class="text-gray-300 mb-2"><strong>情境：</strong>身為團隊主管的老李是專業版年費會員。他成功推薦了 2 位團隊成員購買專業版，並推薦了 3 位成員購買標準版。</p>
-                                        <div class="mt-4 pt-3 border-t border-gray-700">
-                                            <p class="font-bold text-white">✅ <span class="text-yellow-300">結果：</span>推薦 2 位專業版，獲得 <span class="text-green-400">4 個月</span>專業版 (2人 x 2個月)；推薦 3 位標準版，獲得 <span class="text-green-400">3 個月</span>專業版 (3人 x 1個月)。老李的專業版資格總計免費延長了 7 個月，福利無上限！</p>
+                                    <!-- Example 3: Pro User with Team Visual -->
+                                    <div class="bg-gradient-to-br from-gray-900/80 to-gray-800/60 p-8 rounded-2xl border border-cyan-500/30 shadow-2xl">
+                                        <div class="flex items-center mb-6">
+                                            <div class="bg-purple-600 rounded-full p-3 mr-4">
+                                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                                </svg>
+                                            </div>
+                                            <h4 class="font-bold text-2xl text-cyan-300">🏢 範例三：團隊主管的推薦策略</h4>
+                                        </div>
+                                        
+                                        <!-- User Info -->
+                                        <div class="bg-purple-900/30 p-4 rounded-lg border border-purple-500/30 mb-6">
+                                            <div class="flex items-center">
+                                                <div class="bg-purple-500 rounded-full w-10 h-10 flex items-center justify-center mr-3">
+                                                    <span class="text-white font-bold">李</span>
+                                                </div>
+                                                <div>
+                                                    <p class="text-white font-bold">老李 - 專業版年費會員（團隊主管）</p>
+                                                    <p class="text-gray-300 text-sm">推薦團隊成員，福利無上限累積</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Team Structure -->
+                                        <div class="mb-6">
+                                            <h5 class="text-center text-white font-bold mb-4">團隊推薦結構圖</h5>
+                                            <div class="flex justify-center">
+                                                <div class="relative">
+                                                    <!-- Manager -->
+                                                    <div class="bg-purple-600 rounded-full w-16 h-16 flex items-center justify-center mb-6">
+                                                        <span class="text-white font-bold">老李</span>
+                                                    </div>
+                                                    
+                                                    <!-- Lines to team members -->
+                                                    <div class="absolute top-16 left-8 w-0.5 h-8 bg-gray-400"></div>
+                                                    <div class="absolute top-24 left-2 w-12 h-0.5 bg-gray-400"></div>
+                                                    
+                                                    <!-- Team Members Grid -->
+                                                    <div class="grid grid-cols-5 gap-4 mt-8">
+                                                        <!-- Pro Users -->
+                                                        <div class="text-center">
+                                                            <div class="bg-gold-500 bg-yellow-500 rounded-full w-12 h-12 flex items-center justify-center mb-2">
+                                                                <span class="text-black text-xs font-bold">專</span>
+                                                            </div>
+                                                            <div class="text-xs text-gray-300">專業版</div>
+                                                        </div>
+                                                        <div class="text-center">
+                                                            <div class="bg-yellow-500 rounded-full w-12 h-12 flex items-center justify-center mb-2">
+                                                                <span class="text-black text-xs font-bold">專</span>
+                                                            </div>
+                                                            <div class="text-xs text-gray-300">專業版</div>
+                                                        </div>
+                                                        
+                                                        <!-- Standard Users -->
+                                                        <div class="text-center">
+                                                            <div class="bg-blue-500 rounded-full w-12 h-12 flex items-center justify-center mb-2">
+                                                                <span class="text-white text-xs font-bold">標</span>
+                                                            </div>
+                                                            <div class="text-xs text-gray-300">標準版</div>
+                                                        </div>
+                                                        <div class="text-center">
+                                                            <div class="bg-blue-500 rounded-full w-12 h-12 flex items-center justify-center mb-2">
+                                                                <span class="text-white text-xs font-bold">標</span>
+                                                            </div>
+                                                            <div class="text-xs text-gray-300">標準版</div>
+                                                        </div>
+                                                        <div class="text-center">
+                                                            <div class="bg-blue-500 rounded-full w-12 h-12 flex items-center justify-center mb-2">
+                                                                <span class="text-white text-xs font-bold">標</span>
+                                                            </div>
+                                                            <div class="text-xs text-gray-300">標準版</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Calculation -->
+                                        <div class="bg-gray-800/50 p-6 rounded-lg border border-gray-600">
+                                            <h5 class="text-white font-bold text-center mb-4">🧮 獎勵計算</h5>
+                                            <div class="grid md:grid-cols-2 gap-6">
+                                                <div class="bg-yellow-900/40 p-4 rounded border border-yellow-600/50">
+                                                    <div class="text-center mb-2">
+                                                        <span class="text-yellow-300 font-bold">專業版推薦</span>
+                                                    </div>
+                                                    <div class="text-center text-2xl font-bold text-white mb-2">2人 × 2個月</div>
+                                                    <div class="text-center text-green-400 font-bold">= 4個月專業版</div>
+                                                </div>
+                                                <div class="bg-blue-900/40 p-4 rounded border border-blue-600/50">
+                                                    <div class="text-center mb-2">
+                                                        <span class="text-blue-300 font-bold">標準版推薦</span>
+                                                    </div>
+                                                    <div class="text-center text-2xl font-bold text-white mb-2">3人 × 1個月</div>
+                                                    <div class="text-center text-green-400 font-bold">= 3個月專業版</div>
+                                                </div>
+                                            </div>
+                                            <div class="mt-6 bg-green-600 p-4 rounded-lg text-center">
+                                                <div class="text-white font-bold text-lg mb-1">總獎勵延長</div>
+                                                <div class="text-3xl font-bold text-yellow-300">7個月</div>
+                                                <div class="text-green-200 text-sm">專業版服務，福利無上限！</div>
+                                            </div>
                                         </div>
                                     </div>
 
