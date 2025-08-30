@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenAI 職場賦能培訓計畫 </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            color: #374151; /* 深灰色文字 */
+            /* 白色質感背景 */
+            background-color: #f9fafb;
+            background-image: radial-gradient(circle at top left, #ffffff, #f9fafb);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .main-container {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 2rem;
+            width: 100%;
+        }
+        
+        /* 流程中的每一個階段 */
+        .flow-step {
+            flex: 1;
+            max-width: 400px;
+        }
+        
+        /* 流程箭頭 */
+        .flow-arrow {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            align-self: center;
+            margin-top: 5rem;
+            color: #9ca3af; /* 箭頭顏色 */
+        }
+
+        /* 卡片設計 */
+        .content-card {
+            background-color: rgba(255, 255, 255, 0.9); /* 更不透明的白色背景 */
+            border: 2px solid rgba(0, 0, 0, 0.08); /* 更粗的邊框 */
+            border-radius: 16px; /* 更圓滑的邊角 */
+            backdrop-filter: blur(15px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04); /* 雙層陰影 */
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 添加內部光暈效果 */
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+            pointer-events: none;
+        }
+        
+        .content-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 25px 35px rgba(0, 0, 0, 0.12), 
+                        0 15px 25px rgba(59, 130, 246, 0.08),
+                        0 8px 15px rgba(0, 0, 0, 0.06);
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+
+        /* 階段標題 */
+        .step-heading {
+            border-radius: 9999px;
+            padding: 0.5rem 1.5rem;
+            display: inline-block;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            border: 1px solid transparent;
+        }
+        
+        /* 顏色主題 */
+        .theme-blue {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #2563eb;
+        }
+        .theme-green {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #059669;
+        }
+        .theme-indigo {
+            background-color: rgba(99, 102, 241, 0.1);
+            color: #4f46e5;
+        }
+
+        /* 光暈效果 (調整為適合淺色背景) */
+        .glow-effect {
+            animation: glow 4s ease-in-out infinite;
+        }
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(59, 130, 246, 0.3); }
+            50% { text-shadow: 0 0 20px rgba(255, 255, 255, 1), 0 0 30px rgba(99, 102, 241, 0.4); }
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 0;
+            }
+            .flow-arrow {
+                transform: rotate(90deg);
+                margin: 1.5rem 0;
+            }
+            .flow-step {
+                width: 100%;
+                max-width: 500px;
+            }
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center p-4">
+
+    <!-- 頁首標題 -->
+    <header class="text-center my-10 md:my-16">
+        <h1 class="text-4xl md:text-5xl font-bold tracking-wider text-gray-800 glow-effect">GenAI 產業數據分析賦能培訓</h1>
+        <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+            從基礎觀念到產業實戰，系統化打造 AI 新秀的 AI 產業知識即戰力。
+        </p>
+    </header>
+
+    <!-- 主流程容器 -->
+    <main class="main-container">
+
+        <!-- Step 1: 基礎奠基 -->
+        <section class="flow-step text-center">
+            <h2 class="step-heading theme-blue">一、基礎奠基：GenAI 職場核心力</h2>
+            <div class="space-y-6">
+                <div class="content-card rounded-xl p-6 text-left">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 h-8 w-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg></div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-1 text-gray-800">GenAI 基礎線上課程</h3>
+                            <p class="text-gray-600 text-sm">快速建立生成式 AI 觀念，理解其原理與應用場景。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card rounded-xl p-6 text-left">
+                    <div class="flex items-start gap-4">
+                         <div class="flex-shrink-0 h-8 w-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg></div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-1 text-gray-800">數據圖表力</h3>
+                            <p class="text-gray-600 text-sm">從分析到視覺化的 Excel 技巧，讓數據為你說話。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card rounded-xl p-6 text-left">
+                   <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 h-8 w-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg></div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-1 text-gray-800">高效 AI 創作力</h3>
+                            <p class="text-gray-600 text-sm">結合企劃思維與簡報設計，打造專業級的提案與報告。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Arrow 1 -->
+        <div class="flow-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </div>
+
+        <!-- Step 2: 核心應用 -->
+        <section class="flow-step text-center">
+            <h2 class="step-heading theme-green">二、核心應用：產業數據分析實戰</h2>
+            <div class="space-y-6">
+                 <div class="content-card rounded-xl p-6 text-left">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 h-8 w-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg></div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-1 text-gray-800">Excel × ChatGPT</h3>
+                            <p class="text-gray-600 text-sm">無需編寫程式，也能進行高效的商務數據分析與洞察。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card rounded-xl p-6 text-left">
+                    <div class="flex items-start gap-4">
+                         <div class="flex-shrink-0 h-8 w-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg></div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-1 text-gray-800">GenAI 產業數據分析</h3>
+                            <p class="text-gray-600 text-sm">駕馭 AI 浪潮下的工作模式變革，結合 Python 進行深度實戰。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Arrow 2 -->
+        <div class="flow-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </div>
+
+        <!-- Step 3: 綜整驗證 -->
+        <section class="flow-step text-center">
+            <h2 class="step-heading theme-indigo">三、綜整驗證：專案 × 考照</h2>
+            <div class="space-y-6">
+                 <div class="content-card rounded-xl p-6 text-left">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 h-8 w-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg></div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-1 text-gray-800">國家級證照：IPAS AI 應用規劃師</h3>
+                            <p class="text-gray-600 text-sm">透過國家級專業考照，賦能 AI 新秀的 AI 應用規劃能力。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card rounded-xl p-6 text-left">
+                   <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 h-8 w-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg></div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-1 text-gray-800">專案實務 & 成果發表</h3>
+                            <p class="text-gray-600 text-sm">實際解決產業問題，整合所學，並發表 AI 新秀的專案成果。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</body>
+</html>
+

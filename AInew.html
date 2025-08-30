@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI數據分析產業專業知識培訓</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            color: #f8fafc;
+        }
+
+        .main-title {
+            background: linear-gradient(45deg, #60a5fa, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #cbd5e1;
+        }
+
+        /* 科技感背景 */
+        .tech-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+            background-image: 
+                linear-gradient(90deg, #3b82f6 1px, transparent 1px),
+                linear-gradient(180deg, #3b82f6 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: techMove 20s linear infinite;
+        }
+
+        .tech-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, #3b82f6 2px, transparent 2px),
+                       radial-gradient(circle at 80% 20%, #8b5cf6 2px, transparent 2px),
+                       radial-gradient(circle at 40% 80%, #06b6d4 2px, transparent 2px);
+            background-size: 100px 100px, 150px 150px, 80px 80px;
+        }
+
+        @keyframes techMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(30px, 30px); }
+        }
+
+        /* 橫向流程布局 */
+        .flow-container {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .flow-step {
+            flex: 1;
+            position: relative;
+        }
+
+        /* 流程圖卡片樣式 */
+        .flow-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 24px;
+            box-shadow: 
+                0 8px 32px rgba(59, 130, 246, 0.15),
+                0 4px 16px rgba(139, 92, 246, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .flow-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+        
+        .flow-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 
+                0 20px 40px rgba(59, 130, 246, 0.25),
+                0 8px 16px rgba(139, 92, 246, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border-color: rgba(59, 130, 246, 0.6);
+        }
+
+        .flow-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .step-number {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+            position: absolute;
+            top: -28px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 
+                0 8px 16px rgba(59, 130, 246, 0.4),
+                0 4px 8px rgba(139, 92, 246, 0.3);
+            border: 4px solid #0f172a;
+            z-index: 10;
+        }
+
+        .icon-container {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            box-shadow: 
+                inset 0 2px 4px rgba(59, 130, 246, 0.1),
+                0 4px 8px rgba(59, 130, 246, 0.2);
+        }
+
+        .icon-svg {
+            color: #60a5fa;
+        }
+        
+        /* 橫向箭頭 */
+        .flow-arrow {
+            position: relative;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            border-radius: 2px;
+            margin: 0 1rem;
+            flex-shrink: 0;
+        }
+
+        .flow-arrow::after {
+            content: '';
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 12px solid #8b5cf6;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+        }
+
+        .flow-arrow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* 課程項目樣式 */
+        .course-item {
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #3b82f6, #8b5cf6);
+            transition: width 0.3s ease;
+        }
+
+        .course-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.4);
+            transform: translateX(4px);
+        }
+
+        .course-item:hover::before {
+            width: 100%;
+            opacity: 0.05;
+        }
+
+        .course-number {
+            color: #60a5fa;
+            font-weight: 700;
+        }
+
+        .course-title {
+            color: #f8fafc;
+            font-weight: 600;
+        }
+
+        .course-desc {
+            color: #cbd5e1;
+        }
+
+        .section-title {
+            color: #f8fafc;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 1200px) {
+            .flow-container {
+                flex-direction: column;
+                gap: 4rem;
+            }
+            
+            .flow-arrow {
+                width: 4px;
+                height: 60px;
+                transform: rotate(90deg);
+            }
+            
+            .flow-arrow::after {
+                right: 50%;
+                top: -8px;
+                transform: translateX(50%);
+                border-left: 8px solid transparent;
+                border-right: 8px solid transparent;
+                border-top: 12px solid #8b5cf6;
+                border-bottom: none;
+            }
+        }
+
+        /* 動畫效果 */
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .fade-in:nth-child(1) { animation-delay: 0.1s; }
+        .fade-in:nth-child(2) { animation-delay: 0.3s; }
+        .fade-in:nth-child(3) { animation-delay: 0.5s; }
+        .fade-in:nth-child(4) { animation-delay: 0.7s; }
+        .fade-in:nth-child(5) { animation-delay: 0.9s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 標題裝飾線 */
+        .title-decoration {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+            margin: 2rem auto;
+            border-radius: 2px;
+        }
+
+        /* 學習路徑總結區塊 */
+        .summary-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.15);
+        }
+
+        .summary-item {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .summary-item:hover {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.4);
+            transform: translateY(-4px);
+        }
+    </style>
+</head>
+<body class="min-h-screen relative overflow-x-auto">
+    <!-- 科技感背景 -->
+    <div class="tech-bg"></div>
+    
+    <div class="container mx-auto px-4 py-12 relative z-10">
+        
+        <!-- Header -->
+        <header class="text-center mb-20 fade-in">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black main-title tracking-wider mb-6">
+                AI數據分析產業專業知識培訓
+            </h1>
+            <p class="text-xl sm:text-2xl lg:text-3xl font-light subtitle tracking-wide">
+                資料導向人工智能・驅動商業決策
+            </p>
+            <div class="title-decoration"></div>
+        </header>
+
+        <!-- 橫向流程圖主體 -->
+        <main class="fade-in">
+            <div class="flow-container">
+                
+                <!-- 第一階段：基礎奠基 -->
+                <div class="flow-step">
+                    <div class="flow-card p-8 text-center relative pt-20">
+                        <div class="step-number">1</div>
+                        
+                        <div class="icon-container rounded-full p-6 w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+                            <svg class="w-12 h-12 icon-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443a55.38 55.38 0 0 1 5.25 2.882V15" />
+                            </svg>
+                        </div>
+                        
+                        <h2 class="text-2xl font-bold section-title mb-4">基礎奠基</h2>
+                        <p class="section-subtitle mb-6 text-lg font-medium">GenAI 職場核心力</p>
+                        
+                        <div class="text-left space-y-3">
+                            <div class="course-item">
+                                <div class="flex items-start">
+                                    <span class="course-number mr-3 mt-1">1.</span>
+                                    <div>
+                                        <h4 class="course-title mb-1">GenAI 基礎線上課程</h4>
+                                        <p class="text-sm course-desc">快速建立生成式 AI 觀念</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="course-item">
+                                <div class="flex items-start">
+                                    <span class="course-number mr-3 mt-1">2.</span>
+                                    <div>
+                                        <h4 class="course-title mb-1">數據圖表力</h4>
+                                        <p class="text-sm course-desc">從分析到視覺化的 Excel 技巧</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="course-item">
+                                <div class="flex items-start">
+                                    <span class="course-number mr-3 mt-1">3.</span>
+                                    <div>
+                                        <h4 class="course-title mb-1">高效 AI 創作力</h4>
+                                        <p class="text-sm course-desc">企劃思維 × 簡報設計實戰</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 箭頭 -->
+                <div class="flow-arrow"></div>
+
+                <!-- 第二階段：核心應用 -->
+                <div class="flow-step">
+                    <div class="flow-card p-8 text-center relative pt-20">
+                        <div class="step-number">2</div>
+                        
+                        <div class="icon-container rounded-full p-6 w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+                            <svg class="w-12 h-12 icon-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 14.5M14.25 3.104c.251.023.501.05.75.082M19.8 14.5l-2.436 2.436a2.25 2.25 0 0 1-1.591.659h-6.546a2.25 2.25 0 0 1-1.591-.659L5 14.5m14.8 0a24.301 24.301 0 0 0 .2-5.35c0-.317-.016-.63-.048-.939a4.18 4.18 0 0 0-.384-1.512l-1.732-4.35a4.18 4.18 0 0 0-1.423-1.423l-4.35-1.732a4.18 4.18 0 0 0-1.512-.384A24.301 24.301 0 0 0 12 1.5c-.317 0-.63.016-.939.048a4.18 4.18 0 0 0-1.512.384L5.199 3.664a4.18 4.18 0 0 0-1.423 1.423L2.044 9.437a4.18 4.18 0 0 0-.384 1.512A24.301 24.301 0 0 0 1.5 12c0 .317.016.63.048.939a4.18 4.18 0 0 0 .384 1.512l1.732 4.35a4.18 4.18 0 0 0 1.423 1.423l4.35 1.732a4.18 4.18 0 0 0 1.512.384c.309.032.621.048.939.048s.63-.016.939-.048a4.18 4.18 0 0 0 1.512-.384l4.35-1.732a4.18 4.18 0 0 0 1.423-1.423l1.732-4.35a4.18 4.18 0 0 0 .384-1.512c.032-.309.048-.621.048-.939Z" />
+                            </svg>
+                        </div>
+                        
+                        <h2 class="text-2xl font-bold section-title mb-4">核心應用</h2>
+                        <p class="section-subtitle mb-6 text-lg font-medium">產業數據分析實戰</p>
+                        
+                        <div class="text-left space-y-3">
+                            <div class="course-item">
+                                <div class="flex items-start">
+                                    <span class="course-number mr-3 mt-1">1.</span>
+                                    <div>
+                                        <h4 class="course-title mb-1">Excel × ChatGPT</h4>
+                                        <p class="text-sm course-desc">無程式的商務數據分析</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="course-item">
+                                <div class="flex items-start">
+                                    <span class="course-number mr-3 mt-1">2.</span>
+                                    <div>
+                                        <h4 class="course-title mb-1">GenAI 產業數據分析</h4>
+                                        <p class="text-sm course-desc">AI 浪潮下的工作模式變革與 Python 實戰</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 箭頭 -->
+                <div class="flow-arrow"></div>
+
+                <!-- 第三階段：綜整驗證 -->
+                <div class="flow-step">
+                    <div class="flow-card p-8 text-center relative pt-20">
+                        <div class="step-number">3</div>
+                        
+                        <div class="icon-container rounded-full p-6 w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+                            <svg class="w-12 h-12 icon-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 0 1-.982-3.172M9.497 14.25a7.454 7.454 0 0 0 .981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 0 0 7.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25s4.543.161 6.75.471v1.515M18.75 4.236c.982.143 1.954.317 2.916.52a6.003 6.003 0 0 1-5.395 4.972M18.75 4.236V4.5a9.752 9.752 0 0 1-2.48 5.228m2.48-5.228V2.721a47.945 47.945 0 0 0-6.75-.471c-2.29 0-4.543.161-6.75.471v1.515a47.89 47.89 0 0 1 6.75-.471c2.29 0 4.543.161 6.75.471Z" />
+                            </svg>
+                        </div>
+                        
+                        <h2 class="text-2xl font-bold section-title mb-4">綜整驗證</h2>
+                        <p class="section-subtitle mb-6 text-lg font-medium">專案 × 考照</p>
+                        
+                        <div class="text-left space-y-3">
+                            <div class="course-item">
+                                <div class="flex items-start">
+                                    <span class="course-number mr-3 mt-1">1.</span>
+                                    <div>
+                                        <h4 class="course-title mb-1">IPAS AI 應用規劃師</h4>
+                                        <p class="text-sm course-desc">國家級專業考照檢核</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="course-item">
+                                <div class="flex items-start">
+                                    <span class="course-number mr-3 mt-1">2.</span>
+                                    <div>
+                                        <h4 class="course-title mb-1">專案實務 & 成果發表</h4>
+                                        <p class="text-sm course-desc">整合學習與產業應用</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 學習路徑總結 -->
+            <div class="mt-16 text-center fade-in">
+                <div class="max-w-4xl mx-auto bg-white bg-opacity-90 backdrop-filter backdrop-blur-10 p-8 rounded-3xl shadow-lg border border-gray-200">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">� 完整學習路徑</h3>
+                    <div class="grid md:grid-cols-3 gap-6 text-center">
+                        <div class="p-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl">
+                            <div class="text-3xl mb-3">📚</div>
+                            <h4 class="font-semibold text-gray-800 mb-2">基礎建立</h4>
+                            <p class="text-sm text-gray-600">從 GenAI 概念到實用技能</p>
+                        </div>
+                        <div class="p-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl">
+                            <div class="text-3xl mb-3">⚡</div>
+                            <h4 class="font-semibold text-gray-800 mb-2">實戰應用</h4>
+                            <p class="text-sm text-gray-600">產業級數據分析技能</p>
+                        </div>
+                        <div class="p-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl">
+                            <div class="text-3xl mb-3">🏆</div>
+                            <h4 class="font-semibold text-gray-800 mb-2">專業認證</h4>
+                            <p class="text-sm text-gray-600">國家認證 + 實務專案</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
+

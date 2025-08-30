@@ -1,0 +1,354 @@
+<html class="scroll-smooth" lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>實戰銷售模式：客戶群組攻略摘要</title>
+<!-- Google Fonts: Noto Sans TC -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS via CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Lottie Player via CDN with specific version and fallback -->
+<script src="https://unpkg.com/@lottiefiles/lottie-player@2.0.2/dist/lottie-player.js" 
+        onerror="console.error('Primary Lottie CDN failed'); loadLottieFallback();"></script>
+<script>
+// 備用 Lottie CDN 載入函數
+function loadLottieFallback() {
+    const fallbackScript = document.createElement('script');
+    fallbackScript.src = 'https://cdn.jsdelivr.net/npm/@lottiefiles/lottie-player@2.0.2/dist/lottie-player.js';
+    fallbackScript.onerror = function() {
+        console.error('Fallback Lottie CDN also failed');
+        showLottieError();
+    };
+    document.head.appendChild(fallbackScript);
+}
+
+// 當所有 CDN 都失敗時顯示錯誤訊息
+function showLottieError() {
+    const container = document.getElementById('lottie-container');
+    if (container) {
+        container.innerHTML = `
+            <div class="flex items-center justify-center w-full h-full bg-gradient-to-br from-blue-100 to-indigo-200 rounded-lg border-2 border-blue-300">
+                <div class="text-center p-4">
+                    <div class="text-4xl mb-2">📊</div>
+                    <div class="text-lg font-semibold text-blue-800">策略分析</div>
+                    <div class="text-sm text-blue-600">動畫載入中...</div>
+                </div>
+            </div>
+        `;
+    }
+}
+</script>
+<style>
+        /* Custom styles for better readability and accessibility */
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        /* Custom focus styles for better accessibility */
+        :focus-visible {
+            outline: 3px solid #3b82f6;
+            outline-offset: 2px;
+            border-radius: 6px;
+        }
+        /* Styling for the details/summary accordion */
+        details > summary {
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+    </style>
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    lineHeight: {
+                        'loose': '1.75',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800">
+<main class="container mx-auto max-w-5xl px-4 py-8 md:py-12">
+<!-- Header Section -->
+<header class="text-center mb-12">
+<div class="mx-auto w-48 h-48" id="lottie-container">
+<lottie-player 
+    id="strategy-animation"
+    aria-label="策略分析動畫" 
+    autoplay 
+    background="transparent" 
+    loop 
+    speed="1" 
+    src="https://lottie.host/17e23114-1e0e-4340-a33f-0ea041b6d19c/xQhCo2x68q.json" 
+    style="width: 100%; height: 100%;"
+    onload="console.log('Lottie animation loaded successfully')"
+    onerror="handleLottieAnimationError()">
+</lottie-player>
+<!-- 備用顯示內容 -->
+<div id="lottie-fallback" class="hidden w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-indigo-200 rounded-lg border-2 border-blue-300">
+    <div class="text-center p-4">
+        <div class="text-5xl mb-3 animate-pulse">📊</div>
+        <div class="text-xl font-bold text-blue-800 mb-1">策略分析</div>
+        <div class="text-sm text-blue-600">客戶群組攻略</div>
+    </div>
+</div>
+</div>
+<h1 class="text-4xl md:text-5xl font-bold text-slate-900 mt-4">實戰銷售模式客戶群組攻略</h1>
+<p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">一份專為變額萬能壽險設計，針對不同客群與年齡層的精準銷售策略摘要。</p>
+</header>
+<!-- Section 1: Five Key Customer Groups -->
+<section class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 mb-8 border-l-4 border-blue-600 pl-4">🎯 五大客群攻略</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<article class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+<h3 class="text-xl font-bold text-blue-700 mb-4">🚀 斜槓青年 / 自由工作者</h3>
+<div class="space-y-3 text-base leading-loose">
+<p><strong class="text-slate-700">主題：</strong>你的事業，你的防護罩！自由人生，保障與財富雙軌並行！</p>
+<p><strong class="text-slate-700">關鍵：</strong>彈性繳費、自主投資、身故/完全失能保障、提早累積退休金。</p>
+<p><strong class="text-slate-700">痛點：</strong>收入不穩，對固定保費感壓力；對投資型保單認知不足。</p>
+<p><strong class="text-slate-700">解法：</strong>強調繳費彈性與保險的防護作用，平衡投資波動風險。</p>
+</div>
+</article>
+<article class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+<h3 class="text-xl font-bold text-blue-700 mb-4">💑 新婚夫妻 / 小資家庭</h3>
+<div class="space-y-3 text-base leading-loose">
+<p><strong class="text-slate-700">主題：</strong>愛，不只說出口！給另一半和未來寶寶最實在的承諾。</p>
+<p><strong class="text-slate-700">關鍵：</strong>低保費高保障、家庭責任轉嫁、共同成長資產、緊急預備金。</p>
+<p><strong class="text-slate-700">痛點：</strong>家庭開銷大，覺得保險是額外負擔。</p>
+<p><strong class="text-slate-700">解法：</strong>強調低廉的保險成本，利用年齡優勢，以小搏大，建構家庭防護網。</p>
+</div>
+</article>
+<article class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+<h3 class="text-xl font-bold text-blue-700 mb-4">💼 企業中高階主管</h3>
+<div class="space-y-3 text-base leading-loose">
+<p><strong class="text-slate-700">主題：</strong>時間就是金錢！讓專業為你錢滾錢，搞定保障與資產配置。</p>
+<p><strong class="text-slate-700">關鍵：</strong>時間效益、專業代操、資產多元化、財富增值、稅務效率。</p>
+<p><strong class="text-slate-700">痛點：</strong>工作太忙，沒時間研究投資。</p>
+<p><strong class="text-slate-700">解法：</strong>強調「保障+投資」一站式服務，由專業經理人代操，省時省力。</p>
+</div>
+</article>
+<article class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+<h3 class="text-xl font-bold text-blue-700 mb-4">🏡 準備退休的空巢族</h3>
+<div class="space-y-3 text-base leading-loose">
+<p><strong class="text-slate-700">主題：</strong>孩子大了，該好好愛自己！提前部署，安穩享受下半場人生。</p>
+<p><strong class="text-slate-700">關鍵：</strong>祝壽金活用、長照預備金、保單借款彈性、資產保全。</p>
+<p><strong class="text-slate-700">痛點：</strong>害怕老後錢不夠用、醫療開銷大。</p>
+<p><strong class="text-slate-700">解法：</strong>強調完全失能保障、祝壽金的長壽基金功能及保單借款的彈性。</p>
+</div>
+</article>
+<article class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 col-span-1 md:col-span-2">
+<h3 class="text-xl font-bold text-blue-700 mb-4">💎 重視資產傳承的新世代繼承人</h3>
+<div class="space-y-3 text-base leading-loose">
+<p><strong class="text-slate-700">主題：</strong>聰明繼承，不再是燙手山芋！合法且有效率，讓財富延續家族輝煌。</p>
+<p><strong class="text-slate-700">關鍵：</strong>身故受益人指定、資產隱蔽性、免遺產稅爭議、家族財富永續。</p>
+<p><strong class="text-slate-700">痛點：</strong>對傳承方式不了解，擔心未來手續複雜或產生糾紛。</p>
+<p><strong class="text-slate-700">解法：</strong>聚焦「指定受益人」的法律特性，身故保險金不列入遺產，避免繼承爭議。</p>
+</div>
+</article>
+</div>
+</section>
+<!-- Section 2: Five Key Age Groups -->
+<section class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 mb-8 border-l-4 border-teal-600 pl-4">📅 五大年齡層解析</h2>
+<div class="space-y-6">
+<article class="bg-white p-6 rounded-lg shadow-md">
+<h3 class="text-xl font-bold text-teal-700">🎂 15-25歲 (青春啟程期)</h3>
+<p class="mt-2 text-base leading-loose">把握<strong class="font-semibold">低保費</strong>與<strong class="font-semibold">時間複利</strong>最大化優勢，培養理財觀念，將父母的愛轉化為未來的超能力。</p>
+</article>
+<article class="bg-white p-6 rounded-lg shadow-md">
+<h3 class="text-xl font-bold text-teal-700">🏃 26-35歲 (事業衝刺期)</h3>
+<p class="mt-2 text-base leading-loose">攻守兼備，透過<strong class="font-semibold">職涯風險保障(完全失能)</strong>與<strong class="font-semibold">財富加速累積</strong>，穩健邁向人生勝利組。</p>
+</article>
+<article class="bg-white p-6 rounded-lg shadow-md">
+<h3 class="text-xl font-bold text-teal-700">👨‍👩‍👧‍👦 36-45歲 (家庭穩固期)</h3>
+<p class="mt-2 text-base leading-loose">作為家庭的靠山，強化<strong class="font-semibold">經濟支柱保障</strong>，並為<strong class="font-semibold">子女教育基金</strong>與<strong class="font-semibold">退休生活</strong>提前儲備。</p>
+</article>
+<article class="bg-white p-6 rounded-lg shadow-md">
+<h3 class="text-xl font-bold text-teal-700">🏆 46-55歲 (財富巔峰期)</h3>
+<p class="mt-2 text-base leading-loose">收割財富，穩健傳承。著重<strong class="font-semibold">資產保全</strong>與<strong class="font-semibold">傳承規劃</strong>，將人生下半場掌握在自己手裡。</p>
+</article>
+<article class="bg-white p-6 rounded-lg shadow-md">
+<h3 class="text-xl font-bold text-teal-700">🧘 56-65歲 (樂活退休期)</h3>
+<p class="mt-2 text-base leading-loose">優雅退休，安心享老。規劃<strong class="font-semibold">退休金流</strong>與<strong class="font-semibold">醫療照護預備金</strong>，讓保單成為永不乾涸的提款機。</p>
+</article>
+</div>
+</section>
+<!-- Section 3: In-depth Guides with Accordion -->
+<section>
+<h2 class="text-3xl font-bold text-slate-900 mb-8 border-l-4 border-indigo-600 pl-4">📖 頂尖客戶群組攻略手冊</h2>
+<div class="space-y-4">
+<!-- Accordion Item 1 -->
+<details class="bg-white p-6 rounded-lg shadow-md group transition-all duration-300 open:shadow-xl">
+<summary class="flex justify-between items-center font-semibold text-xl text-indigo-700 cursor-pointer">
+                        第一組：斜槓青年/自由工作者
+                        <svg class="w-6 h-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</summary>
+<div class="mt-6 text-base leading-loose border-t pt-4">
+<h4 class="text-lg font-bold mb-2">🧠 心理學側寫</h4>
+<ul class="list-disc list-inside space-y-2 mb-4">
+<li><strong class="font-semibold">他們要什麼：</strong>自由、彈性、機會、掌控感、快速變現的能力。</li>
+<li><strong class="font-semibold">他們怕什麼：</strong>被束縛、收入不穩定、意外導致手停口停、錯失機會。</li>
+<li><strong class="font-semibold">溝通切角：</strong>提供一個「讓他更自由」的工具，為「未來的選擇權」加碼。</li>
+</ul>
+<h4 class="text-lg font-bold mb-2">🗣️ SPIN + FAB 融合實戰對話</h4>
+<blockquote class="border-l-4 border-indigo-200 pl-4 py-2 bg-indigo-50 rounded-r-md">
+<p class="italic text-slate-700">「...這張保單最『厲害』的地方，就是它根本是為你們斜槓青年量身打造的<strong class="font-semibold text-indigo-800">『自由契約』</strong>！...它<strong class="font-semibold">『繳費超彈性』</strong>！你這個月案子賺得多，可以多放一點；下個月案子少，少繳一點也沒關係...讓你收入有高有低，保險卻能<strong class="font-semibold">不斷線</strong>。」</p>
+</blockquote>
+<p class="mt-4"><strong>推進策略：</strong> 將「買保險」轉換為「瞭解工具」，提供兩個時間選項讓他選擇，降低防備心。</p>
+</div>
+</details>
+<!-- Accordion Item 2 -->
+<details class="bg-white p-6 rounded-lg shadow-md group transition-all duration-300 open:shadow-xl">
+<summary class="flex justify-between items-center font-semibold text-xl text-indigo-700 cursor-pointer">
+                        第二組：新婚夫妻/小資家庭
+                        <svg class="w-6 h-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</summary>
+<div class="mt-6 text-base leading-loose border-t pt-4">
+<h4 class="text-lg font-bold mb-2">🧠 心理學側寫</h4>
+<ul class="list-disc list-inside space-y-2 mb-4">
+<li><strong class="font-semibold">他們要什麼：</strong>安全感、責任感、高CP值、對未來的規劃。</li>
+<li><strong class="font-semibold">他們怕什麼：</strong>負擔過重、風險、讓家人失望。</li>
+<li><strong class="font-semibold">溝通切角：</strong>幫他們「省錢、省心、把愛變現」，強調這是「愛的承諾」。</li>
+</ul>
+<h4 class="text-lg font-bold mb-2">🗣️ SPIN + FAB 融合實戰對話</h4>
+<blockquote class="border-l-4 border-indigo-200 pl-4 py-2 bg-indigo-50 rounded-r-md">
+<p class="italic text-slate-700">「...我才特別推薦這張，它簡直是為你們這種『疼老婆、愛家』的年輕夫妻設計的<strong class="font-semibold text-indigo-800">『家庭基石保單』</strong>！...因為你們年輕，費率是最低的，根本是用<strong class="font-semibold">『銅板價』</strong>就能買到<strong class="font-semibold">『鑽石級』</strong>的身故和完全失能保障...」</p>
+</blockquote>
+<p class="mt-4"><strong>推進策略：</strong> 將「買保險」轉換為「愛的投資」與「保障藍圖規劃」，強調客製化與高CP值。</p>
+</div>
+</details>
+<!-- Accordion Item 3 -->
+<details class="bg-white p-6 rounded-lg shadow-md group transition-all duration-300 open:shadow-xl">
+<summary class="flex justify-between items-center font-semibold text-xl text-indigo-700 cursor-pointer">
+                        第三組：企業中高階主管
+                        <svg class="w-6 h-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</summary>
+<div class="mt-6 text-base leading-loose border-t pt-4">
+<h4 class="text-lg font-bold mb-2">🧠 心理學側寫</h4>
+<ul class="list-disc list-inside space-y-2 mb-4">
+<li><strong class="font-semibold">他們要什麼：</strong>效率、專業、頂級服務、資產增值、省心。</li>
+<li><strong class="font-semibold">他們怕什麼：</strong>浪費時間、不專業、資產縮水。</li>
+<li><strong class="font-semibold">溝通切角：</strong>提供一個「優雅且高效的財富管理方案」。</li>
+</ul>
+<h4 class="text-lg font-bold mb-2">🗣️ SPIN + FAB 融合實戰對話</h4>
+<blockquote class="border-l-4 border-indigo-200 pl-4 py-2 bg-indigo-50 rounded-r-md">
+<p class="italic text-slate-700">「...它根本就是您的<strong class="font-semibold text-indigo-800">『專屬財富管家』</strong>！...它提供了多樣的<strong class="font-semibold">『投資標的選項』</strong>，由市場上最頂尖的基金經理人幫您操盤...等於把專業的投資決策交給專業人士，<strong class="font-semibold">大幅節省您的時間和心力</strong>。」</p>
+</blockquote>
+<p class="mt-4"><strong>推進策略：</strong> 將「買保險」轉換為「高效資產整合簡報」，強調「優雅賺錢」與「基業長青」。</p>
+</div>
+</details>
+<!-- Accordion Item 4 -->
+<details class="bg-white p-6 rounded-lg shadow-md group transition-all duration-300 open:shadow-xl">
+<summary class="flex justify-between items-center font-semibold text-xl text-indigo-700 cursor-pointer">
+                        第四組：準備退休的空巢族
+                        <svg class="w-6 h-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</summary>
+<div class="mt-6 text-base leading-loose border-t pt-4">
+<h4 class="text-lg font-bold mb-2">🧠 心理學側寫</h4>
+<ul class="list-disc list-inside space-y-2 mb-4">
+<li><strong class="font-semibold">他們要什麼：</strong>安全感、尊嚴、不麻煩子女、穩定的現金流。</li>
+<li><strong class="font-semibold">他們怕什麼：</strong>成為子女負擔、活太久錢不夠用、生病臥床。</li>
+<li><strong class="font-semibold">溝通切角：</strong>提供「優雅變老、享受人生」的方案，將主導權握在手上。</li>
+</ul>
+<h4 class="text-lg font-bold mb-2">🗣️ SPIN + FAB 融合實戰對話</h4>
+<blockquote class="border-l-4 border-indigo-200 pl-4 py-2 bg-indigo-50 rounded-r-md">
+<p class="italic text-slate-700">「...它根本就是您的<strong class="font-semibold text-indigo-800">『樂活長壽基金』</strong>！...它提供的<strong class="font-semibold">『完全失能保險金』</strong>，就是專門為您這種狀況設計的！萬一真的不幸『走不動』了，它會給您一筆錢，讓您能請最好的看護，<strong class="font-semibold">不用麻煩子女</strong>。」</p>
+</blockquote>
+<p class="mt-4"><strong>推進策略：</strong> 將「買保險」轉換為「樂活長壽基金規劃」，強調「老有所樂」和「活到老賺到老」。</p>
+</div>
+</details>
+<!-- Accordion Item 5 -->
+<details class="bg-white p-6 rounded-lg shadow-md group transition-all duration-300 open:shadow-xl">
+<summary class="flex justify-between items-center font-semibold text-xl text-indigo-700 cursor-pointer">
+                        第五組：重視資產傳承的新世代繼承人
+                        <svg class="w-6 h-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</summary>
+<div class="mt-6 text-base leading-loose border-t pt-4">
+<h4 class="text-lg font-bold mb-2">🧠 心理學側寫</h4>
+<ul class="list-disc list-inside space-y-2 mb-4">
+<li><strong class="font-semibold">他們要什麼：</strong>效率、透明、合法、減少麻煩、家庭和睦。</li>
+<li><strong class="font-semibold">他們怕什麼：</strong>稅務問題、手續繁瑣、家庭糾紛、遺產官司。</li>
+<li><strong class="font-semibold">溝通切角：</strong>提供「保證順暢、免爭議」的「家族財富高速公路」。</li>
+</ul>
+<h4 class="text-lg font-bold mb-2">🗣️ SPIN + FAB 融合實戰對話</h4>
+<blockquote class="border-l-4 border-indigo-200 pl-4 py-2 bg-indigo-50 rounded-r-md">
+<p class="italic text-slate-700">「...它根本就是一張<strong class="font-semibold text-indigo-800">『家族財富高速公路通行證』</strong>！最關鍵的就是它的<strong class="font-semibold">『指定受益人』</strong>功能...這筆身故保險金<strong class="font-semibold">『不列入遺產』</strong>，所以完全不用走冗長的繼承程序，也不用擔心其他繼承人的『異議』...」</p>
+</blockquote>
+<p class="mt-4"><strong>推進策略：</strong> 將「買保險」轉換為「家族百年基業傳承計畫」，強調安全、高效、避免爭議。</p>
+</div>
+</details>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="mt-16 py-8 border-t border-slate-200">
+<div class="text-center">
+<p class="text-base text-slate-700"><em><strong>從金庸看傳承。</strong></em></p>
+<p class="mt-2 text-sm text-slate-500">※ 本網站資訊為AI整理，請務必自行查證。</p>
+</div>
+</footer>
+
+<script>
+// Lottie 動畫錯誤處理函數
+function handleLottieAnimationError() {
+    console.error('Lottie animation failed to load');
+    showFallbackContent();
+}
+
+// 顯示備用內容
+function showFallbackContent() {
+    const lottiePlayer = document.getElementById('strategy-animation');
+    const fallback = document.getElementById('lottie-fallback');
+    
+    if (lottiePlayer && fallback) {
+        lottiePlayer.style.display = 'none';
+        fallback.classList.remove('hidden');
+    }
+}
+
+// 檢查 Lottie 是否成功載入
+function checkLottieStatus() {
+    // 等待 DOM 完全載入後再檢查
+    setTimeout(() => {
+        const lottiePlayer = document.getElementById('strategy-animation');
+        
+        // 檢查 Lottie Player 是否存在且正常工作
+        if (!lottiePlayer || !window.customElements || !customElements.get('lottie-player')) {
+            console.warn('Lottie Player not properly initialized, showing fallback');
+            showFallbackContent();
+            return;
+        }
+        
+        // 檢查動畫是否成功載入
+        setTimeout(() => {
+            if (lottiePlayer && !lottiePlayer.getLottie) {
+                console.warn('Lottie animation not loaded, showing fallback');
+                showFallbackContent();
+            }
+        }, 2000); // 給動畫 2 秒載入時間
+        
+    }, 500); // 給 Lottie Player 500ms 初始化時間
+}
+
+// 當頁面載入完成時執行檢查
+document.addEventListener('DOMContentLoaded', function() {
+    checkLottieStatus();
+});
+
+// 如果 Lottie Player 腳本載入失敗，也要顯示備用內容
+window.addEventListener('error', function(e) {
+    if (e.target && e.target.src && e.target.src.includes('lottie-player')) {
+        console.error('Lottie Player script failed to load');
+        showFallbackContent();
+    }
+});
+</script>
+
+</body>
+</html>
