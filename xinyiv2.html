@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>互動式銷售儀表板 (AI 增強版)</title>
+    <!-- 引入 Tailwind CSS 以美化介面 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 SheetJS (xlsx.js) 用於讀取 Excel 檔案 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- 引入 Chart.js 用於繪製互動式圖表 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 引入 Marked.js 用於將 Markdown 轉為 HTML -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            font-weight: 600;
+        }
+        .kpi-card {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .kpi-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        .kpi-label {
+            font-size: 1rem;
+            color: #6b7280;
+        }
+        /* Chart.js 響應式容器 */
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+        /* 用於水平長條圖，避免標籤被截斷 */
+        .chart-container-horizontal {
+            position: relative;
+            min-height: 500px; /* 給予更多空間 */
+            width: 100%;
+        }
+        /* AI 功能相關樣式 */
+        .ai-container {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: #f9fafb;
+        }
+        .ai-result {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #d1d5db;
+            min-height: 100px;
+        }
+        .ai-result h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .ai-result ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+        }
+         .ai-result li {
+            margin-bottom: 0.5rem;
+        }
+        .gemini-button {
+             background-color: #4f46e5;
+             color: white;
+             font-weight: bold;
+             padding: 0.75rem 1.5rem;
+             border-radius: 0.5rem;
+             transition: background-color 0.3s;
+             display: inline-flex;
+             align-items: center;
+             gap: 0.5rem;
+        }
+        .gemini-button:hover {
+            background-color: #4338ca;
+        }
+        .gemini-button:disabled {
+            background-color: #a5b4fc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">✨ AI 增強版・互動式銷售儀表板</h1>
+            <p class="text-lg text-gray-600 mt-2">上傳您的 Excel 銷售報表，體驗 AI 驅動的數據洞察</p>
+        </header>
+
+        <!-- 上傳區域 -->
+        <div id="upload-container" class="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-md text-center">
+            <label for="file-upload" class="cursor-pointer inline-block bg-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-600 transition duration-300">
+                <svg xmlns="http://www.w.org/2000/svg" class="h-6 w-6 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+                選擇 Excel 檔案
+            </label>
+            <input id="file-upload" type="file" class="hidden" accept=".xlsx, .xls">
+            <p id="file-name" class="mt-4 text-gray-500">尚未選擇檔案</p>
+        </div>
+        
+        <div id="loading-spinner" class="text-center mt-8 hidden">
+             <div role="status">
+                <svg aria-hidden="true" class="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0492C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+                </svg>
+                <span class="sr-only">讀取中...</span>
+            </div>
+            <p class="mt-2 text-gray-600">正在處理您的資料...</p>
+        </div>
+
+        <!-- 儀表板區域 -->
+        <div id="dashboard" class="hidden bg-white p-4 md:p-8 rounded-xl shadow-lg mt-8">
+            <!-- Tabs -->
+            <div class="border-b border-gray-200 mb-6">
+                <nav class="-mb-px flex space-x-2 sm:space-x-4 overflow-x-auto" aria-label="Tabs">
+                    <button class="tab-button whitespace-nowrap py-4 px-1 sm:px-4 border-b-2 border-transparent text-sm sm:text-base font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 active" data-tab="weekly">
+                        週報表分析
+                    </button>
+                    <button class="tab-button whitespace-nowrap py-4 px-1 sm:px-4 border-b-2 border-transparent text-sm sm:text-base font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="visitor-profile">
+                        來人樣貌分析
+                    </button>
+                    <button class="tab-button whitespace-nowrap py-4 px-1 sm:px-4 border-b-2 border-transparent text-sm sm:text-base font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="area">
+                        區域來源分析
+                    </button>
+                    <button class="tab-button whitespace-nowrap py-4 px-1 sm:px-4 border-b-2 border-transparent text-sm sm:text-base font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="media">
+                        媒體來源分析
+                    </button>
+                     <button class="tab-button whitespace-nowrap py-4 px-1 sm:px-4 border-b-2 border-transparent text-sm sm:text-base font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="decision">
+                        決策因素分析
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Tab Content -->
+            <div id="tab-content-weekly" class="tab-content">
+                <h2 class="text-2xl font-bold mb-4">本週關鍵指標 (KPIs)</h2>
+                <div id="kpi-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"></div>
+                <h2 class="text-2xl font-bold mb-4">本週每日趨勢</h2>
+                <div class="chart-container"><canvas id="weekly-chart"></canvas></div>
+                <!-- AI 週報分析 -->
+                <div class="ai-container">
+                    <h2 class="text-2xl font-bold mb-4">AI 週報分析 ✨</h2>
+                    <button id="generate-weekly-summary" class="gemini-button">產生 AI 分析報告</button>
+                    <div id="weekly-summary-result" class="ai-result mt-4">請點擊按鈕產生分析報告...</div>
+                </div>
+            </div>
+
+            <div id="tab-content-area" class="tab-content hidden">
+                <h2 class="text-2xl font-bold mb-4">本週各區域來人與成交數</h2>
+                <div class="chart-container"><canvas id="area-chart"></canvas></div>
+            </div>
+
+            <div id="tab-content-media" class="tab-content hidden">
+                <h2 class="text-2xl font-bold mb-4">本週各媒體來源分析</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2 text-center">來人來源分佈</h3>
+                         <div class="chart-container"><canvas id="media-visitors-chart"></canvas></div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2 text-center">成交來源分佈</h3>
+                        <div class="chart-container"><canvas id="media-deals-chart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 更新：來人樣貌分析 (V3 動態格式) -->
+            <div id="tab-content-visitor-profile" class="tab-content hidden">
+                <h2 class="text-2xl font-bold mb-6">來人樣貌分析</h2>
+                <div id="visitor-profile-grid" class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+                    <!-- 圖表將會動態生成於此 -->
+                </div>
+            </div>
+
+            <!-- 舊版客戶樣貌分析 (保留用於 V2 格式) -->
+            <div id="tab-content-profile-v2" class="tab-content hidden">
+                 <h2 class="text-2xl font-bold mb-6">客戶樣貌比較：來人 vs. 成交</h2>
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-x-8 gap-y-10">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2 text-center">年齡分佈</h3>
+                        <div class="chart-container"><canvas id="age-chart-v2"></canvas></div>
+                    </div>
+                     <div>
+                        <h3 class="text-xl font-semibold mb-2 text-center">房型偏好</h3>
+                        <div class="chart-container"><canvas id="room-type-chart-v2"></canvas></div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2 text-center">性別佔比</h3>
+                        <div class="chart-container"><canvas id="gender-chart-v2"></canvas></div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2 text-center">購屋型態</h3>
+                        <div class="chart-container"><canvas id="purchase-type-chart-v2"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 決策因素分析 Tab -->
+            <div id="tab-content-decision" class="tab-content hidden">
+                <div class="space-y-12">
+                    <div>
+                        <h2 class="text-2xl font-bold mb-4">來人考慮重點</h2>
+                        <div class="chart-container-horizontal"><canvas id="consideration-chart"></canvas></div>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold mb-4">成交客戶購買動機</h2>
+                        <div class="chart-container"><canvas id="motivation-chart"></canvas></div>
+                    </div>
+                     <div>
+                        <h2 class="text-2xl font-bold mb-4">未購因素分析</h2>
+                        <div class="chart-container-horizontal"><canvas id="non-purchase-chart"></canvas></div>
+                    </div>
+                </div>
+                 <!-- AI 策略建議 -->
+                <div class="ai-container">
+                    <h2 class="text-2xl font-bold mb-4">AI 策略建議 ✨</h2>
+                    <button id="generate-strategy" class="gemini-button">產生 AI 策略建議</button>
+                    <div id="strategy-result" class="ai-result mt-4">請點擊按鈕產生策略建議...</div>
+                </div>
+            </div>
+
+             <div id="error-message" class="hidden mt-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative" role="alert">
+                <strong class="font-bold">讀取錯誤！</strong>
+                <span id="error-text" class="block sm:inline"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM 元素獲取
+        const fileUpload = document.getElementById('file-upload');
+        const fileNameDisplay = document.getElementById('file-name');
+        const dashboard = document.getElementById('dashboard');
+        const uploadContainer = document.getElementById('upload-container');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const errorMessage = document.getElementById('error-message');
+        const errorText = document.getElementById('error-text');
+        const tabs = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        // AI 功能相關 DOM
+        const genWeeklySummaryBtn = document.getElementById('generate-weekly-summary');
+        const weeklySummaryResult = document.getElementById('weekly-summary-result');
+        const genStrategyBtn = document.getElementById('generate-strategy');
+        const strategyResult = document.getElementById('strategy-result');
+
+        let charts = {}; // 圖表實例儲存器
+        let fullDashboardData = null; // 用於儲存解析後的完整數據
+
+        fileUpload.addEventListener('change', handleFile);
+
+        function handleFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            fileNameDisplay.textContent = file.name;
+            dashboard.classList.add('hidden');
+            errorMessage.classList.add('hidden');
+            loadingSpinner.classList.remove('hidden');
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const availableSheets = workbook.SheetNames;
+                    
+                    const isV3 = availableSheets.some(s => s.startsWith('來人結構分析表-'));
+
+                    const weeklyData = parseWeeklySheet(workbook.Sheets['周報表']);
+                    const areaData = parseAnalysisSheet(workbook.Sheets['區域分析表']);
+                    const mediaData = parseAnalysisSheet(workbook.Sheets['媒體分析表']);
+                    const considerationData = parseHorizontalAnalysisSheet(workbook.Sheets['考慮重點分析表'], 4);
+                    const motivationData = parseHorizontalAnalysisSheet(workbook.Sheets['購買動機分析表'], 5);
+                    const nonPurchaseData = parseHorizontalAnalysisSheet(workbook.Sheets['未購因素分析表'], 4);
+
+                    let dashboardData = { weeklyData, areaData, mediaData, considerationData, motivationData, nonPurchaseData, isV3 };
+                    
+                    if (isV3) {
+                        const visitorSheets = availableSheets.filter(s => s.startsWith('來人結構分析表-'));
+                        if (visitorSheets.length === 0) throw new Error('找不到任何 "來人結構分析表-" 工作表');
+
+                        const visitorStructureData = {};
+                        visitorSheets.forEach(sheetName => {
+                            const key = sheetName.replace('來人結構分析表-', '');
+                            visitorStructureData[key] = parseV3StructureSheet(workbook.Sheets[sheetName]);
+                        });
+                        dashboardData.visitorStructureData = visitorStructureData;
+                    } else { // V2 邏輯
+                        dashboardData.visitorStructureData = parseV2StructureSheet(workbook.Sheets['來人結構分析表']);
+                        dashboardData.dealStructureData = parseV2StructureSheet(workbook.Sheets['成交結構分析表']);
+                    }
+                    
+                    fullDashboardData = dashboardData; // 儲存數據以供 AI 使用
+                    renderDashboard(fullDashboardData);
+
+                    loadingSpinner.classList.add('hidden');
+                    dashboard.classList.remove('hidden');
+
+                } catch (err) {
+                    console.error("檔案處理錯誤:", err);
+                    errorText.textContent = `檔案處理失敗: ${err.message}. 請確認檔案格式與工作表是否完整。`;
+                    errorMessage.classList.remove('hidden');
+                    loadingSpinner.classList.add('hidden');
+                    fileNameDisplay.textContent = "檔案處理失敗";
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+        
+        function destroyCharts() {
+            Object.values(charts).forEach(chart => chart.destroy());
+            charts = {};
+        }
+        
+        // --- 解析函數 ---
+
+        function parseWeeklySheet(sheet) {
+            const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+            const data = { dates: [], visitors: [], calls: [], deals: [], kpis: {} };
+            const dateRow = json[2] || [];
+            for (let i = 4; i < 11; i++) {
+                if (dateRow[i]) {
+                    data.dates.push(dateRow[i]);
+                    data.visitors.push(parseFloat((json[5] || [])[i]) || 0);
+                    data.calls.push(parseFloat((json[6] || [])[i]) || 0);
+                    const dealText = String((json[8] || [])[i] || '0|0');
+                    data.deals.push(parseFloat(dealText.split('|')[0]) || 0);
+                }
+            }
+            data.kpis['本週來人總計'] = parseFloat((json[5] || [])[12]) || 0;
+            data.kpis['本週來電總計'] = parseFloat((json[6] || [])[12]) || 0;
+            data.kpis['本週成交總計'] = parseFloat((json[8] || [])[11]) || 0;
+            data.kpis['總累計來人'] = parseFloat((json[5] || [])[15]) || 0;
+            return data;
+        }
+
+        function parseAnalysisSheet(sheet) {
+            const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+            const data = { labels: [], visitors: [], deals: [] };
+            const headerRow = json[2] || [];
+            const visitorsRow = json[4] || [];
+            const dealsRow = json[5] || [];
+            const endCol = headerRow.lastIndexOf('合計');
+            for (let i = 3; i < (endCol !== -1 ? endCol : headerRow.length); i++) {
+                if (headerRow[i]) {
+                    data.labels.push(headerRow[i]);
+                    data.visitors.push(parseInt(visitorsRow[i]) || 0);
+                    data.deals.push(parseInt(dealsRow[i]) || 0);
+                }
+            }
+            return data;
+        }
+        
+        function parseHorizontalAnalysisSheet(sheet, dataRowIndex) {
+            const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+            const data = { labels: [], values: [] };
+            const headerRow = json[2] || [];
+            const dataRow = json[dataRowIndex] || [];
+            const endCol = headerRow.lastIndexOf('合計');
+            for (let i = 3; i < (endCol !== -1 ? endCol : headerRow.length); i++) {
+                if (headerRow[i] && (parseInt(dataRow[i]) || 0) > 0) {
+                    data.labels.push(headerRow[i]);
+                    data.values.push(parseInt(dataRow[i]) || 0);
+                }
+            }
+            return data;
+        }
+
+        function parseV3StructureSheet(sheet) {
+            const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+            const header = json[0] || [];
+            const values = json[1] || [];
+            const data = { labels: [], values: [] };
+            const endIndex = header.indexOf('合計');
+            const limit = endIndex !== -1 ? endIndex : header.length;
+
+            for (let i = 1; i < limit; i++) {
+                data.labels.push(header[i]);
+                data.values.push(parseInt(values[i]) || 0);
+            }
+            return data;
+        }
+
+        function parseV2StructureSheet(sheet) {
+            const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+            const data = {};
+            const ageHeader = json[1] || [], ageData = json[2] || [];
+            data.age = { labels: ageHeader.slice(1, ageHeader.indexOf('合計')), values: ageData.slice(1, ageHeader.indexOf('合計')).map(Number) };
+            data.gender = { labels: [ageHeader[12], ageHeader[13]], values: [parseInt(ageData[12]) || 0, parseInt(ageData[13]) || 0] };
+            
+            const typeHeader = json[7] || [], typeData = json[8] || [];
+            data.roomType = { labels: typeHeader.slice(1, typeHeader.indexOf('合計')), values: typeData.slice(1, typeHeader.indexOf('合計')).map(Number) };
+            const purchaseStart = typeHeader.indexOf('購屋型態') + 1;
+            data.purchaseType = { labels: typeHeader.slice(purchaseStart, typeHeader.lastIndexOf('合計')), values: typeData.slice(purchaseStart, typeHeader.lastIndexOf('合計')).map(Number) };
+            return data;
+        }
+
+        // --- 渲染函數 ---
+        function renderDashboard(data) {
+            destroyCharts();
+            document.querySelector('[data-tab="visitor-profile"]').classList.toggle('hidden', !data.isV3);
+            document.getElementById('tab-content-profile-v2').classList.toggle('hidden', data.isV3);
+            renderWeekly(data.weeklyData);
+            renderArea(data.areaData);
+            renderMedia(data.mediaData);
+            renderDecisionFactors(data.considerationData, data.motivationData, data.nonPurchaseData);
+            if (data.isV3) {
+                renderVisitorProfileV3(data.visitorStructureData);
+            } else {
+                renderCustomerProfileV2(data.visitorStructureData, data.dealStructureData);
+            }
+        }
+        function renderVisitorProfileV3(data) {
+            const grid = document.getElementById('visitor-profile-grid');
+            grid.innerHTML = '';
+            const colors = ['#3b82f6', '#10b981', '#ef4444', '#f59e0b', '#8b5cf6', '#ec4899', '#6b7280', '#34d399', '#fbbf24'];
+            Object.entries(data).forEach(([key, chartData]) => {
+                const container = document.createElement('div');
+                const title = document.createElement('h3');
+                title.className = 'text-xl font-semibold mb-2 text-center';
+                title.textContent = key;
+                const chartContainer = document.createElement('div');
+                chartContainer.className = 'chart-container';
+                const canvas = document.createElement('canvas');
+                const canvasId = `v3-chart-${key}`;
+                canvas.id = canvasId;
+                chartContainer.appendChild(canvas);
+                container.appendChild(title);
+                container.appendChild(chartContainer);
+                grid.appendChild(container);
+                const chartType = ['性別', '職業', '購屋型態'].includes(key) ? 'doughnut' : 'bar';
+                const options = chartType === 'doughnut' ? { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } } : { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } };
+                charts[canvasId] = new Chart(canvasId, { type: chartType, data: { labels: chartData.labels, datasets: [{ label: key, data: chartData.values, backgroundColor: chartType === 'doughnut' ? colors : '#60a5fa' }] }, options: options });
+            });
+        }
+        function renderCustomerProfileV2(visitorData, dealData) {
+            const barChartOptions = { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } };
+            charts.age_v2 = new Chart('age-chart-v2', { type: 'bar', data: { labels: visitorData.age.labels, datasets: [{ label: '來人', data: visitorData.age.values, backgroundColor: '#60a5fa' }, { label: '成交', data: dealData.age.values, backgroundColor: '#f87171' }] }, options: barChartOptions });
+            charts.roomType_v2 = new Chart('room-type-chart-v2', { type: 'bar', data: { labels: visitorData.roomType.labels, datasets: [{ label: '來人', data: visitorData.roomType.values, backgroundColor: '#60a5fa' }, { label: '成交', data: dealData.roomType.values, backgroundColor: '#f87171' }] }, options: barChartOptions });
+            charts.gender_v2 = new Chart('gender-chart-v2', { type: 'bar', data: { labels: visitorData.gender.labels, datasets: [{ label: '來人', data: visitorData.gender.values, backgroundColor: '#60a5fa' }, { label: '成交', data: dealData.gender.values, backgroundColor: '#f87171' }] }, options: barChartOptions });
+            charts.purchaseType_v2 = new Chart('purchase-type-chart-v2', { type: 'bar', data: { labels: visitorData.purchaseType.labels, datasets: [{ label: '來人', data: visitorData.purchaseType.values, backgroundColor: '#60a5fa' }, { label: '成交', data: dealData.purchaseType.values, backgroundColor: '#f87171' }] }, options: barChartOptions });
+        }
+        function renderWeekly(data) {
+            const kpiGrid = document.getElementById('kpi-grid');
+            kpiGrid.innerHTML = '';
+            Object.entries(data.kpis).forEach(([key, value]) => {
+                kpiGrid.innerHTML += `<div class="kpi-card"><div class="kpi-value">${value.toLocaleString()}</div><div class="kpi-label">${key}</div></div>`;
+            });
+            charts.weekly = new Chart('weekly-chart', { type: 'line', data: { labels: data.dates, datasets: [{ label: '來人', data: data.visitors, borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.1)', fill: true, tension: 0.3 }, { label: '來電', data: data.calls, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true, tension: 0.3 }, { label: '成交', data: data.deals, borderColor: '#ef4444', backgroundColor: '#ef4444', type: 'bar', yAxisID: 'y1' }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, title: { display: true, text: '人數 / 通數' } }, y1: { beginAtZero: true, position: 'right', title: { display: true, text: '成交數' }, grid: { drawOnChartArea: false } } }, plugins: { tooltip: { mode: 'index', intersect: false } } } });
+        }
+        function renderArea(data) {
+            charts.area = new Chart('area-chart', { type: 'bar', data: { labels: data.labels, datasets: [{ label: '來人', data: data.visitors, backgroundColor: '#60a5fa' }, { label: '成交', data: data.deals, backgroundColor: '#f87171' }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, title: { display: true, text: '數量' } } } } });
+        }
+        function renderMedia(data) {
+            const pieOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } };
+            const colors = ['#3b82f6', '#10b981', '#ef4444', '#f59e0b', '#8b5cf6', '#ec4899', '#6b7280', '#34d399', '#fbbf24'];
+            const filterZero = (labels, values) => { const filtered = labels.map((l, i) => ({ label: l, value: values[i] })).filter(d => d.value > 0); return { labels: filtered.map(d => d.label), values: filtered.map(d => d.value) }; };
+            const visitorsData = filterZero(data.labels, data.visitors);
+            const dealsData = filterZero(data.labels, data.deals);
+            charts.mediaVisitors = new Chart('media-visitors-chart', { type: 'doughnut', data: { labels: visitorsData.labels, datasets: [{ data: visitorsData.values, backgroundColor: colors }] }, options: pieOptions });
+            charts.mediaDeals = new Chart('media-deals-chart', { type: 'doughnut', data: { labels: dealsData.labels, datasets: [{ data: dealsData.values, backgroundColor: colors }] }, options: pieOptions });
+        }
+        function renderDecisionFactors(consideration, motivation, nonPurchase) {
+            const horizontalBarOptions = { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { beginAtZero: true } }, plugins: { legend: { display: false } } };
+            charts.consideration = new Chart('consideration-chart', { type: 'bar', data: { labels: consideration.labels, datasets: [{ label: '提及次數', data: consideration.values, backgroundColor: '#3b82f6' }] }, options: horizontalBarOptions });
+            charts.motivation = new Chart('motivation-chart', { type: 'doughnut', data: { labels: motivation.labels, datasets: [{ data: motivation.values, backgroundColor: ['#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#6b7280', '#34d399'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } } });
+            charts.nonPurchase = new Chart('non-purchase-chart', { type: 'bar', data: { labels: nonPurchase.labels, datasets: [{ label: '提及次數', data: nonPurchase.values, backgroundColor: '#ef4444' }] }, options: { ...horizontalBarOptions, plugins: { ...horizontalBarOptions.plugins, tooltip: { callbacks: { label: (ctx) => `提及 ${ctx.raw} 次` } } } } });
+        }
+        
+        // Tab 切換邏輯
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                if (tab.classList.contains('hidden')) return;
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                tabContents.forEach(content => {
+                    content.classList.toggle('hidden', content.id !== `tab-content-${tab.dataset.tab}`);
+                });
+                if (tab.dataset.tab === 'visitor-profile') {
+                    document.getElementById('tab-content-profile-v2').classList.add('hidden');
+                }
+            });
+        });
+        
+        // --- Gemini AI 功能 ---
+        const API_KEY = "AIzaSyDE4m9y5zzNOPdYHhPxrERJuAGeG68o5X0"; // 由環境提供
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
+        
+        async function callGeminiAPI(prompt, buttonElement, resultElement) {
+            buttonElement.disabled = true;
+            resultElement.innerHTML = 'AI 正在思考中，請稍候... <div class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status"></div>';
+
+            const payload = { contents: [{ parts: [{ text: prompt }] }] };
+            let retries = 3;
+            let success = false;
+            
+            while (retries > 0 && !success) {
+                try {
+                    const response = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API 請求失敗，狀態碼: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                    if (text) {
+                        resultElement.innerHTML = marked.parse(text);
+                        success = true;
+                    } else {
+                        throw new Error("從 API 回應中找不到有效的文字內容。");
+                    }
+                } catch (error) {
+                    console.error('Gemini API 呼叫失敗:', error);
+                    retries--;
+                    if (retries === 0) {
+                        resultElement.innerHTML = `<p class="text-red-600">AI 分析失敗，請稍後再試。錯誤訊息：${error.message}</p>`;
+                    } else {
+                        await new Promise(res => setTimeout(res, (3 - retries) * 1000)); // Exponential backoff
+                    }
+                }
+            }
+            
+            buttonElement.disabled = false;
+        }
+
+        function formatDataForPrompt(data) {
+            if (!data || !data.labels || !data.values) return '無數據';
+            return data.labels.map((label, index) => `${label}: ${data.values[index]}`).join(', ');
+        }
+        
+        genWeeklySummaryBtn.addEventListener('click', () => {
+            if (!fullDashboardData) {
+                weeklySummaryResult.textContent = '請先上傳檔案。';
+                return;
+            }
+            const { weeklyData } = fullDashboardData;
+            const kpiString = Object.entries(weeklyData.kpis).map(([key, value]) => `${key}: ${value}`).join(', ');
+            const dailyDataString = weeklyData.dates.map((date, i) => `${date} (來人: ${weeklyData.visitors[i]}, 來電: ${weeklyData.calls[i]}, 成交: ${weeklyData.deals[i]})`).join('; ');
+
+            const prompt = `
+            你是一位資深的房地產市場分析師。
+            根據以下本週的銷售數據，產生一段簡潔、專業、點列式的摘要報告 (請使用繁體中文)。
+            報告應包含對關鍵績效指標(KPIs)的總結，並點出每日趨勢的亮點或值得注意的地方。
+
+            數據如下：
+            - 關鍵績效指標 (KPIs): ${kpiString}
+            - 每日趨勢: ${dailyDataString}
+            `;
+            callGeminiAPI(prompt, genWeeklySummaryBtn, weeklySummaryResult);
+        });
+
+        genStrategyBtn.addEventListener('click', () => {
+            if (!fullDashboardData) {
+                strategyResult.textContent = '請先上傳檔案。';
+                return;
+            }
+            const { considerationData, motivationData, nonPurchaseData } = fullDashboardData;
+            
+            const prompt = `
+            你是一位頂尖的房地產行銷策略顧問。
+            請分析以下關於潛在客戶的數據 (請使用繁體中文)，並基於這些洞察，提出 2-3 點具體、可行的行銷策略建議或產品調整方向，以提高成交率。請用點列式呈現。
+
+            數據如下：
+            - 客戶主要考慮重點: ${formatDataForPrompt(considerationData)}
+            - 已成交客戶的購買動機: ${formatDataForPrompt(motivationData)}
+            - 潛在客戶最終未購買的原因: ${formatDataForPrompt(nonPurchaseData)}
+            `;
+            callGeminiAPI(prompt, genStrategyBtn, strategyResult);
+        });
+    </script>
+</body>
+</html>
+
