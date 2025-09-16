@@ -13,64 +13,226 @@
     <!-- 引入 Marked.js 用於將 Markdown 轉為 HTML -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-accent: #3b82f6;
+            --border-primary: #e5e7eb;
+            --border-secondary: #d1d5db;
+            --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #262626;
+            --text-primary: #ffffff;
+            --text-secondary: #a3a3a3;
+            --text-accent: #60a5fa;
+            --border-primary: #404040;
+            --border-secondary: #525252;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --glass-bg: rgba(26, 26, 26, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
         body {
             font-family: 'Inter', 'Noto Sans TC', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
+
+        /* 科技感背景 */
+        .tech-bg {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tech-bg::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        [data-theme="dark"] .tech-bg::before {
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(96, 165, 250, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(52, 211, 153, 0.15) 0%, transparent 50%);
+        }
+
+        /* 主題切換按鈕 */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--card-shadow);
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-icon {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover .theme-icon {
+            transform: rotate(20deg);
+        }
+
         .tab-button {
             transition: all 0.3s ease;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            margin: 0 4px;
+            color: var(--text-secondary);
         }
+        
+        .tab-button:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--card-shadow);
+        }
+        
         .tab-button.active {
-            border-color: #3b82f6;
-            color: #3b82f6;
+            background: linear-gradient(135deg, var(--text-accent), #60a5fa);
+            color: white;
+            border-color: transparent;
             font-weight: 600;
+            box-shadow: 0 4px 15px -3px rgba(59, 130, 246, 0.4);
         }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.25);
+        }
+
         .kpi-card {
-            background-color: #f9fafb;
-            border: 1px solid #e5e7eb;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
             border-radius: 0.75rem;
             padding: 1.5rem;
             text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: var(--card-shadow);
         }
+
+        .kpi-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.25);
+        }
+
         .kpi-value {
             font-size: 2.25rem;
             font-weight: 700;
-            color: #1f2937;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--text-accent), #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
+        
         .kpi-label {
             font-size: 1rem;
-            color: #6b7280;
+            color: var(--text-secondary);
         }
         /* Chart.js 響應式容器 */
         .chart-container {
             position: relative;
             height: 400px;
             width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
+            padding: 1rem;
+            box-shadow: var(--card-shadow);
         }
         /* 用於水平長條圖，避免標籤被截斷 */
         .chart-container-horizontal {
             position: relative;
             min-height: 500px; /* 給予更多空間 */
             width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
+            padding: 1rem;
+            box-shadow: var(--card-shadow);
         }
         /* AI 功能相關樣式 */
         .ai-container {
-            border: 1px solid #e5e7eb;
-            border-radius: 0.75rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
             margin-top: 2rem;
             padding: 1.5rem;
-            background-color: #f9fafb;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
         }
+
+        .ai-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px -8px rgba(0, 0, 0, 0.2);
+        }
+
         .ai-result {
-            background-color: white;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
             padding: 1rem;
             border-radius: 0.5rem;
-            border: 1px solid #d1d5db;
+            border: 1px solid var(--border-primary);
             min-height: 100px;
+            backdrop-filter: blur(10px);
         }
         .ai-result h3 {
             font-size: 1.125rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
+            color: var(--text-primary);
         }
         .ai-result ul {
             list-style-type: disc;
@@ -78,76 +240,156 @@
         }
          .ai-result li {
             margin-bottom: 0.5rem;
+            color: var(--text-primary);
         }
         .gemini-button {
-             background-color: #4f46e5;
+             background: linear-gradient(135deg, #4f46e5, #7c3aed);
              color: white;
              font-weight: bold;
              padding: 0.75rem 1.5rem;
              border-radius: 0.5rem;
-             transition: background-color 0.3s;
+             transition: all 0.3s ease;
              display: inline-flex;
              align-items: center;
              gap: 0.5rem;
+             border: none;
+             cursor: pointer;
+             box-shadow: 0 4px 15px -3px rgba(79, 70, 229, 0.4);
         }
         .gemini-button:hover {
-            background-color: #4338ca;
+            background: linear-gradient(135deg, #4338ca, #6d28d9);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px -8px rgba(79, 70, 229, 0.5);
         }
         .gemini-button:disabled {
-            background-color: #a5b4fc;
+            background: linear-gradient(135deg, #a5b4fc, #c4b5fd);
             cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* 上傳區域樣式 */
+        .upload-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+
+        .upload-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .upload-button {
+            background: linear-gradient(135deg, var(--text-accent), #60a5fa);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px -3px rgba(59, 130, 246, 0.4);
+        }
+
+        .upload-button:hover {
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px -8px rgba(59, 130, 246, 0.5);
+        }
+
+        /* 載入動畫 */
+        .loading-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+        }
+
+        /* 錯誤訊息 */
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            backdrop-filter: blur(10px);
+        }
+
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+                padding: 6px 12px;
+            }
+            
+            .theme-icon {
+                width: 18px;
+                height: 18px;
+            }
         }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body class="tech-bg text-gray-800" data-theme="dark">
+
+    <!-- 主題切換按鈕 -->
+    <div class="theme-toggle" id="theme-toggle">
+        <svg class="theme-icon" id="theme-icon-light" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+        </svg>
+        <svg class="theme-icon hidden" id="theme-icon-dark" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+        </svg>
+        <span class="text-sm font-medium" id="theme-text">深色模式</span>
+    </div>
 
     <div class="container mx-auto p-4 md:p-8">
         <header class="text-center mb-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">✨ AI 增強版・互動式銷售儀表板</h1>
-            <p class="text-lg text-gray-600 mt-2">上傳您的 Excel 銷售報表，體驗 AI 驅動的數據洞察</p>
+            <h1 class="text-3xl md:text-4xl font-bold" style="color: var(--text-primary);">✨ AI 增強版・互動式銷售儀表板</h1>
+            <p class="text-lg mt-2" style="color: var(--text-secondary);">上傳您的 Excel 銷售報表，體驗 AI 驅動的數據洞察</p>
         </header>
 
         <!-- 上傳區域 -->
-        <div id="upload-container" class="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-md text-center">
-            <label for="file-upload" class="cursor-pointer inline-block bg-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-600 transition duration-300">
+        <div id="upload-container" class="max-w-xl mx-auto upload-card p-8 rounded-xl text-center">
+            <label for="file-upload" class="cursor-pointer inline-block upload-button text-white font-bold py-3 px-6 rounded-lg transition duration-300">
                 <svg xmlns="http://www.w.org/2000/svg" class="h-6 w-6 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                 </svg>
                 選擇 Excel 檔案
             </label>
             <input id="file-upload" type="file" class="hidden" accept=".xlsx, .xls">
-            <p id="file-name" class="mt-4 text-gray-500">尚未選擇檔案</p>
+            <p id="file-name" class="mt-4" style="color: var(--text-secondary);">尚未選擇檔案</p>
         </div>
         
         <div id="loading-spinner" class="text-center mt-8 hidden">
-             <div role="status">
-                <svg aria-hidden="true" class="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0492C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
-                </svg>
-                <span class="sr-only">讀取中...</span>
+             <div class="loading-container">
+                <div role="status">
+                    <svg aria-hidden="true" class="inline w-8 h-8 animate-spin" style="color: var(--text-secondary); fill: var(--text-accent);" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0492C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+                    </svg>
+                    <span class="sr-only">讀取中...</span>
+                </div>
+                <p class="mt-2" style="color: var(--text-secondary);">正在處理您的資料...</p>
             </div>
-            <p class="mt-2 text-gray-600">正在處理您的資料...</p>
         </div>
 
         <!-- 儀表板區域 -->
-        <div id="dashboard" class="hidden bg-white p-4 md:p-8 rounded-xl shadow-lg mt-8">
+        <div id="dashboard" class="hidden glass-card p-4 md:p-8 rounded-xl mt-8">
             <!-- Tabs -->
-            <div class="border-b border-gray-200 mb-6">
+            <div class="mb-6" style="border-bottom: 1px solid var(--border-primary);">
                 <nav class="-mb-px flex space-x-2 sm:space-x-4 overflow-x-auto" aria-label="Tabs">
-                    <button class="tab-button whitespace-nowrap py-4 px-1 sm:px-4 border-b-2 border-transparent text-sm sm:text-base font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 active" data-tab="weekly">
+                    <button class="tab-button whitespace-nowrap py-4 px-1 sm:px-4 border-b-2 border-transparent text-sm sm:text-base font-medium active" data-tab="weekly" style="color: var(--text-secondary);">
                         週報表分析
                     </button>
-                    <button class="tab-button whitespace-nowrap py-4 px-1 sm:px-4 border-b-2 border-transparent text-sm sm:text-base font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="visitor-profile">
+                    <button class="tab-button whitespace-nowrap py-4 px-1 sm:px-4 border-b-2 border-transparent text-sm sm:text-base font-medium" data-tab="visitor-profile" style="color: var(--text-secondary);">
                         來人樣貌分析
                     </button>
-                    <button class="tab-button whitespace-nowrap py-4 px-1 sm:px-4 border-b-2 border-transparent text-sm sm:text-base font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="area">
+                    <button class="tab-button whitespace-nowrap py-4 px-1 sm:px-4 border-b-2 border-transparent text-sm sm:text-base font-medium" data-tab="area" style="color: var(--text-secondary);">
                         區域來源分析
                     </button>
-                    <button class="tab-button whitespace-nowrap py-4 px-1 sm:px-4 border-b-2 border-transparent text-sm sm:text-base font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="media">
+                    <button class="tab-button whitespace-nowrap py-4 px-1 sm:px-4 border-b-2 border-transparent text-sm sm:text-base font-medium" data-tab="media" style="color: var(--text-secondary);">
                         媒體來源分析
                     </button>
-                     <button class="tab-button whitespace-nowrap py-4 px-1 sm:px-4 border-b-2 border-transparent text-sm sm:text-base font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="decision">
+                     <button class="tab-button whitespace-nowrap py-4 px-1 sm:px-4 border-b-2 border-transparent text-sm sm:text-base font-medium" data-tab="decision" style="color: var(--text-secondary);">
                         決策因素分析
                     </button>
                 </nav>
@@ -155,32 +397,32 @@
 
             <!-- Tab Content -->
             <div id="tab-content-weekly" class="tab-content">
-                <h2 class="text-2xl font-bold mb-4">本週關鍵指標 (KPIs)</h2>
+                <h2 class="text-2xl font-bold mb-4" style="color: var(--text-primary);">本週關鍵指標 (KPIs)</h2>
                 <div id="kpi-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"></div>
-                <h2 class="text-2xl font-bold mb-4">本週每日趨勢</h2>
+                <h2 class="text-2xl font-bold mb-4" style="color: var(--text-primary);">本週每日趨勢</h2>
                 <div class="chart-container"><canvas id="weekly-chart"></canvas></div>
                 <!-- AI 週報分析 -->
                 <div class="ai-container">
-                    <h2 class="text-2xl font-bold mb-4">AI 週報分析 ✨</h2>
+                    <h2 class="text-2xl font-bold mb-4" style="color: var(--text-primary);">AI 週報分析 ✨</h2>
                     <button id="generate-weekly-summary" class="gemini-button">產生 AI 分析報告</button>
                     <div id="weekly-summary-result" class="ai-result mt-4">請點擊按鈕產生分析報告...</div>
                 </div>
             </div>
 
             <div id="tab-content-area" class="tab-content hidden">
-                <h2 class="text-2xl font-bold mb-4">本週各區域來人與成交數</h2>
+                <h2 class="text-2xl font-bold mb-4" style="color: var(--text-primary);">本週各區域來人與成交數</h2>
                 <div class="chart-container"><canvas id="area-chart"></canvas></div>
             </div>
 
             <div id="tab-content-media" class="tab-content hidden">
-                <h2 class="text-2xl font-bold mb-4">本週各媒體來源分析</h2>
+                <h2 class="text-2xl font-bold mb-4" style="color: var(--text-primary);">本週各媒體來源分析</h2>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <div>
-                        <h3 class="text-xl font-semibold mb-2 text-center">來人來源分佈</h3>
+                        <h3 class="text-xl font-semibold mb-2 text-center" style="color: var(--text-primary);">來人來源分佈</h3>
                          <div class="chart-container"><canvas id="media-visitors-chart"></canvas></div>
                     </div>
                     <div>
-                        <h3 class="text-xl font-semibold mb-2 text-center">成交來源分佈</h3>
+                        <h3 class="text-xl font-semibold mb-2 text-center" style="color: var(--text-primary);">成交來源分佈</h3>
                         <div class="chart-container"><canvas id="media-deals-chart"></canvas></div>
                     </div>
                 </div>
@@ -188,7 +430,7 @@
             
             <!-- 更新：來人樣貌分析 (V3 動態格式) -->
             <div id="tab-content-visitor-profile" class="tab-content hidden">
-                <h2 class="text-2xl font-bold mb-6">來人樣貌分析</h2>
+                <h2 class="text-2xl font-bold mb-6" style="color: var(--text-primary);">來人樣貌分析</h2>
                 <div id="visitor-profile-grid" class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
                     <!-- 圖表將會動態生成於此 -->
                 </div>
@@ -196,22 +438,22 @@
 
             <!-- 舊版客戶樣貌分析 (保留用於 V2 格式) -->
             <div id="tab-content-profile-v2" class="tab-content hidden">
-                 <h2 class="text-2xl font-bold mb-6">客戶樣貌比較：來人 vs. 成交</h2>
+                 <h2 class="text-2xl font-bold mb-6" style="color: var(--text-primary);">客戶樣貌比較：來人 vs. 成交</h2>
                 <div class="grid grid-cols-1 xl:grid-cols-2 gap-x-8 gap-y-10">
                     <div>
-                        <h3 class="text-xl font-semibold mb-2 text-center">年齡分佈</h3>
+                        <h3 class="text-xl font-semibold mb-2 text-center" style="color: var(--text-primary);">年齡分佈</h3>
                         <div class="chart-container"><canvas id="age-chart-v2"></canvas></div>
                     </div>
                      <div>
-                        <h3 class="text-xl font-semibold mb-2 text-center">房型偏好</h3>
+                        <h3 class="text-xl font-semibold mb-2 text-center" style="color: var(--text-primary);">房型偏好</h3>
                         <div class="chart-container"><canvas id="room-type-chart-v2"></canvas></div>
                     </div>
                     <div>
-                        <h3 class="text-xl font-semibold mb-2 text-center">性別佔比</h3>
+                        <h3 class="text-xl font-semibold mb-2 text-center" style="color: var(--text-primary);">性別佔比</h3>
                         <div class="chart-container"><canvas id="gender-chart-v2"></canvas></div>
                     </div>
                     <div>
-                        <h3 class="text-xl font-semibold mb-2 text-center">購屋型態</h3>
+                        <h3 class="text-xl font-semibold mb-2 text-center" style="color: var(--text-primary);">購屋型態</h3>
                         <div class="chart-container"><canvas id="purchase-type-chart-v2"></canvas></div>
                     </div>
                 </div>
@@ -221,21 +463,21 @@
             <div id="tab-content-decision" class="tab-content hidden">
                 <div class="space-y-12">
                     <div>
-                        <h2 class="text-2xl font-bold mb-4">來人考慮重點</h2>
+                        <h2 class="text-2xl font-bold mb-4" style="color: var(--text-primary);">來人考慮重點</h2>
                         <div class="chart-container-horizontal"><canvas id="consideration-chart"></canvas></div>
                     </div>
                     <div>
-                        <h2 class="text-2xl font-bold mb-4">成交客戶購買動機</h2>
+                        <h2 class="text-2xl font-bold mb-4" style="color: var(--text-primary);">成交客戶購買動機</h2>
                         <div class="chart-container"><canvas id="motivation-chart"></canvas></div>
                     </div>
                      <div>
-                        <h2 class="text-2xl font-bold mb-4">未購因素分析</h2>
+                        <h2 class="text-2xl font-bold mb-4" style="color: var(--text-primary);">未購因素分析</h2>
                         <div class="chart-container-horizontal"><canvas id="non-purchase-chart"></canvas></div>
                     </div>
                 </div>
                  <!-- AI 策略建議 -->
                 <div class="ai-container">
-                    <h2 class="text-2xl font-bold mb-4">AI 策略建議 ✨</h2>
+                    <h2 class="text-2xl font-bold mb-4" style="color: var(--text-primary);">AI 策略建議 ✨</h2>
                     <button id="generate-strategy" class="gemini-button">產生 AI 策略建議</button>
                     <div id="strategy-result" class="ai-result mt-4">請點擊按鈕產生策略建議...</div>
                 </div>

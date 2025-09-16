@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>互動式銷售儀表板 (Excel版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 SheetJS lib, 用於讀取 Excel 檔案 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+            background-color: #f1f5f9;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+        }
+        .tab-button:not(.active) {
+            border-bottom-color: transparent;
+        }
+        .loader {
+            border-top-color: #3498db;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        /* Toggle Switch CSS */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 120px;
+            height: 34px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 55px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 34px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        input:checked + .slider {
+            background-color: #3b82f6;
+        }
+        input:checked + .slider:before {
+            transform: translateX(55px);
+        }
+        .slider-text {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            color: #4b5563;
+            font-weight: 500;
+            z-index: 1;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-8">
+            <div class="flex justify-center items-center gap-4">
+                <h1 class="text-3xl md:text-4xl font-bold text-slate-900">互動式銷售儀表板</h1>
+                <button id="reset-button" class="hidden bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                    上傳新檔案
+                </button>
+            </div>
+            <p id="header-subtitle" class="mt-2 text-slate-600">上傳您的銷售報表 Excel 檔案，立即生成分析圖表。</p>
+        </header>
+
+        <!-- File Upload Section -->
+        <div id="upload-section" class="bg-white p-8 rounded-2xl shadow-lg max-w-2xl mx-auto">
+            <h2 class="text-xl font-semibold mb-6 text-center">請上傳包含所有報表的 Excel 檔案</h2>
+            <div class="flex flex-col items-center p-6 border-2 border-dashed rounded-lg">
+                <label for="excel-file-input" class="text-center font-semibold text-slate-700 cursor-pointer w-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mx-auto text-slate-400" fill="none" viewBox="0_0_24_24" stroke="currentColor" stroke-width="1">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                    </svg>
+                    <span class="mt-4 block text-lg">點擊此處選擇檔案</span>
+                    <span class="text-sm text-slate-500 block mt-1">或將檔案拖曳到這裡</span>
+                    <span id="excel-filename" class="text-base text-blue-600 font-medium block mt-3">尚未選擇檔案</span>
+                </label>
+                <input type="file" id="excel-file-input" class="hidden" accept=".xlsx, .xls">
+            </div>
+            <div id="loading-indicator" class="mt-6 text-center hidden">
+                <div class="inline-flex items-center">
+                    <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6 mr-3"></div>
+                    <span class="font-semibold">正在讀取 Excel 檔案並生成圖表...</span>
+                </div>
+            </div>
+             <p id="error-message" class="text-center text-red-500 mt-4"></p>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="hidden mt-8">
+            <!-- Tabs -->
+            <div class="border-b border-gray-200 mb-6">
+                <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+                    <button class="tab-button active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg" data-tab="weekly">周報表分析</button>
+                    <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg" data-tab="area">區域來客分析</button>
+                    <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg" data-tab="media">媒體效益分析</button>
+                </nav>
+            </div>
+
+            <!-- Tab Content -->
+            <div id="tab-content">
+                <!-- Weekly Report Tab -->
+                <div id="weekly-content" class="tab-pane active">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                         <div class="bg-white p-5 rounded-xl shadow-md flex flex-col justify-center"><h3 class="text-sm font-semibold text-slate-500">本週總來人數</h3><p id="weekly-total-visitors" class="text-3xl font-bold mt-1">0</p></div>
+                         <div class="bg-white p-5 rounded-xl shadow-md flex flex-col justify-center"><h3 class="text-sm font-semibold text-slate-500">本週總來電數</h3><p id="weekly-total-calls" class="text-3xl font-bold mt-1">0</p></div>
+                         <div class="bg-white p-5 rounded-xl shadow-md flex flex-col justify-center"><h3 class="text-sm font-semibold text-slate-500">本週總成交戶數</h3><p id="weekly-total-deals" class="text-3xl font-bold mt-1">0</p></div>
+                         <div class="bg-white p-5 rounded-xl shadow-md flex flex-col justify-center"><h3 class="text-sm font-semibold text-slate-500">本週總成交車位數</h3><p id="weekly-total-parking" class="text-3xl font-bold mt-1">0</p></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-lg font-semibold mb-4">本週每日來人與來電趨勢</h3>
+                        <div class="chart-container"><canvas id="weekly-trends-chart"></canvas></div>
+                    </div>
+                </div>
+
+                <!-- Area Report Tab -->
+                <div id="area-content" class="tab-pane hidden">
+                    <div class="flex justify-end items-center mb-4">
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="data-toggle" data-type="area">
+                            <span class="slider"></span>
+                            <span class="slider-text"><span>本週</span><span>累計</span></span>
+                        </label>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                        <div class="bg-white p-5 rounded-xl shadow-md"><h3 class="text-sm font-semibold text-slate-500">主要來客區域</h3><p id="area-top-source" class="text-2xl font-bold mt-1">-</p></div>
+                        <div class="bg-white p-5 rounded-xl shadow-md"><h3 class="text-sm font-semibold text-slate-500">該區來客數</h3><p id="area-top-source-visitors" class="text-2xl font-bold mt-1">0</p></div>
+                        <div class="bg-white p-5 rounded-xl shadow-md"><h3 class="text-sm font-semibold text-slate-500">整體成交率</h3><p id="area-conversion-rate" class="text-2xl font-bold mt-1">0%</p></div>
+                        <div class="bg-white p-5 rounded-xl shadow-md"><h3 class="text-sm font-semibold text-slate-500">最高成交率區域</h3><p id="area-top-cr-source" class="text-2xl font-bold mt-1">-</p></div>
+                    </div>
+                     <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                        <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-3">
+                            <h3 class="text-lg font-semibold mb-4">各地區來人與成交數量</h3>
+                            <div class="chart-container"><canvas id="area-comparison-chart"></canvas></div>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-2">
+                             <h3 class="text-lg font-semibold mb-4">各地區來人佔比</h3>
+                             <div class="chart-container"><canvas id="area-dist-chart"></canvas></div>
+                         </div>
+                         <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-5">
+                             <h3 class="text-lg font-semibold mb-4">數據總覽</h3>
+                             <div class="overflow-x-auto">
+                                 <table id="area-table" class="min-w-full divide-y divide-gray-200"></table>
+                             </div>
+                         </div>
+                    </div>
+                </div>
+
+                <!-- Media Report Tab -->
+                <div id="media-content" class="tab-pane hidden">
+                     <div class="flex justify-end items-center mb-4">
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="data-toggle" data-type="media">
+                            <span class="slider"></span>
+                            <span class="slider-text"><span>本週</span><span>累計</span></span>
+                        </label>
+                    </div>
+                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                        <div class="bg-white p-5 rounded-xl shadow-md"><h3 class="text-sm font-semibold text-slate-500">主要媒體管道</h3><p id="media-top-source" class="text-2xl font-bold mt-1">-</p></div>
+                        <div class="bg-white p-5 rounded-xl shadow-md"><h3 class="text-sm font-semibold text-slate-500">該管道來客數</h3><p id="media-top-source-visitors" class="text-2xl font-bold mt-1">0</p></div>
+                        <div class="bg-white p-5 rounded-xl shadow-md"><h3 class="text-sm font-semibold text-slate-500">整體成交率</h3><p id="media-conversion-rate" class="text-2xl font-bold mt-1">0%</p></div>
+                        <div class="bg-white p-5 rounded-xl shadow-md"><h3 class="text-sm font-semibold text-slate-500">最高成交率管道</h3><p id="media-top-cr-source" class="text-2xl font-bold mt-1">-</p></div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                        <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-3">
+                            <h3 class="text-lg font-semibold mb-4">各媒體來人與成交數量</h3>
+                            <div class="chart-container"><canvas id="media-comparison-chart"></canvas></div>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-2">
+                             <h3 class="text-lg font-semibold mb-4">各媒體來人佔比</h3>
+                             <div class="chart-container"><canvas id="media-dist-chart"></canvas></div>
+                         </div>
+                         <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-5">
+                             <h3 class="text-lg font-semibold mb-4">數據總覽</h3>
+                             <div class="overflow-x-auto">
+                                <table id="media-table" class="min-w-full divide-y divide-gray-200"></table>
+                             </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('excel-file-input');
+        const fileNameDisplay = document.getElementById('excel-filename');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const errorMessage = document.getElementById('error-message');
+        const resetButton = document.getElementById('reset-button');
+        const headerSubtitle = document.getElementById('header-subtitle');
+
+        const charts = {};
+        let reportData = {};
+
+        // Utility to destroy existing charts before redrawing
+        const destroyChart = (chartId) => {
+            if (charts[chartId]) {
+                charts[chartId].destroy();
+                delete charts[chartId];
+            }
+        };
+        
+        // Setup file input listener
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                fileNameDisplay.textContent = file.name;
+                fileNameDisplay.classList.remove('text-blue-600');
+                fileNameDisplay.classList.add('text-green-600');
+                parseExcelFile(file);
+            }
+        });
+
+        resetButton.addEventListener('click', () => {
+            document.getElementById('upload-section').classList.remove('hidden');
+            document.getElementById('dashboard-section').classList.add('hidden');
+            resetButton.classList.add('hidden');
+            fileInput.value = '';
+            fileNameDisplay.textContent = '尚未選擇檔案';
+            fileNameDisplay.classList.add('text-blue-600');
+            fileNameDisplay.classList.remove('text-green-600');
+            headerSubtitle.textContent = '上傳您的銷售報表 Excel 檔案，立即生成分析圖表。';
+            errorMessage.textContent = '';
+        });
+
+        const parseExcelFile = (file) => {
+            loadingIndicator.classList.remove('hidden');
+            errorMessage.textContent = '';
+            reportData = {};
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const parsedData = { weekly: null, area: null, media: null };
+                    let sheetsFound = 0;
+
+                    workbook.SheetNames.forEach(sheetName => {
+                        const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 });
+                        if (sheetName.includes('周報表')) {
+                            parsedData.weekly = sheetData;
+                            sheetsFound++;
+                        } else if (sheetName.includes('區域分析')) {
+                            parsedData.area = sheetData;
+                            sheetsFound++;
+                        } else if (sheetName.includes('媒體分析')) {
+                            parsedData.media = sheetData;
+                            sheetsFound++;
+                        }
+                    });
+
+                    if (sheetsFound < 3) throw new Error('Excel 檔案中缺少必要的報表工作表 (周報表, 區域分析表, 媒體分析表)。');
+                    
+                    console.log("All sheets parsed successfully:", parsedData);
+                    processAllData(parsedData);
+                } catch (error) {
+                    console.error('Excel file processing error:', error);
+                    errorMessage.textContent = `處理 Excel 檔案時發生錯誤：${error.message}`;
+                    loadingIndicator.classList.add('hidden');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        };
+        
+        const processAllData = (parsedData) => {
+            try {
+                Object.keys(charts).forEach(destroyChart);
+                
+                processWeeklyReport(parsedData.weekly);
+                reportData.area = processGenericReport(parsedData.area, 'area');
+                reportData.media = processGenericReport(parsedData.media, 'media');
+
+                updateGenericView('area', 'weekly');
+                updateGenericView('media', 'weekly');
+
+                document.getElementById('upload-section').classList.add('hidden');
+                document.getElementById('dashboard-section').classList.remove('hidden');
+                resetButton.classList.remove('hidden');
+                headerSubtitle.textContent = `正在顯示報表：${fileInput.files[0].name}`;
+
+            } catch(e) {
+                console.error("Data processing error:", e);
+                errorMessage.textContent = `資料處理時發生錯誤: ${e.message}`;
+            } finally {
+                loadingIndicator.classList.add('hidden');
+            }
+        };
+
+        const processWeeklyReport = (data) => {
+            const dateRowIndex = data.findIndex(row => row && row.includes('日'));
+            const visitorsRowIndex = data.findIndex(row => row && row.includes('來') && row.includes('人'));
+            const callsRowIndex = data.findIndex(row => row && row.includes('來') && row.includes('電'));
+            const dealsRowIndex = data.findIndex(row => row && row.includes('售') && row.includes('房'));
+            if ([dateRowIndex, visitorsRowIndex, callsRowIndex, dealsRowIndex].includes(-1)) throw new Error('周報表工作表中找不到關鍵數據行 (日期, 來人, 來電, 售房)。');
+            
+            document.getElementById('weekly-total-visitors').textContent = (parseFloat(data[visitorsRowIndex][12]) || 0).toLocaleString();
+            document.getElementById('weekly-total-calls').textContent = (parseFloat(data[callsRowIndex][12]) || 0).toLocaleString();
+            document.getElementById('weekly-total-deals').textContent = (parseFloat(data[dealsRowIndex][12]) || 0).toLocaleString();
+            document.getElementById('weekly-total-parking').textContent = (parseFloat(data[dealsRowIndex][13]) || 0).toLocaleString();
+
+            const ctx = document.getElementById('weekly-trends-chart').getContext('2d');
+            destroyChart('weekly-trends-chart');
+            charts['weekly-trends-chart'] = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data[dateRowIndex].slice(4, 11),
+                    datasets: [
+                        { label: '來人數', data: data[visitorsRowIndex].slice(4, 11).map(v => parseFloat(v) || 0), borderColor: 'rgb(59, 130, 246)', backgroundColor: 'rgba(59, 130, 246, 0.1)', fill: true, tension: 0.3 },
+                        { label: '來電數', data: data[callsRowIndex].slice(4, 11).map(v => parseFloat(v) || 0), borderColor: 'rgb(16, 185, 129)', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true, tension: 0.3 }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        };
+        
+        const processGenericReport = (data, type) => {
+            const headerRowIndex = data.findIndex(row => row && row[3] && String(row[3]).trim() !== '');
+            if (headerRowIndex === -1) throw new Error(`在 ${type} 報表中找不到標頭行。`);
+            
+            const headers = data[headerRowIndex].slice(3).filter(h => h && String(h).trim() !== '' && String(h).trim() !== '合計');
+            const dataSliceEnd = 3 + headers.length;
+
+            const extractData = (blockStartIndex, blockEndIndex) => {
+                const block = data.slice(blockStartIndex, blockEndIndex);
+                const visitorRow = block.find(r => r && r[2] && String(r[2]).trim() === '來人');
+                const dealsRow = block.find(r => r && r[2] && String(r[2]).trim() === '成交');
+                if (!visitorRow || !dealsRow) return null;
+                return {
+                    labels: headers,
+                    visitors: visitorRow.slice(3, dataSliceEnd).map(v => parseFloat(v) || 0),
+                    deals: dealsRow.slice(3, dataSliceEnd).map(v => parseFloat(v) || 0)
+                };
+            };
+            
+            const weeklyBlockStartIndex = data.findIndex(r => r && String(r[0]).trim() === '本');
+            const cumulativeBlockStartIndex = data.findIndex(r => r && String(r[0]).trim() === '累');
+            if (weeklyBlockStartIndex === -1 || cumulativeBlockStartIndex === -1) throw new Error(`在 ${type} 報表中找不到 '本週' 或 '累計' 的數據區塊。`);
+
+            const weeklyData = extractData(weeklyBlockStartIndex, cumulativeBlockStartIndex);
+            const cumulativeData = extractData(cumulativeBlockStartIndex, data.length);
+            if (!weeklyData || !cumulativeData) throw new Error(`在 ${type} 報表中無法解析 '來人' 或 '成交' 數據。`);
+            
+            return { weekly: weeklyData, cumulative: cumulativeData };
+        };
+        
+        const updateGenericView = (type, view) => {
+            const data = reportData[type][view];
+            if (!data) return;
+
+            // Calculate metrics
+            const metrics = data.labels.map((label, i) => ({
+                label: label,
+                visitors: data.visitors[i],
+                deals: data.deals[i],
+                conversionRate: data.visitors[i] > 0 ? (data.deals[i] / data.visitors[i]) : 0
+            })).sort((a,b) => b.visitors - a.visitors); // Sort by visitors
+
+            const totalVisitors = metrics.reduce((sum, item) => sum + item.visitors, 0);
+            const totalDeals = metrics.reduce((sum, item) => sum + item.deals, 0);
+            const overallConversionRate = totalVisitors > 0 ? (totalDeals / totalVisitors) : 0;
+            const topSource = metrics[0] || { label: '-', visitors: 0 };
+            const topCRSource = [...metrics].sort((a,b) => b.conversionRate - a.conversionRate)[0] || { label: '-' };
+
+            // Update KPI cards
+            document.getElementById(`${type}-top-source`).textContent = topSource.label;
+            document.getElementById(`${type}-top-source-visitors`).textContent = topSource.visitors.toLocaleString();
+            document.getElementById(`${type}-conversion-rate`).textContent = (overallConversionRate * 100).toFixed(1) + '%';
+            document.getElementById(`${type}-top-cr-source`).textContent = topCRSource.label;
+
+            // Create Bar Chart
+            const barCtx = document.getElementById(`${type}-comparison-chart`).getContext('2d');
+            destroyChart(`${type}-comparison-chart`);
+            charts[`${type}-comparison-chart`] = new Chart(barCtx, {
+                type: 'bar',
+                data: { 
+                    labels: metrics.map(m => m.label), 
+                    datasets: [
+                        { label: '來人數', data: metrics.map(m => m.visitors), backgroundColor: 'rgba(59, 130, 246, 0.8)' },
+                        { label: '成交量', data: metrics.map(m => m.deals), backgroundColor: 'rgba(16, 185, 129, 0.8)' }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', scales: { y: { stacked: true }, x: { stacked: true, beginAtZero: true } } }
+            });
+
+            // Create Doughnut Chart
+            const doughnutCtx = document.getElementById(`${type}-dist-chart`).getContext('2d');
+            destroyChart(`${type}-dist-chart`);
+            charts[`${type}-dist-chart`] = new Chart(doughnutCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: metrics.map(m => m.label),
+                    datasets: [{
+                        data: metrics.map(m => m.visitors),
+                        backgroundColor: ['#3b82f6', '#10b981', '#f97316', '#8b5cf6', '#ec4899', '#64748b', '#f59e0b', '#14b8a6'],
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+            });
+
+            // Create Data Table
+            const table = document.getElementById(`${type}-table`);
+            table.innerHTML = ''; 
+            let theadHTML = `<thead class="bg-gray-50"><tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><th class="px-6 py-3">項目</th><th class="px-6 py-3">來人數</th><th class="px-6 py-3">成交量</th><th class="px-6 py-3">成交轉換率</th></tr></thead>`;
+            let tbodyHTML = `<tbody class="bg-white divide-y divide-gray-200">`;
+            metrics.forEach(m => {
+                tbodyHTML += `<tr class="text-sm text-gray-900"><td class="px-6 py-4 whitespace-nowrap font-medium">${m.label}</td><td class="px-6 py-4">${m.visitors.toLocaleString()}</td><td class="px-6 py-4">${m.deals.toLocaleString()}</td><td class="px-6 py-4 font-semibold">${(m.conversionRate * 100).toFixed(1)}%</td></tr>`;
+            });
+            table.innerHTML = theadHTML + tbodyHTML + `</tbody>`;
+        };
+        
+        // Tab functionality
+        document.querySelectorAll('.tab-button').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab-button').forEach(item => item.classList.remove('active'));
+                tab.classList.add('active');
+                const target = tab.getAttribute('data-tab');
+                document.querySelectorAll('.tab-pane').forEach(pane => {
+                    pane.id === `${target}-content` ? pane.classList.remove('hidden') : pane.classList.add('hidden');
+                });
+                Object.values(charts).forEach(chart => chart.resize());
+            });
+        });
+
+        // Toggle functionality
+        document.querySelectorAll('.data-toggle').forEach(toggle => {
+            toggle.addEventListener('change', (e) => {
+                const type = e.target.dataset.type;
+                const view = e.target.checked ? 'cumulative' : 'weekly';
+                updateGenericView(type, view);
+            });
+        });
+    </script>
+</body>
+</html>
+
