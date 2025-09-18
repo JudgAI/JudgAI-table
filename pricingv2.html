@@ -350,6 +350,146 @@
             background: rgba(255, 255, 255, 0.1) !important; /* 極度透明的白色背景 */
             border-color: rgba(0, 0, 0, 0.1) !important; /* 淡色邊框 */
         }
+        
+        /* 付款方案轉換機制卡片樣式 */
+        
+        /* Light Mode - 簡潔白色卡片風格 */
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .payment-conversion-card {
+            background: #ffffff !important;
+            border: 1px solid #e5e7eb !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .scenario-card {
+            background: #ffffff !important;
+            border: 1px solid #e5e7eb !important;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08) !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .scenario-card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .special-offer-card {
+            background: #ffffff !important;
+            border: 1px solid #dbeafe !important;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08) !important;
+        }
+        
+        /* Dark Mode - 深色版本 */
+        .payment-conversion-card {
+            background: #1f2937 !important;
+            border: 1px solid #374151 !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        .scenario-card {
+            background: #1f2937;
+            border: 1px solid #374151;
+        }
+        
+        .special-offer-card {
+            background: linear-gradient(to right, rgba(30, 58, 138, 0.5), rgba(30, 64, 175, 0.5));
+            border: 1px solid #3b82f6;
+        }
+        
+        /* Dark mode 文字顏色調整 */
+        :is(html:not(.light), body:not(.light)) .payment-conversion-card .text-gray-800 {
+            color: #e5e7eb !important;
+        }
+        :is(html:not(.light), body:not(.light)) .payment-conversion-card .text-gray-700 {
+            color: #d1d5db !important;
+        }
+        :is(html:not(.light), body:not(.light)) .payment-conversion-card .text-gray-600 {
+            color: #9ca3af !important;
+        }
+        :is(html:not(.light), body:not(.light)) .payment-conversion-card .bg-white {
+            background: #374151 !important;
+        }
+        :is(html:not(.light), body:not(.light)) .payment-conversion-card .bg-gray-50 {
+            background: #4b5563 !important;
+        }
+        :is(html:not(.light), body:not(.light)) .payment-conversion-card .border-gray-200 {
+            border-color: #4b5563 !important;
+        }
+        :is(html:not(.light), body:not(.light)) .payment-conversion-card .bg-gradient-to-r {
+            background: linear-gradient(to right, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1)) !important;
+        }
+        
+        /* 新增語義化類名樣式 - Light Mode Pure White */
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .conversion-title {
+            color: #111827 !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .conversion-subtitle {
+            color: #374151 !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .scenario-card {
+            background: #ffffff !important;
+            border: 1px solid #e5e7eb !important;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08) !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .scenario-card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .scenario-text {
+            color: #111827 !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .special-offer-card {
+            background: #ffffff !important;
+            border: 1px solid #dbeafe !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .special-offer-text {
+            color: #111827 !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .contact-info-card {
+            background: #ffffff !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .contact-text {
+            color: #374151 !important;
+        }
+        
+        /* Dark Mode Fallbacks for semantic classes */
+        .conversion-title {
+            color: #f9fafb;
+        }
+        
+        .conversion-subtitle {
+            color: #d1d5db;
+        }
+        
+        .scenario-card {
+            background: #1f2937;
+            border: 1px solid #374151;
+        }
+        
+        .scenario-text {
+            color: #d1d5db;
+        }
+        
+        .special-offer-card {
+            background: linear-gradient(to right, rgba(30, 58, 138, 0.5), rgba(30, 64, 175, 0.5));
+            border: 1px solid #3b82f6;
+        }
+        
+        .special-offer-text {
+            color: #e5e7eb;
+        }
+        
+        .contact-info-card {
+            background: #374151;
+        }
+        
+        .contact-text {
+            color: #d1d5db;
+        }
         /* 讓主卡片背景在light mode更透明 */
         :is(html.light, body.light, [data-theme="light"], .theme-light) .free-trial-card {
             background: rgba(255, 255, 255, 0.05) !important; /* 極度透明的背景 */
@@ -675,7 +815,7 @@
                                     <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                                     </svg>
-                                    送10萬字自用資料庫額度
+                                    送5萬字自用資料庫額度
                                 </li>
                             </ul>
                         </div>
@@ -744,6 +884,75 @@
                         <button onclick="showTermsModal('專業版年繳')" class="cta-button mt-8 w-full text-white font-bold py-3 rounded-lg">選擇年繳方案</button>
                     </div>
                 </div>
+
+                
+                <!-- 付款方案轉換機制 -->
+                <div class="comparison-card p-6 rounded-2xl">
+                    <div class="text-center mb-8">
+                        <h3 class="font-orbitron text-2xl md:text-3xl font-bold gradient-text">
+                            付款方案轉換機制
+                        </h3>
+                        <p class="mt-3 text-lg text-gray-300">為您提供靈活的付款方式調整服務</p>
+                    </div>
+
+                    <div class="comparison-card p-6 rounded-2xl">
+                        <div class="mb-8">
+                            <h4 class="font-bold text-white text-lg text-center">月繳 → 年繳轉換流程</h4>
+                            <p class="ont-bold text-white text-lg text-center mb-8">我們提供無縫的付款方式轉換，將月繳退款並協助您轉為年繳優惠方案</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                                <!-- 情境一 -->
+                                <div class="comparison-card p-6 rounded-2xl">
+                                    <div class="flex items-center mb-4">
+                                        <span class="text-2xl mr-3">📅</span>
+                                        <h5 class="font-bold text-white text-lg">情境一：短期使用後轉換</h5>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div class="bg-blue-900/20 rounded-lg p-3">
+                                            <p class="text-gray-300 text-sm"><span class="font-bold text-cyan-400">時間範例：</span></p>
+                                            <p class="text-gray-300 text-sm ml-2">9/1 - 9/3 使用月繳方案後決定轉年繳</p>
+                                        </div>
+                                        <div class="bg-green-900/20 rounded-lg p-3">
+                                            <p class="text-gray-300 text-sm"><span class="font-bold text-green-400">處理方式：</span></p>
+                                            <p class="text-gray-300 text-sm ml-2">刷退月繳費用 <span class="font-bold text-white">NT$1,574</span>，並協助申請年繳方案 <span class="font-bold text-yellow-400">NT$18,888</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 情境二 -->
+                                <div class="comparison-card p-6 rounded-2xl">
+                                    <div class="flex items-center mb-4">
+                                        <span class="text-2xl mr-3">📅</span>
+                                        <h5 class="font-bold text-white text-lg">情境二：月度中期轉換</h5>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div class="bg-blue-900/20 rounded-lg p-3">
+                                            <p class="text-gray-300 text-sm"><span class="font-bold text-cyan-400">時間範例：</span></p>
+                                            <p class="text-gray-300 text-sm ml-2">9/1 - 9/30 已繳交月繳費用 NT$1,574</p>
+                                        </div>
+                                        <div class="bg-green-900/20 rounded-lg p-3">
+                                            <p class="text-gray-300 text-sm"><span class="font-bold text-green-400">處理方式：</span></p>
+                                            <p class="text-gray-300 text-sm ml-2">取消後續月繳扣款，轉為年繳 <span class="font-bold text-yellow-400">NT$18,888</span> <span class="text-green-400 font-medium">(贈送額外1個月)</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 貼心服務加碼 -->
+                            <div class="comparison-card p-6 rounded-2xl text-center">
+                                <div class="flex items-center justify-center mb-3">
+                                    <span class="text-2xl mr-3">🎁</span>
+                                    <h5 class="font-bold text-white text-lg">貼心服務加碼</h5>
+                                </div>
+                                <p class="text-gray-300 mb-2">年繳方案到期前，我們還會額外贈送 <span class="font-bold text-yellow-400">7天緩衝期</span></p>
+                                <p class="text-gray-400 text-sm opacity-80">
+                                    <span class="text-gray-400">範例：</span> 原定 <span class="text-red-300">26/9/1</span> 到期 → 延長至 <span class="text-green-400">26/9/7</span> 到期
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
                 <!-- 其他方案選項 -->
                 <div class="mt-20">
@@ -1041,7 +1250,8 @@
                     <h2 class="font-orbitron text-3xl md:text-4xl font-bold gradient-text">
                         智慧體驗，福利加乘
                     </h2>
-                    <p class="mt-4 text-lg text-gray-300 max-w-3xl mx-auto">彈性月繳，輕鬆擁有專家級AI；分享給好友，讓您的使用期無限延長！</p>
+                    <p class="mt-4 text-lg text-gray-300 max-w-3xl mx-auto">彈性月繳，輕鬆擁有專家級AI；分享給好友，讓您的使用期無限延長！<br>
+                    <span class="text-cyan-400 font-medium">專業付款方案轉換服務，讓您的選擇更靈活</span></p>
                 </div>
 
                 <!-- Benefits Grid -->
@@ -1063,6 +1273,15 @@
                         <p class="text-gray-400 mt-2">獨家推薦計畫，介紹越多，福利越多，使用期無限延長。</p>
                     </div>
                 </div>
+
+                
+
+ <!-- <div class="comparison-card p-6 rounded-2xl">
+                        <h3 class="text-xl font-bold text-white">🏆 專業媲美專家</h3>
+                        <p class="text-gray-400 mt-2">整合千萬字法律資料庫，提供深度分析與專家級見解。</p>
+                    </div> -->
+
+
 
                 <div class="text-center mb-12">
                     <h2 class="font-orbitron text-3xl md:text-4xl font-bold gradient-text">
