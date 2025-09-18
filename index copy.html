@@ -263,138 +263,6 @@
             backdrop-filter: blur(20px);
             border: 1px solid rgba(56, 189, 248, 0.2);
         }
-
-        /* Light mode overrides */
-        :is(html.light, body.light, [data-theme="light"], .theme-light) body {
-            background-color: #ffffff;
-            color: #0f172a; /* slate-900 */
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .header-nav {
-            background: rgba(255, 255, 255, 0.9);
-            border-bottom-color: rgba(203, 213, 225, 0.8); /* slate-300 */
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .nav-link {
-            color: #0f172a !important;
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .mobile-menu {
-            background: rgba(255,255,255,0.98);
-            border-color: rgba(203,213,225,0.8);
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .hero-section {
-            background: radial-gradient(ellipse at bottom, #eef4ff 0%, #ffffff 70%);
-            color: #0f172a;
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .hero-section .text-gray-300 {
-            color: #475569 !important; /* slate-600 */
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .hero-section .text-white {
-            color: #0f172a !important; /* titles become dark */
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .plan-card,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .audience-card,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .image-showcase-card {
-            background-color: rgba(255,255,255,0.8);
-            border-color: rgba(203,213,225,0.8);
-            box-shadow: 0 6px 24px rgba(2,132,199,0.06);
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .image-showcase-card img {
-            border-color: #e2e8f0; /* slate-200 */
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .audience-card h3,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .plan-card h3,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .image-showcase-card h3 {
-            color: #0f172a !important;
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .audience-card p,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .plan-card p,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .image-showcase-card p,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .text-gray-400 {
-            color: #475569 !important; /* slate-600 */
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .text-gray-300 {
-            color: #334155 !important; /* slate-700 */
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .comparison-table thead {
-            background: #e2e8f0; /* slate-200 */
-            color: #0f172a;
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .comparison-table tbody tr.bg-gray-900 {
-            background: #ffffff;
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .table-section-header {
-            background: #f1f5f9; /* slate-100 */
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) section.bg-gray-900\/50,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) section.bg-gray-900\/60 {
-            background-color: #f8fafc; /* slate-50 */
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) footer {
-            background-color: #ffffff !important;
-            border-top-color: #e2e8f0 !important; /* slate-200 */
-            color: #334155 !important;
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) footer h3,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) footer .text-white {
-            color: #0f172a !important;
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) footer .text-gray-400 {
-            color: #475569 !important;
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) footer .bg-blue-600\/20 {
-            background-color: rgba(2,132,199,0.12) !important; /* cyan-like chip bg */
-            color: #0369a1 !important; /* cyan-700 text */
-        }
-        /* Enhanced footer text contrast for light mode - pure black for maximum clarity */
-        :is(html.light, body.light, [data-theme="light"], .theme-light) footer h3.text-white {
-            color: #000000 !important; /* pure black for titles */
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) footer .text-gray-400 {
-            color: #000000 !important; /* pure black for content */
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) footer strong {
-            color: #000000 !important; /* pure black for bold keywords */
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) footer p {
-            color: #000000 !important; /* pure black for all paragraphs */
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) footer li {
-            color: #000000 !important; /* pure black for list items */
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) footer a {
-            color: #000000 !important; /* pure black for links */
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) footer a:hover {
-            color: #374151 !important; /* slightly gray on hover for feedback */
-        }
-        /* Reduce dark overlays/masks in light mode across sections */
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .bg-cyan-900\/30,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .bg-blue-900\/30,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .bg-yellow-900\/40,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .bg-green-900\/40,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .bg-purple-900\/40,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .bg-purple-800\/50,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .bg-green-800\/50,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .bg-yellow-800\/50,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .bg-blue-800,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .bg-gray-900\/80,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .to-gray-800\/60,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .from-gray-900\/80 {
-            background-color: rgba(241,245,249,0.8) !important; /* slate-100 tint */
-            background-image: none !important;
-            color: #0f172a !important;
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .border-gray-700,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .border-gray-700\/50,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .border-gray-600,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .border-gray-600\/50 {
-            border-color: #cbd5e1 !important; /* slate-300 */
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .text-white {
-            color: #0f172a !important;
-        }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .text-gray-200 {
-            color: #334155 !important; /* slate-700 */
-        }
     </style>
 </head>
 <body class="text-gray-200">
@@ -412,9 +280,6 @@
                 <nav class="hidden md:flex space-x-8">
                     <a href="index.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">
                         首頁
-                    </a>
-                    <a href="pricingv2.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">
-                        方案定價
                     </a>
                     <a href="column_article.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">
                         AI行銷與業務專欄
@@ -447,9 +312,6 @@
                 <div class="flex flex-col space-y-3 px-4">
                     <a href="index.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2">
                         首頁
-                    </a>
-                    <a href="pricingv2.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2">
-                        方案定價
                     </a>
                     <a href="column_article.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2">
                         AI行銷與業務專欄
@@ -512,8 +374,8 @@
                         <a href="https://aistudy.pse.is/insurance-bot" target="_blank" class="cta-button inline-block text-white font-bold py-3 px-8 rounded-lg text-lg">
                             立即開始免費試用 →
                         </a>
-                        <a href="pricingv2.html" class="cta-button inline-block text-white font-bold py-3 px-8 rounded-lg text-lg" style="background: linear-gradient(90deg, #a78bfa, #f472b6);">
-                            3億字法險專業版免費體驗！
+                        <a href="#promotion-section" class="cta-button inline-block text-white font-bold py-3 px-8 rounded-lg text-lg" style="background: linear-gradient(90deg, #a78bfa, #f472b6);">
+                            推薦獎勵計畫！
                         </a>
                         <a href="#comparison-table" class="cta-button-secondary inline-block font-bold py-3 px-8 rounded-lg text-lg">
                             了解更多功能
@@ -1461,9 +1323,6 @@
             });
         });
     </script>
-    
-    <!-- 主題切換管理器 -->
-    <script src="js/theme-manager.js"></script>
 
 </body>
 </html>
