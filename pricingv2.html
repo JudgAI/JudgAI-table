@@ -1455,6 +1455,14 @@
     </div>
 
     <script>
+        function acceptTerms() {
+    window.location.href = "https://cart.cashier.ecpay.com.tw/qp/ymw3";
+}
+
+function closeTermsModal() {
+    document.getElementById("termsModal").classList.add("hidden");
+}
+        
         // 星空背景生成
         function createStars() {
             const starsContainer = document.querySelector('.stars');
