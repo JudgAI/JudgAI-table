@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO 優化標籤 -->
+    <title>方案定價 | 奇點 JudgAI | AI保險科技平台</title>
+    <meta name="description" content="奇點 JudgAI 定價方案 - 提供免費版、體驗版、標準版、專業版等多種選擇，滿足不同用戶需求。專業AI保險科技服務，月付、年付靈活選擇。">
+    <meta name="keywords" content="JudgAI定價, AI保險方案, 保險科技價格, 專業版, 標準版, 體驗版">
+    <meta name="author" content="奇點 JudgAI">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Favicon 和圖示 -->
+    <link rel="icon" type="image/png" href="奇點.png">
+    <link rel="apple-touch-icon" href="奇點.png">
+    
+    <!-- 字體和樣式 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 承襲 index.html 的設計風格 */
+        body {
+            font-family: 'Noto Sans TC', 'Inter', sans-serif;
+            background-color: #050816; /* 深邃星空背景 */
+        }
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 0.05em;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #38bdf8, #a78bfa);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-section {
+            position: relative;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+            overflow: hidden;
+        }
+        .plan-card, .comparison-card {
+            background-color: rgba(17, 24, 39, 0.8); /* 半透明玻璃效果 */
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+        .plan-card:hover, .comparison-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(56, 189, 248, 0.6);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
+        }
+        .popular-badge {
+            background: linear-gradient(90deg, #38bdf8, #a78bfa);
+            box-shadow: 0 0 15px #38bdf8;
+        }
+        .cta-button {
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            transition: all 0.3s ease-in-out;
+        }
+        .cta-button:hover {
+            box-shadow: 0 0 20px #38bdf8;
+            transform: scale(1.05);
+        }
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .feature-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .comparison-table th, .comparison-table td {
+            border-color: rgba(56, 189, 248, 0.2);
+            vertical-align: middle;
+        }
+        .table-section-header {
+            background-color: rgba(17, 24, 39, 0.9);
+        }
+        .check-icon {
+            color: #34d399; /* 綠色 */
+            font-weight: bold;
+        }
+        .cross-icon {
+            color: #f87171; /* 紅色 */
+            font-weight: bold;
+        }
+        
+        /* Modal 樣式 */
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .modal-content {
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.hidden .modal-content {
+            transform: scale(0.95);
+        }
+        
+        /* 動畫效果 */
+        @keyframes pulse-glow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(56, 189, 248, 0.3), 0 0 40px rgba(168, 139, 250, 0.2);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(56, 189, 248, 0.5), 0 0 60px rgba(168, 139, 250, 0.3);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* 星空背景動畫 */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        /* 響應式優化 */
+        @media (max-width: 768px) {
+            .plan-card {
+                margin-bottom: 2rem;
+            }
+            
+            .comparison-table {
+                font-size: 0.75rem;
+            }
+            
+            .comparison-table th,
+            .comparison-table td {
+                padding: 0.5rem;
+            }
+        }
+        
+        /* 滾動條美化 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(17, 24, 39, 0.5);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(56, 189, 248, 0.5);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(56, 189, 248, 0.7);
+        }
+        
+        /* 載入動畫 */
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .slide-in {
+            animation: slideInLeft 0.6s ease-out;
+        }
+        
+        /* 價格突出效果 */
+        .pricing-highlight {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(168, 139, 250, 0.1));
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+        
+        /* 特色標籤 */
+        .feature-badge {
+            background: linear-gradient(90deg, #f59e0b, #f97316);
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+        }
+        
+        /* Header 樣式 */
+        .header-nav {
+            background: rgba(17, 24, 39, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(55, 65, 81, 0.3);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #06b6d4, #3b82f6);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link:hover::before {
+            width: 100%;
+        }
+        
+        .nav-link:hover {
+            transform: translateY(-1px);
+        }
+        
+        .mobile-menu {
+            background: rgba(17, 24, 39, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(55, 65, 81, 0.3);
+        }
+
+        /* Light mode overrides for hero and tips */
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .hero-section {
+            background: radial-gradient(ellipse at bottom, #eef4ff 0%, #ffffff 70%);
+        }
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .hero-section .text-gray-300 {
+            color: #475569 !important; /* slate-600 for better readability on light */
+        }
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .hero-section .text-gray-200 {
+            color: #334155 !important; /* slate-700 */
+        }
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .free-trial-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f7fbff 100%) !important;
+            border-color: rgba(2, 132, 199, 0.25) !important; /* cyan-600 @ 25% */
+            box-shadow: 0 10px 30px rgba(2, 132, 199, 0.08), 0 0 0 1px rgba(148, 163, 184, 0.15);
+        }
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .free-trial-card .stats-box {
+            background: linear-gradient(90deg, #f8fbff 0%, #f2f6ff 100%) !important;
+            border-color: #e2e8f0 !important; /* slate-200 */
+        }
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .free-trial-card .text-gray-400 {
+            color: #64748b !important; /* slate-500 */
+        }
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .free-trial-card .stat-number {
+            color: #000000 !important; /* pure black for maximum contrast */
+            background: none !important;
+            -webkit-background-clip: initial !important;
+            background-clip: initial !important;
+            -webkit-text-fill-color: initial !important;
+            filter: none !important;
+            font-weight: 700 !important; /* bold for emphasis */
+        }
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .free-trial-card .stat-label {
+            background: linear-gradient(to right, #22d3ee, #3b82f6, #a855f7) !important; /* cyan-400 -> blue-500 -> purple-500 gradient */
+            -webkit-background-clip: text !important;
+            background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            font-weight: 600 !important; /* semi-bold for clarity */
+        }
+        /* Light mode: 統計框背景調整 */
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .stats-box {
+            background: rgba(255, 255, 255, 0.8) !important; /* 半透明白色背景 */
+            border-color: rgba(203, 213, 225, 0.5) !important; /* 淡灰色邊框 */
+        }
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .free-trial-tip {
+            background: linear-gradient(90deg, #e6faff, #eef2ff) !important;
+            border-color: #7dd3fc !important; /* cyan-300 */
+        }
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .free-trial-tip p {
+            color: #0e7490 !important; /* cyan-700 for strong contrast */
+        }
+        /* Light mode: 改用清潔的白色邊框發光效果 */
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .free-trial-card {
+            background: linear-gradient(135deg, #ffffff, #f8fafc, #ffffff) !important;
+            border: 2px solid transparent !important;
+            background-clip: padding-box !important;
+            box-shadow: 0 0 0 2px #e2e8f0, 0 25px 50px -12px rgba(0, 0, 0, 0.1) !important;
+        }
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .free-trial-card .stat-divider {
+            background: linear-gradient(to bottom, transparent, #cbd5e1, transparent) !important; /* slate-300 divider */
+        }
+        
+        /* 手機版響應式改進 */
+        @media (max-width: 640px) {
+            .free-trial-card {
+                margin: 0 1rem !important;
+            }
+            .stats-box {
+                padding: 1rem !important;
+            }
+            .stat-number {
+                font-size: 1.25rem !important; /* text-xl */
+                line-height: 1.75rem !important;
+            }
+            .stat-label {
+                font-size: 0.75rem !important; /* text-xs */
+            }
+            /* 優化手機版字體大小 */
+            .font-orbitron {
+                letter-spacing: -0.025em !important;
+            }
+        }
+        /* 讓統計框背景在light mode更透明 */
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .stats-box {
+            background: rgba(255, 255, 255, 0.1) !important; /* 極度透明的白色背景 */
+            border-color: rgba(0, 0, 0, 0.1) !important; /* 淡色邊框 */
+        }
+        
+        /* 付款方案轉換機制卡片樣式 */
+        
+        /* Light Mode - 簡潔白色卡片風格 */
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .payment-conversion-card {
+            background: #ffffff !important;
+            border: 1px solid #e5e7eb !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .scenario-card {
+            background: #ffffff !important;
+            border: 1px solid #e5e7eb !important;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08) !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .scenario-card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .special-offer-card {
+            background: #ffffff !important;
+            border: 1px solid #dbeafe !important;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08) !important;
+        }
+        
+        /* Dark Mode - 深色版本 */
+        .payment-conversion-card {
+            background: #1f2937 !important;
+            border: 1px solid #374151 !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        .scenario-card {
+            background: #1f2937;
+            border: 1px solid #374151;
+        }
+        
+        .special-offer-card {
+            background: linear-gradient(to right, rgba(30, 58, 138, 0.5), rgba(30, 64, 175, 0.5));
+            border: 1px solid #3b82f6;
+        }
+        
+        /* Dark mode 文字顏色調整 */
+        :is(html:not(.light), body:not(.light)) .payment-conversion-card .text-gray-800 {
+            color: #e5e7eb !important;
+        }
+        :is(html:not(.light), body:not(.light)) .payment-conversion-card .text-gray-700 {
+            color: #d1d5db !important;
+        }
+        :is(html:not(.light), body:not(.light)) .payment-conversion-card .text-gray-600 {
+            color: #9ca3af !important;
+        }
+        :is(html:not(.light), body:not(.light)) .payment-conversion-card .bg-white {
+            background: #374151 !important;
+        }
+        :is(html:not(.light), body:not(.light)) .payment-conversion-card .bg-gray-50 {
+            background: #4b5563 !important;
+        }
+        :is(html:not(.light), body:not(.light)) .payment-conversion-card .border-gray-200 {
+            border-color: #4b5563 !important;
+        }
+        :is(html:not(.light), body:not(.light)) .payment-conversion-card .bg-gradient-to-r {
+            background: linear-gradient(to right, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1)) !important;
+        }
+        
+        /* 新增語義化類名樣式 - Light Mode Pure White */
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .conversion-title {
+            color: #111827 !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .conversion-subtitle {
+            color: #374151 !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .scenario-card {
+            background: #ffffff !important;
+            border: 1px solid #e5e7eb !important;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08) !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .scenario-card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .scenario-text {
+            color: #111827 !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .special-offer-card {
+            background: #ffffff !important;
+            border: 1px solid #dbeafe !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .special-offer-text {
+            color: #111827 !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .contact-info-card {
+            background: #ffffff !important;
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .contact-text {
+            color: #374151 !important;
+        }
+        
+        /* Dark Mode Fallbacks for semantic classes */
+        .conversion-title {
+            color: #f9fafb;
+        }
+        
+        .conversion-subtitle {
+            color: #d1d5db;
+        }
+        
+        .scenario-card {
+            background: #1f2937;
+            border: 1px solid #374151;
+        }
+        
+        .scenario-text {
+            color: #d1d5db;
+        }
+        
+        .special-offer-card {
+            background: linear-gradient(to right, rgba(30, 58, 138, 0.5), rgba(30, 64, 175, 0.5));
+            border: 1px solid #3b82f6;
+        }
+        
+        .special-offer-text {
+            color: #e5e7eb;
+        }
+        
+        .contact-info-card {
+            background: #374151;
+        }
+        
+        .contact-text {
+            color: #d1d5db;
+        }
+        /* 讓主卡片背景在light mode更透明 */
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .free-trial-card {
+            background: rgba(255, 255, 255, 0.05) !important; /* 極度透明的背景 */
+            border-color: rgba(0, 0, 0, 0.1) !important; /* 淡色邊框 */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+    <!-- 星空背景 -->
+    <div class="stars"></div>
+
+    <!-- 導航列 -->
+    <header class="header-nav fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo 和品牌名稱 -->
+                <div class="flex items-center space-x-3">
+                    <img src="奇點.png" alt="JudgAI Logo" class="h-10 w-10 rounded-full">
+                    <span class="font-orbitron text-xl font-bold gradient-text">JudgAI</span>
+                </div>
+                
+                <!-- 桌面版導航 -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">
+                        首頁
+                    </a>
+                    <a href="pricingv2.html" class="nav-link text-cyan-400 font-medium py-2 px-3">
+                        方案定價
+                    </a>
+                    <a href="column_article.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">
+                        AI行銷與業務專欄
+                    </a>
+                    <a href="insur_policy_demo.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">
+                        AI保單銷售手冊
+                    </a>
+                    <a href="index.html#live-sharing" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">
+                        直播分享
+                    </a>
+                </nav>
+                
+                <!-- CTA 按鈕 -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="https://line.me/ti/p/ECTAxiLRSh" target="_blank" class="cta-button text-white font-medium py-2 px-6 rounded-lg text-sm">
+                        聯絡我們
+                    </a>
+                </div>
+                
+                <!-- 手機版菜單按鈕 -->
+                <button id="mobile-menu-button" class="md:hidden text-gray-200 hover:text-blue-400 focus:outline-none">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- 手機版導航菜單 -->
+            <div id="mobile-menu" class="md:hidden hidden mobile-menu rounded-lg mt-2 py-4">
+                <div class="flex flex-col space-y-3 px-4">
+                    <a href="index.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2">
+                        首頁
+                    </a>
+                    <a href="pricingv2.html" class="nav-link text-cyan-400 font-medium py-2">
+                        方案定價
+                    </a>
+                    <a href="column_article.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2">
+                        AI行銷與業務專欄
+                    </a>
+                    <a href="insur_policy_demo.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2">
+                        AI保單銷售手冊
+                    </a>
+                    <a href="index.html#live-sharing" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2">
+                        直播分享
+                    </a>
+                    <div class="pt-3 border-t border-gray-700">
+                        <a href="https://aistudy.pse.is/insurance-bot" target="_blank" class="cta-button block text-center text-white font-medium py-2 px-6 rounded-lg text-sm">
+                            免費試用
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-16">
+        <!-- Hero Section -->
+        <section class="hero-section py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div class="fade-in">
+                    <h1 class="font-orbitron text-4xl md:text-6xl font-bold mb-6 gradient-text">方案定價</h1>
+                    <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">選擇最適合您的方案，開啟AI保險科技之旅</p>
+                    
+                    <!-- 7天免費試用 特別強調 - 科技感專業版 -->
+                    <div class="mb-12">
+                        <div class="relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl border-2 border-transparent bg-clip-padding shadow-2xl free-trial-card"
+                             style="background-image: linear-gradient(135deg, #1f2937, #111827, #1f2937), linear-gradient(135deg, #06b6d4, #3b82f6, #8b5cf6, #06b6d4); background-origin: border-box; background-clip: content-box, border-box;">
+                            <!-- 發光邊框效果 -->
+                            <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 rounded-2xl blur-sm opacity-30 animate-pulse"></div>
+                            
+                            <!-- 頂部彩色線條 -->
+                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500"></div>
+                            
+                            <!-- 增強浮動粒子效果 -->
+                            <div class="absolute inset-0 overflow-hidden">
+                                <div class="absolute top-4 left-8 w-2 h-2 bg-cyan-400 rounded-full opacity-60 animate-pulse"></div>
+                                <div class="absolute top-12 right-12 w-1 h-1 bg-blue-400 rounded-full opacity-80 animate-ping"></div>
+                                <div class="absolute bottom-8 left-16 w-1.5 h-1.5 bg-purple-400 rounded-full opacity-70 animate-pulse" style="animation-delay: 1s;"></div>
+                                <div class="absolute bottom-16 right-8 w-1 h-1 bg-cyan-300 rounded-full opacity-60 animate-ping" style="animation-delay: 2s;"></div>
+                                <!-- 新增更多粒子 -->
+                                <div class="absolute top-20 left-4 w-1 h-1 bg-blue-300 rounded-full opacity-50 animate-pulse" style="animation-delay: 0.5s;"></div>
+                                <div class="absolute top-6 right-20 w-1.5 h-1.5 bg-purple-300 rounded-full opacity-40 animate-ping" style="animation-delay: 1.5s;"></div>
+                                <div class="absolute bottom-4 left-1/3 w-1 h-1 bg-cyan-500 rounded-full opacity-60 animate-pulse" style="animation-delay: 3s;"></div>
+                                <div class="absolute bottom-20 right-1/4 w-2 h-2 bg-blue-500 rounded-full opacity-30 animate-ping" style="animation-delay: 2.5s;"></div>
+                            </div>
+                            
+                            <div class="relative px-4 py-6 sm:px-8 sm:py-8 md:px-12 md:py-10">
+                                <!-- 主標題區域 -->
+                                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-4">
+                                    <!-- 科技圖標 -->
+                                    <div class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl shadow-lg">
+                                        <svg class="w-6 h-6 sm:w-7 sm:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                        </svg>
+                                    </div>
+                                    
+                                    <div class="text-center">
+                                        <h2 class="font-orbitron text-xl sm:text-2xl md:text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent leading-tight">
+                                            七天專業版完全免費試用
+                                        </h2>
+                                        <div class="mt-1 h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent"></div>
+                                    </div>
+                                    
+                                    <!-- 科技圖標 -->
+                                    <div class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-purple-500 to-blue-600 rounded-xl shadow-lg">
+                                        <svg class="w-6 h-6 sm:w-7 sm:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                
+                                <!-- 副標題與特色 -->
+                                <div class="text-center mb-6">
+                                    <p class="text-gray-300 text-lg md:text-xl font-medium mb-3">
+                                        <!-- <span class="text-cyan-400 font-bold">零風險</span> • <span class="text-blue-400 font-bold">零門檻</span> • <span class="text-purple-400 font-bold">零限制</span> -->
+                                    </p>
+                                    <div class="flex items-center justify-center gap-3 text-gray-200">
+                                    </div>
+                                </div>
+                                
+                                <!-- 數據亮點 -->
+                                <div class="bg-gradient-to-r from-gray-800/50 to-gray-700/50 rounded-xl p-4 mb-6 border border-gray-600/30 stats-box">
+                                    <!-- 手機版：垂直排列 -->
+                                    <div class="flex flex-col gap-4 sm:hidden">
+                                        <div class="text-center">
+                                            <div class="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent font-orbitron stat-number">
+                                                3億+
+                                            </div>
+                                            <div class="text-xs text-gray-400 font-medium stat-label">專業知識庫</div>
+                                        </div>
+                                        <div class="h-px bg-gradient-to-r from-transparent via-gray-500 to-transparent stat-divider"></div>
+                                        <div class="text-center">
+                                            <div class="text-xl font-bold bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent font-orbitron stat-number">
+                                                24小時全天候
+                                            </div>
+                                            <div class="text-xs text-gray-400 font-medium stat-label">AI智能服務</div>
+                                        </div>
+                                        <div class="h-px bg-gradient-to-r from-transparent via-gray-500 to-transparent stat-divider"></div>
+                                        <div class="text-center">
+                                            <div class="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent font-orbitron stat-number">
+                                                法險AI大模型
+                                            </div>
+                                            <div class="text-xs text-gray-400 font-medium stat-label">專業服務</div>
+                                        </div>
+                                    </div>
+                                    <!-- 平板/桌面版：水平排列 -->
+                                    <div class="hidden sm:flex items-center justify-center gap-8">
+                                        <div class="text-center">
+                                            <div class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent font-orbitron stat-number">
+                                                3億+
+                                            </div>
+                                            <div class="text-xs text-gray-400 font-medium stat-label">專業知識庫</div>
+                                        </div>
+                                        <div class="w-px h-12 bg-gradient-to-b from-transparent via-gray-500 to-transparent stat-divider"></div>
+                                        <div class="text-center">
+                                            <div class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent font-orbitron stat-number">
+                                                24小時全天候
+                                            </div>
+                                            <div class="text-xs text-gray-400 font-medium stat-label">AI智能服務</div>
+                                        </div>
+                                        <div class="w-px h-12 bg-gradient-to-b from-transparent via-gray-500 to-transparent stat-divider"></div>
+                                        <div class="text-center">
+                                            <div class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent font-orbitron stat-number">
+                                                法險AI大模型
+                                            </div>
+                                            <div class="text-xs text-gray-400 font-medium stat-label">專業服務</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- CTA 按鈕 -->
+                                <div class="text-center">
+                                    <a href="#pricing-plans" 
+                                       class="inline-flex items-center justify-center gap-2 sm:gap-3 bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-600 hover:via-blue-700 hover:to-purple-700 text-white font-bold py-3 px-6 sm:py-4 sm:px-8 rounded-xl text-base sm:text-lg transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl border border-cyan-400/30 w-full sm:w-auto">
+                                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                        </svg>
+                                        <span class="font-orbitron">啟動「專業版」免費體驗</span>
+                                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                                        </svg>
+                                    </a>
+                                        </svg>
+                                        <!-- <span class="font-orbitron">啟動「專業版」免費體驗</span> -->
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                                        </svg>
+                                    </a>
+                                    <!-- <p class="text-xs text-gray-500 mt-2">點擊即可開始 • 30秒快速註冊</p> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Plans Section -->
+        <section id="pricing-plans" class="py-20 scroll-mt-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="font-orbitron text-3xl md:text-4xl font-bold text-center mb-16 gradient-text">專業版方案</h2>
+                
+                <!-- 專業版定價卡片 - 月繳、半年繳、年繳 -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+                    <!-- 專業版月繳 -->
+                    <div class="plan-card rounded-2xl p-8 flex flex-col relative">
+                        <div class="absolute top-4 right-4">
+                            <span class="feature-badge">彈性月付</span>
+                        </div>
+                        <div class="flex-grow">
+                            <h3 class="font-orbitron text-2xl font-bold text-white mb-4">專業版 月繳</h3>
+                            
+                            <!-- 免費試用提示 -->
+                            <div class="mb-4 p-3 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-lg border border-cyan-400/30 free-trial-tip">
+                                <p class="text-cyan-300 text-sm font-semibold">✨ 七天專業版完全免費試用</p>
+                            </div>
+                            
+                            <p class="text-gray-400 mb-6">靈活付款，隨時調整</p>
+                            <div class="mb-8">
+                                <span class="text-4xl font-bold text-white">NT$1,688</span>
+                                <span class="text-lg text-gray-400 ml-1">/ 月</span>
+                            </div>
+                            
+                            <!-- 月繳功能 -->
+                            <ul class="space-y-3 text-sm">
+                                <li class="feature-item">
+                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
+                                    </svg>
+                                    附有Line與網頁版：讓您手機/平板/筆電/桌機都能夠無地域限制來使用
+                                </li>
+                                <li class="feature-item">
+                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    專屬AI大語言模型
+                                </li>
+                                <li class="feature-item">
+                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                    </svg>
+                                    擁有獨家整合超過3億字知識庫
+                                </li>
+                                <li class="feature-item">
+                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    知識庫持續更新
+                                </li>
+                                <li class="feature-item">
+                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"></path>
+                                    </svg>
+                                    支援智慧線上搜尋
+                                </li>
+                                <li class="feature-item">
+                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    深度思考功能(汲取專家經驗)
+                                </li>
+                            </ul>
+                        </div>
+                        <button onclick="showTermsModal('專業版月繳')" class="cta-button mt-8 w-full text-white font-bold py-3 rounded-lg">選擇月繳方案</button>
+                    </div>
+
+                    <!-- 專業版半年繳 -->
+                    <div class="relative plan-card rounded-2xl p-8 flex flex-col border-2 border-yellow-400">
+                        <div class="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2 px-4 py-1 text-sm font-bold text-gray-900 rounded-full bg-gradient-to-r from-yellow-400 to-orange-400">
+                            優惠加值
+                        </div>
+                        <div class="flex-grow">
+                            <h3 class="font-orbitron text-2xl font-bold text-white mb-4">專業版 半年繳</h3>
+                            
+                            <!-- 免費試用提示 -->
+                            <div class="mb-4 p-3 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-lg border border-cyan-400/30 free-trial-tip">
+                                <p class="text-cyan-300 text-sm font-semibold">✨ 七天專業版完全免費試用</p>
+                            </div>
+                            
+                            <p class="text-gray-400 mb-6">省錢優惠，加贈資料庫額度</p>
+                            <div class="mb-8">
+                                <span class="text-4xl font-bold text-white">NT$9,500</span>
+                                <span class="text-lg text-gray-400 ml-1">/ 半年</span>
+                            </div>
+                            
+                            <!-- 半年繳功能 -->
+                            <ul class="space-y-3 text-sm">
+                                <li class="feature-item">
+                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    含有「專業版 月繳」方案所有功能，再外加：
+                                </li>
+                                <li class="feature-item pl-8">
+                                    <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                    </svg>
+                                    送5萬字自用資料庫額度
+                                </li>
+                            </ul>
+                        </div>
+                        <button onclick="showTermsModal('專業版半年繳')" class="cta-button mt-8 w-full text-white font-bold py-3 rounded-lg">選擇半年繳方案</button>
+                    </div>
+
+                    <!-- 專業版年繳 -->
+                    <div class="relative plan-card rounded-2xl p-8 flex flex-col border-2 border-cyan-400">
+                        <div class="popular-badge absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2 px-4 py-1 text-sm font-bold text-gray-900 rounded-full">
+                            最受歡迎
+                        </div>
+                        <div class="flex-grow">
+                            <h3 class="font-orbitron text-2xl font-bold text-white mb-4">專業版 年繳</h3>
+                            
+                            <!-- 免費試用提示 -->
+                            <div class="mb-4 p-3 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-lg border border-cyan-400/30 free-trial-tip">
+                                <p class="text-cyan-300 text-sm font-semibold">✨ 七天專業版完全免費試用</p>
+                            </div>
+                            
+                            <p class="text-gray-400 mb-6">最超值選擇，贈送最多</p>
+                            <div class="mb-8">
+                                <span class="text-4xl font-bold text-white">NT$18,888</span>
+                                <span class="text-lg text-gray-400 ml-1">/ 年</span>
+                            </div>
+                            
+                            <!-- 年繳功能 -->
+                            <ul class="space-y-3 text-sm">
+                                <li class="feature-item">
+                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    含有「專業版 月繳」方案所有功能，再外加：
+                                </li>
+                                <li class="feature-item pl-8">
+                                    <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M12 2l3.09 6.26L22 9l-5 4.87L18.18 22 12 18.77 5.82 22 7 13.87 2 9l6.91-.74L12 2z"></path>
+                                    </svg>
+                                    多送1個月專業版
+                                </li>
+                                <li class="feature-item pl-8">
+                                    <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"></path>
+                                    </svg>
+                                    10萬字自用資料庫額度
+                                </li>
+                                <li class="feature-item pl-8">
+                                    <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+                                    </svg>
+                                    實戰銷售AI助理－保單特色、頂尖業務、客戶群組助理
+                                </li>
+                                <li class="feature-item pl-8">
+                                    <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path>
+                                    </svg>
+                                    可上傳自訂知識庫，回答更加客製化
+                                </li>
+                                <li class="feature-item pl-8">
+                                    <svg class="feature-icon text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    網頁版保有歷程記錄 - 包含實戰銷售AI助理所有記錄
+                                </li>
+                            </ul>
+                        </div>
+                        <button onclick="showTermsModal('專業版年繳')" class="cta-button mt-8 w-full text-white font-bold py-3 rounded-lg">選擇年繳方案</button>
+                    </div>
+                </div>
+
+                
+                <!-- 付款方案轉換機制 -->
+                <div class="comparison-card p-6 rounded-2xl">
+                    <div class="text-center mb-8">
+                        <h3 class="font-orbitron text-2xl md:text-3xl font-bold gradient-text">
+                            付款方案轉換機制
+                        </h3>
+                        <p class="mt-3 text-lg text-gray-300">為您提供靈活的付款方式調整服務</p>
+                    </div>
+
+                    <div class="comparison-card p-6 rounded-2xl">
+                        <div class="mb-8">
+                            <h4 class="font-bold text-white text-lg text-center">月繳 → 年繳轉換流程</h4>
+                            <p class="ont-bold text-white text-lg text-center mb-8">我們提供無縫的付款方式轉換，將月繳退款並協助您轉為年繳優惠方案</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                                <!-- 情境一 -->
+                                <div class="comparison-card p-6 rounded-2xl">
+                                    <div class="flex items-center mb-4">
+                                        <span class="text-2xl mr-3">📅</span>
+                                        <h5 class="font-bold text-white text-lg">情境一：短期使用後轉換</h5>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div class="bg-blue-900/20 rounded-lg p-3">
+                                            <p class="text-gray-300 text-sm"><span class="font-bold text-cyan-400">時間範例：</span></p>
+                                            <p class="text-gray-300 text-sm ml-2">9/1 - 9/3 使用月繳方案後決定轉年繳</p>
+                                        </div>
+                                        <div class="bg-green-900/20 rounded-lg p-3">
+                                            <p class="text-gray-300 text-sm"><span class="font-bold text-green-400">處理方式：</span></p>
+                                            <p class="text-gray-300 text-sm ml-2">刷退月繳費用 <span class="font-bold text-white">NT$1,574</span>，並協助申請年繳方案 <span class="font-bold text-yellow-400">NT$18,888</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 情境二 -->
+                                <div class="comparison-card p-6 rounded-2xl">
+                                    <div class="flex items-center mb-4">
+                                        <span class="text-2xl mr-3">📅</span>
+                                        <h5 class="font-bold text-white text-lg">情境二：月度中期轉換</h5>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div class="bg-blue-900/20 rounded-lg p-3">
+                                            <p class="text-gray-300 text-sm"><span class="font-bold text-cyan-400">時間範例：</span></p>
+                                            <p class="text-gray-300 text-sm ml-2">9/1 - 9/30 已繳交月繳費用 NT$1,574</p>
+                                        </div>
+                                        <div class="bg-green-900/20 rounded-lg p-3">
+                                            <p class="text-gray-300 text-sm"><span class="font-bold text-green-400">處理方式：</span></p>
+                                            <p class="text-gray-300 text-sm ml-2">取消後續月繳扣款，轉為年繳 <span class="font-bold text-yellow-400">NT$18,888</span> <span class="text-green-400 font-medium">(贈送額外1個月)</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 貼心服務加碼 -->
+                            <div class="comparison-card p-6 rounded-2xl text-center">
+                                <div class="flex items-center justify-center mb-3">
+                                    <span class="text-2xl mr-3">🎁</span>
+                                    <h5 class="font-bold text-white text-lg">貼心服務加碼</h5>
+                                </div>
+                                <p class="text-gray-300 mb-2">年繳方案到期前，我們還會額外贈送 <span class="font-bold text-yellow-400">7天緩衝期</span></p>
+                                <p class="text-gray-400 text-sm opacity-80">
+                                    <span class="text-gray-400">範例：</span> 原定 <span class="text-red-300">26/9/1</span> 到期 → 延長至 <span class="text-green-400">26/9/7</span> 到期
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- 其他方案選項 -->
+                <div class="mt-20">
+                    <h3 class="font-orbitron text-2xl font-bold text-center mb-12 gradient-text">其他方案選項</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- 免費版 -->
+                    <div class="plan-card rounded-2xl p-8 flex flex-col">
+                        <div class="flex-grow">
+                            <h3 class="font-orbitron text-2xl font-bold text-white mb-4">免費版</h3>
+                            <p class="text-gray-400 mb-6">適合初次接觸或個人使用者</p>
+                            <div class="mb-8">
+                                <span class="text-5xl font-bold text-white">免費</span>
+                            </div>
+                            <ul class="space-y-3 text-sm">
+                                <li class="feature-item">
+                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    每日5次提問
+                                </li>
+                                <li class="feature-item">
+                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    基礎知識庫
+                                </li>
+                                <li class="feature-item">
+                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    Line機器人
+                                </li>
+                            </ul>
+                        </div>
+                        <button onclick="showTermsModal('免費版')" class="cta-button mt-8 w-full text-white font-bold py-3 rounded-lg">免費註冊</button>
+                    </div>
+
+                    <!-- 體驗版 -->
+                    <div class="plan-card rounded-2xl p-8 flex flex-col relative">
+                        <div class="absolute top-4 right-4">
+                            <span class="feature-badge">彈性月付</span>
+                        </div>
+                        <div class="flex-grow">
+                            <h3 class="font-orbitron text-2xl font-bold text-white mb-4">體驗版</h3>
+                            <p class="text-gray-400 mb-6">彈性月付，隨時可停</p>
+                            <div class="mb-8">
+                                <span class="text-4xl font-bold text-white">NT$800</span>
+                                <span class="text-lg text-gray-400 ml-1">/ 月</span>
+                            </div>
+                            <ul class="space-y-3 text-sm">
+                                <li class="feature-item">
+                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    每日15次提問
+                                </li>
+                                <li class="feature-item">
+                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    AI 2.0版模型
+                                </li>
+                                <li class="feature-item">
+                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    推薦獎勵計畫
+                                </li>
+                            </ul>
+                        </div>
+                        <button onclick="showTermsModal('體驗版')" class="cta-button mt-8 w-full text-white font-bold py-3 rounded-lg">選擇方案</button>
+                    </div>
+
+                    <!-- 標準版 -->
+                    <div class="plan-card rounded-2xl p-8 flex flex-col relative">
+                        <div class="absolute top-4 right-4">
+                            <!-- <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded-full font-bold">網頁版</span> -->
+                        </div>
+                        <div class="flex-grow">
+                            <h3 class="font-orbitron text-2xl font-bold text-white mb-4">標準版</h3>
+                            <p class="text-gray-400 mb-6">適合專業人士與小型團隊</p>
+                            <div class="mb-8">
+                                <span class="text-4xl font-bold text-white">NT$8,888</span>
+                                <span class="text-lg text-gray-400 ml-1">/ 年</span>
+                            </div>
+                            <ul class="space-y-3 text-sm">
+                                <li class="feature-item">
+                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    每日30次提問
+                                </li>
+                                <li class="feature-item">
+                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    網頁版部分服務
+                                </li>
+                                <li class="feature-item">
+                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    歷程記錄
+                                </li>
+                            </ul>
+                        </div>
+                        <button onclick="showTermsModal('標準版')" class="cta-button mt-8 w-full text-white font-bold py-3 rounded-lg">選擇方案</button>
+                    </div>
+
+                    <!-- 訂製版 -->
+                    <div class="plan-card rounded-2xl p-8 flex flex-col">
+                        <div class="flex-grow">
+                            <h3 class="font-orbitron text-2xl font-bold text-white mb-4">訂製版</h3>
+                            <p class="text-gray-400 mb-6">客製化、安全且可擴展的方案</p>
+                            <div class="mb-8">
+                                <span class="text-3xl font-bold text-white">另外洽談</span>
+                                <p class="mt-2 text-gray-400 text-sm">為您打造專屬的AI代理人</p>
+                            </div>
+                            <ul class="space-y-3 text-sm">
+                                <li class="feature-item">
+                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    個人專屬IP
+                                </li>
+                                <li class="feature-item">
+                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    專權威知識庫
+                                </li>
+                                <li class="feature-item">
+                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    客製化開發
+                                </li>
+                            </ul>
+                        </div>
+                        <a href="https://line.me/ti/p/ECTAxiLRSh" target="_blank" class="cta-button mt-8 w-full text-center text-white font-bold py-3 rounded-lg">聯絡我們</a>
+                    </div>
+                </div>
+
+                <!-- 其他付費模式 -->
+                <div class="mt-20">
+                    <h3 class="font-orbitron text-2xl font-bold text-center mb-8 gradient-text">其他付費模式</h3>
+                    <div class="plan-card rounded-2xl p-8 text-center">
+                        <h4 class="font-orbitron text-xl font-bold text-white mb-4">訂製版</h4>
+                        <p class="text-gray-400 mb-6">客製化、安全且可擴展的方案</p>
+                        <div class="mb-6">
+                            <span class="text-3xl font-bold text-white">另外洽談</span>
+                            <p class="mt-2 text-gray-400">為您打造專屬的AI代理人</p>
+                        </div>
+                        <a href="https://line.me/ti/p/ECTAxiLRSh" target="_blank" class="cta-button inline-block text-white font-bold py-3 px-8 rounded-lg">聯絡我們</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 詳細功能比較區塊（從 index.html 移植過來） -->
+        <section id="comparison-table" class="py-20 scroll-mt-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div id="comparison-table" class="mb-24 scroll-mt-20">
+                    <h2 class="font-orbitron text-3xl sm:text-4xl font-bold text-center mb-12 gradient-text">詳細功能比較</h2>
+                    <div class="overflow-x-auto rounded-lg border border-gray-700" style="max-height: 80vh;">
+                        <table class="w-full text-sm text-left comparison-table">
+                            <thead class="sticky top-0 z-10 bg-gray-800 text-xs text-white uppercase tracking-wider">
+                                <tr>
+                                    <th scope="col" class="px-6 py-4">項目</th>
+                                    <th scope="col" class="px-6 py-4 text-center">免費版</th>
+                                    <th scope="col" class="px-6 py-4 text-center">體驗版</th>
+                                    <th scope="col" class="px-6 py-4 text-center">標準版</th>
+                                    <th scope="col" class="px-6 py-4 text-center">專業版</th>
+                                    <th scope="col" class="px-6 py-4 text-center">訂製版</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Section: 基本資訊 -->
+                                <tr class="table-section-header">
+                                    <th scope="row" class="px-6 py-3 text-base font-bold text-cyan-400">基本資訊</th>
+                                    <td colspan="5"></td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">使用者</td>
+                                    <td class="px-6 py-4 text-center">免費會員</td>
+                                    <td class="px-6 py-4 text-center">付費會員</td>
+                                    <td class="px-6 py-4 text-center">付費會員</td>
+                                    <td class="px-6 py-4 text-center">付費會員</td>
+                                    <td class="px-6 py-4 text-center">專家老師</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">使用方便(LINE、網頁)<br>1.手機/平板<br>2.筆電/桌機</td>
+                                    <td class="px-6 py-4 text-center">1.Line 機器人</td>
+                                    <td class="px-6 py-4 text-center">Line 機器人</td>
+                                    <td class="px-6 py-4 text-center">1.Line 機器人<br>2.網頁 部分服務</td>
+                                    <td class="px-6 py-4 text-center">1.Line 機器人<br>2.網頁 完整服務</td>
+                                    <td class="px-6 py-4 text-center">1.個人IP<br>2.Line 機器人<br>3.網頁 完整服務</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">年費</td>
+                                    <td class="px-6 py-4 text-center">免費</td>
+                                    <td class="px-6 py-4 text-center">9,600</td>
+                                    <td class="px-6 py-4 text-center">8,888</td>
+                                    <td class="px-6 py-4 text-center">18,888</td>
+                                    <td class="px-6 py-4 text-center">洽談</td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b">
+                                    <td class="px-6 py-4 font-medium text-gray-300">月費訂閱制（彈性付款、隨時可停）</td>
+                                    <td class="px-6 py-4 text-center">-</td>
+                                    <td class="px-6 py-4 text-center">800</td>
+                                    <td class="px-6 py-4 text-center">-</td>
+                                    <td class="px-6 py-4 text-center">-</td>
+                                    <td class="px-6 py-4 text-center">-</td>
+                                </tr>
+                                <!-- Section: 主要特色 -->
+                                <tr class="table-section-header">
+                                    <th scope="row" class="px-6 py-3 text-base font-bold text-cyan-400">主要特色</th>
+                                    <td colspan="5"></td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">專屬AI<br>大語言模型</td><td class="px-6 py-4 text-center">2.0 版</td><td class="px-6 py-4 text-center">2.0 版</td><td class="px-6 py-4 text-center">2.0 版</td><td class="px-6 py-4 text-center">3.0 版<br>(深度)</td><td class="px-6 py-4 text-center">1.深度3.0 版<br>2.自製專權威知識庫</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">獨家知識庫<br>整合超過3,000萬字</td><td class="px-6 py-4 text-center">1.引用</td><td class="px-6 py-4 text-center">1.引用</td><td class="px-6 py-4 text-center">1.引用</td><td class="px-6 py-4 text-center">1.引用<br>2.總結</td><td class="px-6 py-4 text-center">1.引用<br>2.總結<br>3.結合權威資料庫</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">知識庫持續更新</td><td class="px-6 py-4 text-center">逐步更新</td><td class="px-6 py-4 text-center">逐步更新</td><td class="px-6 py-4 text-center">逐步更新</td><td class="px-6 py-4 text-center">確保即時有效</td><td class="px-6 py-4 text-center">打造個人知識品牌</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">智慧線上搜尋</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">每日提問上限</td><td class="px-6 py-4 text-center">5 次</td><td class="px-6 py-4 text-center">15 次</td><td class="px-6 py-4 text-center">30 次</td><td class="px-6 py-4 text-center">49 次</td><td class="px-6 py-4 text-center">每天 49 次 / 學員</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">實戰銷售AI助理</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">網頁個人後台</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
+
+                                <!-- Section: AI 模型功能 -->
+                                <tr class="table-section-header">
+                                    <th scope="row" class="px-6 py-3 text-base font-bold text-cyan-400">AI 模型功能</th>
+                                    <td colspan="5"></td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">深度思考功能</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center">✅ (汲取專家經驗)</td><td class="px-6 py-4 text-center">✅ (汲取專家經驗)</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">生成字數</td><td class="px-6 py-4 text-center">&lt; 500</td><td class="px-6 py-4 text-center">&lt; 1,000</td><td class="px-6 py-4 text-center">&lt; 1,500</td><td class="px-6 py-4 text-center">&lt; 3,500</td><td class="px-6 py-4 text-center">&lt; 20,000</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">每次輸入的提問字數</td><td class="px-6 py-4 text-center">50字</td><td class="px-6 py-4 text-center">150字</td><td class="px-6 py-4 text-center">300字</td><td class="px-6 py-4 text-center">700字</td><td class="px-6 py-4 text-center">客製</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">上下文繼續對話記憶</td><td class="px-6 py-4 text-center">3 筆</td><td class="px-6 py-4 text-center">4 筆</td><td class="px-6 py-4 text-center">4 筆</td><td class="px-6 py-4 text-center">8 筆</td><td class="px-6 py-4 text-center">訂製</td></tr>
+
+                                <!-- Section: 自訂知識庫 -->
+                                <tr class="table-section-header">
+                                    <th scope="row" class="px-6 py-3 text-base font-bold text-cyan-400">自訂知識庫</th>
+                                    <td colspan="5"></td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">可上傳(自訂知識庫)</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">自訂知識庫(總字數)</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center">50,000字</td><td class="px-6 py-4 text-center">100,000中文字</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">超額收費</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center">每月1元/250字</td><td class="px-6 py-4 text-center">每月1元/250字</td></tr>
+
+                                <!-- Section: 知識庫內容 -->
+                                <tr class="table-section-header">
+                                    <th scope="row" class="px-6 py-3 text-base font-bold text-cyan-400">知識庫內容</th>
+                                    <td colspan="5"></td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">基礎知識庫<br>(保險法, 遺贈稅基礎)</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">知識庫更新</td><td class="px-6 py-4 text-center"><span class="check-icon">✅</span> <span class="text-white">不斷更新</span></td><td class="px-6 py-4 text-center"><span class="check-icon">✅</span> <span class="text-white">不斷更新</span></td><td class="px-6 py-4 text-center"><span class="check-icon">✅</span> <span class="text-white">不斷更新</span></td><td class="px-6 py-4 text-center"><span class="check-icon">✅</span> <span class="text-white">不斷更新</span></td><td class="px-6 py-4 text-center"><span class="check-icon">✅</span> <span class="text-white">不斷更新</span></td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">國稅類函釋 (15種國稅，共 340 萬字+)</td><td class="px-6 py-4 text-center">無或1則字號引用</td><td class="px-6 py-4 text-center">僅引用至多2組字號</td><td class="px-6 py-4 text-center">僅引用至多3組字號</td><td class="px-6 py-4 text-center">✅ (含綜整說明)</td><td class="px-6 py-4 text-center">✅ (含綜整說明)</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">金融保險和解實例（2,000萬字+）</td><td class="px-6 py-4 text-center">無或1則字號引用</td><td class="px-6 py-4 text-center">僅引用至多2組字號</td><td class="px-6 py-4 text-center">僅引用至多3組字號</td><td class="px-6 py-4 text-center">✅ (6,000+則)</td><td class="px-6 py-4 text-center">✅ (6,000+則)</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">民事裁判書彙編</td><td class="px-6 py-4 text-center">無或1則字號引用</td><td class="px-6 py-4 text-center">僅引用至多2組字號</td><td class="px-6 py-4 text-center">僅引用至多3組字號</td><td class="px-6 py-4 text-center">✅ (200萬字+)</td><td class="px-6 py-4 text-center">✅ (200萬字+)</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">刑事裁判書彙編</td><td class="px-6 py-4 text-center">無或1則字號引用</td><td class="px-6 py-4 text-center">僅引用至多2組字號</td><td class="px-6 py-4 text-center">僅引用至多3組字號</td><td class="px-6 py-4 text-center">✅ (400萬字+)</td><td class="px-6 py-4 text-center">✅ (400萬字+)</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">財稅/金融/訴願/信託/六法</td><td class="px-6 py-4 text-center">無或1則字號引用</td><td class="px-6 py-4 text-center">僅引用至多2組字號</td><td class="px-6 py-4 text-center">僅引用至多3組字號</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
+
+                                <!-- Section: 網頁版使用者後台 -->
+                                <tr class="table-section-header">
+                                    <th scope="row" class="px-6 py-3 text-base font-bold text-cyan-400">網頁版使用者後台</th>
+                                    <td colspan="5"></td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">網頁版實戰銷售指導機器人</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">網頁版保險機器人</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">網頁版歷程記錄</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
+                            </tbody>
+                        </table>
+                        <div class="p-6 text-sm text-gray-400">
+                            <h4 class="font-bold text-gray-300 mb-2">備註：</h4>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>保險司法裁判書（更新中，未來即將上架）</li>
+                                <li>刑事裁判書彙編（更新中，未來即將上架；105 - 113年的刑事判決彙編，共 300 萬字+）</li>
+                                <li>訴願類（更新中，未來即將上架；39種財稅決定書）</li>
+                                <li>相關整理之資訊為 AI 搜找與整理，請務必自行查證。</li>
+                                <li>鑑於人工智慧技術之快速演進與市場環境之變化，相關價格及成本可能視情況調整。惟此等調整不影響既有用戶已完成之購買權益。</li>
+                                <li>自訂知識庫目前可以上傳的檔案格式：DOCX, PDF, TXT, PPTX</li>
+                                <li>行政函釋（更新中，未來即將上架；共 1,100 萬字+）</li>
+                                <li>訴願決定書（更新中，未來即將上架；共9,300萬字+；多種財稅決定書）</li>
+                                <li>信託類別（更新中，未來即將上架）</li>
+                                <li>其他類別（更新中，未來即將上架）</li>
+                                <li>月費訂閱制：彈性付款、隨時可停。若需暫停服務，歡迎透過此<a href="https://lin.ee/5yQsERt" class="text-cyan-400 underline" target="_blank">連結聯繫我們的專人</a>協助處理</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 推薦獎勵計畫區塊（從 index.html 移植過來） -->
+        <section id="promotion-section" class="py-20 bg-gray-900/50 scroll-mt-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="font-orbitron text-3xl md:text-4xl font-bold gradient-text">
+                        智慧體驗，福利加乘
+                    </h2>
+                    <p class="mt-4 text-lg text-gray-300 max-w-3xl mx-auto">彈性月繳，輕鬆擁有專家級AI；分享給好友，讓您的使用期無限延長！<br>
+                    <span class="text-cyan-400 font-medium">專業付款方案轉換服務，讓您的選擇更靈活</span></p>
+                </div>
+
+                <!-- Benefits Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16 text-center">
+                    <div class="comparison-card p-6 rounded-2xl">
+                        <h3 class="text-xl font-bold text-white">💡 要用才付費</h3>
+                        <p class="text-gray-400 mt-2">彈性月繳，無綁約壓力，隨時可依需求訂閱或暫停。</p>
+                    </div>
+                    <div class="comparison-card p-6 rounded-2xl">
+                        <h3 class="text-xl font-bold text-white">🏆 專業媲美專家</h3>
+                        <p class="text-gray-400 mt-2">整合千萬字法律資料庫，提供深度分析與專家級見解。</p>
+                    </div>
+                    <div class="comparison-card p-6 rounded-2xl">
+                        <h3 class="text-xl font-bold text-white">💬 隨時問有答案</h3>
+                        <p class="text-gray-400 mt-2">您的專屬AI助理，24小時待命，即時回應您的任何疑問。</p>
+                    </div>
+                    <div class="comparison-card p-6 rounded-2xl">
+                        <h3 class="text-xl font-bold text-white">🎁 介紹享福利</h3>
+                        <p class="text-gray-400 mt-2">獨家推薦計畫，介紹越多，福利越多，使用期無限延長。</p>
+                    </div>
+                </div>
+
+                
+
+ <!-- <div class="comparison-card p-6 rounded-2xl">
+                        <h3 class="text-xl font-bold text-white">🏆 專業媲美專家</h3>
+                        <p class="text-gray-400 mt-2">整合千萬字法律資料庫，提供深度分析與專家級見解。</p>
+                    </div> -->
+
+
+
+                <div class="text-center mb-12">
+                    <h2 class="font-orbitron text-3xl md:text-4xl font-bold gradient-text">
+                        推薦獎勵計畫
+                    </h2>
+                </div>
+
+                <!-- Referral Program Details -->
+                <div class="plan-card p-8 rounded-2xl">
+                    <!-- Special Offer -->
+                    <div class="bg-cyan-900/30 border border-cyan-700 p-6 rounded-lg text-center mb-8">
+                        <h3 class="text-2xl font-bold text-yellow-300 mb-2">🌟 特別優惠 🌟</h3>
+                        <p class="text-lg text-gray-200">
+                            體驗版用戶累積介紹 <span class="font-bold text-white">14 位</span> 好友使用體驗版後，即可享有
+                            <span class="font-bold text-white text-xl">「專業版年費五折」</span> 購買資格！
+                        </p>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left comparison-table">
+                            <thead class="text-xs text-white uppercase tracking-wider">
+                                <tr class="border-b border-gray-700">
+                                    <th class="px-6 py-4 bg-gray-800 rounded-tl-lg">您的方案</th>
+                                    <th class="px-6 py-4 bg-gray-800">推薦對象</th>
+                                    <th class="px-6 py-4 bg-gray-800">達成條件</th>
+                                    <th class="px-6 py-4 bg-gray-800 rounded-tr-lg">獲得獎勵 (無上限)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 體驗版用戶 -->
+                                <tr class="bg-gray-900 border-b border-gray-700">
+                                    <td rowspan="1" class="px-6 py-4 font-bold text-cyan-300 align-top">體驗版</td>
+                                    <td class="px-6 py-4">體驗版</td>
+                                    <td class="px-6 py-4">每介紹 2 人</td>
+                                    <td class="px-6 py-4 font-medium text-white">送 1 個月 <span class="font-bold">體驗版</span></td>
+                                </tr>
+                                <!-- 標準版用戶 -->
+                                <tr class="bg-gray-900 border-b border-gray-700">
+                                    <td rowspan="3" class="px-6 py-4 font-bold text-cyan-300 align-top border-t-4 border-gray-800">標準版</td>
+                                    <td class="px-6 py-4 border-t-4 border-gray-800">體驗版</td>
+                                    <td class="px-6 py-4 border-t-4 border-gray-800">每介紹 2 人</td>
+                                    <td class="px-6 py-4 font-medium text-white border-t-4 border-gray-800">送 1 個月 <span class="font-bold">標準版</span></td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b border-gray-700">
+                                    <td class="px-6 py-4">標準版</td>
+                                    <td class="px-6 py-4">每介紹 1 人</td>
+                                    <td class="px-6 py-4 font-medium text-white">送 1 個月 <span class="font-bold">標準版</span></td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b border-gray-700">
+                                    <td class="px-6 py-4">專業版</td>
+                                    <td class="px-6 py-4">每介紹 1 人</td>
+                                    <td class="px-6 py-4 font-medium text-white">送 2 個月 <span class="font-bold">標準版</span></td>
+                                </tr>
+                                <!-- 專業版用戶 -->
+                                <tr class="bg-gray-900">
+                                    <td rowspan="3" class="px-6 py-4 font-bold text-cyan-300 align-top border-t-4 border-gray-800">專業版</td>
+                                    <td class="px-6 py-4 border-t-4 border-gray-800">體驗版</td>
+                                    <td class="px-6 py-4 border-t-4 border-gray-800">每介紹 2 人</td>
+                                    <td class="px-6 py-4 font-medium text-white border-t-4 border-gray-800">送 1 個月 <span class="font-bold">專業版</span></td>
+                                </tr>
+                                <tr class="bg-gray-900 border-b border-gray-700">
+                                    <td class="px-6 py-4">標準版</td>
+                                    <td class="px-6 py-4">每介紹 1 人</td>
+                                    <td class="px-6 py-4 font-medium text-white">送 1 個月 <span class="font-bold">專業版</span></td>
+                                </tr>
+                                <tr class="bg-gray-900">
+                                    <td class="px-6 py-4">專業版</td>
+                                    <td class="px-6 py-4">每介紹 1 人</td>
+                                    <td class="px-6 py-4 font-medium text-white">送 2 個月 <span class="font-bold">專業版</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-8 text-center">
+                        <p class="text-gray-400">備註：已購買專業版、標準版的用戶，同享上述推薦福利。</p>
+                        <a href="https://line.me/ti/p/ECTAxiLRSh" target="_blank" class="cta-button mt-4 inline-block text-white font-bold py-3 px-8 rounded-lg text-lg">
+                            👉 點此聯繫專人，了解推薦詳情
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- 公司資訊 -->
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center mb-4">
+                        <img src="judgai_logo.png" alt="奇點 JudgAI Logo" class="h-8 w-auto mr-3">
+                        <span class="font-orbitron text-xl font-bold gradient-text">奇點 JudgAI</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">台灣領先的AI保險科技平台，專為保險業務員、保險顧問打造的AI智能助手。</p>
+                    <div class="flex space-x-4">
+                        <a href="https://line.me/ti/p/ECTAxiLRSh" target="_blank" class="text-gray-400 hover:text-cyan-400 transition-colors">
+                            <span class="sr-only">Line</span>
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0C5.373 0 0 4.975 0 11.111c0 3.497 1.745 6.616 4.472 8.652L4.003 24l4.939-2.505C9.745 21.842 10.842 22 12 22c6.627 0 12-4.975 12-11.111S18.627 0 12 0z"/>
+                            </svg>
+                        </a>
+                        <a href="https://www.youtube.com/playlist?list=PLZExHhjtL82X_tH-PVw3adskNY1aVqckQ" target="_blank" class="text-gray-400 hover:text-cyan-400 transition-colors">
+                            <span class="sr-only">YouTube</span>
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 快速連結 -->
+                <div>
+                    <h3 class="text-white font-bold mb-4">快速連結</h3>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-cyan-400 transition-colors">首頁</a></li>
+                        <li><a href="pricing.html" class="text-gray-400 hover:text-cyan-400 transition-colors">方案定價</a></li>
+                        <li><a href="#comparison-table" class="text-gray-400 hover:text-cyan-400 transition-colors">功能比較</a></li>
+                        <li><a href="https://aistudy.pse.is/insurance-bot" target="_blank" class="text-gray-400 hover:text-cyan-400 transition-colors">立即開始</a></li>
+                    </ul>
+                </div>
+
+                <!-- 客戶服務 -->
+                <div>
+                    <h3 class="text-white font-bold mb-4">客戶服務</h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://line.me/ti/p/ECTAxiLRSh" target="_blank" class="text-gray-400 hover:text-cyan-400 transition-colors">聯絡我們</a></li>
+                        <!-- <li><a href="https://lin.ee/5yQsERt" target="_blank" class="text-gray-400 hover:text-cyan-400 transition-colors">技術支援</a></li> -->
+                        <li><a href="#termsModal" class="text-gray-400 hover:text-cyan-400 transition-colors cursor-pointer" onclick="showTermsModal('服務條款')">服務條款</a></li>
+                        <!-- <li><span class="text-gray-400">7天免費試用</span></li> -->
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-400">&copy; 2024 奇點 JudgAI. 保留所有權利。</p>
+                <p class="text-gray-500 text-sm mt-2">台灣領先的AI保險科技平台 | 讓每位保險專業者擁有一位懂法的科技夥伴</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 服務條款Modal -->
+    <div id="termsModal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="modal-content bg-gray-900 border border-cyan-400 rounded-2xl p-8 max-w-2xl mx-4 max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-orbitron text-2xl font-bold gradient-text">服務條款（退款及續訂政策）</h3>
+                <button onclick="closeTermsModal()" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+            </div>
+            
+            <div class="space-y-4 text-gray-300 leading-relaxed">
+                <p>本服務提供 <span class="text-cyan-400 font-bold">7 天免費試用期</span>。試用期結束後，系統將自動轉為付費方案，並依所選訂閱方案扣款。</p>
+                
+                <p>若您於試用期結束後不希望繼續使用，請務必於 <span class="text-yellow-400 font-bold">試用期屆滿前</span> 透過電子郵件通知我們取消訂閱，否則系統將自動續扣。</p>
+                
+                <p>付費方案開始後，如需申請退款，請於 <span class="text-red-400 font-bold">扣款日後 7 日內</span> 以電子郵件方式提出申請。我們將依個案情況進行審核，經確認符合條件後，退款金額將退回至您原支付帳戶。</p>
+                
+                <p>若未於上述期限內提出申請，或服務已使用超過 7 日，恕不受理退款。</p>
+                
+                <p class="bg-yellow-900/30 border border-yellow-600 p-4 rounded-lg">
+                    <span class="text-yellow-400 font-bold">💡 溫馨提醒：</span>為避免不必要的扣款，建議您在試用期屆滿前或下一次扣款日前，確認是否繼續使用本服務。
+                </p>
+            </div>
+            
+            <div class="mt-8 flex space-x-4">
+                <button onclick="acceptTerms()" class="cta-button flex-1 text-white font-bold py-3 rounded-lg">我同意並繼續</button>
+                <button onclick="closeTermsModal()" class="border border-gray-600 text-gray-300 hover:text-white flex-1 font-bold py-3 rounded-lg">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 星空背景生成
+        function createStars() {
+            const starsContainer = document.querySelector('.stars');
+            const numStars = 100;
+            
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // 定價選項卡切換
+        function setupPricingTabs() {
+            const tabs = document.querySelectorAll('.pricing-tab');
+            const amounts = document.querySelectorAll('.pricing-amount');
+            const periods = document.querySelectorAll('.pricing-period');
+            const proFeatures = document.querySelectorAll('.pro-features > ul');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // 更新選項卡狀態
+                    tabs.forEach(t => {
+                        t.classList.remove('active', 'bg-cyan-600', 'text-white');
+                        t.classList.add('text-gray-300');
+                    });
+                    tab.classList.add('active', 'bg-cyan-600', 'text-white');
+                    tab.classList.remove('text-gray-300');
+                    
+                    // 更新價格
+                    const period = tab.dataset.period;
+                    amounts.forEach(amount => {
+                        amount.textContent = 'NT$' + amount.dataset[period];
+                        if (amount.dataset[period] === '-') {
+                            amount.textContent = '不適用';
+                        }
+                    });
+                    
+                    // 更新週期
+                    periods.forEach(periodEl => {
+                        periodEl.textContent = periodEl.dataset[period];
+                    });
+                    
+                    // 更新專業版功能列表
+                    proFeatures.forEach(featureList => featureList.classList.add('hidden'));
+                    const activeFeatures = document.querySelector(`.pro-${period}-features`);
+                    if (activeFeatures) {
+                        activeFeatures.classList.remove('hidden');
+                    }
+                });
+            });
+        }
+
+        // 服務條款Modal相關函數
+        let currentPlan = '';
+        
+        function showTermsModal(planName) {
+            currentPlan = planName;
+            document.getElementById('termsModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeTermsModal() {
+            document.getElementById('termsModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        
+        function acceptTerms() {
+            // 根據方案跳轉到對應的購買頁面
+            const purchaseUrls = {
+                '免費版': 'https://aistudy.pse.is/insurance-bot',
+                '體驗版': 'https://cart.cashier.ecpay.com.tw/qp/xKb8',
+                '標準版': 'https://cart.cashier.ecpay.com.tw/qp/xBn5',
+                '專業版': 'https://cart.cashier.ecpay.com.tw/qp/xBm1'
+            };
+            
+            if (purchaseUrls[currentPlan]) {
+                window.open(purchaseUrls[currentPlan], '_blank');
+            }
+            
+            closeTermsModal();
+        }
+
+        // 手機版菜單功能
+        function setupMobileMenu() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+                
+                // 點擊外部關閉菜單
+                document.addEventListener('click', function(event) {
+                    if (!mobileMenuButton.contains(event.target) && !mobileMenu.contains(event.target)) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            }
+        }
+
+        // 平滑滾動
+        function setupSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            setupMobileMenu();
+            setupPricingTabs();
+            setupSmoothScroll();
+            setupScrollAnimations();
+            setupIntersectionObserver();
+        });
+
+        // 設置滾動動畫
+        function setupScrollAnimations() {
+            // 為定價卡片添加動畫
+            const planCards = document.querySelectorAll('.plan-card');
+            planCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.classList.add('fade-in');
+            });
+        }
+
+        // 設置Intersection Observer來觸發動畫
+        function setupIntersectionObserver() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // 觀察需要動畫的元素
+            const animatedElements = document.querySelectorAll('.comparison-card, .comparison-table, .plan-card');
+            animatedElements.forEach(el => observer.observe(el));
+        }
+
+        // 提升定價卡片互動性
+        function enhanceCardInteractions() {
+            const cards = document.querySelectorAll('.plan-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-15px) scale(1.03)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        }
+    </script>
+    
+    <!-- 主題切換管理器 -->
+    <script src="js/theme-manager.js"></script>
+</body>
+</html>
