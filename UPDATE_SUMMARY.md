@@ -3,13 +3,13 @@
 ## 已完成的修改項目
 
 ### 1. 📱 Header 統一化與導航優化
-- **pricingv2.html 的 header** 已更新為與 index.html 一致的設計
-- **新增「方案定價」導航項目** 在 index.html 和 pricingv2.html 中都可訪問
+- **pricing.html 的 header** 已更新為與 index.html 一致的設計
+- **新增「方案定價」導航項目** 在 index.html 和 pricing.html 中都可訪問
 - **創建了統一的 header 管理系統** (`js/header-config.js`)，方便未來維護
 - **響應式手機版菜單** 完整實現，包含所有導航功能
 
 ### 2. 🎯 7天免費試用特別強調
-- **在 pricingv2.html 頂部** 添加了突出的 7天免費試用區塊
+- **在 pricing.html 頂部** 添加了突出的 7天免費試用區塊
 - **特色亮點重新設計**：
   - 7天免費試用 (特別突出黃色邊框)
   - 彈性付款
@@ -35,7 +35,7 @@
 
 ### 4. 🔄 首頁內容調整
 - **主要 CTA 按鈕更新**：「推薦獎勵計畫！」→「3億字法險專業版免費體驗！」
-- **按鈕連結更新**：從 `#promotion-section` → `pricingv2.html`
+- **按鈕連結更新**：從 `#promotion-section` → `pricing.html`
 - **保留了原有的推薦獎勵計畫內容** 在適當位置
 
 ### 5. 🌓 主題切換功能

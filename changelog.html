@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JudgAI 網站更新報告 | 2025年更新內容</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #2d1b69 100%);
+            min-height: 100vh;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #38bdf8, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .update-card {
+            background: linear-gradient(145deg, rgba(30,41,59,0.9) 0%, rgba(56,189,248,0.1) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(56,189,248,0.3);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        .feature-badge {
+            background: linear-gradient(90deg, #38bdf8, #a78bfa);
+            color: white;
+            font-weight: bold;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            display: inline-block;
+        }
+        .status-new {
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+        .status-improved {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        }
+        .status-fixed {
+            background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+        }
+        .highlight-box {
+            background: rgba(56,189,248,0.1);
+            border-left: 4px solid #38bdf8;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+        }
+        .before-after {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        @media (max-width: 768px) {
+            .before-after {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="text-white">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <div class="flex items-center justify-center mb-4">
+                <img src="奇點.png" alt="JudgAI Logo" class="h-16 w-16 rounded-full mr-4">
+                <h1 class="text-4xl md:text-5xl font-bold font-orbitron gradient-text">
+                    JudgAI 網站更新報告
+                </h1>
+            </div>
+            <p class="text-xl text-gray-300 mt-4">
+                最新功能與優化總覽 | 2025年9月21更新
+            </p>
+            <div class="mt-6 flex justify-center space-x-4">
+                <span class="feature-badge status-new">✨ 新功能</span>
+                <span class="feature-badge status-improved">🚀 優化</span>
+                <span class="feature-badge status-fixed">🔧 修正</span>
+            </div>
+        </header>
+
+        <!-- 重點更新摘要 -->
+        <section class="update-card rounded-2xl p-8 mb-8">
+            <h2 class="text-3xl font-bold mb-6 flex items-center">
+                <span class="text-4xl mr-3">🎯</span>
+                重點更新摘要
+            </h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-gradient-to-br from-green-500/20 to-emerald-500/20 p-6 rounded-xl border border-green-400/30">
+                    <h3 class="text-xl font-bold text-green-400 mb-2">檔案結構優化</h3>
+                    <p class="text-gray-300">將 pricingv2.html 正式更名為 pricing.html，統一命名規範</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 p-6 rounded-xl border border-blue-400/30">
+                    <h3 class="text-xl font-bold text-blue-400 mb-2">定價方案優化</h3>
+                    <p class="text-gray-300">新增限時優惠、重組功能列表、優化視覺層次</p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-500/20 to-violet-500/20 p-6 rounded-xl border border-purple-400/30">
+                    <h3 class="text-xl font-bold text-purple-400 mb-2">用戶體驗提升</h3>
+                    <p class="text-gray-300">新增客服信箱、服務條款流程、漂浮CTA按鈕</p>
+                </div>
+                <div class="bg-gradient-to-br from-orange-500/20 to-amber-500/20 p-6 rounded-xl border border-orange-400/30">
+                    <h3 class="text-xl font-bold text-orange-400 mb-2">AI差異對比頁</h3>
+                    <p class="text-gray-300">全新展示頁面，直觀呈現JudgAI與一般AI的專業差異</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 詳細更新內容 -->
+        
+        <!-- 1. 檔案重新命名 -->
+        <section class="update-card rounded-2xl p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+                <span class="feature-badge status-improved mr-3">🚀 優化</span>
+                檔案結構標準化
+            </h2>
+            
+            <div class="highlight-box">
+                <h3 class="text-lg font-bold text-cyan-400 mb-2">📁 檔案重新命名</h3>
+                <p class="mb-4">為了統一命名規範，將定價頁面檔案正式更名：</p>
+                
+                <div class="before-after">
+                    <div class="bg-red-900/20 border border-red-500/30 p-4 rounded-lg">
+                        <h4 class="font-bold text-red-400 mb-2">❌ 修改前</h4>
+                        <code class="text-gray-300">pricingv2.html</code>
+                    </div>
+                    <div class="bg-green-900/20 border border-green-500/30 p-4 rounded-lg">
+                        <h4 class="font-bold text-green-400 mb-2">✅ 修改後</h4>
+                        <code class="text-gray-300">pricing.html</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <h3 class="text-lg font-bold text-cyan-400 mb-3">🔗 全站連結更新</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-gray-800/50 p-4 rounded-lg">
+                        <h4 class="font-bold mb-2">更新的檔案：</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• index.html (首頁導航)</li>
+                            <li>• column_article.html (專欄頁面)</li>
+                            <li>• ai_difference.html (AI對比頁面)</li>
+                            <li>• insur_policy_demo.html (保單展示)</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800/50 p-4 rounded-lg">
+                        <h4 class="font-bold mb-2">更新內容：</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• 導航菜單連結</li>
+                            <li>• CTA按鈕連結</li>
+                            <li>• 頁尾連結</li>
+                            <li>• JavaScript配置檔案</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. 全新AI差異對比頁面 -->
+        <section class="update-card rounded-2xl p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+                <span class="feature-badge status-new mr-3">✨ 新功能</span>
+                AI差異對比展示頁面 (ai_difference.html)
+            </h2>
+
+            <!-- 頁面特色介紹 -->
+            <div class="highlight-box">
+                <h3 class="text-lg font-bold text-cyan-400 mb-2">🎯 頁面核心價值</h3>
+                <p class="mb-4">專門設計的展示頁面，直觀呈現 JudgAI 與一般 AI (ChatGPT、Gemini) 在專業領域的差異：</p>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-blue-900/20 border border-blue-400/30 p-4 rounded-lg">
+                        <h4 class="font-bold text-blue-400 mb-2">🎨 視覺設計亮點</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• VS 對比界面設計</li>
+                            <li>• 專業漸層色彩配置</li>
+                            <li>• 響應式圖片預覽</li>
+                            <li>• 科技感互動效果</li>
+                        </ul>
+                    </div>
+                    <div class="bg-purple-900/20 border border-purple-400/30 p-4 rounded-lg">
+                        <h4 class="font-bold text-purple-400 mb-2">📊 內容展示方式</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• 實際問答範例對比</li>
+                            <li>• 可點擊放大的截圖</li>
+                            <li>• 三平台並排比較</li>
+                            <li>• 專業度差異說明</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 實際範例展示 -->
+            <div class="highlight-box">
+                <h3 class="text-lg font-bold text-cyan-400 mb-2">📋 三大實戰範例</h3>
+                <p class="mb-4">精心設計的專業問題，突顯 JudgAI 在法險領域的專業優勢：</p>
+                
+                <div class="space-y-4">
+                    <div class="bg-gray-800/50 p-4 rounded-lg">
+                        <h4 class="font-bold text-orange-400 mb-2">🏥 範例一：保險腫瘤認定</h4>
+                        <p class="text-sm text-gray-300 mb-2">
+                            <strong>問題：</strong>保險中理賠腫瘤認定為何？
+                        </p>
+                        <div class="text-xs text-gray-400">
+                            <strong>JudgAI優勢：</strong>結合金融保險和解實例知識庫，提供貼近實務的專業解答
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-800/50 p-4 rounded-lg">
+                        <h4 class="font-bold text-orange-400 mb-2">⚖️ 範例二：遺產債務分配爭議</h4>
+                        <p class="text-sm text-gray-300 mb-2">
+                            <strong>情境：</strong>甲死亡後，遺產500萬元，繼承人有成年人與未成年人，部分債權已清償，事後又有新債權人提出更高金額的借款證明...
+                        </p>
+                        <div class="text-xs text-gray-400">
+                            <strong>JudgAI優勢：</strong>結合法律專業資料庫與實務案例，涵蓋民法、繼承與債務分配細節
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-800/50 p-4 rounded-lg">
+                        <h4 class="font-bold text-orange-400 mb-2">🔍 範例三：保險案例精準分析</h4>
+                        <p class="text-sm text-gray-300 mb-2">
+                            <strong>案例：</strong>保戶A因卵巢黃體破裂住院，後續投保多種保單時，皆被要求提供腫瘤問卷或病歷，並遭健康險契約批註腫瘤除外...
+                        </p>
+                        <div class="text-xs text-gray-400">
+                            <strong>JudgAI優勢：</strong>結合保險核保、理賠實例與醫療資料庫，協助判斷保險公司要求的合理性
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 互動網頁展示區塊 -->
+            <div class="highlight-box">
+                <h3 class="text-lg font-bold text-cyan-400 mb-2">🌐 互動網頁展示區塊</h3>
+                <p class="mb-4">每個範例都提供對應的互動網頁連結，讓用戶實際體驗 JudgAI 的回答品質：</p>
+                
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="text-center bg-gradient-to-br from-cyan-500/20 to-blue-500/20 p-4 rounded-lg border border-cyan-400/30">
+                        <div class="text-cyan-400 font-bold mb-1">保險腫瘤認定回覆</div>
+                        <div class="text-xs text-gray-300">理賠認定標準一目了然</div>
+                    </div>
+                    <div class="text-center bg-gradient-to-br from-purple-500/20 to-violet-500/20 p-4 rounded-lg border border-purple-400/30">
+                        <div class="text-purple-400 font-bold mb-1">遺產債務分配爭議回覆</div>
+                        <div class="text-xs text-gray-300">債務分配流程清楚解析</div>
+                    </div>
+                    <div class="text-center bg-gradient-to-br from-orange-500/20 to-amber-500/20 p-4 rounded-lg border border-orange-400/30">
+                        <div class="text-orange-400 font-bold mb-1">保險案例精準分析</div>
+                        <div class="text-xs text-gray-300">核保理賠要求一鍵解析</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 技術特色 -->
+            <div class="highlight-box">
+                <h3 class="text-lg font-bold text-cyan-400 mb-2">⚙️ 技術實現特色</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-green-900/20 border border-green-500/30 p-4 rounded-lg">
+                        <h4 class="font-bold text-green-400 mb-2">🎭 用戶體驗設計</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• 圖片點擊放大功能</li>
+                            <li>• 滑鼠滾輪縮放支援</li>
+                            <li>• 漂浮CTA按鈕</li>
+                            <li>• 平滑滾動錨點</li>
+                            <li>• 響應式手機版設計</li>
+                        </ul>
+                    </div>
+                    <div class="bg-blue-900/20 border border-blue-500/30 p-4 rounded-lg">
+                        <h4 class="font-bold text-blue-400 mb-2">🎨 視覺效果</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• 科技感漸層背景</li>
+                            <li>• 動態懸浮光效</li>
+                            <li>• 專業色彩配置</li>
+                            <li>• Orbitron 科技字體</li>
+                            <li>• 卡片式區塊設計</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. 定價頁面優化 -->
+        <section class="update-card rounded-2xl p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+                <span class="feature-badge status-new mr-3">✨ 新功能</span>
+                定價方案全面優化
+            </h2>
+
+            <!-- 限時優惠 -->
+            <div class="highlight-box">
+                <h3 class="text-lg font-bold text-cyan-400 mb-2">🔥 限時優惠功能</h3>
+                <p class="mb-4">為月繳專業版新增限時優惠價格展示：</p>
+                
+                <div class="bg-gray-800/50 p-4 rounded-lg mb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-gray-400 line-through">原價 NT$1,688</span>
+                        <span class="text-2xl font-bold text-orange-400">限時 NT$888</span>
+                    </div>
+                    <div class="text-center">
+                        <button class="bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-2 px-6 rounded-lg">
+                            🔥 限時優惠價 NT$888
+                        </button>
+                    </div>
+                </div>
+                
+                <ul class="text-sm text-gray-300 space-y-1">
+                    <li>• 醒目的價格對比展示</li>
+                    <li>• 獨立的優惠按鈕</li>
+                    <li>• 整合服務條款流程</li>
+                    <li>• 專屬優惠連結 (ymw3)</li>
+                </ul>
+            </div>
+
+            <!-- 功能列表重組 -->
+            <div class="highlight-box">
+                <h3 class="text-lg font-bold text-cyan-400 mb-2">📋 專業版功能列表重組</h3>
+                <p class="mb-4">優化所有專業版方案的功能展示順序：</p>
+                
+                <div class="before-after">
+                    <div class="bg-red-900/20 border border-red-500/30 p-4 rounded-lg">
+                        <h4 class="font-bold text-red-400 mb-2">❌ 修改前</h4>
+                        <div class="text-sm text-gray-300 space-y-1">
+                            <div>使用量限制在前面</div>
+                            <div>輸出能力埋在中間</div>
+                            <div>功能順序不一致</div>
+                        </div>
+                    </div>
+                    <div class="bg-green-900/20 border border-green-500/30 p-4 rounded-lg">
+                        <h4 class="font-bold text-green-400 mb-2">✅ 修改後</h4>
+                        <div class="text-sm text-gray-300 space-y-1">
+                            <div class="flex items-center">
+                                <span class="w-3 h-3 bg-green-400 rounded-full mr-2"></span>
+                                每月輸出能力置頂 (綠色圖標)
+                            </div>
+                            <div>核心功能介紹</div>
+                            <div class="flex items-center">
+                                <span class="w-3 h-3 bg-orange-400 rounded-full mr-2"></span>
+                                使用量限制置底 (橙色圖標)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 保險司法裁判書資料 -->
+            <div class="highlight-box">
+                <h3 class="text-lg font-bold text-cyan-400 mb-2">⚖️ 新增保險司法裁判書數據</h3>
+                <p class="mb-4">在比較表格中新增專業法律資料庫規模展示：</p>
+                
+                <div class="bg-gray-800/50 p-4 rounded-lg">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-600">
+                                <th class="text-left py-2">資料類型</th>
+                                <th class="text-center py-2">免費版</th>
+                                <th class="text-center py-2">專業版</th>
+                                <th class="text-center py-2">訂製版</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-700">
+                                <td class="py-2">保險司法裁判書</td>
+                                <td class="text-center text-red-400">❌</td>
+                                <td class="text-center text-green-400">✅ 2.1億字+</td>
+                                <td class="text-center text-green-400">✅ 2.1億字+</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. 用戶體驗優化 -->
+        <section class="update-card rounded-2xl p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+                <span class="feature-badge status-improved mr-3">🚀 優化</span>
+                用戶體驗全面提升
+            </h2>
+
+            <!-- 客服信箱 -->
+            <div class="highlight-box">
+                <h3 class="text-lg font-bold text-cyan-400 mb-2">📧 客服信箱整合</h3>
+                <p class="mb-4">在網站頁尾新增客服聯繫方式：</p>
+                
+                <div class="bg-gray-800/50 p-4 rounded-lg">
+                    <div class="text-center text-gray-400">
+                        <p>&copy; 2025 奇點 JudgAI. All Rights Reserved.</p>
+                        <p class="text-sm mt-2">台灣領先的AI保險科技平台 | 專業保險AI助手 | InsurTech創新解決方案</p>
+                        <p class="mt-2">
+                            客服信箱：<a href="mailto:judgai.global@judgai.com" class="text-cyan-400 hover:text-cyan-300">judgai.global@judgai.com</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 服務條款流程 -->
+            <div class="highlight-box">
+                <h3 class="text-lg font-bold text-cyan-400 mb-2">📜 服務條款流程優化</h3>
+                <p class="mb-4">為「立即開始免費試用」新增服務條款確認流程：</p>
+                
+                <div class="grid md:grid-cols-3 gap-4 text-sm">
+                    <div class="bg-blue-900/20 border border-blue-400/30 p-3 rounded-lg text-center">
+                        <div class="text-2xl mb-2">1️⃣</div>
+                        <div>點擊「立即開始免費試用」</div>
+                    </div>
+                    <div class="bg-blue-900/20 border border-blue-400/30 p-3 rounded-lg text-center">
+                        <div class="text-2xl mb-2">2️⃣</div>
+                        <div>彈出服務條款視窗</div>
+                    </div>
+                    <div class="bg-blue-900/20 border border-blue-400/30 p-3 rounded-lg text-center">
+                        <div class="text-2xl mb-2">3️⃣</div>
+                        <div>確認同意後跳轉</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 導航優化 -->
+            <div class="highlight-box">
+                <h3 class="text-lg font-bold text-cyan-400 mb-2">🧭 導航功能優化</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <h4 class="font-bold mb-2">首頁導航改進：</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• 「了解更多功能」直接跳轉到核心展示區</li>
+                            <li>• 平滑滾動效果</li>
+                            <li>• 更精準的錨點定位</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-2">AI對比頁面新增：</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• 漂浮CTA按鈕</li>
+                            <li>• 智能顯示/隱藏</li>
+                            <li>• 主要CTA區塊</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. 服務條款與政策優化 -->
+        <section class="update-card rounded-2xl p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+                <span class="feature-badge status-improved mr-3">🚀 優化</span>
+                服務條款與退款政策全面改版
+            </h2>
+
+            <!-- 服務條款更新 -->
+            <div class="highlight-box">
+                <h3 class="text-lg font-bold text-cyan-400 mb-2">📜 服務條款內容優化</h3>
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div class="bg-green-900/20 border border-green-500/30 p-4 rounded-lg">
+                        <h4 class="font-bold text-green-400 mb-2">✅ 新增內容</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• 客服信箱聯絡方式</li>
+                            <li>• 7天免費試用詳細說明</li>
+                            <li>• 訂金機制透明化說明</li>
+                            <li>• 不同方案專屬連結整合</li>
+                        </ul>
+                    </div>
+                    <div class="bg-red-900/20 border border-red-500/30 p-4 rounded-lg">
+                        <h4 class="font-bold text-red-400 mb-2">❌ 移除內容</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• 複雜的退款申請流程</li>
+                            <li>• 7日退款限制條款</li>
+                            <li>• 模糊的審核機制說明</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-blue-900/20 border border-blue-400/30 p-4 rounded-lg">
+                    <h4 class="font-bold text-blue-400 mb-2">🔄 訂金與試用機制說明</h4>
+                    <p class="text-gray-300 text-sm mb-2">
+                        新的透明化機制：註冊時收取一個月訂金 → 7天免費試用 → 確認使用後正式計費 + 額外贈送7天
+                    </p>
+                    <div class="text-xs text-gray-400 bg-gray-800 p-2 rounded">
+                        範例：2025/9/1 開始使用年繳方案<br>
+                        試用期：2025/9/1 - 9/7<br>
+                        正式計費：2025/9/8 開始<br>
+                        到期日：2026/9/8（含贈送的7天）
+                    </div>
+                </div>
+            </div>
+
+            <!-- 付款方案轉換優化 -->
+            <div class="highlight-box">
+                <h3 class="text-lg font-bold text-cyan-400 mb-2">💳 付款方案轉換機制簡化</h3>
+                
+                <div class="before-after">
+                    <div class="bg-red-900/20 border border-red-500/30 p-4 rounded-lg">
+                        <h4 class="font-bold text-red-400 mb-2">❌ 修改前</h4>
+                        <div class="text-sm text-gray-300 space-y-1">
+                            <div>複雜的退款流程說明</div>
+                            <div>多種情境案例</div>
+                            <div>繁瑣的條件限制</div>
+                        </div>
+                    </div>
+                    <div class="bg-green-900/20 border border-green-500/30 p-4 rounded-lg">
+                        <h4 class="font-bold text-green-400 mb-2">✅ 修改後</h4>
+                        <div class="text-sm text-gray-300 space-y-1">
+                            <div>簡化為「協助」升級服務</div>
+                            <div>單一月繳轉年繳情境</div>
+                            <div>清楚的補差額機制</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800/50 p-4 rounded-lg mt-4">
+                    <h4 class="font-bold mb-2">🎁 年繳方案貼心服務</h4>
+                    <div class="text-sm text-gray-300">
+                        <p class="mb-2"><strong>額外贈送：</strong>年繳方案到期前額外贈送 7天鑒賞期 + 1個月使用期</p>
+                        <div class="text-xs text-gray-400 bg-gray-900 p-2 rounded">
+                            範例：2025/9/1 開始鑒賞期 → 2025/9/8 開啟年繳方案 → 2026/10/8 到期
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. 定價結構簡化 -->
+        <section class="update-card rounded-2xl p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+                <span class="feature-badge status-improved mr-3">🚀 優化</span>
+                定價結構全面簡化
+            </h2>
+
+            <!-- 方案精簡 -->
+            <div class="highlight-box">
+                <h3 class="text-lg font-bold text-cyan-400 mb-2">📊 方案架構精簡</h3>
+                
+                <div class="before-after">
+                    <div class="bg-red-900/20 border border-red-500/30 p-4 rounded-lg">
+                        <h4 class="font-bold text-red-400 mb-2">❌ 修改前（5個方案）</h4>
+                        <div class="text-sm text-gray-300 space-y-1">
+                            <div>• 免費會員</div>
+                            <div>• 體驗版 (NT$800/月)</div>
+                            <div>• 標準版 (NT$8,888/年)</div>
+                            <div>• 專業版 (NT$18,888/年)</div>
+                            <div>• 訂製版</div>
+                        </div>
+                    </div>
+                    <div class="bg-green-900/20 border border-green-500/30 p-4 rounded-lg">
+                        <h4 class="font-bold text-green-400 mb-2">✅ 修改後（3個方案）</h4>
+                        <div class="text-sm text-gray-300 space-y-1">
+                            <div>• 免費版</div>
+                            <div>• 專業版（多種付費選項）</div>
+                            <div>• 訂製版</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-blue-900/20 border border-blue-400/30 p-4 rounded-lg mt-4">
+                    <h4 class="font-bold text-blue-400 mb-2">💡 簡化優勢</h4>
+                    <ul class="text-sm text-gray-300 space-y-1">
+                        <li>• 降低用戶選擇困難</li>
+                        <li>• 清楚的升級路徑</li>
+                        <li>• 聚焦核心價值方案</li>
+                        <li>• 簡化銷售流程</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 知識庫內容擴充 -->
+            <div class="highlight-box">
+                <h3 class="text-lg font-bold text-cyan-400 mb-2">⚖️ 知識庫內容大幅擴充</h3>
+                <p class="mb-4">新增保險司法裁判書資料庫，強化法律專業度：</p>
+                
+                <div class="bg-gray-800/50 p-4 rounded-lg">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-600">
+                                <th class="text-left py-2">資料類型</th>
+                                <th class="text-center py-2">免費版</th>
+                                <th class="text-center py-2">專業版</th>
+                                <th class="text-center py-2">訂製版</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-700">
+                                <td class="py-2">保險司法裁判書</td>
+                                <td class="text-center text-orange-400">無或1則字號引用</td>
+                                <td class="text-center text-green-400">✅ 2.1億字+</td>
+                                <td class="text-center text-green-400">✅ 2.1億字+</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="py-2">刑事裁判書彙編</td>
+                                <td class="text-center text-red-400">❌</td>
+                                <td class="text-center text-green-400">✅ 400萬字+</td>
+                                <td class="text-center text-green-400">✅ 400萬字+</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-4 text-sm text-gray-400">
+                    <p><strong>備註：</strong></p>
+                    <ul class="space-y-1 ml-4">
+                        <li>• 保險司法裁判書：已上架，2.1億字+，持續更新</li>
+                        <li>• 刑事裁判書彙編：105-114年判決彙編，共400萬字+，持續更新</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. 專業版方案細節優化 -->
+        <section class="update-card rounded-2xl p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+                <span class="feature-badge status-new mr-3">✨ 新功能</span>
+                專業版使用量規格明確化
+            </h2>
+
+            <div class="highlight-box">
+                <h3 class="text-lg font-bold text-cyan-400 mb-2">📈 使用量規格詳細標示</h3>
+                <p class="mb-4">為不同付費週期提供明確的使用量限制：</p>
+                
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 p-4 rounded-xl border border-blue-400/30">
+                        <h4 class="font-bold text-blue-400 mb-2">月繳方案</h4>
+                        <div class="text-sm text-gray-300 space-y-1">
+                            <div>• <strong>20次/日</strong></div>
+                            <div>• 每月最多 <strong>210萬字</strong> 輸出</div>
+                            <div>• 限時優惠價 <span class="text-orange-400">NT$888</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-purple-500/20 to-violet-500/20 p-4 rounded-xl border border-purple-400/30">
+                        <h4 class="font-bold text-purple-400 mb-2">半年繳方案</h4>
+                        <div class="text-sm text-gray-300 space-y-1">
+                            <div>• <strong>70次/日</strong></div>
+                            <div>• 每月最多 <strong>720萬字</strong> 輸出</div>
+                            <div>• 加值優惠內容</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-green-500/20 to-emerald-500/20 p-4 rounded-xl border border-green-400/30">
+                        <h4 class="font-bold text-green-400 mb-2">年繳方案</h4>
+                        <div class="text-sm text-gray-300 space-y-1">
+                            <div>• <strong>150次/日</strong></div>
+                            <div>• 每月最多 <strong>1560萬字</strong> 輸出</div>
+                            <div>• 最高性價比</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3 class="text-lg font-bold text-cyan-400 mb-2">🔗 方案專屬連結整合</h3>
+                <p class="mb-4">不同方案的「我同意並繼續」按鈕將連接到專屬付款頁面：</p>
+                
+                <div class="bg-gray-800/50 p-4 rounded-lg">
+                    <div class="grid md:grid-cols-3 gap-4 text-sm">
+                        <div class="text-center">
+                            <div class="font-bold text-blue-400 mb-1">月繳方案</div>
+                            <div class="text-gray-400">連結 A（待嵌入）</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="font-bold text-purple-400 mb-1">半年繳方案</div>
+                            <div class="text-gray-400">連結 B（待嵌入）</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="font-bold text-green-400 mb-1">年繳方案</div>
+                            <div class="text-gray-400">連結 C（待嵌入）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. 技術改進 -->
+        <section class="update-card rounded-2xl p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+                <span class="feature-badge status-fixed mr-3">🔧 修正</span>
+                技術架構優化
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="highlight-box">
+                    <h3 class="text-lg font-bold text-cyan-400 mb-2">🗂️ 檔案結構優化</h3>
+                    <ul class="text-sm text-gray-300 space-y-1">
+                        <li>• 移除有問題的 header-manager.js</li>
+                        <li>• 統一檔案命名規範</li>
+                        <li>• 清理重複的配置文件</li>
+                        <li>• 更新文檔引用</li>
+                    </ul>
+                </div>
+                
+                <div class="highlight-box">
+                    <h3 class="text-lg font-bold text-cyan-400 mb-2">🎨 視覺設計改進</h3>
+                    <ul class="text-sm text-gray-300 space-y-1">
+                        <li>• 一致的漸層配色方案</li>
+                        <li>• 響應式設計優化</li>
+                        <li>• 動畫效果優化</li>
+                        <li>• 圖標色彩語義化</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. 銷售重點 -->
+        <section class="update-card rounded-2xl p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+                <span class="text-4xl mr-3">💰</span>
+                銷售團隊重點提醒
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-gradient-to-br from-green-500/20 to-emerald-500/20 p-6 rounded-xl border border-green-400/30">
+                    <h3 class="text-xl font-bold text-green-400 mb-4">🎯 推廣重點</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-start">
+                            <span class="text-green-400 mr-2">•</span>
+                            <span><strong>限時優惠：</strong>專業版月繳 NT$1,688 → NT$888</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-400 mr-2">•</span>
+                            <span><strong>獨家資料：</strong>2.1億字保險司法裁判書</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-400 mr-2">•</span>
+                            <span><strong>免費試用：</strong>7天完全免費體驗</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 p-6 rounded-xl border border-blue-400/30">
+                    <h3 class="text-xl font-bold text-blue-400 mb-4">📞 客戶服務</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-start">
+                            <span class="text-blue-400 mr-2">•</span>
+                            <span><strong>客服信箱：</strong>judgai.global@judgai.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-400 mr-2">•</span>
+                            <span><strong>聯絡方式：</strong>Line官方帳號整合</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-400 mr-2">•</span>
+                            <span><strong>註冊流程：</strong>新增服務條款確認</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-box mt-6">
+                <h3 class="text-lg font-bold text-yellow-400 mb-2">⚠️ 重要變更提醒</h3>
+                <p class="text-gray-300 mb-2">
+                    定價頁面網址已更新：<br>
+                    <span class="line-through text-red-400">pricingv2.html</span> 
+                    → 
+                    <span class="text-green-400 font-bold">pricing.html</span>
+                </p>
+                <p class="text-sm text-gray-400">
+                    所有內部連結已自動更新，舊網址會自動重新導向
+                </p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-8 border-t border-gray-700">
+            <div class="flex items-center justify-center mb-4">
+                <img src="奇點.png" alt="JudgAI Logo" class="h-8 w-8 rounded-full mr-2">
+                <span class="font-orbitron font-bold gradient-text">JudgAI</span>
+            </div>
+            <p class="text-gray-400 text-sm">
+                更新日期：2025年9月21日 | 版本：v2.0
+            </p>
+            <p class="text-gray-500 text-xs mt-2">
+                此報告供銷售團隊內部使用，包含最新功能與優化項目
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // 添加一些交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 為更新卡片添加懸停效果
+            const cards = document.querySelectorAll('.update-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                    this.style.transition = 'transform 0.3s ease';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+
+            // 添加滾動動畫
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>

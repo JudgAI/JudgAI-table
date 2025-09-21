@@ -18,7 +18,7 @@ const HeaderConfig = {
         },
         {
             title: "方案定價",
-            href: "pricingv2.html",
+            href: "pricing.html",
             isActive: function(currentPage) {
                 return currentPage === 'pricingv2' || currentPage === 'pricing';
             }

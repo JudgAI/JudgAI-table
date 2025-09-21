@@ -71,6 +71,39 @@
             -webkit-text-fill-color: transparent;
             margin-bottom: 2rem;
         }
+        
+        /* 漂浮CTA按鈕樣式 */
+        .floating-glow {
+            animation: floatingGlow 3s ease-in-out infinite;
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.4), 0 0 60px rgba(167, 139, 250, 0.2);
+        }
+        
+        @keyframes floatingGlow {
+            0%, 100% {
+                transform: translateY(0px);
+                box-shadow: 0 0 30px rgba(56, 189, 248, 0.4), 0 0 60px rgba(167, 139, 250, 0.2);
+            }
+            50% {
+                transform: translateY(-5px);
+                box-shadow: 0 0 40px rgba(56, 189, 248, 0.6), 0 0 80px rgba(167, 139, 250, 0.3);
+            }
+        }
+        
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            #floating-cta {
+                bottom: 20px;
+                right: 20px;
+            }
+            #floating-cta a {
+                padding: 12px 16px;
+                font-size: 12px;
+            }
+            #floating-cta svg {
+                width: 16px;
+                height: 16px;
+            }
+        }
     </style>
 </head>
 <body class="text-white antialiased">
@@ -80,16 +113,28 @@
                 <!-- Logo 和品牌名稱 -->
                 <div class="flex items-center space-x-3">
                     <img src="奇點.png" alt="JudgAI Logo" class="h-10 w-10 rounded-full">
-                    <span class="font-orbitron text-xl font-bold gradient-text">JudgAI</span>
+                    <span class="font-orbitron font-bold gradient-text responsive-brand-text">JudgAI</span>
                 </div>
                 <!-- 桌面版導航 -->
                 <nav class="hidden md:flex space-x-8">
-                    <a href="index.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">首頁</a>
-                    <a href="pricingv2.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">方案與定價</a>
-                    <a href="column_article.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">AI行銷與業務專欄</a>
-                    <a href="ai_difference.html" class="nav-link text-blue-400 font-medium py-2 px-3">AI差異對比</a>
-                    <a href="insur_policy_demo.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">AI保單銷售手冊</a>
-                    <a href="#live-sharing" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">直播分享</a>
+                    <a href="index.html" class="nav-link responsive-nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">
+                        首頁
+                    </a>
+                    <a href="pricing.html" class="nav-link responsive-nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">
+                        方案定價
+                    </a>
+                    <a href="column_article.html" class="nav-link responsive-nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">
+                        AI行銷與業務專欄
+                    </a>
+                    <a href="ai_difference.html" class="nav-link responsive-nav-link text-blue-400 font-medium py-2 px-3">
+                        AI差異對比
+                    </a>
+                    <a href="insur_policy_demo.html" class="nav-link responsive-nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">
+                        AI保單銷售手冊
+                    </a>
+                    <a href="#live-sharing" class="nav-link responsive-nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">
+                        直播分享
+                    </a>
                 </nav>
                 <!-- CTA 按鈕 -->
                 <div class="hidden md:flex items-center space-x-4">
@@ -377,6 +422,52 @@
                 </div>
             </div>
         </section>
+        
+        <!-- CTA 區塊 -->
+        <section class="py-16 md:py-20 text-center">
+            <div class="max-w-4xl mx-auto px-6">
+                <div class="relative bg-gradient-to-br from-cyan-900/40 via-blue-900/40 to-purple-900/40 rounded-3xl p-8 md:p-12 border border-cyan-400/20 backdrop-blur-sm">
+                    <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-purple-500/10 rounded-3xl"></div>
+                    <div class="relative">
+                        <h2 class="text-3xl md:text-4xl font-bold font-orbitron bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent mb-6">
+                            體驗奇點 JudgAI 的專業差異
+                        </h2>
+                        <p class="text-lg md:text-xl text-gray-300 mb-8 leading-relaxed">
+                            看完對比，是否感受到奇點 AI 的專業實力？<br>
+                            <span class="text-cyan-400 font-semibold">立即啟動專業版免費體驗</span>，感受法險領域 AI 的真正實力！
+                        </p>
+                        <a href="pricing.html#pricing-plans" 
+                           class="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-600 hover:via-blue-700 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-xl text-lg transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-cyan-500/25 border border-cyan-400/30">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                            <span class="font-orbitron">啟動專業版免費體驗</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </a>
+                        <p class="text-sm text-gray-400 mt-4">
+                            ✨ 7天完全免費試用 • 不滿意全額退款 • 立即體驗
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 漂浮CTA按鈕 -->
+        <div id="floating-cta" class="fixed bottom-6 right-6 z-40 transition-all duration-300">
+            <a href="pricing.html#pricing-plans" 
+               class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-600 hover:via-blue-700 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-xl text-sm transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-cyan-500/25 border border-cyan-400/30 floating-glow">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+                <span class="font-orbitron">啟動專業版免費體驗</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+            </a>
+        </div>
+        
         <!-- 日後可複製 section.card 新增更多範例問題與差異總結 -->
         <!-- Modal for Image Enlargement -->
         <div id="imageModal" class="modal-overlay fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center p-4 z-50 hidden">
@@ -430,7 +521,7 @@
                         <h3 class="text-white text-lg font-bold mb-4">快速連結</h3>
                         <ul class="text-gray-400 text-sm space-y-2">
                             <li><a href="index.html" class="hover:text-cyan-400">首頁</a></li>
-                            <li><a href="pricingv2.html" class="hover:text-cyan-400">方案與定價</a></li>
+                            <li><a href="pricing.html" class="hover:text-cyan-400">方案與定價</a></li>
                             <li><a href="column_article.html" class="hover:text-cyan-400">AI行銷與業務專欄</a></li>
                             <li><a href="ai_difference.html" class="hover:text-cyan-400">AI差異對比</a></li>
                             <li><a href="insur_policy_demo.html" class="hover:text-cyan-400">AI保單銷售手冊</a></li>
@@ -553,12 +644,29 @@
                 // 滾動時修改導航樣式
                 window.addEventListener('scroll', () => {
                     const header = document.querySelector('header');
+                    const floatingCta = document.getElementById('floating-cta');
+                    
                     if (window.scrollY > 50) {
                         header.style.background = 'rgba(5, 8, 22, 0.98)';
                     } else {
                         header.style.background = 'rgba(5, 8, 22, 0.95)';
                     }
+                    
+                    // 漂浮CTA按鈕滾動顯示邏輯
+                    if (window.scrollY > 300) {
+                        floatingCta.style.opacity = '1';
+                        floatingCta.style.pointerEvents = 'auto';
+                    } else {
+                        floatingCta.style.opacity = '0';
+                        floatingCta.style.pointerEvents = 'none';
+                    }
                 });
+                
+                // 初始化漂浮CTA按鈕為隱藏狀態
+                const floatingCta = document.getElementById('floating-cta');
+                floatingCta.style.opacity = '0';
+                floatingCta.style.pointerEvents = 'none';
+                floatingCta.style.transition = 'opacity 0.3s ease-in-out';
             });
         </script>
     </div>
