@@ -176,9 +176,53 @@
         }
         .modal-content {
             transition: transform 0.3s ease;
+            cursor: grab;
+        }
+        .modal-content:active {
+            cursor: grabbing;
         }
         .modal-overlay.hidden .modal-content {
             transform: scale(0.95);
+        }
+        
+        /* 圖片縮放容器 */
+        .zoomable-container {
+            position: relative;
+            width: 95vw;
+            height: 95vh;
+            max-width: none;
+            max-height: none;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .zoomable-image {
+            transition: transform 0.2s ease;
+            cursor: grab;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .zoomable-image:active {
+            cursor: grabbing;
+        }
+        
+        /* 縮放控制提示 */
+        .zoom-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            pointer-events: none;
+            z-index: 10;
         }
         
         /* Logo 科技感動畫效果 */
@@ -940,11 +984,6 @@
             </div>
         </section>
         <!-- 日後可複製 section.card 新增更多範例問題與差異總結 -->
-        <!-- Modal for Image Enlargement -->
-        <div id="imageModal" class="modal-overlay fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center p-4 z-50 hidden">
-            <span class="close-modal-btn absolute top-4 right-6 text-white text-5xl font-bold cursor-pointer hover:text-gray-300 transition-colors">&times;</span>
-            <img id="modalImage" src="" alt="放大圖片" class="modal-content max-w-full max-h-full rounded-lg shadow-2xl">
-        </div>
         <!-- Modal for Terms of Service -->
         <div id="termsModal" class="modal-overlay fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center p-4 z-50 hidden">
             <div class="modal-content bg-gray-900 border border-cyan-500/30 rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col">
@@ -1027,8 +1066,13 @@
 
     <!-- Modal for Image Enlargement -->
     <div id="imageModal" class="modal-overlay fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center p-4 z-50 hidden">
-        <span class="close-modal-btn absolute top-4 right-6 text-white text-5xl font-bold cursor-pointer hover:text-gray-300 transition-colors">&times;</span>
-        <img id="modalImage" src="" alt="放大圖片" class="modal-content max-w-full max-h-full rounded-lg shadow-2xl">
+        <span class="close-modal-btn absolute top-4 right-6 text-white text-5xl font-bold cursor-pointer hover:text-gray-300 transition-colors z-20">&times;</span>
+        <div class="zoomable-container">
+            <img id="modalImage" src="" alt="放大圖片" class="zoomable-image rounded-lg shadow-2xl">
+        </div>
+        <div class="zoom-hint">
+            滑鼠滾輪縮放 • 拖拽移動 • ESC 或點擊背景關閉
+        </div>
     </div>
 
     <!-- Modal for Terms of Service -->
@@ -1125,26 +1169,164 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // --- Image Modal Logic ---
+            // --- Image Modal Logic with Zoom and Pan ---
             const imageModal = document.getElementById('imageModal');
             const modalImage = document.getElementById('modalImage');
             const enlargeableImages = document.querySelectorAll('.enlargeable-image');
+            
+            let currentScale = 1;
+            let isDragging = false;
+            let dragStartX = 0;
+            let dragStartY = 0;
+            let translateX = 0;
+            let translateY = 0;
+            
+            // 重置圖片狀態
+            function resetImageState() {
+                currentScale = 1;
+                translateX = 0;
+                translateY = 0;
+                updateImageTransform();
+            }
+            
+            // 更新圖片變換
+            function updateImageTransform() {
+                modalImage.style.transform = `scale(${currentScale}) translate(${translateX}px, ${translateY}px)`;
+            }
+            
+            // 初始化圖片大小
+            function initializeImageSize() {
+                const container = document.querySelector('.zoomable-container');
+                const containerRect = container.getBoundingClientRect();
+                
+                // 等待圖片完全載入
+                if (modalImage.naturalWidth === 0 || modalImage.naturalHeight === 0) {
+                    setTimeout(initializeImageSize, 50);
+                    return;
+                }
+                
+                // 計算適合螢幕的縮放比例，讓圖片填滿更多螢幕空間
+                const scaleX = (containerRect.width * 0.95) / modalImage.naturalWidth;
+                const scaleY = (containerRect.height * 0.95) / modalImage.naturalHeight;
+                
+                // 使用較小的縮放比例以確保圖片完全顯示，但不限制最大比例
+                const initialScale = Math.min(scaleX, scaleY);
+                
+                currentScale = Math.max(initialScale, 0.8); // 最小放大到80%
+                translateX = 0;
+                translateY = 0;
+                updateImageTransform();
+            }
 
             enlargeableImages.forEach(img => {
                 img.addEventListener('click', () => {
                     imageModal.classList.remove('hidden');
                     modalImage.src = img.src;
+                    
+                    // 等待圖片載入完成後初始化
+                    modalImage.onload = () => {
+                        resetImageState();
+                        // 延遲更長時間確保DOM更新完成
+                        setTimeout(initializeImageSize, 200);
+                        // 設置初始游標
+                        modalImage.style.cursor = 'grab';
+                    };
+                    
+                    // 如果圖片已經快取，立即觸發onload
+                    if (modalImage.complete) {
+                        modalImage.onload();
+                    }
                 });
+            });
+            
+            // 滑鼠滾輪縮放
+            imageModal.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                
+                const delta = e.deltaY > 0 ? 0.9 : 1.1;
+                const newScale = currentScale * delta;
+                
+                // 限制縮放範圍
+                if (newScale >= 0.1 && newScale <= 5) {
+                    const rect = modalImage.getBoundingClientRect();
+                    const containerRect = imageModal.getBoundingClientRect();
+                    
+                    // 計算滑鼠相對於圖片的位置
+                    const mouseX = e.clientX - rect.left;
+                    const mouseY = e.clientY - rect.top;
+                    
+                    // 計算縮放前後的偏移
+                    const scaleChange = newScale / currentScale;
+                    const offsetX = mouseX * (1 - scaleChange);
+                    const offsetY = mouseY * (1 - scaleChange);
+                    
+                    currentScale = newScale;
+                    translateX += offsetX / currentScale;
+                    translateY += offsetY / currentScale;
+                    
+                    updateImageTransform();
+                    
+                    // 根據縮放程度更新游標
+                    modalImage.style.cursor = currentScale > 1 ? 'grab' : 'default';
+                }
+            });
+            
+            // 拖拽移動
+            modalImage.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                isDragging = true;
+                dragStartX = e.clientX;
+                dragStartY = e.clientY;
+                modalImage.style.cursor = 'grabbing';
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    e.preventDefault();
+                    const deltaX = e.clientX - dragStartX;
+                    const deltaY = e.clientY - dragStartY;
+                    
+                    translateX += deltaX / currentScale;
+                    translateY += deltaY / currentScale;
+                    
+                    dragStartX = e.clientX;
+                    dragStartY = e.clientY;
+                    
+                    updateImageTransform();
+                }
+            });
+            
+            document.addEventListener('mouseup', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    modalImage.style.cursor = currentScale > 1 ? 'grab' : 'default';
+                }
+            });
+            
+            // 雙擊重置
+            modalImage.addEventListener('dblclick', () => {
+                resetImageState();
+                setTimeout(initializeImageSize, 100);
+            });
+            
+            // ESC 鍵關閉
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !imageModal.classList.contains('hidden')) {
+                    imageModal.classList.add('hidden');
+                    resetImageState();
+                }
             });
 
             // --- Terms Modal Logic ---
             const termsModal = document.getElementById('termsModal');
             const termsLink = document.getElementById('termsLink');
 
-            termsLink.addEventListener('click', (e) => {
-                e.preventDefault(); // 防止頁面跳轉
-                termsModal.classList.remove('hidden');
-            });
+            if (termsLink) {
+                termsLink.addEventListener('click', (e) => {
+                    e.preventDefault(); // 防止頁面跳轉
+                    termsModal.classList.remove('hidden');
+                });
+            }
 
             // --- Generic Modal Closing Logic ---
             const allCloseButtons = document.querySelectorAll('.close-modal-btn');
@@ -1152,6 +1334,9 @@
 
             const closeModal = (modal) => {
                 modal.classList.add('hidden');
+                if (modal === imageModal) {
+                    resetImageState();
+                }
             };
 
             allCloseButtons.forEach(button => {
@@ -1210,5 +1395,6 @@
     
     <!-- 主題切換管理器 -->
     <script src="js/theme-manager.js"></script>
-    
-<body>
+
+</body>
+</html>
