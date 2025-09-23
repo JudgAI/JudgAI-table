@@ -505,6 +505,101 @@
         :is(html.light, body.light, [data-theme="light"], .theme-light) .text-gray-200 {
             color: #334155 !important; /* slate-700 */
         }
+        
+        /* AI 標籤樣式 */
+        .ai-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        .robot {
+            color: #38bdf8; /* 奇點 JudgAI 使用藍色 */
+        }
+        
+        .other-ai {
+            color: #a78bfa; /* ChatGPT 和 Gemini 使用紫色 */
+        }
+        
+        /* Light mode 下的 AI 標籤顏色調整 */
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .robot {
+            color: #0284c7 !important; /* 深藍色，確保在淺色背景下可見 */
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .other-ai {
+            color: #7c3aed !important; /* 深紫色，確保在淺色背景下可見 */
+        }
+        
+        /* 問題和答案樣式 */
+        .question {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #ffffff; /* 確保在深色背景下可見 */
+        }
+        
+        .answer {
+            background: rgba(30,41,59,0.7);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Light mode 下的問題和答案樣式調整 */
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .question {
+            color: #0f172a !important; /* 深色文字確保在淺色背景下可見 */
+        }
+        
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .answer {
+            background: rgba(241,245,249,0.7) !important; /* 淺色背景 */
+        }
+        
+        /* 卡片樣式 */
+        .card {
+            background-color: rgba(17, 24, 39, 0.85);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 1rem;
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.15);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        /* Light mode 下的卡片樣式調整 */
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .card {
+            background-color: rgba(255, 255, 255, 0.85) !important;
+            border: 1px solid rgba(203, 213, 225, 0.5) !important;
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.1) !important;
+        }
+        
+        /* 響應式圖片容器樣式 */
+        .responsive-image-container {
+            width: 100%;
+            max-width: 320px;
+            height: 192px;
+            overflow: hidden;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.75rem;
+            background: #111827;
+        }
+        
+        /* 小螢幕優化 */
+        @media (max-width: 640px) {
+            .responsive-image-container {
+                max-width: 100%;
+                height: 160px;
+            }
+        }
+        
+        /* 極小螢幕優化 */
+        @media (max-width: 480px) {
+            .responsive-image-container {
+                height: 140px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -642,7 +737,7 @@
                 <div>
                     <div class="ai-label other-ai mb-2">ChatGPT 回答</div>
                     <div class="answer flex flex-col items-center">
-                        <div class="overflow-hidden w-80 h-48 flex items-center justify-center mx-auto mb-2 preview-img rounded-2xl shadow-xl bg-slate-900">
+                        <div class="responsive-image-container mb-2 preview-img rounded-2xl shadow-xl bg-slate-900">
                             <img src="ai_differ_image/chatGPT_1.png" alt="ChatGPT第一範例回答" class="object-cover w-full h-full enlargeable-image cursor-zoom-in transition duration-300 hover:scale-105 hover:shadow-2xl" style="aspect-ratio:16/10; background-color:#111827; object-position:center;" data-full="ai_differ_image/chatgpt_1.png">
                         </div>
                         <span class="text-violet-400 text-lg font-bold mt-2">（點擊預覽圖片可放大，滑鼠滾輪可縮放）</span>
@@ -651,7 +746,7 @@
                 <div>
                     <div class="ai-label robot mb-2">奇點 JudgAI 回答</div>
                     <div class="answer flex flex-col items-center">
-                        <div class="overflow-hidden w-80 h-48 flex items-center justify-center mx-auto mb-2 preview-img rounded-2xl shadow-xl bg-slate-900">
+                        <div class="responsive-image-container mb-2 preview-img rounded-2xl shadow-xl bg-slate-900">
                             <img src="ai_differ_image/robot_1.png" alt="奇點AI第一範例回答" class="object-cover w-full h-full enlargeable-image cursor-zoom-in transition duration-300 hover:scale-105 hover:shadow-2xl" style="aspect-ratio:16/10; background-color:#111827; object-position:center;" data-full="ai_differ_image/robot_1.png">
                         </div>
                         <span class="text-sky-400 text-lg font-bold mt-2">（點擊預覽圖片可放大，滑鼠滾輪可縮放）</span>
@@ -660,7 +755,7 @@
                 <div>
                     <div class="ai-label other-ai mb-2">Gemini 回答</div>
                     <div class="answer flex flex-col items-center">
-                        <div class="overflow-hidden w-80 h-48 flex items-center justify-center mx-auto mb-2 preview-img rounded-2xl shadow-xl bg-slate-900">
+                        <div class="responsive-image-container mb-2 preview-img rounded-2xl shadow-xl bg-slate-900">
                             <img src="ai_differ_image/gemini_1.png" alt="Gemini第一範例回答" class="object-cover w-full h-full enlargeable-image cursor-zoom-in transition duration-300 hover:scale-105 hover:shadow-2xl" style="aspect-ratio:16/10; background-color:#111827; object-position:center;" data-full="ai_differ_image/gemini_1.png">
                         </div>
                         <span class="text-violet-400 text-lg font-bold mt-2">（點擊預覽圖片可放大，滑鼠滾輪可縮放）</span>
@@ -695,7 +790,7 @@
                 <div>
                     <div class="ai-label other-ai mb-2">ChatGPT 回答</div>
                     <div class="answer flex flex-col items-center">
-                        <div class="overflow-hidden w-80 h-48 flex items-center justify-center mx-auto mb-2 preview-img rounded-2xl shadow-xl bg-slate-900">
+                        <div class="responsive-image-container mb-2 preview-img rounded-2xl shadow-xl bg-slate-900">
                             <img src="ai_differ_image/chatGPT_2.png" alt="ChatGPT第二範例回答" class="object-cover w-full h-full enlargeable-image cursor-zoom-in transition duration-300 hover:scale-105 hover:shadow-2xl" style="aspect-ratio:16/10; background-color:#111827; object-position:center;" data-full="ai_differ_image/chatGPT_2.png">
                         </div>
                         <span class="text-violet-400 text-lg font-bold mt-2">（點擊預覽圖片可放大，滑鼠滾輪可縮放）</span>
@@ -704,7 +799,7 @@
                 <div>
                     <div class="ai-label robot mb-2">奇點 JudgAI 回答</div>
                     <div class="answer flex flex-col items-center">
-                        <div class="overflow-hidden w-80 h-48 flex items-center justify-center mx-auto mb-2 preview-img rounded-2xl shadow-xl bg-slate-900">
+                        <div class="responsive-image-container mb-2 preview-img rounded-2xl shadow-xl bg-slate-900">
                             <img src="ai_differ_image/robot_2.png" alt="奇點AI第二範例回答" class="object-cover w-full h-full enlargeable-image cursor-zoom-in transition duration-300 hover:scale-105 hover:shadow-2xl" style="aspect-ratio:16/10; background-color:#111827; object-position:center;" data-full="ai_differ_image/robot_2.png">
                         </div>
                         <span class="text-sky-400 text-lg font-bold mt-2">（點擊預覽圖片可放大，滑鼠滾輪可縮放）</span>
@@ -713,7 +808,7 @@
                 <div>
                     <div class="ai-label other-ai mb-2">Gemini 回答</div>
                     <div class="answer flex flex-col items-center">
-                        <div class="overflow-hidden w-80 h-48 flex items-center justify-center mx-auto mb-2 preview-img rounded-2xl shadow-xl bg-slate-900">
+                        <div class="responsive-image-container mb-2 preview-img rounded-2xl shadow-xl bg-slate-900">
                             <img src="ai_differ_image/gemini_2.png" alt="Gemini第二範例回答" class="object-cover w-full h-full enlargeable-image cursor-zoom-in transition duration-300 hover:scale-105 hover:shadow-2xl" style="aspect-ratio:16/10; background-color:#111827; object-position:center;" data-full="ai_differ_image/gemini_2.png">
                         </div>
                         <span class="text-violet-400 text-lg font-bold mt-2">（點擊預覽圖片可放大，滑鼠滾輪可縮放）</span>
@@ -749,7 +844,7 @@
                 <div>
                     <div class="ai-label other-ai mb-2">ChatGPT 回答</div>
                     <div class="answer flex flex-col items-center">
-                        <div class="overflow-hidden w-80 h-48 flex items-center justify-center mx-auto mb-2 preview-img rounded-2xl shadow-xl bg-slate-900">
+                        <div class="responsive-image-container mb-2 preview-img rounded-2xl shadow-xl bg-slate-900">
                             <img src="ai_differ_image/chatGPT_3.png" alt="ChatGPT第三範例回答" class="object-cover w-full h-full enlargeable-image cursor-zoom-in transition duration-300 hover:scale-105 hover:shadow-2xl" style="aspect-ratio:16/10; background-color:#111827; object-position:center;" data-full="ai_differ_image/chatGPT_3.png">
                         </div>
                         <span class="text-violet-400 text-lg font-bold mt-2">（點擊預覽圖片可放大，滑鼠滾輪可縮放）</span>
@@ -758,7 +853,7 @@
                 <div>
                     <div class="ai-label robot mb-2">奇點 JudgAI 回答</div>
                     <div class="answer flex flex-col items-center">
-                        <div class="overflow-hidden w-80 h-48 flex items-center justify-center mx-auto mb-2 preview-img rounded-2xl shadow-xl bg-slate-900">
+                        <div class="responsive-image-container mb-2 preview-img rounded-2xl shadow-xl bg-slate-900">
                             <img src="ai_differ_image/robot_3.png" alt="奇點AI第三範例回答" class="object-cover w-full h-full enlargeable-image cursor-zoom-in transition duration-300 hover:scale-105 hover:shadow-2xl" style="aspect-ratio:16/10; background-color:#111827; object-position:center;" data-full="ai_differ_image/robot_3.png">
                         </div>
                         <span class="text-sky-400 text-lg font-bold mt-2">（點擊預覽圖片可放大，滑鼠滾輪可縮放）</span>
@@ -767,7 +862,7 @@
                 <div>
                     <div class="ai-label other-ai mb-2">Gemini 回答</div>
                     <div class="answer flex flex-col items-center">
-                        <div class="overflow-hidden w-80 h-48 flex items-center justify-center mx-auto mb-2 preview-img rounded-2xl shadow-xl bg-slate-900">
+                        <div class="responsive-image-container mb-2 preview-img rounded-2xl shadow-xl bg-slate-900">
                             <img src="ai_differ_image/gemini_3.png" alt="Gemini第三範例回答" class="object-cover w-full h-full enlargeable-image cursor-zoom-in transition duration-300 hover:scale-105 hover:shadow-2xl" style="aspect-ratio:16/10; background-color:#111827; object-position:center;" data-full="ai_differ_image/gemini_3.png">
                         </div>
                         <span class="text-violet-400 text-lg font-bold mt-2">（點擊預覽圖片可放大，滑鼠滾輪可縮放）</span>
@@ -797,7 +892,7 @@
                 <!-- Card 1 -->
                 <div class="showcase-card rounded-2xl p-6 flex flex-col" style="background:linear-gradient(145deg,rgba(30,41,59,0.95) 0%,rgba(56,189,248,0.15) 100%);backdrop-filter:blur(20px) saturate(1.3);border:2px solid rgba(56,189,248,0.2);transition:all 0.4s cubic-bezier(.4,2,.6,1);box-shadow:0 12px 40px rgba(0,0,0,0.4),0 0 20px rgba(56,189,248,0.1);min-width:0;">
                     <div class="image-placeholder rounded-lg mb-4">
-                        <div style="width:320px;height:192px;overflow:hidden;margin:0 auto;display:flex;align-items:center;justify-content:center;background:#111827;border-radius:0.75rem;">
+                        <div class="responsive-image-container">
                             <img src="ai_differ_image/interact_1.png" alt="保險腫瘤認定回覆" class="object-cover w-full h-full enlargeable-image" style="width:100%;height:100%;aspect-ratio:16/10;object-position:center;">
                         </div>
                     </div>
@@ -813,7 +908,7 @@
                 <!-- Card 2 -->
                 <div class="showcase-card rounded-2xl p-6 flex flex-col" style="background:linear-gradient(145deg,rgba(30,41,59,0.95) 0%,rgba(56,189,248,0.15) 100%);backdrop-filter:blur(20px) saturate(1.3);border:2px solid rgba(56,189,248,0.2);transition:all 0.4s cubic-bezier(.4,2,.6,1);box-shadow:0 12px 40px rgba(0,0,0,0.4),0 0 20px rgba(56,189,248,0.1);">
                     <div class="image-placeholder rounded-lg mb-4">
-                        <div style="width:320px;height:192px;overflow:hidden;margin:0 auto;display:flex;align-items:center;justify-content:center;background:#111827;border-radius:0.75rem;">
+                        <div class="responsive-image-container">
                             <img src="ai_differ_image/interact_2.png" alt="遺產債務分配爭議回覆" class="object-cover w-full h-full enlargeable-image" style="width:100%;height:100%;aspect-ratio:16/10;object-position:center;">
                         </div>
                     </div>
@@ -829,7 +924,7 @@
                 <!-- Card 3 -->
                 <div class="showcase-card rounded-2xl p-6 flex flex-col" style="background:linear-gradient(145deg,rgba(30,41,59,0.95) 0%,rgba(56,189,248,0.15) 100%);backdrop-filter:blur(20px) saturate(1.3);border:2px solid rgba(56,189,248,0.2);transition:all 0.4s cubic-bezier(.4,2,.6,1);box-shadow:0 12px 40px rgba(0,0,0,0.4),0 0 20px rgba(56,189,248,0.1);">
                     <div class="image-placeholder rounded-lg mb-4">
-                        <div style="width:320px;height:192px;overflow:hidden;margin:0 auto;display:flex;align-items:center;justify-content:center;background:#111827;border-radius:0.75rem;">
+                        <div class="responsive-image-container">
                             <img src="ai_differ_image/interact_3.png" alt="保險案例精準分析" class="object-cover w-full h-full enlargeable-image" style="width:100%;height:100%;aspect-ratio:16/10;object-position:center;">
                         </div>
                     </div>
