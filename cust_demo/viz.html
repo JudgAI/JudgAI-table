@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>奇點智JudgAI：使用者後台分析</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .sidebar-icon {
+            stroke-width: 1.5;
+        }
+        .chat-bubble-user {
+            background-color: #e0f2fe;
+            border-radius: 20px 20px 5px 20px;
+        }
+        .chat-bubble-bot {
+            background-color: #ffffff;
+            border-radius: 20px 20px 20px 5px;
+            border: 1px solid #e5e7eb;
+        }
+        .bot-response-content h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+            border-left: 4px solid #3b82f6;
+            padding-left: 0.75rem;
+        }
+        .bot-response-content ul {
+            list-style-type: disc;
+            padding-left: 2rem;
+            margin-bottom: 1rem;
+        }
+        .bot-response-content strong {
+            color: #1d4ed8;
+        }
+        .highlight-tag {
+            background-color: #dbeafe;
+            color: #1e40af;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="flex h-screen">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white shadow-md flex-shrink-0 flex flex-col">
+        <div class="h-16 flex items-center justify-center border-b">
+            <h1 class="text-xl font-bold text-gray-800">Judg<span class="text-blue-600">AI</span></h1>
+        </div>
+        <nav class="flex-grow px-4 py-6">
+            <a href="#" data-target="overview-content" class="flex items-center px-4 py-2 text-gray-700 bg-blue-50 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sidebar-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                <span class="ml-3">總覽</span>
+            </a>
+            <a href="#" data-target="user-analysis-content" class="flex items-center px-4 py-2 mt-2 text-gray-600 hover:bg-blue-50 hover:text-gray-700 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sidebar-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                <span class="ml-3">使用者分析</span>
+            </a>
+            <a href="#" data-target="conversation-insights-content" class="flex items-center px-4 py-2 mt-2 text-gray-600 hover:bg-blue-50 hover:text-gray-700 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sidebar-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+                <span class="ml-3">對話洞察</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <header class="h-16 flex items-center justify-between px-6 bg-white border-b">
+            <h2 class="text-2xl font-bold text-gray-800">奇點智JudgAI：使用者後台分析</h2>
+            <div class="flex items-center">
+                <div class="relative">
+                    <button class="flex items-center focus:outline-none">
+                        <img class="h-8 w-8 rounded-full object-cover" src="https://placehold.co/100x100/E2E8F0/4A5568?text=M" alt="管理員頭像">
+                        <span class="ml-2 text-sm font-semibold">管理員</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
+            <!-- Overview Content -->
+            <div id="overview-content" class="p-6">
+                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Stat Cards -->
+                    <div class="bg-white p-5 rounded-lg shadow">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm text-gray-500">總使用者</p>
+                                <p class="text-2xl font-bold text-gray-800">1,088</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="bg-white p-5 rounded-lg shadow">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-green-100 text-green-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm text-gray-500">今日對話</p>
+                                <p class="text-2xl font-bold text-gray-800">568</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="bg-white p-5 rounded-lg shadow">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm text-gray-500">平均回應時間</p>
+                                <p class="text-2xl font-bold text-gray-800">1.25分鐘</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="bg-white p-5 rounded-lg shadow">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-red-100 text-red-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm text-gray-500">待處理問題</p>
+                                <p class="text-2xl font-bold text-gray-800">3</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Conversations -->
+                    <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">最新對話</h3>
+                        <div class="space-y-6">
+                            <!-- Conversation 1 - Latest -->
+                            <div class="flex items-start space-x-4">
+                                <img class="h-10 w-10 rounded-full object-cover" src="https://placehold.co/100x100/F87171/DC2626?text=U1" alt="使用者001">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-baseline">
+                                        <p class="font-semibold text-gray-900">使用者001</p>
+                                        <p class="text-xs text-gray-400">10 分鐘前</p>
+                                    </div>
+                                    <div class="mt-2 p-4 chat-bubble-user">
+                                        <p class="text-sm text-gray-800">企業主沒留錢繳稅？延伸發生的風險？繼承人喬不攏，延伸發生的風險？</p>
+                                    </div>
+                                    <div class="mt-3 p-4 chat-bubble-bot">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm">AI</div>
+                                            <p class="font-semibold text-blue-700">JudgAI Bot</p>
+                                        </div>
+                                        <div class="mt-2 text-sm text-gray-700 bot-response-content">
+                                            <p class="font-bold text-base text-blue-800 mb-2">🚩 精要回答：</p>
+                                            <p>企業主未預留足夠稅款或繼承人爭議，皆可能導致嚴重稅務及法律風險：</p>
+                                            <h4>稅款不足風險：</h4>
+                                            <ul>
+                                                <li>滯納金與利息</li>
+                                                <li>強制執行遺產拍賣</li>
+                                                <li>財產處分限制</li>
+                                            </ul>
+                                            <h4>繼承人爭議風險：</h4>
+                                            <ul>
+                                                <li>稅款遲延繳納產生額外成本</li>
+                                                <li>遺產長期公同共有</li>
+                                                <li>企業營運受阻</li>
+                                                <li>可能限制出境</li>
+                                            </ul>
+                                            <div class="mt-4 flex flex-wrap gap-2">
+                                                <span class="highlight-tag">企業主風險</span>
+                                                <span class="highlight-tag">遺產稅</span>
+                                                <span class="highlight-tag">繼承人爭議</span>
+                                                <span class="highlight-tag">強制執行</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Conversation 2 -->
+                            <div class="flex items-start space-x-4">
+                                <img class="h-10 w-10 rounded-full object-cover" src="https://placehold.co/100x100/A78BFA/7C3AED?text=U2" alt="使用者002">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-baseline">
+                                        <p class="font-semibold text-gray-900">使用者002</p>
+                                        <p class="text-xs text-gray-400">1 小時前</p>
+                                    </div>
+                                    <div class="mt-2 p-4 chat-bubble-user">
+                                        <p class="text-sm text-gray-800">中小型企業主身故？面臨： 1.民法5件重要事？ 2.遺產稅5件重要事？</p>
+                                    </div>
+                                    <div class="mt-3 p-4 chat-bubble-bot">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm">AI</div>
+                                            <p class="font-semibold text-blue-700">JudgAI Bot</p>
+                                        </div>
+                                        <div class="mt-2 text-sm text-gray-700 bot-response-content">
+                                            <p class="font-bold text-base text-blue-800 mb-2">🚩 精要回答：</p>
+                                            <h4>民法5件重要事：</h4>
+                                            <ul>
+                                                <li><strong>繼承人僅負有限責任</strong></li>
+                                                <li><strong>配偶剩餘財產差額分配請求權</strong></li>
+                                                <li><strong>遺囑效力與執行人地位</strong></li>
+                                                <li><strong>閉鎖性公司股權轉讓限制</strong></li>
+                                                <li><strong>遺產分割與管理人責任</strong></li>
+                                            </ul>
+                                            <h4>遺產稅5件重要事：</h4>
+                                            <ul>
+                                                <li><strong>指定受益人保險金不計入遺產</strong></li>
+                                                <li><strong>繼承人對遺產稅負有限責任</strong></li>
+                                                <li><strong>剩餘財產差額分配可扣除</strong></li>
+                                                <li><strong>可申請分期繳納或實物抵繳</strong></li>
+                                                <li><strong>申報期限彈性與股權估價</strong></li>
+                                            </ul>
+                                            <div class="mt-4 flex flex-wrap gap-2">
+                                                <span class="highlight-tag">中小企業主</span>
+                                                <span class="highlight-tag">民法</span>
+                                                <span class="highlight-tag">遺產稅</span>
+                                                <span class="highlight-tag">企業傳承</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Conversation 3 -->
+                            <div class="flex items-start space-x-4">
+                                <img class="h-10 w-10 rounded-full object-cover" src="https://placehold.co/100x100/34D399/047857?text=U3" alt="使用者003">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-baseline">
+                                        <p class="font-semibold text-gray-900">使用者003</p>
+                                        <p class="text-xs text-gray-400">3 小時前</p>
+                                    </div>
+                                    <div class="mt-2 p-4 chat-bubble-user">
+                                        <p class="text-sm text-gray-800">ABC保單若B身故保險金課贈與稅方式和保險金是否課基本稅額？</p>
+                                    </div>
+                                    <div class="mt-3 p-4 chat-bubble-bot">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm">AI</div>
+                                            <p class="font-semibold text-blue-700">JudgAI Bot</p>
+                                        </div>
+                                        <div class="mt-2 text-sm text-gray-700 bot-response-content">
+                                            <p class="font-bold text-base text-blue-800 mb-2">🚩 精要回答：</p>
+                                            <p>ABC保單中被保險人B身故時，保險金課稅主要涉及<strong>贈與稅與基本稅額</strong>：</p>
+                                            <h4>贈與稅課徵：</h4>
+                                            <ul>
+                                                <li>若要保人與被保險人為同一人：原則上不課贈與稅</li>
+                                                <li>若要保人與被保險人非同一人：可能視為要保人贈與受益人</li>
+                                            </ul>
+                                            <h4>基本稅額：</h4>
+                                            <ul>
+                                                <li>95年後訂立且受益人與要保人非同一人</li>
+                                                <li>死亡給付超過3,740萬元部分需計入基本所得額</li>
+                                            </ul>
+                                            <div class="mt-4 flex flex-wrap gap-2">
+                                                <span class="highlight-tag">ABC保單</span>
+                                                <span class="highlight-tag">贈與稅</span>
+                                                <span class="highlight-tag">基本稅額</span>
+                                                <span class="highlight-tag">保險給付</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Conversation 4 -->
+                            <div class="flex items-start space-x-4">
+                                <img class="h-10 w-10 rounded-full object-cover" src="https://placehold.co/100x100/F59E0B/D97706?text=U4" alt="使用者004">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-baseline">
+                                        <p class="font-semibold text-gray-900">使用者004</p>
+                                        <p class="text-xs text-gray-400">4 小時前</p>
+                                    </div>
+                                    <div class="mt-2 p-4 chat-bubble-user">
+                                        <p class="text-sm text-gray-800">變額年金跟變額壽險 進入年金 解約的區別？</p>
+                                    </div>
+                                    <div class="mt-3 p-4 chat-bubble-bot">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm">AI</div>
+                                            <p class="font-semibold text-blue-700">JudgAI Bot</p>
+                                        </div>
+                                        <div class="mt-2 text-sm text-gray-700 bot-response-content">
+                                            <p class="font-bold text-base text-blue-800 mb-2">🚩 精要回答：</p>
+                                            <h4>進入年金階段區別：</h4>
+                                            <ul>
+                                                <li><strong>變額年金</strong>：可選擇將累積資金轉為定期年金給付</li>
+                                                <li><strong>變額壽險</strong>：本身不具備年金給付機制，需解約後另投保年金險</li>
+                                            </ul>
+                                            <h4>解約區別：</h4>
+                                            <ul>
+                                                <li><strong>變額年金</strong>：累積期可解約，需扣除解約費用</li>
+                                                <li><strong>變額壽險</strong>：可解約或部分提領，影響保障額度</li>
+                                            </ul>
+                                            <div class="mt-4 flex flex-wrap gap-2">
+                                                <span class="highlight-tag">變額年金</span>
+                                                <span class="highlight-tag">變額壽險</span>
+                                                <span class="highlight-tag">年金化</span>
+                                                <span class="highlight-tag">解約費用</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analysis Charts -->
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">熱門查詢主題</h3>
+                            <canvas id="topicChart"></canvas>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow">
+                             <h3 class="text-xl font-semibold text-gray-800 mb-4">使用者活躍度</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <img class="h-10 w-10 rounded-full object-cover" src="https://placehold.co/100x100/A78BFA/7C3AED?text=U2" alt="使用者002">
+                                    <div class="ml-4 flex-1">
+                                        <p class="text-sm font-medium text-gray-800">使用者002</p>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5 mt-1">
+                                            <div class="bg-blue-600 h-2.5 rounded-full" style="width: 95%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <img class="h-10 w-10 rounded-full object-cover" src="https://placehold.co/100x100/34D399/047857?text=U3" alt="使用者003">
+                                    <div class="ml-4 flex-1">
+                                        <p class="text-sm font-medium text-gray-800">使用者003</p>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5 mt-1">
+                                            <div class="bg-blue-600 h-2.5 rounded-full" style="width: 88%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <img class="h-10 w-10 rounded-full object-cover" src="https://placehold.co/100x100/F87171/DC2626?text=U1" alt="使用者001">
+                                    <div class="ml-4 flex-1">
+                                        <p class="text-sm font-medium text-gray-800">使用者001</p>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5 mt-1">
+                                            <div class="bg-blue-600 h-2.5 rounded-full" style="width: 82%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <img class="h-10 w-10 rounded-full object-cover" src="https://placehold.co/100x100/F59E0B/D97706?text=U4" alt="使用者004">
+                                    <div class="ml-4 flex-1">
+                                        <p class="text-sm font-medium text-gray-800">使用者004</p>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5 mt-1">
+                                            <div class="bg-blue-600 h-2.5 rounded-full" style="width: 75%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <img class="h-10 w-10 rounded-full object-cover" src="https://placehold.co/100x100/6366F1/4F46E5?text=U5" alt="使用者005">
+                                    <div class="ml-4 flex-1">
+                                        <p class="text-sm font-medium text-gray-800">使用者005</p>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5 mt-1">
+                                            <div class="bg-blue-600 h-2.5 rounded-full" style="width: 68%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Analysis Content -->
+            <div id="user-analysis-content" class="hidden p-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">使用者分析</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow h-80">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4">每月新使用者</h4>
+                        <canvas id="userGrowthChart"></canvas>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4">近期業務可溝通議題</h4>
+                        <div class="space-y-4">
+                            <!-- 企業主傳承議題 -->
+                            <div class="flex items-start p-4 bg-gradient-to-r from-red-50 to-pink-50 rounded-lg border-l-4 border-red-500">
+                                <div class="flex-shrink-0">
+                                    <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-2 0H3m2 0h2M7 16l3-3 3 3M16 8l-3 3-3-3"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="ml-4 flex-1">
+                                    <h5 class="text-sm font-semibold text-red-800">企業主傳承規劃</h5>
+                                    <p class="text-xs text-red-600 mt-1">適合對象：使用者002、使用者001</p>
+                                    <p class="text-sm text-gray-700 mt-2">民法繼承、遺產稅規劃、企業股權傳承</p>
+                                </div>
+                            </div>
+
+                            <!-- 保險稅務議題 -->
+                            <div class="flex items-start p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border-l-4 border-blue-500">
+                                <div class="flex-shrink-0">
+                                    <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="ml-4 flex-1">
+                                    <h5 class="text-sm font-semibold text-blue-800">保險稅務優化</h5>
+                                    <p class="text-xs text-blue-600 mt-1">適合對象：使用者003、使用者004</p>
+                                    <p class="text-sm text-gray-700 mt-2">ABC保單規劃、變額保險商品、基本稅額</p>
+                                </div>
+                            </div>
+
+                            <!-- 繼承爭議議題 -->
+                            <div class="flex items-start p-4 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-lg border-l-4 border-orange-500">
+                                <div class="flex-shrink-0">
+                                    <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="ml-4 flex-1">
+                                    <h5 class="text-sm font-semibold text-orange-800">繼承權益保護</h5>
+                                    <p class="text-xs text-orange-600 mt-1">適合對象：使用者005、使用者006</p>
+                                    <p class="text-sm text-gray-700 mt-2">協議分割、拋棄繼承、特留分保障</p>
+                                </div>
+                            </div>
+
+                            <!-- 職災法規議題 -->
+                            <div class="flex items-start p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border-l-4 border-green-500">
+                                <div class="flex-shrink-0">
+                                    <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="ml-4 flex-1">
+                                    <h5 class="text-sm font-semibold text-green-800">勞工法規諮詢</h5>
+                                    <p class="text-xs text-green-600 mt-1">適合對象：一般企業HR</p>
+                                    <p class="text-sm text-gray-700 mt-2">職災認定、通勤災害、個人疾病界定</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8 bg-white rounded-lg shadow overflow-x-auto">
+                    <h4 class="text-xl font-semibold text-gray-800 p-6">詳細使用者列表</h4>
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">使用者</th>
+                                <th scope="col" class="px-6 py-3">總查詢數</th>
+                                <th scope="col" class="px-6 py-3">最後上線</th>
+                                <th scope="col" class="px-6 py-3">狀態</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-white border-b">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">使用者002</td>
+                                <td class="px-6 py-4">156</td>
+                                <td class="px-6 py-4">2025-09-26 09:15</td>
+                                <td class="px-6 py-4"><span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">活躍</span></td>
+                            </tr>
+                            <tr class="bg-white border-b">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">使用者003</td>
+                                <td class="px-6 py-4">142</td>
+                                <td class="px-6 py-4">2025-09-26 07:30</td>
+                                <td class="px-6 py-4"><span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">活躍</span></td>
+                            </tr>
+                            <tr class="bg-white border-b">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">使用者001</td>
+                                <td class="px-6 py-4">138</td>
+                                <td class="px-6 py-4">2025-09-26 08:45</td>
+                                <td class="px-6 py-4"><span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">活躍</span></td>
+                            </tr>
+                            <tr class="bg-white border-b">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">使用者004</td>
+                                <td class="px-6 py-4">125</td>
+                                <td class="px-6 py-4">2025-09-26 06:20</td>
+                                <td class="px-6 py-4"><span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">活躍</span></td>
+                            </tr>
+                            <tr class="bg-white border-b">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">使用者005</td>
+                                <td class="px-6 py-4">94</td>
+                                <td class="px-6 py-4">2025-09-25 14:30</td>
+                                <td class="px-6 py-4"><span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">偶爾</span></td>
+                            </tr>
+                            <tr class="bg-white border-b">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">使用者006</td>
+                                <td class="px-6 py-4">78</td>
+                                <td class="px-6 py-4">2025-09-25 11:15</td>
+                                <td class="px-6 py-4"><span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">偶爾</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Conversation Insights Content -->
+            <div id="conversation-insights-content" class="hidden p-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">對話洞察</h3>
+                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow h-80">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4">對話情緒分析</h4>
+                        <canvas id="sentimentChart"></canvas>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4">熱門關鍵字雲</h4>
+                         <div class="flex flex-wrap items-center justify-center gap-2 text-gray-600">
+                             <span class="text-4xl font-bold text-red-600">遺產稅</span>
+                             <span class="text-3xl font-bold text-blue-600">企業主身故</span>
+                             <span class="text-2xl text-purple-600">變額年金</span>
+                             <span class="text-2xl text-green-600">ABC保單</span>
+                             <span class="text-xl">基本稅額</span>
+                             <span class="text-xl">繼承人</span>
+                             <span class="text-lg">協議分割</span>
+                             <span class="text-lg">限定責任</span>
+                             <span class="text-md">民法</span>
+                             <span class="text-md">閉鎖性公司</span>
+                             <span class="text-lg">解約費用</span>
+                             <span class="text-md">年金化</span>
+                         </div>
+                    </div>
+                </div>
+                <div class="mt-8 bg-white p-6 rounded-lg shadow">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-4">待處理或需人工介入的對話</h4>
+                    <div class="divide-y divide-gray-200">
+                        <div class="py-4">
+                            <p class="text-sm text-gray-500">來自: <span class="font-medium text-gray-800">使用者001</span></p>
+                            <p class="mt-2 text-gray-700">"企業主沒留錢繳稅？延伸發生的風險？繼承人喬不攏，延伸發生的風險？"</p>
+                            <p class="mt-2 text-xs text-orange-500">複雜案例，建議專業顧問跟進。</p>
+                        </div>
+                        <div class="py-4">
+                            <p class="text-sm text-gray-500">來自: <span class="font-medium text-gray-800">使用者002</span></p>
+                            <p class="mt-2 text-gray-700">"中小型企業主身故後民法與遺產稅的詳細規劃建議"</p>
+                            <p class="mt-2 text-xs text-blue-500">高價值諮詢，可安排專家會議。</p>
+                        </div>
+                        <div class="py-4">
+                            <p class="text-sm text-gray-500">來自: <span class="font-medium text-gray-800">使用者005</span></p>
+                            <p class="mt-2 text-gray-700">"協議分割遺產時，B可以分得0元嗎？"</p>
+                            <p class="mt-2 text-xs text-red-500">AI回應可能不完整，建議人工審核。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Navigation Logic ---
+            const navLinks = document.querySelectorAll('aside nav a');
+            const contentPanels = document.querySelectorAll('main > div[id$="-content"]');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // Update active state for links
+                    navLinks.forEach(l => {
+                        l.classList.remove('bg-blue-50', 'text-gray-700');
+                        l.classList.add('text-gray-600');
+                    });
+                    link.classList.add('bg-blue-50', 'text-gray-700');
+                    link.classList.remove('text-gray-600');
+
+                    const targetId = link.dataset.target;
+                    
+                    // Toggle content panels
+                    contentPanels.forEach(panel => {
+                        if (panel.id === targetId) {
+                            panel.classList.remove('hidden');
+                        } else {
+                            panel.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            // --- Charts Initialization ---
+            
+            // Overview Chart: Topic Distribution
+            const topicCtx = document.getElementById('topicChart')?.getContext('2d');
+            if (topicCtx) {
+                new Chart(topicCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['遺產稅法', '保險條款', '企業傳承', '繼承問題', '變額保險'],
+                        datasets: [{
+                            label: '查詢次數',
+                            data: [1248, 896, 672, 534, 428],
+                            backgroundColor: [
+                                'rgba(239, 68, 68, 0.8)',
+                                'rgba(59, 130, 246, 0.8)',
+                                'rgba(34, 197, 94, 0.8)',
+                                'rgba(249, 115, 22, 0.8)',
+                                'rgba(139, 92, 246, 0.8)'
+                            ],
+                            borderColor: [
+                                'rgba(239, 68, 68, 1)',
+                                'rgba(59, 130, 246, 1)',
+                                'rgba(34, 197, 94, 1)',
+                                'rgba(249, 115, 22, 1)',
+                                'rgba(139, 92, 246, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { position: 'top' } }
+                    }
+                });
+            }
+
+            // User Analysis Chart: User Growth
+            const userGrowthCtx = document.getElementById('userGrowthChart')?.getContext('2d');
+            if(userGrowthCtx) {
+                new Chart(userGrowthCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['四月', '五月', '六月', '七月', '八月', '九月'],
+                        datasets: [{
+                            label: '新使用者',
+                            data: [85, 126, 198, 245, 312, 376],
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+            }
+
+            // Conversation Insights Chart: Sentiment Analysis
+            const sentimentCtx = document.getElementById('sentimentChart')?.getContext('2d');
+            if(sentimentCtx) {
+                new Chart(sentimentCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['正面', '中性', '負面'],
+                        datasets: [{
+                            label: '對話數量',
+                            data: [3420, 1890, 690],
+                            backgroundColor: [
+                                'rgba(34, 197, 94, 0.8)',
+                                'rgba(249, 115, 22, 0.8)',
+                                'rgba(239, 68, 68, 0.8)'
+                            ],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { grid: { display: false } },
+                            y: { grid: { display: false } }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+
