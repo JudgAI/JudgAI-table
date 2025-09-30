@@ -62,6 +62,18 @@
             transition: all 0.3s ease-in-out;
         }
         .cta-button:hover {
+        /* 讓三個方案功能列表高度一致 */
+        .pricing-features-list {
+            min-height: 340px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        @media (min-width: 768px) {
+            .pricing-features-list {
+                min-height: 360px;
+            }
+        }
             box-shadow: 0 0 20px #38bdf8;
             transform: scale(1.05);
         }
@@ -806,7 +818,7 @@
                             
                             <p class="text-gray-400 mb-6">靈活付款，隨時調整</p>
                             <div class="mb-8">
-                                <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center justify-between mb-2" style="min-height: 56px; align-items: flex-end;">
                                     <div>
                                         <span class="text-4xl font-bold text-white">NT$1,688</span>
                                         <span class="text-lg text-gray-400 ml-1">/ 月</span>
@@ -817,14 +829,14 @@
                                         <div class="text-2xl font-bold text-orange-400">限時 NT$888</div>
                                     </div>
                                 </div>
-                                <!-- 優惠說明 -->
-                                <div class="text-xs text-orange-400 mb-4">
+                                <!-- 優惠說明，其他方案用空白佔位保持高度一致 -->
+                                <div class="text-xs text-orange-400 mb-4" style="min-height: 24px;">
                                     <p>🔥 限時優惠價 - 不定時優惠，歡迎了解更多</p>
                                 </div>
                             </div>
                             
                             <!-- 月繳功能 -->
-                            <ul class="space-y-3 text-sm">
+                            <ul class="space-y-3 text-sm pricing-features-list">
                                 <li class="feature-item">
                                     <svg class="feature-icon text-green-400" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
@@ -901,12 +913,21 @@
                             
                             <p class="text-gray-400 mb-6">省錢優惠，加贈資料庫額度</p>
                             <div class="mb-8">
-                                <span class="text-4xl font-bold text-white">NT$9,588</span>
-                                <span class="text-lg text-gray-400 ml-1">/ 半年</span>
+                                <div class="flex items-center justify-between mb-2" style="min-height: 56px; align-items: flex-end;">
+                                    <div>
+                                        <span class="text-4xl font-bold text-white">NT$9,588</span>
+                                        <span class="text-lg text-gray-400 ml-1">/ 半年</span>
+                                    </div>
+                                    <div class="text-right" style="min-width: 120px;">
+                                        <div class="text-sm text-gray-500 line-through" style="visibility:hidden;">原價 NT$1,688</div>
+                                        <div class="text-2xl font-bold text-orange-400" style="visibility:hidden;">限時 NT$888</div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-orange-400 mb-4" style="min-height: 24px;">&nbsp;</div>
                             </div>
                             
                             <!-- 半年繳功能 -->
-                            <ul class="space-y-3 text-sm">
+                            <ul class="space-y-3 text-sm pricing-features-list">
                                 <li class="feature-item">
                                     <svg class="feature-icon text-green-400" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
@@ -953,12 +974,21 @@
                             
                             <p class="text-gray-400 mb-6">最超值選擇，贈送最多，優惠最多</p>
                             <div class="mb-8">
-                                <span class="text-4xl font-bold text-white">NT$18,888</span>
-                                <span class="text-lg text-gray-400 ml-1">/ 年</span>
+                                <div class="flex items-center justify-between mb-2" style="min-height: 56px; align-items: flex-end;">
+                                    <div>
+                                        <span class="text-4xl font-bold text-white">NT$18,888</span>
+                                        <span class="text-lg text-gray-400 ml-1">/ 年</span>
+                                    </div>
+                                    <div class="text-right" style="min-width: 120px;">
+                                        <div class="text-sm text-gray-500 line-through" style="visibility:hidden;">原價 NT$1,688</div>
+                                        <div class="text-2xl font-bold text-orange-400" style="visibility:hidden;">限時 NT$888</div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-orange-400 mb-4" style="min-height: 24px;">&nbsp;</div>
                             </div>
                             
                             <!-- 年繳功能 -->
-                            <ul class="space-y-3 text-sm">
+                            <ul class="space-y-3 text-sm pricing-features-list">
                                 <li class="feature-item">
                                     <svg class="feature-icon text-green-400" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
@@ -1112,7 +1142,7 @@
                                 <tr class="bg-gray-900 border-b">
                                     <td class="px-6 py-4 font-medium text-gray-300">月費訂閱制（彈性付款、隨時可停）</td>
                                     <td class="px-6 py-4 text-center">-</td>
-                                    <td class="px-6 py-4 text-center">1,688</td>
+                                    <td class="px-6 py-4 text-center">請參考 <a href="#pricing-plans" class="text-sky-600 underline">訂閱說明</a></td>
                                     <td class="px-6 py-4 text-center">-</td>
                                 </tr>
                                 <tr class="bg-gray-900 border-b">
@@ -1141,8 +1171,8 @@
                                 <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">專屬AI<br>大語言模型</td><td class="px-6 py-4 text-center">2.0 版</td><td class="px-6 py-4 text-center">深度 3.0 版</td><td class="px-6 py-4 text-center">1.深度 3.0 版<br>2.自製專權威知識庫</td></tr>
                                 <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">獨家知識庫<br>整合超過3,000萬字</td><td class="px-6 py-4 text-center">1.引用</td><td class="px-6 py-4 text-center">1.引用<br>2.總結</td><td class="px-6 py-4 text-center">1.引用<br>2.總結<br>3.結合權威資料庫</td></tr>
                                 <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">知識庫持續更新</td><td class="px-6 py-4 text-center">逐步更新</td><td class="px-6 py-4 text-center">確保即時有效</td><td class="px-6 py-4 text-center">打造個人知識品牌</td></tr>
-                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">智慧線上搜尋</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
-                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">每日提問上限</td><td class="px-6 py-4 text-center">5 次</td><td class="px-6 py-4 text-center">49 次</td><td class="px-6 py-4 text-center">每天 49 次 / 學員</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">智慧線上搜尋</td><td class="px-6 py-4 text-center">✅</td><td class="px-6 py-4 text-center">✅</td><td class="px-6 py-4 text-center">✅</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">每日提問上限</td><td class="px-6 py-4 text-center">5 次</td><td class="px-6 py-4 text-center">請參考 <a href="#pricing-plans" class="text-sky-600 underline">訂閱說明</a></td><td class="px-6 py-4 text-center">請參考 <a href="#pricing-plans" class="text-sky-600 underline">訂閱說明</a></td></tr>
                                 <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">實戰銷售AI助理</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
                                 <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">網頁個人後台</td><td class="px-6 py-4 text-center cross-icon">✗</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
 
@@ -1170,13 +1200,13 @@
                                     <th scope="row" class="px-6 py-3 text-base font-bold text-cyan-400">知識庫內容</th>
                                     <td colspan="3"></td>
                                 </tr>
-                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">基礎知識庫（保險法, 遺贈稅基礎）</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
-                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">知識庫不斷更新</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
-                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">國稅類函釋（15種國稅，共 340 萬字+）</td><td class="px-6 py-4 text-center">無或1則</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
-                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">金融保險和解實例（2,000萬字+, 6,000+則）</td><td class="px-6 py-4 text-center">無或1則</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
-                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">民事裁判書彙編（200萬字+）</td><td class="px-6 py-4 text-center">無或1則</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
-                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">刑事裁判書彙編（400萬字+）</td><td class="px-6 py-4 text-center">無或1則</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
-                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">財稅/金融/訴願/信託/六法</td><td class="px-6 py-4 text-center">無或1則</td><td class="px-6 py-4 text-center check-icon">✅</td><td class="px-6 py-4 text-center check-icon">✅</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">基礎知識庫（保險法, 遺贈稅基礎）</td><td class="px-6 py-4 text-center">✅</td><td class="px-6 py-4 text-center">✅</td><td class="px-6 py-4 text-center">✅</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">知識庫不斷更新</td><td class="px-6 py-4 text-center">✅</td><td class="px-6 py-4 text-center">✅</td><td class="px-6 py-4 text-center">✅</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">國稅類函釋（15種國稅，共 340 萬字+）</td><td class="px-6 py-4 text-center">無或1則</td><td class="px-6 py-4 text-center">✅</td><td class="px-6 py-4 text-center">✅</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">金融保險和解實例（2,000萬字+, 6,000+則）</td><td class="px-6 py-4 text-center">無或1則</td><td class="px-6 py-4 text-center">✅</td><td class="px-6 py-4 text-center">✅</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">民事裁判書彙編（200萬字+）</td><td class="px-6 py-4 text-center">無或1則</td><td class="px-6 py-4 text-center">✅</td><td class="px-6 py-4 text-center">✅</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">刑事裁判書彙編（400萬字+）</td><td class="px-6 py-4 text-center">無或1則</td><td class="px-6 py-4 text-center">✅</td><td class="px-6 py-4 text-center">✅</td></tr>
+                                <tr class="bg-gray-900 border-b"><td class="px-6 py-4 font-medium text-gray-300">財稅/金融/訴願/信託/六法</td><td class="px-6 py-4 text-center">無或1則</td><td class="px-6 py-4 text-center">✅</td><td class="px-6 py-4 text-center">✅</td></tr>
 
                                 <!-- Section: 網頁版使用者後台 -->
                                 <tr class="table-section-header">
