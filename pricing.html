@@ -575,6 +575,29 @@
             background: rgba(255, 255, 255, 0.05) !important; /* 極度透明的背景 */
             border-color: rgba(0, 0, 0, 0.1) !important; /* 淡色邊框 */
         }
+        /* 淺色主題下footer主題顏色與chip顏色，與index.html一致 */
+        .light-theme #main-footer {
+            background: #fff !important;
+            border-top: 1px solid #e2e8f0 !important;
+            color: #334155 !important;
+        }
+        .light-theme #main-footer h3,
+        .light-theme #main-footer strong {
+            color: #0f172a !important;
+        }
+        .light-theme #main-footer .text-gray-400,
+        .light-theme #main-footer p,
+        .light-theme #main-footer li,
+        .light-theme #main-footer a {
+            color: #334155 !important;
+        }
+        .light-theme #main-footer a:hover {
+            color: #0ea5e9 !important;
+        }
+        .light-theme #footer-keywords .bg-blue-600\/20 {
+            background: #e0f2fe !important;
+            color: #0369a1 !important;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-100 min-h-screen">
@@ -993,7 +1016,7 @@
                                     <svg class="feature-icon text-green-400" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
                                     </svg>
-                                    每月最多 <strong>1560萬字</strong> 的輸出
+                                    每月最多 <strong>1,560萬字</strong> 的輸出
                                 </li>
                                 <li class="feature-item">
                                     <svg class="feature-icon text-orange-400" fill="currentColor" viewBox="0 0 20 20">
@@ -1240,7 +1263,7 @@
 
     <!-- Footer -->
 <!-- Footer -->
-        <footer class="bg-gray-900/50 border-t border-gray-700/50">
+    <footer id="main-footer" class="bg-gray-900/50 border-t border-gray-700/50">
             <!-- SEO 內容區塊 -->
             <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
@@ -1262,7 +1285,7 @@
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-white mb-4">相關關鍵詞</h3>
-                        <div class="flex flex-wrap gap-2">
+                    <div id="footer-keywords" class="flex flex-wrap gap-2">
                             <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">奇點AI</span>
                             <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">AI保險</span>
                             <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">保險科技</span>
