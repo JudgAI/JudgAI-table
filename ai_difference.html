@@ -758,6 +758,29 @@
                 height: 140px;
             }
         }
+        /* 淺色主題下footer主題顏色與chip顏色，與index.html一致 */
+        .light-theme #main-footer {
+            background: #fff !important;
+            border-top: 1px solid #e2e8f0 !important;
+            color: #334155 !important;
+        }
+        .light-theme #main-footer h3,
+        .light-theme #main-footer strong {
+            color: #0f172a !important;
+        }
+        .light-theme #main-footer .text-gray-400,
+        .light-theme #main-footer p,
+        .light-theme #main-footer li,
+        .light-theme #main-footer a {
+            color: #334155 !important;
+        }
+        .light-theme #main-footer a:hover {
+            color: #0ea5e9 !important;
+        }
+        .light-theme #footer-keywords .bg-blue-600\/20 {
+            background: #e0f2fe !important;
+            color: #0369a1 !important;
+        }
     </style>
 </head>
 <body>
@@ -902,7 +925,7 @@
                     <div class="ai-label other-ai mb-2">ChatGPT 回答</div>
                     <div class="answer flex flex-col items-center ai-answer-card">
                         <div class="responsive-image-container mb-2 preview-img rounded-2xl shadow-xl bg-slate-900">
-                            <img src="ai_differ_image/chatGPT_1.png" alt="ChatGPT第一範例回答" class="object-cover w-full h-full enlargeable-image cursor-zoom-in transition duration-300 hover:scale-105 hover:shadow-2xl" style="aspect-ratio:16/10; background-color:#111827; object-position:center;" data-full="ai_differ_image/chatgpt_1.png">
+                            <img src="ai_differ_image/chatGPT_1.png" alt="ChatGPT第一範例回答" class="object-cover w-full h-full enlargeable-image cursor-zoom-in transition duration-300 hover:scale-105 hover:shadow-2xl" style="aspect-ratio:16/10; background-color:#111827; object-position:center;" data-full="ai_differ_image/chatGPT_1.png">
                         </div>
                         <span class="text-violet-400 text-lg font-bold mt-2">（點擊預覽圖片可放大，滑鼠滾輪可縮放）</span>
                     </div>
@@ -1159,8 +1182,7 @@
 
 <!-- Footer -->
 <!-- Footer -->
-    <footer class="bg-gray-900/50 border-t border-gray-700/50">
-        
+    <footer id="main-footer" class="bg-gray-900/50 border-t border-gray-700/50">
             <!-- SEO 內容區塊 -->
             <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
@@ -1182,7 +1204,7 @@
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-white mb-4">相關關鍵詞</h3>
-                        <div class="flex flex-wrap gap-2">
+                    <div id="footer-keywords" class="flex flex-wrap gap-2">
                             <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">奇點AI</span>
                             <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">AI保險</span>
                             <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">保險科技</span>
@@ -1350,16 +1372,18 @@
             });
         });
 
-        // 圖片放大與滾輪上下移動（不影響 footer 或其他內容）
+        // 圖片放大支援滾輪縮放與拖曳移動
 document.addEventListener('DOMContentLoaded', function () {
     const images = document.querySelectorAll('.enlargeable-image');
     const modal = document.getElementById('imageModal');
     const modalImg = document.getElementById('modalImage');
     const closeBtn = document.querySelector('#imageModal .close-modal-btn');
-    let translateY = 0;
     let scale = 2;
+    let translateY = 0;
+    let isDragging = false;
+    let lastY = 0;
 
-    // 建立放大縮小按鈕，移到左側
+    // 建立放大縮小按鈕
     let zoomInBtn = document.createElement('button');
     zoomInBtn.textContent = '+';
     zoomInBtn.style.position = 'absolute';
@@ -1403,10 +1427,11 @@ document.addEventListener('DOMContentLoaded', function () {
         img.addEventListener('click', function () {
             modal.classList.remove('hidden');
             modalImg.src = img.getAttribute('data-full') || img.src;
-            translateY = 0;
             scale = 2;
+            translateX = 0;
+            translateY = 0;
             modalImg.onload = function () {
-                modalImg.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+                updateTransform();
                 modalImg.style.transition = 'transform 0.2s';
                 modalImg.style.cursor = 'grab';
                 modalImg.style.maxHeight = '90vh';
@@ -1435,20 +1460,40 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function updateTransform() {
-    // 圖片中心最多只能移動到螢幕邊緣
-    const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
-    const imgH = modalImg.naturalHeight * scale;
-    let maxOffset = Math.max(0, (imgH / 2) - (vh / 2));
-    if (translateY > maxOffset) translateY = maxOffset;
-    if (translateY < -maxOffset) translateY = -maxOffset;
-    modalImg.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+        modalImg.style.transform = `scale(${scale}) translateY(${translateY}px)`;
     }
 
+    // 滾輪縮放
     modalImg.addEventListener('wheel', function (e) {
         e.preventDefault();
-        modalImg.style.transition = 'none';
-        translateY += e.deltaY;
+        let prevScale = scale;
+        if (e.deltaY < 0) {
+            scale = Math.min(scale + 0.15, 5);
+        } else {
+            scale = Math.max(scale - 0.15, 0.5);
+        }
+        // 以滑鼠Y位置為中心縮放
+        const rect = modalImg.getBoundingClientRect();
+        const offsetY = e.clientY - rect.top - rect.height / 2;
+        translateY = (translateY - offsetY) * (scale / prevScale) + offsetY;
         updateTransform();
+    });
+
+    // 拖曳只能上下移動
+    modalImg.addEventListener('mousedown', function (e) {
+        isDragging = true;
+        lastY = e.clientY;
+        modalImg.style.cursor = 'grabbing';
+    });
+    document.addEventListener('mousemove', function (e) {
+        if (!isDragging) return;
+        translateY += e.clientY - lastY;
+        lastY = e.clientY;
+        updateTransform();
+    });
+    document.addEventListener('mouseup', function () {
+        isDragging = false;
+        modalImg.style.cursor = 'grab';
     });
 
     modal.addEventListener('click', function (e) {

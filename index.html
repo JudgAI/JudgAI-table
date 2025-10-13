@@ -95,6 +95,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="奇點.png">
     <style>
+
         /* 自定義樣式 */
         body {
             font-family: 'Noto Sans TC', 'Inter', sans-serif;
@@ -378,6 +379,17 @@
             backdrop-filter: blur(20px);
             border: 1px solid rgba(56, 189, 248, 0.2);
         }
+        /* 淺色主題下，針對id設定footer顏色 */
+        .light-theme #main-footer {
+            background: #fff !important;
+            border-top: 1px solid #e2e8f0 !important;
+            color: #334155 !important;
+        }
+         /* 淺色主題下footer關鍵詞chip顏色 */
+        .light-theme #footer-keywords .bg-blue-600\/20 {
+            background: #e0f2fe !important;
+            color: #0369a1 !important;
+        }
 
         /* Light mode overrides */
         :is(html.light, body.light, [data-theme="light"], .theme-light) body {
@@ -416,12 +428,18 @@
             border-color: #e2e8f0; /* slate-200 */
         }
         :is(html.light, body.light, [data-theme="light"], .theme-light) .audience-card h3,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .plan-card h3,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .image-showcase-card h3 {
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .audience-card h3,
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .plan-card h3 {
             color: #0f172a !important;
         }
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .audience-card p,
-        :is(html.light, body.light, [data-theme="light"], .theme-light) .plan-card p,
+        /* 強制 image card 標題/描述顏色優先 */
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .imgcard-title {
+            color: #0ea5e9 !important;
+        }
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .imgcard-desc {
+            color: #0a6495 !important;
+            font-weight: 500;
+        }
         :is(html.light, body.light, [data-theme="light"], .theme-light) .image-showcase-card p,
         :is(html.light, body.light, [data-theme="light"], .theme-light) .text-gray-400 {
             color: #475569 !important; /* slate-600 */
@@ -446,7 +464,7 @@
         :is(html.light, body.light, [data-theme="light"], .theme-light) footer {
             background-color: #ffffff !important;
             border-top-color: #e2e8f0 !important; /* slate-200 */
-            color: #334155 !important;
+            color: #554233 !important;
         }
         :is(html.light, body.light, [data-theme="light"], .theme-light) footer h3,
         :is(html.light, body.light, [data-theme="light"], .theme-light) footer .text-white {
@@ -510,6 +528,65 @@
         :is(html.light, body.light, [data-theme="light"], .theme-light) .text-gray-200 {
             color: #334155 !important; /* slate-700 */
         }
+        
+        /* Image Card 專屬主題樣式 */
+        /* 深色主題下底色 */
+        .imgcard-custom {
+            background: linear-gradient(90deg, rgba(56,189,248,0.18) 0%, rgba(167,139,250,0.18) 100%) !important;
+            border: 1px solid rgba(56,189,248,0.18) !important;
+        }
+        .imgcard-title {
+            color: #fff !important;
+            transition: color 0.2s;
+            z-index: 1;
+        }
+        .imgcard-desc {
+            color: #7dd3fc !important;
+            font-weight: 500;
+            z-index: 1;
+        }
+        /* 淺色主題覆蓋 */
+        :is(html.light, body.light, [data-theme="light"], .theme-light) .imgcard-custom {
+            background: linear-gradient(90deg, #dbeafe 0%, #f4edfe 100%) !important;
+            border: 1px solid #dbeafe !important;
+        }
+        /* 淺色主題下 Image Card 標題/描述顏色（用 id 方式指定，參考 interact-desc） */
+        .light-theme #imgcard-free .imgcard-title,
+        .light-theme #imgcard-standard .imgcard-title,
+        .light-theme #imgcard-pro .imgcard-title {
+            color: #0ea5e9 !important;
+        }
+        .light-theme #imgcard-free .imgcard-desc,
+        .light-theme #imgcard-standard .imgcard-desc,
+        .light-theme #imgcard-pro .imgcard-desc {
+            color: #0a6495 !important;
+        }
+        /* Image Card 圖片統一預覽比例與樣式（直向長方形 3:4） */
+        .imgcard-custom .imgcard-img {
+            width: 100% !important;
+            aspect-ratio: 4/5 !important;
+            height: auto !important;
+            max-height: 320px !important;
+            object-fit: cover !important;
+            object-position: center !important;
+            background-color: #111827 !important;
+            border-radius: 0.75rem !important;
+            transition: transform 0.3s, box-shadow 0.3s !important;
+            cursor: zoom-in !important;
+            display: block !important;
+        }
+        @media (max-width: 640px) {
+            .imgcard-custom .imgcard-img {
+                max-height: 200px !important;
+            }
+        }
+        /* 淺色主題下 JudgAI 解方 強調色加深 */
+        .light-theme #judgai-solution-1,
+        .light-theme #judgai-solution-2,
+        .light-theme #judgai-solution-3 {
+            color: #0369a1 !important;
+        }
+        
     </style>
 </head>
 <body class="text-gray-200">
@@ -683,22 +760,28 @@
                     </div>
                     <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
                         <!-- Image Card 1: 免費版 -->
-                        <div class="image-showcase-card p-6 rounded-2xl flex flex-col items-center">
-                            <img src="免費.png" alt="JudgAI 免費版介面" class="enlargeable-image rounded-lg shadow-2xl w-full mb-4 border border-gray-700" onerror="this.onerror=null;this.src='https://placehold.co/600x400/090a0f/e0e0e0?text=免費版圖片';">
-                            <h3 class="text-xl font-bold text-white">免費版</h3>
-                            <p class="text-gray-400">基礎問答與法規引用</p>
+                        <div id="imgcard-free" class="image-showcase-card p-6 rounded-2xl flex flex-col items-center imgcard-custom">
+                            <div class="responsive-image-container mb-2 preview-img rounded-2xl shadow-xl bg-slate-900" style="width:100%;max-width:220px;">
+                                <img src="免費.png" alt="JudgAI 免費版介面" class="imgcard-img enlargeable-image" data-full="免費.png" onerror="this.onerror=null;this.src='https://placehold.co/300x400/090a0f/e0e0e0?text=免費版圖片';">
+                            </div>
+                            <h3 class="imgcard-title text-xl font-bold">免費版</h3>
+                            <p class="imgcard-desc">基礎問答與法規引用</p>
                         </div>
                         <!-- Image Card 2: 標準版 -->
-                        <div class="image-showcase-card p-6 rounded-2xl flex flex-col items-center">
-                            <img src="標準.png" alt="JudgAI 標準版介面" class="enlargeable-image rounded-lg shadow-2xl w-full mb-4 border border-gray-700" onerror="this.onerror=null;this.src='https://placehold.co/600x400/090a0f/e0e0e0?text=標準版圖片';">
-                            <h3 class="text-xl font-bold text-white">標準版</h3>
-                            <p class="text-gray-400">進階案例與摘要</p>
+                        <div id="imgcard-standard" class="image-showcase-card p-6 rounded-2xl flex flex-col items-center imgcard-custom">
+                            <div class="responsive-image-container mb-2 preview-img rounded-2xl shadow-xl bg-slate-900" style="width:100%;max-width:220px;">
+                                <img src="標準.png" alt="JudgAI 標準版介面" class="imgcard-img enlargeable-image" data-full="標準.png" onerror="this.onerror=null;this.src='https://placehold.co/300x400/090a0f/e0e0e0?text=標準版圖片';">
+                            </div>
+                            <h3 class="imgcard-title text-xl font-bold">標準版</h3>
+                            <p class="imgcard-desc">進階案例與摘要</p>
                         </div>
                         <!-- Image Card 3: 專業版 -->
-                        <div class="image-showcase-card p-6 rounded-2xl flex flex-col items-center">
-                            <img src="專業.png" alt="JudgAI 專業版介面" class="enlargeable-image rounded-lg shadow-2xl w-full mb-4 border border-gray-700" onerror="this.onerror=null;this.src='https://placehold.co/600x400/090a0f/e0e0e0?text=專業版圖片';">
-                            <h3 class="text-xl font-bold text-white">專業版</h3>
-                            <p class="text-gray-400">深度分析與函釋總結</p>
+                        <div id="imgcard-pro" class="image-showcase-card p-6 rounded-2xl flex flex-col items-center imgcard-custom">
+                            <div class="responsive-image-container mb-2 preview-img rounded-2xl shadow-xl bg-slate-900" style="width:100%;max-width:220px;">
+                                <img src="專業.png" alt="JudgAI 專業版介面" class="imgcard-img enlargeable-image" data-full="專業.png" onerror="this.onerror=null;this.src='https://placehold.co/300x400/090a0f/e0e0e0?text=專業版圖片';">
+                            </div>
+                            <h3 class="imgcard-title text-xl font-bold">專業版</h3>
+                            <p class="imgcard-desc">深度分析與函釋總結</p>
                         </div>
                     </div>
                 </div>
@@ -724,7 +807,7 @@
                             </div>
                             <div class="space-y-3">
                                 <p><strong class="text-gray-200">痛點:</strong> <span class="text-gray-400">法令理解困難、匯整保險爭議或相關法律知識耗費時間、應對客戶提問，難以即時完整且正確說明。</span></p>
-                                <p><strong class="text-cyan-200">JudgAI 解方:</strong> <span class="text-cyan-300">快速生成保險知識且匯整內容，提供實例參考，更提供法稅勞相關參考，深度對話記憶與學習指導，打造專業化行銷的 AI 保險庫與專業幫手。</span></p>
+                                <p><strong id="judgai-solution-1" class="text-cyan-200">JudgAI 解方:</strong> <span class="text-cyan-300">快速生成保險知識且匯整內容，提供實例參考，更提供法稅勞相關參考，深度對話記憶與學習指導，打造專業化行銷的 AI 保險庫與專業幫手。</span></p>
                             </div>
                         </div>
 
@@ -735,8 +818,8 @@
                                 <h3 class="text-xl font-bold text-white">教育講師 / 知識型創作者</h3>
                             </div>
                             <div class="space-y-3">
-                                <p><strong class="text-gray-200">痛點:</strong> <span class="text-gray-400">精準教材準備耗時、內容更難更新、知識難以有效完整教導。</span></p>
-                                <p><strong class="text-cyan-200">JudgAI 解方:</strong> <span class="text-cyan-300">可上傳與訓練個人知識庫，生成教學對話機器人與客製回應內容，強化學員體驗、提升課程價值與續約率。</span></p>
+                                <p><strong class="text-gray-200">痛點:</strong> <span class="text-gray-400">精準教材準備耗時、內容更難更新、知識難以有效完整教導。<br><br></span></p>
+                                <p><strong id="judgai-solution-2" class="text-cyan-200">JudgAI 解方:</strong> <span class="text-cyan-300">可上傳與訓練個人知識庫，生成教學對話機器人與客製回應內容，強化學員體驗、提升課程價值與續約率。</span></p>
                             </div>
                         </div>
 
@@ -748,7 +831,7 @@
                             </div>
                             <div class="space-y-3">
                                 <p><strong class="text-gray-200">痛點:</strong> <span class="text-gray-400">各種資料分散(法條 函令 判決..) ，網路搜尋資料耗時效率低，難以整合正確運用有效資訊。</span></p>
-                                <p><strong class="text-cyan-200">JudgAI 解方:</strong> <span class="text-cyan-300">智慧搜尋與總結全台法學資料(如:保險法、稅法函釋與裁判書，快速萃取重點、比對案例)，有效快速協助匯整資料，呈現完整與正確的資訊。</span></p>
+                                <p><strong id="judgai-solution-3" class="text-cyan-200">JudgAI 解方:</strong> <span class="text-cyan-300">智慧搜尋與總結全台法學資料(如:保險法、稅法函釋與裁判書，快速萃取重點、比對案例)，有效快速協助匯整資料，呈現完整與正確的資訊。</span></p>
                             </div>
                         </div>
                     </div>
@@ -921,7 +1004,8 @@
         </main>
 
         <!-- Footer -->
-        <footer class="bg-gray-900/50 border-t border-gray-700/50">
+    <footer id="main-footer" class="bg-gray-900/50 border-t border-gray-700/50">
+        
             <!-- SEO 內容區塊 -->
             <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
@@ -943,7 +1027,7 @@
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-white mb-4">相關關鍵詞</h3>
-                        <div class="flex flex-wrap gap-2">
+                        <div id="footer-keywords" class="flex flex-wrap gap-2">
                             <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">奇點AI</span>
                             <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">AI保險</span>
                             <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">保險科技</span>
@@ -1069,16 +1153,56 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+
             // --- Image Modal Logic ---
             const imageModal = document.getElementById('imageModal');
             const modalImage = document.getElementById('modalImage');
             const enlargeableImages = document.querySelectorAll('.enlargeable-image');
+            let scale = 1;
+            let startY = 0;
+            let lastY = 0;
+            let dragging = false;
 
             enlargeableImages.forEach(img => {
                 img.addEventListener('click', () => {
                     imageModal.classList.remove('hidden');
-                    modalImage.src = img.src;
+                    modalImage.src = img.getAttribute('data-full') || img.src;
+                    scale = 1;
+                    lastY = 0;
+                    modalImage.style.transform = 'translateY(0px) scale(1)';
                 });
+            });
+
+            // 滾輪縮放
+            modalImage.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                let delta = e.deltaY > 0 ? -0.1 : 0.1;
+                scale = Math.min(Math.max(0.5, scale + delta), 5);
+                modalImage.style.transform = `translateY(${lastY}px) scale(${scale})`;
+            });
+
+            // 垂直拖曳
+            modalImage.addEventListener('mousedown', (e) => {
+                dragging = true;
+                startY = e.clientY - lastY;
+                modalImage.style.cursor = 'grabbing';
+            });
+            window.addEventListener('mousemove', (e) => {
+                if (!dragging) return;
+                lastY = e.clientY - startY;
+                modalImage.style.transform = `translateY(${lastY}px) scale(${scale})`;
+            });
+            window.addEventListener('mouseup', () => {
+                dragging = false;
+                modalImage.style.cursor = 'grab';
+            });
+
+            // 關閉 modal
+            imageModal.addEventListener('click', (e) => {
+                if (e.target === imageModal || e.target.classList.contains('close-modal-btn')) {
+                    imageModal.classList.add('hidden');
+                    modalImage.src = '';
+                }
             });
 
             // --- Terms Modal Logic ---

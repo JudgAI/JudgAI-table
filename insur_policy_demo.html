@@ -12,6 +12,33 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        /* 互動網頁區塊三個預覽圖片尺寸統一，參考AI差異比較區塊 */
+        .showcase-card .image-placeholder img,
+        .showcase-card .responsive-image-container img {
+            width: 320px !important;
+            height: 192px !important;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover !important;
+            border-radius: 0.75rem !important;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        /* 淺色主題下 text-sky-200 顏色加深，提升可讀性 */
+        .light-theme .text-sky-200 {
+            color: #0369a1 !important;
+        }
+        /* 淺色主題下 text-slate-300 顏色加深，提升可讀性 */
+        .light-theme .text-slate-300 {
+            color: #334155 !important;
+        }
+        .light-theme .text-slate-200 {
+            color: #2c415f !important;
+        }
+        #audio-text-content {
+        color: #cbd5e1 !important; /* Tailwind text-slate-300 預設色 */
+        }
         html {
             scroll-behavior: smooth;
         }
@@ -313,6 +340,53 @@
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+        /* 淺色主題下footer主題顏色與chip顏色，與index.html一致 */
+        .light-theme #main-footer {
+            background: #fff !important;
+            border-top: 1px solid #e2e8f0 !important;
+            color: #334155 !important;
+        }
+        .light-theme #main-footer h3,
+        .light-theme #main-footer strong {
+            color: #0f172a !important;
+        }
+        .light-theme #main-footer .text-gray-400,
+        .light-theme #main-footer p,
+        .light-theme #main-footer li,
+        .light-theme #main-footer a {
+            color: #334155 !important;
+        }
+        .light-theme #main-footer a:hover {
+            color: #0ea5e9 !important;
+        }
+        .light-theme #footer-keywords .bg-blue-600\/20 {
+            background: #e0f2fe !important;
+            color: #0369a1 !important;
+        }
+                /* showcase-card 淺色主題：半透明立體感，與背景/圖片有區隔 */
+        .light-theme .showcase-card {
+            background: rgba(255, 255, 255, 0.82) !important;         /* 半透明白底 */
+            border: 1.5px solid #cbd5e1 !important;                  /* 淺灰藍邊 */
+            box-shadow:
+                0 6px 32px 0 rgba(56, 189, 248, 0.10),
+                0 1.5px 12px 0 rgba(30, 41, 59, 0.10),
+                0 0.5px 0.5px 0 rgba(168, 139, 250, 0.08) !important; /* 多層柔和陰影 */
+            backdrop-filter: blur(6px) saturate(1.2);                /* 玻璃感 */
+            transition: box-shadow 0.3s, background 0.3s;
+        }
+        .light-theme .showcase-card:hover {
+            box-shadow:
+                0 12px 40px 0 rgba(56, 189, 248, 0.18),
+                0 4px 24px 0 rgba(30, 41, 59, 0.12),
+                0 1px 2px 0 rgba(168, 139, 250, 0.10) !important;
+            background: rgba(255,255,255,0.92) !important;
+        }        /* 淺色主題下，互動頁面區塊的預覽照片增加明顯框線 */
+        .light-theme .showcase-card .image-placeholder img {
+            border: 2px solid #bae6fd !important;   /* 淺藍色框線 */
+            box-shadow: 0 2px 12px #bae6fd33 !important;
+            border-radius: 0.75rem !important;
+            background: #f1f5f9 !important;
         }
     </style>
     <!-- Orbitron 字型 for 科技感 -->
@@ -756,7 +830,7 @@
                             <div class="showcase-card rounded-2xl p-6 flex flex-col justify-between">
                                 <h3 class="font-bold text-lg text-sky-200 mb-2">範例1：保險理賠腫瘤認定？</h3>
                                 <div class="flex justify-center mb-4">
-                                    <img src="ai_differ_image/interact_1.png" alt="範例1圖片" class="object-cover w-64 h-40 rounded-xl shadow-lg" style="aspect-ratio:16/10; background-color:#111827; object-position:center;">
+                                    <img src="ai_differ_image/interact_1.png" alt="範例1圖片" class="object-cover w-64 h-40 rounded-xl shadow-lg enlargeable-image" style="aspect-ratio:16/10; background-color:#111827; object-position:center; cursor:pointer;">
                                 </div>
                                 <div class="text-center mt-4">
                                     <a href="ai_difference.html#example1" class="neon-btn-small px-4 py-2 rounded-lg">看詳細比較</a>
@@ -766,7 +840,7 @@
                             <div class="showcase-card rounded-2xl p-6 flex flex-col justify-between">
                                 <h3 class="font-bold text-lg text-sky-200 mb-2">範例2：遺產債務分配爭議</h3>
                                 <div class="flex justify-center mb-4">
-                                    <img src="ai_differ_image/interact_2.png" alt="範例2圖片" class="object-cover w-64 h-40 rounded-xl shadow-lg" style="aspect-ratio:16/10; background-color:#111827; object-position:center;">
+                                    <img src="ai_differ_image/interact_2.png" alt="範例2圖片" class="object-cover w-64 h-40 rounded-xl shadow-lg enlargeable-image" style="aspect-ratio:16/10; background-color:#111827; object-position:center; cursor:pointer;">
                                 </div>
                                 <div class="text-center mt-4">
                                     <a href="ai_difference.html#example2" class="neon-btn-small px-4 py-2 rounded-lg">看詳細比較</a>
@@ -776,7 +850,7 @@
                             <div class="showcase-card rounded-2xl p-6 flex flex-col justify-between">
                                 <h3 class="font-bold text-lg text-sky-200 mb-2">範例3：精準分析保險案例</h3>
                                 <div class="flex justify-center mb-4">
-                                    <img src="ai_differ_image/interact_3.png" alt="範例3圖片" class="object-cover w-64 h-40 rounded-xl shadow-lg" style="aspect-ratio:16/10; background-color:#111827; object-position:center;">
+                                    <img src="ai_differ_image/interact_3.png" alt="範例3圖片" class="object-cover w-64 h-40 rounded-xl shadow-lg enlargeable-image" style="aspect-ratio:16/10; background-color:#111827; object-position:center; cursor:pointer;">
                                 </div>
                                 <div class="text-center mt-4">
                                     <a href="ai_difference.html#example3" class="neon-btn-small px-4 py-2 rounded-lg">看詳細比較</a>
@@ -837,13 +911,6 @@
     </div>
 </div>
 
-<!-- Image Modal -->
-<div id="image-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 hidden">
-    <div class="max-w-4xl max-h-full p-4">
-        <img id="modal-image" src="" alt="Enlarged image" class="max-w-full max-h-full rounded-lg shadow-2xl">
-    </div>
-    <button id="close-image-modal" class="absolute top-4 right-6 text-white text-4xl font-bold">&times;</button>
-</div>
 
 <!-- 星空粒子背景 -->
 <canvas id="star-bg"></canvas>
@@ -863,27 +930,17 @@ document.getElementById('video-modal').addEventListener('click', function(e) {
     }
 });
 
-// Image Modal 邏輯
-const imageModal = document.getElementById('image-modal');
-const modalImage = document.getElementById('modal-image');
-const closeImageModalBtn = document.getElementById('close-image-modal');
 
-document.querySelectorAll('.enlargeable-image').forEach(img => {
-    img.addEventListener('click', function() {
-        modalImage.src = this.src;
+// 統一圖片放大邏輯，僅用 #imageModal
+const imageModal = document.getElementById('imageModal');
+const modalImage = document.getElementById('modalImage');
+const enlargeableImages = document.querySelectorAll('.enlargeable-image');
+
+enlargeableImages.forEach(img => {
+    img.addEventListener('click', () => {
         imageModal.classList.remove('hidden');
+        modalImage.src = img.src;
     });
-});
-
-function closeImageModal() {
-    imageModal.classList.add('hidden');
-}
-
-closeImageModalBtn.addEventListener('click', closeImageModal);
-imageModal.addEventListener('click', function(e) {
-    if (e.target === this) {
-        closeImageModal();
-    }
 });
 
 // Back to Top Button Logic
@@ -1058,7 +1115,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
         <!-- 頁腳 -->
 <!-- Footer -->
-        <footer class="bg-gray-900/50 border-t border-gray-700/50">
+    <footer id="main-footer" class="bg-gray-900/50 border-t border-gray-700/50">
             <!-- SEO 內容區塊 -->
             <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
@@ -1080,7 +1137,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-white mb-4">相關關鍵詞</h3>
-                        <div class="flex flex-wrap gap-2">
+                    <div id="footer-keywords" class="flex flex-wrap gap-2">
                             <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">奇點AI</span>
                             <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">AI保險</span>
                             <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">保險科技</span>
@@ -1106,7 +1163,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
     </div>
 
-    <!-- Modal for Image Enlargement -->
+    <!-- Modal for Image Enlargement (僅保留這一組) -->
     <div id="imageModal" class="modal-overlay fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center p-4 z-50 hidden">
         <span class="close-modal-btn absolute top-4 right-6 text-white text-5xl font-bold cursor-pointer hover:text-gray-300 transition-colors">&times;</span>
         <img id="modalImage" src="" alt="放大圖片" class="modal-content max-w-full max-h-full rounded-lg shadow-2xl">

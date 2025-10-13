@@ -137,6 +137,29 @@
             box-shadow: 0 0 20px #38bdf8;
             transform: scale(1.05);
         }
+        /* 淺色主題下footer主題顏色與chip顏色，與index.html一致 */
+        .light-theme #main-footer {
+            background: #fff !important;
+            border-top: 1px solid #e2e8f0 !important;
+            color: #334155 !important;
+        }
+        .light-theme #main-footer h3,
+        .light-theme #main-footer strong {
+            color: #0f172a !important;
+        }
+        .light-theme #main-footer .text-gray-400,
+        .light-theme #main-footer p,
+        .light-theme #main-footer li,
+        .light-theme #main-footer a {
+            color: #334155 !important;
+        }
+        .light-theme #main-footer a:hover {
+            color: #0ea5e9 !important;
+        }
+        .light-theme #footer-keywords .bg-blue-600\/20 {
+            background: #e0f2fe !important;
+            color: #0369a1 !important;
+        }
     </style>
 </head>
 <body>
@@ -370,7 +393,7 @@
 
 
 <!-- Footer -->
-        <footer class="bg-gray-900/50 border-t border-gray-700/50">
+    <footer id="main-footer" class="bg-gray-900/50 border-t border-gray-700/50">
             <!-- SEO 內容區塊 -->
             <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
@@ -392,7 +415,7 @@
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-white mb-4">相關關鍵詞</h3>
-                        <div class="flex flex-wrap gap-2">
+                    <div id="footer-keywords" class="flex flex-wrap gap-2">
                             <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">奇點AI</span>
                             <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">AI保險</span>
                             <span class="bg-blue-600/20 text-blue-300 px-2 py-1 rounded text-xs">保險科技</span>
