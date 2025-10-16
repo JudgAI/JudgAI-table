@@ -613,7 +613,7 @@
                                     <td class="px-4 py-3">網頁<br><span class="text-xs text-gray-400">送 1000 分鐘<br>使用期限（開通後6個月）</span></td>
                                     <td class="px-4 py-3 text-3xl font-bold text-blue-400">$6,888/套</td>
                                     <td class="px-4 py-3">
-                                        <a href="https://cart.cashier.ecpay.com.tw/qp/y2bA" target="_blank" rel="noopener noreferrer" class="inline-block bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-2 px-4 rounded-lg shadow">立即開通</a>
+                                        <a href="#" onclick="showTermsModal('一套專業版'); return false;" class="inline-block bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-2 px-4 rounded-lg shadow">立即開通</a>
                                     </td>
                                 </tr>
                                 <tr class="bg-pink-100/10 border-b">
@@ -621,7 +621,7 @@
                                     <td class="px-4 py-3">3,000 分鐘<br><span class="text-xs text-gray-400">使用期限（加值後12個月）</span></td>
                                     <td class="px-4 py-3 text-2xl font-bold text-pink-400">$3,600</td>
                                     <td class="px-4 py-3">
-                                        <a href="https://cart.cashier.ecpay.com.tw/qp/y2d7" target="_blank" rel="noopener noreferrer" class="inline-block bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow">選擇方案</a>
+                                        <a href="#" onclick="showTermsModal('加值分鐘數 優惠A'); return false;" class="inline-block bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow">選擇方案</a>
                                     </td>
                                 </tr>
                                 <tr class="bg-yellow-100/10 border-b">
@@ -629,7 +629,7 @@
                                     <td class="px-4 py-3">10,000 分鐘<br><span class="text-xs text-gray-400">使用期限（加值後12個月）</span></td>
                                     <td class="px-4 py-3 text-2xl font-bold text-yellow-400">$10,000</td>
                                     <td class="px-4 py-3">
-                                        <a href="https://cart.cashier.ecpay.com.tw/qp/y2e2" target="_blank" rel="noopener noreferrer" class="inline-block bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow">選擇方案</a>
+                                        <a href="#" onclick="showTermsModal('加值分鐘數 優惠B'); return false;" class="inline-block bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow">選擇方案</a>
                                     </td>
                                 </tr>
                                 <tr class="bg-gray-800 border-b">
@@ -637,7 +637,7 @@
                                     <td class="px-4 py-3">1,000 分鐘<br><span class="text-xs text-gray-400">使用期限（加值後12個月）</span></td>
                                     <td class="px-4 py-3 text-xl font-bold text-gray-200">$1,800</td>
                                     <td class="px-4 py-3">
-                                        <a href="https://cart.cashier.ecpay.com.tw/qp/y2g7" target="_blank" rel="noopener noreferrer" class="inline-block bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow">選擇方案</a>
+                                        <a href="#" onclick="showTermsModal('加值分鐘數 原價'); return false;" class="inline-block bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow">選擇方案</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -646,8 +646,8 @@
                     <div class="text-sm text-gray-400 mt-4">
                         <ul class="list-disc list-inside space-y-2 text-left">
                             <li>當使用分鐘數低於「240」分鐘時，會發 mail 通知您進行加值。</li>
-                            <li>專業版含操作教學影片，購買即贈送 600 分鐘語音轉錄額度。</li>
-                            <li>加值分鐘數可依需求選購，優惠限期至 2025/12/31。</li>
+                            <li>專業版含操作教學影片。</li>
+                            <li>加值分鐘數可依需求選購。</li>
                             <li>所有價格均為新台幣，限時優惠，售完為止。</li>
                             <li>如需大量或企業客製方案，請聯絡我們。</li>
                         </ul>
@@ -669,7 +669,7 @@
                         <div class="text-center">
                             <h3 class="text-2xl font-bold text-white mb-3">🛒 立即購買專業版</h3>
                             <p class="text-gray-300 mb-4">一次購買，長期使用，提升工作效率</p>
-                            <a href="https://cart.cashier.ecpay.com.tw/qp/xkUA" target="_blank"
+                            <a href="#" onclick="showTermsModal('一套專業版'); return false;"
                                class="inline-block bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-4 px-10 rounded-full shadow-xl hover:scale-105 hover:shadow-purple-500/30 transition-all text-xl">
                                 💳 購買使用
                             </a>
@@ -733,6 +733,10 @@
                 <p class="mb-2">這些使用條款構成您與本網站之間的全部協議，並取代任何先前的協議。</p>
                 <p>本網站保留解釋、修改或補充這些使用條款的權利。</p>
             </div>
+            <div class="flex justify-end gap-4 p-6 border-t border-gray-700">
+                <button onclick="closeTermsModal()" class="px-6 py-2 border border-gray-500 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors">取消</button>
+                <button onclick="acceptRefundTerms()" class="px-6 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors">我同意並繼續</button>
+            </div>
         </div>
     </div>
 
@@ -750,13 +754,13 @@
                 });
             });
 
-            // --- Terms Modal Logic ---
+            // Terms modal behavior and purchase URL mapping handled by js/checkout-terms.js
             const termsModal = document.getElementById('termsModal');
             const termsLink = document.getElementById('termsLink');
-
             termsLink.addEventListener('click', (e) => {
                 e.preventDefault(); // 防止頁面跳轉
-                termsModal.classList.remove('hidden');
+                // show generic terms (no plan selected)
+                if (window.showTermsModal) window.showTermsModal('服務條款');
             });
 
             // --- Generic Modal Closing Logic ---
@@ -812,6 +816,9 @@
             }
         });
     </script>
+
+    <!-- Shared checkout + terms modal handlers -->
+    <script src="js/checkout-terms.js"></script>
 
     <!-- Header 統一管理腳本 -->
     <script src="js/header-manager.js"></script>

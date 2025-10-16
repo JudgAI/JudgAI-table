@@ -4,62 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO 優化標籤 -->
-    <title>方案定價 | 奇點 JudgAI | AI保險科技平台</title>
-    <meta name="description" content="奇點 JudgAI 定價方案 - 提供免費版、體驗版、標準版、專業版等多種選擇，滿足不同用戶需求。專業AI保險科技服務，月付、年付靈活選擇。">
-    <meta name="keywords" content="JudgAI定價, AI保險方案, 保險科技價格, 專業版, 標準版, 體驗版">
-    <meta name="author" content="奇點 JudgAI">
-    <meta name="robots" content="index, follow">
-    
-    <!-- Favicon 和圖示 -->
-    <link rel="icon" type="image/png" href="奇點.png">
-    <link rel="apple-touch-icon" href="奇點.png">
-    
-    <!-- 字體和樣式 -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-    
-    <style>
-        /* 承襲 index.html 的設計風格 */
-        body {
-            font-family: 'Noto Sans TC', 'Inter', sans-serif;
-            background-color: #050816; /* 深邃星空背景 */
-        }
-        .font-orbitron {
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 0.05em;
-        }
-        .gradient-text {
-            background: linear-gradient(90deg, #38bdf8, #a78bfa);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .hero-section {
-            position: relative;
-            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-            overflow: hidden;
-        }
-        .plan-card, .comparison-card {
-            background-color: rgba(17, 24, 39, 0.8); /* 半透明玻璃效果 */
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            transition: all 0.3s ease-in-out;
-        }
-        .plan-card:hover, .comparison-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: rgba(56, 189, 248, 0.6);
-            box-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
-        }
-        .popular-badge {
-            background: linear-gradient(90deg, #38bdf8, #a78bfa);
-            box-shadow: 0 0 15px #38bdf8;
-        }
-        .cta-button {
-            background: linear-gradient(90deg, #38bdf8, #818cf8);
-            transition: all 0.3s ease-in-out;
+                <!-- 自訂知識庫說明 (Redesigned) -->
+                <div class="comparison-card p-6 rounded-2xl mb-6 bg-gradient-to-r from-gray-900/60 to-gray-800/60 border border-gray-700">
+                    <div class="md:flex md:items-center md:gap-8">
+                        <!-- Content (left) with inline icon next to the heading -->
+                        <div class="md:flex-1">
+                            <div class="text-left mb-4 flex items-center gap-3">
+                                <!-- small book icon next to heading -->
+                                <svg class="w-7 h-7 text-cyan-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M3 5.5C3 4.672 3.672 4 4.5 4H16" stroke="#06B6D4" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M4.5 4v14.5A1 1 0 005.5 20H18" stroke="#0EA5A8" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M6 8h10M6 11h10M6 14h6" stroke="#7DD3FC" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <h3 class="font-orbitron text-2xl md:text-3xl font-bold gradient-text">自訂知識庫</h3>
+                            </div>
+                            <p class="mt-2 text-gray-300">結合個人的技術文件，讓回覆更貼近實務、符合法規與流程。</p>
+
+                            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-gray-300 mb-6">
+                                <li class="feature-item flex items-start">
+                                    <svg class="feature-icon text-cyan-400 mr-3 mt-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a1 1 0 001.447.894L12 18l6.553 2.894A1 1 0 0020 20V8l-6-6zM13 3.5L18.5 9H14a1 1 0 01-1-1V3.5z"></path></svg>
+                                    <span>整合個人技術文件，回覆更精準聚焦</span>
+                                </li>
+                                <li class="feature-item flex items-start">
+                                    <svg class="feature-icon text-cyan-400 mr-3 mt-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 11.3l3-3a1 1 0 000-1.4l-1.6-1.6a1 1 0 00-1.4 0l-3 3-5.3 5.3a2 2 0 00-.6 1.4V18h6v-1.9c0-.5.2-1 .6-1.4l3-3zM3 20h8v2H3v-2z"></path></svg>
+                                    <span>即時更新最新判決、法條、函釋與規定，知識隨時同步</span>
+                                </li>
+                                <li class="feature-item flex items-start">
+                                    <svg class="feature-icon text-cyan-400 mr-3 mt-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h10a2 2 0 012 2v14a1 1 0 01-1.447.894L14 18l-5.553 0.894A1 1 0 017 18V4a2 2 0 00-1-1.732V4z"></path></svg>
+                                    <span>將保單條款變成行銷手冊，應用更靈活高效</span>
+                                </li>
+                                <li class="feature-item flex items-start">
+                                    <svg class="feature-icon text-cyan-400 mr-3 mt-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l7 3v5c0 5-3.5 9-7 10-3.5-1-7-5-7-10V5l7-3z"></path></svg>
+                                    <span>結合公司核保、理賠與保全規定，打造完整保險知識體系</span>
+                                </li>
+                                <li class="feature-item flex items-start">
+                                    <svg class="feature-icon text-cyan-400 mr-3 mt-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6c0 1.657 3.582 3 8 3s8-1.343 8-3-3.582-3-8-3S4 4.343 4 6zm0 4c0 1.657 3.582 3 8 3s8-1.343 8-3v6c0 1.657-3.582 3-8 3s-8-1.343-8-3v-6z"></path></svg>
+                                    <span>加值：100萬字 • NT$4,000（一次性）</span>
+                                </li>
+                                <li class="feature-item flex items-start">
+                                    <svg class="feature-icon text-cyan-400 mr-3 mt-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 6a2 2 0 012-2h16a2 2 0 012 2v.217l-10 6-10-6V6zm0 2.383V18a2 2 0 002 2h16a2 2 0 002-2V8.383l-9.293 5.576a1 1 0 01-1.414 0L2 8.383z"></path></svg>
+                                    <span>當字數低於 30,000 時，系統會發電子郵件通知您</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- CTA column (right) -->
+                        <div class="md:w-40 flex items-center justify-center mt-4 md:mt-0">
+                            <a id="addon-purchase-btn" class="inline-block bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold py-3 px-6 rounded-lg shadow-lg hover:from-yellow-600 hover:to-orange-600 transition-colors" href="#" onclick="showTermsModal('加值 100萬字額度'); return false;">立即加值</a>
+                        </div>
+                    </div>
+                </div>
         }
         .cta-button:hover {
         /* 讓三個方案功能列表高度一致 */
@@ -89,43 +82,6 @@
             flex-shrink: 0;
             margin-top: 2px;
         }
-    /* Ensure price amount + unit containers are same height across plan cards */
-    .price-spot { min-height: 48px; }
-
-    /* Promo card glowing outer frame (only applies to the limited-time promo block) */
-    .promo-outer {
-        position: relative;
-        border-radius: 1rem; /* match plan-card rounded-2xl */
-        padding: 6px; /* spacing for glow */
-        display: block;
-        margin: 0 auto;
-        max-width: 100%;
-    }
-    .promo-outer::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        background: linear-gradient(90deg, rgba(56,189,248,0.18), rgba(168,139,250,0.18), rgba(250,130,49,0.18));
-        filter: blur(14px);
-        z-index: 0;
-        pointer-events: none;
-    }
-    /* subtle inner rim to give depth */
-    .promo-outer .plan-card {
-        position: relative;
-        z-index: 1; /* keep content above the glow */
-        border: 1px solid rgba(255,255,255,0.03);
-        box-shadow: 0 8px 24px rgba(2,6,23,0.6);
-        background: linear-gradient(180deg, rgba(3,7,18,0.85), rgba(6,10,22,0.85));
-    }
-    /* Layout helpers to align parts across plan cards */
-    .plan-top { min-height: 140px; display: flex; flex-direction: column; justify-content: flex-start; }
-    .plan-price-area { min-height: 56px; display: flex; align-items: center; }
-    @media (min-width: 768px) {
-        .plan-top { min-height: 160px; }
-        .plan-price-area { min-height: 64px; }
-    }
         .comparison-table th, .comparison-table td {
             border-color: rgba(56, 189, 248, 0.2);
             vertical-align: middle;
@@ -855,18 +811,38 @@
                 </div>
             </div>
         </section>
-        <!-- 限時優惠區塊 -->
-                <div class="max-w-7xl mx-auto mb-8">
-                    <div class="flex justify-center">
-                        <div class="w-full md:w-1/3 px-4">
-                            <div class="plan-card rounded-2xl p-8 flex flex-col relative" style="box-shadow: 0 10px 30px rgba(250,127,0,0.14), 0 0 40px rgba(250,180,100,0.08); border: 1px solid rgba(250,127,0,0.18);">
-                                <div class="flex-grow">
-                            <h3 class="font-orbitron text-2xl font-bold text-white mb-4">🔥雙十一 開賣了🔥</h3>
+
+        <!-- Pricing Plans Section -->
+        <section id="pricing-plans" class="py-20 scroll-mt-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="font-orbitron text-3xl md:text-4xl font-bold text-center mb-16 gradient-text">專業版方案</h2>
+                
+                <!-- 專業版定價卡片 - 月繳、半年繳、年繳 -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+                    <!-- 專業版月繳 -->
+                    <div class="plan-card rounded-2xl p-8 flex flex-col relative">
+                        <div class="absolute top-4 right-4">
+                            <span class="feature-badge">彈性月付</span>
+                        </div>
+                        <div class="flex-grow">
+                            <h3 class="font-orbitron text-2xl font-bold text-white mb-4">專業版 月繳</h3>
+                            
+                            <!-- 免費試用提示 -->
+                            <div class="mb-4 p-3 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-lg border border-cyan-400/30 free-trial-tip">
+                                <p class="text-cyan-300 text-sm font-semibold">✨ 七天專業版完全免費試用</p>
+                            </div>
+                            
+                            <p class="text-gray-400 mb-6">靈活付款，隨時調整</p>
                             <div class="mb-8">
-                                <div class="flex items-center justify-between mb-2 price-spot">
-                                    <div class="whitespace-nowrap">
-                                        <span class="text-4xl font-bold text-white">NT$1,111</span>
-                                        <span class="text-lg text-gray-400 ml-1">/ 3個月</span>
+                                <div class="flex items-center justify-between mb-2" style="min-height: 56px; align-items: flex-end;">
+                                    <div>
+                                        <span class="text-4xl font-bold text-white">NT$1,688</span>
+                                        <span class="text-lg text-gray-400 ml-1">/ 月</span>
+                                    </div>
+                                    <!-- 限時優惠價格 -->
+                                    <div class="text-right">
+                                        <div class="text-sm text-gray-500 line-through">原價 NT$1,688</div>
+                                        <div class="text-2xl font-bold text-orange-400">限時 NT$888</div>
                                     </div>
                                 </div>
                                 <!-- 優惠說明，其他方案用空白佔位保持高度一致 -->
@@ -930,111 +906,12 @@
                         
                         <!-- 限時優惠按鈕 - 增加上邊距 -->
                         <div class="mt-6">
-                            <button onclick="showDiscountTermsModal('專業版月繳限時優惠'); return false;" class="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-2 px-6 rounded-lg text-center block mb-3 transition-all duration-300 transform hover:scale-105 shadow-lg w-full">
+                            <button onclick="showTermsModal('專業版月繳限時優惠')" class="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-2 px-6 rounded-lg text-center block mb-3 transition-all duration-300 transform hover:scale-105 shadow-lg w-full">
                                 🔥 雙十一特惠價 NT$1111
                             </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        <!-- Pricing Plans Section -->
-        <section id="pricing-plans" class="py-20 scroll-mt-20">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="font-orbitron text-3xl md:text-4xl font-bold text-center mb-16 gradient-text">專業版方案</h2>
-                
-                <!-- 專業版定價卡片 - 月繳、半年繳、年繳 -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-                    <!-- 專業版月繳 -->
-                    <div class="plan-card rounded-2xl p-8 flex flex-col relative">
-                        <div class="absolute top-4 right-4">
-                            <span class="feature-badge">彈性月付</span>
-                        </div>
-                        <div class="flex-grow">
-                            <h3 class="font-orbitron text-2xl font-bold text-white mb-4">專業版 月繳</h3>
-                            
-                            <!-- 免費試用提示 -->
-                            <div class="mb-4 p-3 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-lg border border-cyan-400/30 free-trial-tip">
-                                <p class="text-cyan-300 text-sm font-semibold">✨ 七天專業版完全免費試用</p>
-                            </div>
-                            
-                            <p class="text-gray-400 mb-6">靈活付款，隨時調整</p>
-                            <div class="mb-8">
-                                <div class="flex items-center justify-between mb-2" style="min-height: 56px; align-items: flex-end;">
-                                    <div>
-                                        <span class="text-4xl font-bold text-white">NT$1,688</span>
-                                        <span class="text-lg text-gray-400 ml-1">/ 月</span>
-                                    </div>
-                                    <!-- 限時優惠價格（以隱藏佔位保留高度以維持排版） -->
-                                    <div class="text-right" style="min-width:120px;">
-                                        <div class="text-sm text-gray-500 line-through" style="visibility:hidden">原價 NT$1,688</div>
-                                        <div class="text-2xl font-bold text-orange-400" style="visibility:hidden">限時 NT$888</div>
-                                    </div>
-                                </div>
-                                <!-- 優惠說明，其他方案用空白佔位保持高度一致 -->
-                                <div class="text-xs text-orange-400 mb-4" style="min-height: 24px;">
-                                    <p>🔥 限時優惠價 - 不定時優惠，歡迎了解更多</p>
-                                </div>
-                            </div>
-                            
-                            <!-- 月繳功能 -->
-                            <ul class="space-y-3 text-sm pricing-features-list">
-                                <li class="feature-item">
-                                    <svg class="feature-icon text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
-                                    </svg>
-                                    每月最多 <strong>210萬字</strong> 的輸出
-                                </li>
-                                <li class="feature-item">
-                                    <svg class="feature-icon text-orange-400" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M12 8l-3 3m0 0l-3-3m3 3V4m6 4v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8a2 2 0 012-2h2m10 0V6a2 2 0 00-2-2H9a2 2 0 00-2 2v2h10z"></path>
-                                    </svg>
-                                    使用量限制：<strong>20次/日</strong>
-                                </li>
-                                <li class="feature-item">
-                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
-                                    </svg>
-                                    附有Line與網頁版：讓您手機/平板/筆電/桌機都能夠無地域限制來使用
-                                </li>
-                                <li class="feature-item">
-                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    專屬AI大語言模型
-                                </li>
-                                <li class="feature-item">
-                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                                    </svg>
-                                    擁有獨家整合超過3億字知識庫
-                                </li>
-                                <li class="feature-item">
-                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"></path>
-                                    </svg>
-                                    知識庫持續更新
-                                </li>
-                                <li class="feature-item">
-                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"></path>
-                                    </svg>
-                                    支援智慧線上搜尋
-                                </li>
-                                <li class="feature-item">
-                                    <svg class="feature-icon text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    深度思考功能(汲取專家經驗)
-                                </li>
-                            </ul>
                         </div>
                         
-                        <!-- Footer buttons: keep at bottom of card -->
-                        <div class="mt-6" style="margin-top:auto">
-
-                            <button onclick="showTermsModal('專業版月繳')" class="cta-button mt-4 w-full text-white font-bold py-3 rounded-lg">選擇月繳方案</button>
-                        </div>
+                        <button onclick="showTermsModal('專業版月繳')" class="cta-button mt-2 w-full text-white font-bold py-3 rounded-lg">選擇月繳方案</button>
                     </div>
 
                     <!-- 專業版半年繳 -->
@@ -1185,23 +1062,13 @@
                 <!-- 自訂知識庫說明 (Redesigned) -->
                 <div class="comparison-card p-6 rounded-2xl mb-6 bg-gradient-to-r from-gray-900/60 to-gray-800/60 border border-gray-700">
                     <div class="md:flex md:items-center md:gap-8">
-                        <!-- Illustration / left column -->
-                        <div class="md:w-1/3 mb-6 md:mb-0 flex items-center justify-center">
-                            <div class="w-40 h-40 bg-gradient-to-tr from-cyan-900 to-blue-900 rounded-xl flex items-center justify-center p-4">
-                                <!-- Clean book icon SVG -->
-                                <svg width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                    <path d="M3 5.5C3 4.672 3.672 4 4.5 4h10.75c.966 0 1.75.784 1.75 1.75V19a1 1 0 01-1 1H4.5A1.5 1.5 0 013 18.5v-13z" fill="#04293A" stroke="#06B6D4" stroke-width="0.5"/>
-                                    <path d="M20 6.5c0-.966-.784-1.75-1.75-1.75H8.5A1.5 1.5 0 007 6.25V19.5c0 .276.224.5.5.5H18c.552 0 1-.448 1-1V6.5z" fill="#06283D" stroke="#0EA5A8" stroke-width="0.5"/>
-                                    <path d="M6 8h10M6 11h10M6 14h6" stroke="#7DD3FC" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                        </div>
+                        <!-- left illustration removed: using inline icon next to heading instead -->
 
                         <!-- Content / right column -->
                         <div class="md:flex-1">
                             <div class="text-left mb-4">
                                 <h3 class="font-orbitron text-2xl md:text-3xl font-bold gradient-text">自訂知識庫</h3>
-                                <p class="mt-2 text-gray-300">優先考慮自訂知識庫，讓回覆不只是答案，而是經驗的延伸</p>
+                                <p class="mt-2 text-gray-300">讓回覆不只是答案，而是經驗的延伸</p>
                             </div>
 
                             <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-gray-300 mb-6">
@@ -1237,7 +1104,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <script>
                     // Securely open add-on checkout in a new tab.
@@ -1561,7 +1427,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- 服務條款（退款及續訂政策）Modal -->
     <div id="refundTermsModal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center hidden">
         <div class="modal-content bg-gray-900 border border-cyan-400 rounded-2xl p-8 max-w-2xl mx-4 max-h-[80vh] overflow-y-auto">
@@ -1574,34 +1440,31 @@
                 <p class="bg-blue-900/30 border border-blue-600 p-4 rounded-lg">
                     <span class="text-blue-400 font-bold">📧 客服信箱：</span>judgai.global@judgai.com
                 </p>
-                <p class="bg-yellow-900/20 border border-yellow-600 p-4 rounded-lg text-yellow-200">
-                    若購買優惠方案，於優惠使用到期前1週，系統會發送通知，將自動以 <strong>NT$1,688</strong> 續費。
+                
+                <p><span class="text-cyan-400 font-bold">🎯 免費方案註冊機制：</span></p>
+                <p class="ml-4">註冊免費方案時，我們會先收取一個月的訂金。若您在 <span class="text-cyan-400 font-bold">7 日內</span> 決定不繼續使用，我們將全額退款至您的原信用卡支付帳戶。若您決定繼續使用，費用將直接轉為正式訂閱，並於繳款後享有 <span class="text-yellow-400 font-bold">7 天免費試用期</span>。</p>
+                
+                <p class="bg-green-900/30 border border-green-600 p-4 rounded-lg">
+                    <span class="text-green-400 font-bold">📅 計費範例：</span><br>
+                    假設您於 <span class="text-cyan-400">2025/9/1</span> 選擇年繳方案：<br>
+                    • 試用期間：<span class="text-cyan-400">2025/9/1 - 9/7</span><br>
+                    • 正式計費開始：<span class="text-green-400">2025/9/8</span><br>
+                    • 年繳亦多贈：<span class="text-green-400">1 個月</span><br>
+                    • 訂金直接收取，故額外多贈 7 天，年繳服務到期日為：<span class="text-yellow-400">2026/10/8</span>
+                </p>
+                
+                <p>若您於試用期結束後繼續使用，請務必於 <span class="text-yellow-400 font-bold">試用期屆滿前</span> 透過電子郵件通知我們的客服信箱取消訂閱，否則系統將自動續扣。</p>
+                
+                <p>若未於上述期限內提出申請，或服務已使用超過 7 日，恕不受理退款。如有任何疑問，歡迎來信告知我們。</p>
+                
+                <p class="bg-yellow-900/30 border border-yellow-600 p-4 rounded-lg">
+                    <span class="text-yellow-400 font-bold">💡 溫馨提醒：</span>為避免不必要的扣款，建議您在試用期屆滿前或下一次扣款日前，確認是否繼續使用本服務。
                 </p>
             </div>
             
             <div class="mt-8 flex space-x-4">
                 <button onclick="acceptRefundTerms()" class="cta-button flex-1 text-white font-bold py-3 rounded-lg">我同意並繼續</button>
                 <button onclick="closeRefundTermsModal()" class="border border-gray-600 text-gray-300 hover:text-white flex-1 font-bold py-3 rounded-lg">取消</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 服務條款（優惠及續訂政策）Modal - discountTermsModal -->
-    <div id="discountTermsModal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center hidden">
-        <div class="modal-content bg-gray-900 border border-cyan-400 rounded-2xl p-8 max-w-2xl mx-4 max-h-[80vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="font-orbitron text-2xl font-bold gradient-text">服務條款（優惠及續訂政策）</h3>
-                <button onclick="closeDiscountTermsModal()" class="text-gray-400 hover:text-white text-2xl">&times;</button>
-            </div>
-            <div class="space-y-4 text-gray-300 leading-relaxed">
-                <p class="mb-4">以下說明針對限時優惠、折扣與自動續訂的處理方式，請詳閱。</p>
-                <p class="bg-blue-900/30 border border-blue-600 p-4 rounded-lg"><span class="text-blue-400 font-bold">📧 客服信箱：</span>judgai.global@judgai.com</p>
-                <p>若您購買了限時優惠方案：我們會於優惠到期前 7 天發送通知。如未於到期前取消，系統將於到期日自動以 <strong>NT$1,688</strong> 續費。</p>
-                <p>所有折扣與優惠之適用與否，依本公司條款及結帳頁面顯示為準。本公司保留檢查與拒絕明顯濫用優惠之權利。</p>
-            </div>
-            <div class="mt-8 flex space-x-4">
-                <button onclick="acceptRefundTerms();" class="cta-button flex-1 text-white font-bold py-3 rounded-lg">我同意並繼續</button>
-                <button onclick="closeDiscountTermsModal()" class="border border-gray-600 text-gray-300 hover:text-white flex-1 font-bold py-3 rounded-lg">取消</button>
             </div>
         </div>
     </div>
@@ -1649,19 +1512,34 @@
         // 服務條款（退款及續訂政策）Modal相關函數
         let currentPlan = '';
         
-        // showTermsModal / acceptRefundTerms are provided by js/checkout-terms.js
+        function showTermsModal(planName) {
+            currentPlan = planName;
+            document.getElementById('refundTermsModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
         function closeRefundTermsModal() {
-            // prefer shared closeTermsModal if available
-            if (window.closeTermsModal && typeof window.closeTermsModal === 'function') {
-                window.closeTermsModal();
-                return;
-            }
-            // fallback: local close
             document.getElementById('refundTermsModal').classList.add('hidden');
             document.body.style.overflow = 'auto';
         }
         
-        // acceptRefundTerms and purchaseUrls are provided by js/checkout-terms.js
+        function acceptRefundTerms() {
+            // 根據方案跳轉到對應的購買頁面
+            const purchaseUrls = {
+                '專業版月繳限時優惠': 'https://cart.cashier.ecpay.com.tw/qp/y2m1', // 限時優惠連結 (雙十一)
+                '專業版月繳': 'https://cart.cashier.ecpay.com.tw/qp/y2n6', // 月繳方案連結
+                '專業版半年繳': 'https://cart.cashier.ecpay.com.tw/qp/y2jC', // 半年繳方案連結
+                '專業版年繳': 'https://cart.cashier.ecpay.com.tw/qp/y2h3', // 年繳方案連結
+                // 加值選項（100萬字）
+                '加值 100萬字額度': 'https://cart.cashier.ecpay.com.tw/qp/y2uE'
+            };
+            
+            if (purchaseUrls[currentPlan]) {
+                window.open(purchaseUrls[currentPlan], '_blank');
+            }
+            
+            closeRefundTermsModal();
+        }
 
         // Free Trial Terms Modal Functions
         function showFreTrialTerms() {
@@ -1765,9 +1643,6 @@
         });
     </script>
     
-    <!-- Shared checkout + terms modal handlers -->
-    <script src="js/checkout-terms.js"></script>
-
     <!-- 主題切換管理器 -->
     <script src="js/theme-manager.js"></script>
 </body>
