@@ -1352,6 +1352,47 @@
         </div>
     </div>
 
+    <!-- 服務條款（退款及續訂政策）Modal -->
+    <div id="refundTermsModal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="modal-content bg-gray-900 border border-cyan-400 rounded-2xl p-8 max-w-2xl mx-4 max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-orbitron text-2xl font-bold gradient-text">服務條款（退款及續訂政策）</h3>
+                <button onclick="closeRefundTermsModal()" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+            </div>
+            
+            <div class="space-y-4 text-gray-300 leading-relaxed">
+                <p class="bg-blue-900/30 border border-blue-600 p-4 rounded-lg">
+                    <span class="text-blue-400 font-bold">📧 客服信箱：</span>judgai.global@judgai.com
+                </p>
+                
+                <p><span class="text-cyan-400 font-bold">🎯 免費方案註冊機制：</span></p>
+                <p class="ml-4">註冊免費方案時，我們會先收取一個月的訂金。若您在 <span class="text-cyan-400 font-bold">7 日內</span> 決定不繼續使用，我們將全額退款至您的原信用卡支付帳戶。若您決定繼續使用，費用將直接轉為正式訂閱，並於繳款後享有 <span class="text-yellow-400 font-bold">7 天免費試用期</span>。</p>
+                
+                <p class="bg-green-900/30 border border-green-600 p-4 rounded-lg">
+                    <span class="text-green-400 font-bold">📅 計費範例：</span><br>
+                    假設您於 <span class="text-cyan-400">2025/9/1</span> 選擇年繳方案：<br>
+                    • 試用期間：<span class="text-cyan-400">2025/9/1 - 9/7</span><br>
+                    • 正式計費開始：<span class="text-green-400">2025/9/8</span><br>
+                    • 年繳亦多贈：<span class="text-green-400">1 個月</span><br>
+                    • 訂金直接收取，故額外多贈 7 天，年繳服務到期日為：<span class="text-yellow-400">2026/10/8</span>
+                </p>
+                
+                <p>若您於試用期結束後繼續使用，請務必於 <span class="text-yellow-400 font-bold">試用期屆滿前</span> 透過電子郵件通知我們的客服信箱取消訂閱，否則系統將自動續扣。</p>
+                
+                <p>若未於上述期限內提出申請，或服務已使用超過 7 日，恕不受理退款。如有任何疑問，歡迎來信告知我們。</p>
+                
+                <p class="bg-yellow-900/30 border border-yellow-600 p-4 rounded-lg">
+                    <span class="text-yellow-400 font-bold">💡 溫馨提醒：</span>為避免不必要的扣款，建議您在試用期屆滿前或下一次扣款日前，確認是否繼續使用本服務。
+                </p>
+            </div>
+            
+            <div class="mt-8 flex space-x-4">
+                <button onclick="acceptRefundTerms()" class="cta-button flex-1 text-white font-bold py-3 rounded-lg">我同意並繼續</button>
+                <button onclick="closeRefundTermsModal()" class="border border-gray-600 text-gray-300 hover:text-white flex-1 font-bold py-3 rounded-lg">取消</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Free Trial Terms Modal -->
     <div id="freeTrialTermsModal" class="modal-overlay fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center p-4 z-50 hidden">
         <div class="modal-content bg-gray-900 border border-cyan-500/30 rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col">
@@ -1392,6 +1433,40 @@
     </div>
 
     <script>
+        // 服務條款（退款及續訂政策）Modal相關函數
+        let currentPlan = '';
+        
+        function showTermsModal(planName) {
+            currentPlan = planName;
+            document.getElementById('refundTermsModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeRefundTermsModal() {
+            document.getElementById('refundTermsModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        
+        function acceptRefundTerms() {
+            // 根據方案跳轉到對應的購買頁面
+            const purchaseUrls = {
+                '免費版': 'https://aistudy.pse.is/insurance-bot',
+                '體驗版': 'https://cart.cashier.ecpay.com.tw/qp/xKb8',
+                '標準版': 'https://cart.cashier.ecpay.com.tw/qp/xBn5',
+                '專業版': 'https://cart.cashier.ecpay.com.tw/qp/xBm1',
+                '專業版月繳': 'https://cart.cashier.ecpay.com.tw/qp/ypb1', // 月繳方案連結
+                '專業版月繳限時優惠': 'https://cart.cashier.ecpay.com.tw/qp/ymw3', // 限時優惠連結
+                '專業版半年繳': 'https://cart.cashier.ecpay.com.tw/qp/ynBD', // 半年繳方案連結
+                '專業版年繳': 'https://cart.cashier.ecpay.com.tw/qp/xBm1' // 年繳方案連結
+            };
+            
+            if (purchaseUrls[currentPlan]) {
+                window.open(purchaseUrls[currentPlan], '_blank');
+            }
+            
+            closeRefundTermsModal();
+        }
+
         // Free Trial Terms Modal Functions
         function showFreTrialTerms() {
             document.getElementById('freeTrialTermsModal').classList.remove('hidden');
