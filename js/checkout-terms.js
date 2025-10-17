@@ -2,11 +2,10 @@
 (function(){
     // Purchase URL mapping shared across pages. Keep keys consistent with onclick plan names.
     window.purchaseUrls = Object.assign(window.purchaseUrls || {}, {
-        '專業版月繳限時優惠': 'https://cart.cashier.ecpay.com.tw/qp/y2m1',
-        '專業版月繳': 'https://cart.cashier.ecpay.com.tw/qp/y2n6',
+        '專業版月繳限時優惠': 'https://cart.cashier.ecpay.com.tw/qp/y2E0',
+        '專業版月繳': 'https://cart.cashier.ecpay.com.tw/qp/y2k3',
         '專業版半年繳': 'https://cart.cashier.ecpay.com.tw/qp/y2jC',
         '專業版年繳': 'https://cart.cashier.ecpay.com.tw/qp/y2h3',
-        '加值 100萬字額度': 'https://cart.cashier.ecpay.com.tw/qp/y2uE',
         '一套專業版': 'https://cart.cashier.ecpay.com.tw/qp/y2bA',
         '加值分鐘數 優惠A': 'https://cart.cashier.ecpay.com.tw/qp/y2d7',
         '加值分鐘數 優惠B': 'https://cart.cashier.ecpay.com.tw/qp/y2e2',
