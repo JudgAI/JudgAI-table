@@ -768,7 +768,10 @@
             const allModals = document.querySelectorAll('.modal-overlay');
 
             const closeModal = (modal) => {
+                if (!modal) return;
                 modal.classList.add('hidden');
+                // restore page scrolling when any modal is closed
+                try { document.body.style.overflow = 'auto'; } catch (e) {}
             };
 
             allCloseButtons.forEach(button => {

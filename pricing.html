@@ -1707,6 +1707,8 @@
                 img.addEventListener('click', () => {
                     imageModal.classList.remove('hidden');
                     modalImage.src = img.src;
+                    // Prevent background scrolling while modal is open
+                    document.body.style.overflow = 'hidden';
                 });
             });
 
@@ -1717,6 +1719,8 @@
             termsLink.addEventListener('click', (e) => {
                 e.preventDefault(); // 防止頁面跳轉
                 termsModal.classList.remove('hidden');
+                // Prevent background scrolling while modal is open
+                document.body.style.overflow = 'hidden';
             });
 
             // --- Generic Modal Closing Logic ---
@@ -1725,6 +1729,8 @@
 
             const closeModal = (modal) => {
                 modal.classList.add('hidden');
+                // Restore page scrolling when any modal closes
+                document.body.style.overflow = 'auto';
             };
 
             allCloseButtons.forEach(button => {
