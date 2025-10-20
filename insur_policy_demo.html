@@ -320,6 +320,10 @@
             backdrop-filter: blur(20px);
             border: 1px solid rgba(56, 189, 248, 0.2);
         }
+        .light-theme .mobile-menu {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(203, 213, 225, 0.3);
+        }
         
         .cta-button {
             background: linear-gradient(90deg, #38bdf8, #818cf8);
@@ -449,7 +453,7 @@
                     <a href="column_article.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2">
                         AI行銷與業務專欄
                     </a>
-                    <a href="ai_difference.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2 px-3">
+                    <a href="ai_difference.html" class="nav-link text-gray-200 hover:text-blue-400 font-medium py-2">
                         AI差異對比
                     </a>
                     <a href="insur_policy_demo.html" class="nav-link text-blue-400 font-medium py-2">
@@ -1348,6 +1352,31 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     
     <!-- 主題切換管理器 -->
     <script src="js/theme-manager.js"></script>
-
 </body>
+    <!-- Resilient mobile menu toggle (runs in its own script block) -->
+    <script>
+    (function(){
+        try {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function(e){
+                    mobileMenu.classList.toggle('hidden');
+                });
+
+                // close mobile menu when a link is clicked
+                document.querySelectorAll('#mobile-menu a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (!mobileMenu.classList.contains('hidden')) {
+                            mobileMenu.classList.add('hidden');
+                        }
+                    });
+                });
+            }
+        } catch (err) {
+            // fail silently but log for debugging
+            console.warn('mobile menu init failed', err);
+        }
+    })();
+    </script>
 </html>
