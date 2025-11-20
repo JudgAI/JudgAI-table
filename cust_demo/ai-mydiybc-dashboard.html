@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>銷售預測與KPI儀表板</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { background: #FFF8F3; }
+    .card { background: #FFFFFF; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .theme-main { background-color: #bd3c34; color: white; }
+    .theme-main:hover { opacity: 0.9; }
+    .theme-text { color: #bd3c34; }
+  </style>
+</head>
+<body class="text-gray-900">
+  <div class="p-6 max-w-7xl mx-auto space-y-6">
+
+    <!-- Header -->
+    <header class="flex items-center justify-between">
+      <h1 class="text-3xl font-bold theme-text">甜點銷售預測儀表板（Demo）</h1>
+      <button id="downloadCSV" class="theme-main px-3 py-2 rounded-xl shadow text-sm">
+        下載備貨資料（示意）
+      </button>
+    </header>
+
+    <!-- KPI Cards -->
+    <section class="grid grid-cols-2 md:grid-cols-6 gap-3">
+      <div class="card p-4 text-center">
+        <div class="text-gray-500 text-sm">今日累計實銷（全部店面）</div>
+        <div id="kpiActual" class="text-2xl font-bold">--</div>
+      </div>
+      <div class="card p-4 text-center">
+        <div class="text-gray-500 text-sm">今日預測（全部店面）</div>
+        <div id="kpiForecast" class="text-2xl font-bold theme-text">--</div>
+      </div>
+      <div class="card p-4 text-center">
+        <div class="text-gray-500 text-sm">差異（實際-預測）</div>
+        <div id="kpiDiff" class="text-2xl font-bold">--</div>
+      </div>
+      <div class="card p-4 text-center">
+        <div class="text-gray-500 text-sm">可用庫存總量（示意）</div>
+        <div id="kpiStock" class="text-2xl font-bold">320</div>
+      </div>
+      <div class="card p-4 text-center">
+        <div class="text-gray-500 text-sm">建議製作量（下一批，示意）</div>
+        <div id="kpiNextBatch" class="text-2xl font-bold">30</div>
+      </div>
+      <div class="card p-4 text-center">
+        <div class="text-gray-500 text-sm">預警門市數（示意）</div>
+        <div id="kpiAlert" class="text-2xl font-bold text-green-600">0</div>
+      </div>
+    </section>
+
+    <!-- Filters + Chart -->
+    <section class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+      <!-- Filter Card -->
+      <div class="card p-4 space-y-3">
+        <label class="block text-sm text-gray-600">店別選擇</label>
+        <select id="storeSelect" class="w-full p-2 border rounded-xl">
+          <option value="全部店面">全部店面</option>
+          <option value="台中精明店">台中精明店</option>
+          <option value="台中草悟道店">台中草悟道店</option>
+          <option value="台北南京店">台北南京店</option>
+          <option value="台北士林店">台北士林店</option>
+          <option value="台南Focus店">台南Focus店</option>
+          <option value="台南西門店">台南西門店</option>
+          <option value="吳寶春自己做台北信義A13店">吳寶春自己做台北信義A13店</option>
+          <option value="吳寶春自己做高雄SKM Park店">吳寶春自己做高雄SKM Park店</option>
+          <option value="新北新店店">新北新店店</option>
+          <option value="新北板橋店">新北板橋店</option>
+          <option value="新竹文化店">新竹文化店</option>
+          <option value="桃園中壢店">桃園中壢店</option>
+          <option value="桃園藝文店">桃園藝文店</option>
+        </select>
+        <button id="btnApply" class="theme-main w-full px-4 py-2 rounded-xl">
+          更新圖表
+        </button>
+      </div>
+
+      <!-- Forecast Chart -->
+      <div class="card p-4 lg:col-span-3">
+        <h2 id="chartTitle" class="font-semibold mb-2 theme-text">全部店面銷售預測走勢（最近 7 天）</h2>
+        <canvas id="forecastChart" height="110"></canvas>
+      </div>
+    </section>
+
+    <!-- Product Supply Table（保留你原來那一塊） -->
+    <section class="card p-4">
+      <div class="flex items-center justify-between mb-3 gap-2 flex-wrap">
+        <h2 class="font-semibold theme-text">
+          品項供貨比例與建議（今日預測總量：<span id="totalQty">--</span>）
+        </h2>
+        <div class="flex items-center gap-2">
+          <select id="supplyStoreSelect" class="p-2 border rounded-xl">
+            <option value="全部店面">全部店面</option>
+            <option value="吳寶春店">吳寶春店</option>
+          </select>
+          <button id="downloadSupply" class="theme-main px-3 py-2 rounded-xl text-sm">
+            下載此門市備貨
+          </button>
+        </div>
+      </div>
+
+      <table class="min-w-full text-sm border text-center bg-white rounded-xl">
+        <thead class="bg-pink-50">
+          <tr>
+            <th class="px-3 py-2">品名</th>
+            <th class="px-3 py-2">預估比例%</th>
+            <th class="px-3 py-2">建議%</th>
+            <th class="px-3 py-2">建議備貨量</th>
+          </tr>
+        </thead>
+        <tbody id="supplyTable" class="divide-y"></tbody>
+      </table>
+
+      <div class="text-xs text-gray-500 mt-2">
+        💡 調整任一品項比例後，其餘比例將自動平衡以保持總和 100%。
+      </div>
+      <div id="sumCheck" class="text-xs mt-2 text-right font-semibold"></div>
+    </section>
+
+    <!-- Store Overview Table -->
+    <section class="card p-4">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="font-semibold theme-text">門店總覽（今日實際 vs 預測）</h2>
+        <button id="exportTable" class="theme-main px-3 py-1 rounded-xl text-sm">
+          匯出門店資料
+        </button>
+      </div>
+      <table class="min-w-full text-sm border bg-white rounded-xl">
+        <thead class="bg-pink-50">
+          <tr>
+            <th class="px-3 py-2 text-left">門店</th>
+            <th class="px-3 py-2 text-right">今日實銷</th>
+            <th class="px-3 py-2 text-right">今日預測</th>
+            <th class="px-3 py-2 text-right">差異</th>
+            <th class="px-3 py-2 text-right">可用庫存</th>
+            <th class="px-3 py-2 text-right">預警數</th>
+            <th class="px-3 py-2 text-center">狀態</th>
+          </tr>
+        </thead>
+        <tbody id="storeTable" class="divide-y"></tbody>
+      </table>
+    </section>
+
+  </div>
+
+  <script>
+    // 只顯示 7 天（你之後可以改成實際日期）
+    const days = ["D-6","D-5","D-4","D-3","D-2","D-1","今天"];
+
+    // ====== 1. Demo 用的 7 天數據（結構模擬你的預測結果，誤差不大） ======
+    const storeData = {
+      "全部店面": {
+        forecast: [480, 500, 520, 540, 560, 580, 600],
+        actual:   [475, 495, 515, 535, 555, 575, 595]
+      },
+      "台中精明店": {
+        forecast: [30, 32, 34, 35, 36, 37, 38],
+        actual:   [29, 31, 33, 35, 35, 36, 37],
+        stock: 40
+      },
+      "台中草悟道店": {
+        forecast: [35, 36, 37, 38, 39, 40, 41],
+        actual:   [34, 36, 36, 38, 38, 40, 40],
+        stock: 42
+      },
+      "台北南京店": {
+        forecast: [42, 43, 44, 45, 46, 47, 48],
+        actual:   [41, 43, 44, 45, 46, 46, 47],
+        stock: 50
+      },
+      "台北士林店": {
+        forecast: [33, 34, 35, 36, 37, 38, 39],
+        actual:   [32, 33, 35, 35, 36, 37, 38],
+        stock: 41
+      },
+      "台南Focus店": {
+        forecast: [31, 32, 33, 34, 34, 35, 36],
+        actual:   [30, 31, 32, 33, 34, 34, 35],
+        stock: 38
+      },
+      "台南西門店": {
+        forecast: [28, 29, 30, 31, 32, 33, 34],
+        actual:   [28, 28, 29, 30, 31, 32, 33],
+        stock: 35
+      },
+      "吳寶春自己做台北信義A13店": {
+        forecast: [40, 41, 42, 43, 44, 45, 46],
+        actual:   [39, 40, 41, 42, 43, 44, 45],
+        stock: 48
+      },
+      "吳寶春自己做高雄SKM Park店": {
+        forecast: [27, 28, 29, 30, 31, 32, 33],
+        actual:   [26, 27, 28, 29, 30, 31, 32],
+        stock: 34
+      },
+      "新北新店店": {
+        forecast: [34, 35, 36, 37, 38, 39, 40],
+        actual:   [33, 34, 35, 36, 37, 38, 39],
+        stock: 43
+      },
+      "新北板橋店": {
+        forecast: [36, 37, 38, 39, 40, 41, 42],
+        actual:   [35, 36, 37, 38, 39, 40, 41],
+        stock: 44
+      },
+      "新竹文化店": {
+        forecast: [38, 39, 40, 41, 42, 43, 44],
+        actual:   [37, 38, 39, 40, 41, 42, 43],
+        stock: 46
+      },
+      "桃園中壢店": {
+        forecast: [32, 33, 34, 35, 36, 37, 38],
+        actual:   [31, 32, 33, 34, 35, 36, 37],
+        stock: 39
+      },
+      "桃園藝文店": {
+        forecast: [33, 34, 35, 36, 37, 38, 39],
+        actual:   [32, 33, 34, 35, 36, 37, 38],
+        stock: 40
+      }
+    };
+
+    // ====== 2. KPI（柔和：預測限制在實際 ±5%） ======
+    function updateKPI() {
+      const s = storeData["全部店面"];
+      const lastIdx = s.actual.length - 1;
+      const actual = s.actual[lastIdx];
+      const forecastRaw = s.forecast[lastIdx];
+
+      const upper = actual * 1.05;
+      const lower = actual * 0.95;
+      let forecast = forecastRaw;
+      if (forecast > upper) forecast = upper;
+      if (forecast < lower) forecast = lower;
+      forecast = Math.round(forecast);
+
+      const diff = actual - forecast;
+
+      document.getElementById("kpiActual").textContent = actual;
+      document.getElementById("kpiForecast").textContent = forecast;
+
+      const diffEl = document.getElementById("kpiDiff");
+      diffEl.textContent = diff;
+      diffEl.classList.remove("text-red-500","text-green-600");
+      if (diff < 0) diffEl.classList.add("text-red-500");
+      else if (diff > 0) diffEl.classList.add("text-green-600");
+    }
+
+    // ====== 3. 供貨比例（用你的原始數字） ======
+    let supplyData = {
+      "全部店面": [
+        { product: '啵星蛋黃酥',        ratio: 26, suggestion: 25 },
+        { product: '繁星點點星空酥',    ratio: 25, suggestion: 24 },
+        { product: '月蝕Oreo月餅',      ratio: 14, suggestion: 15 },
+        { product: '偽蛋黃酥馬卡龍',    ratio: 12, suggestion: 13 },
+        { product: '月過山丘茶餅乾',    ratio: 13, suggestion: 14 },
+        { product: '登陸月球慕斯',      ratio: 10, suggestion: 9  }
+      ],
+      "吳寶春店": [
+        { product: '啵星蛋黃酥',        ratio: 25, suggestion: 25 },
+        { product: '繁星點點星空酥',    ratio: 26, suggestion: 26 },
+        { product: '月蝕Oreo月餅',      ratio: 14, suggestion: 14 },
+        { product: '偽蛋黃酥馬卡龍',    ratio: 12, suggestion: 12 },
+        { product: '月過山丘茶餅乾',    ratio: 18, suggestion: 17 },
+        { product: '登陸月球慕斯',      ratio: 5,  suggestion: 6  }
+      ]
+    };
+
+    function getTotalForecastForSupplyStore(store) {
+      if (store === "全部店面") {
+        const s = storeData["全部店面"];
+        return s.forecast[s.forecast.length - 1];
+      } else {
+        const s = storeData["吳寶春自己做台北信義A13店"];
+        return s.forecast[s.forecast.length - 1];
+      }
+    }
+
+    function renderSupplyTable() {
+      const tbody = document.getElementById('supplyTable');
+      const store = document.getElementById('supplyStoreSelect').value;
+      const data = supplyData[store];
+
+      const totalQty = Math.round(getTotalForecastForSupplyStore(store));
+      document.getElementById('totalQty').textContent = totalQty;
+
+      tbody.innerHTML = '';
+      let sumRatio = 0;
+      let sumQty = 0;
+
+      data.forEach((item, i) => {
+        const qty = Math.round(totalQty * (item.ratio / 100));
+        sumRatio += item.ratio;
+        sumQty += qty;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="px-3 py-2">${item.product}</td>
+          <td class="px-3 py-2">
+            <input
+              type="number"
+              min="0"
+              max="100"
+              step="1"
+              value="${item.ratio.toFixed(2)}"
+              data-idx="${i}"
+              class="ratioInput w-20 p-1 border rounded text-right"
+            /> %
+          </td>
+          <td class="px-3 py-2 text-gray-600">${item.suggestion.toFixed(2)}%</td>
+          <td class="px-3 py-2 font-semibold text-right">${qty}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      const sumCheck = document.getElementById('sumCheck');
+      sumCheck.textContent = `合計比例：${sumRatio.toFixed(2)}%｜合計備貨量：${sumQty}（預測總量：${totalQty}）`;
+      sumCheck.style.color = (Math.abs(sumRatio - 100) < 0.01)
+        ? '#16a34a'
+        : '#dc2626';
+
+      document.querySelectorAll('.ratioInput').forEach(inp => {
+        inp.addEventListener('input', e => {
+          const idx = Number(e.target.dataset.idx);
+          const val = Number(e.target.value);
+          autoBalance(idx, val, store);
+        });
+      });
+    }
+
+    function autoBalance(changedIdx, newVal, store) {
+      let data = supplyData[store];
+      data[changedIdx].ratio = isNaN(newVal) ? 0 : newVal;
+
+      const total = data.reduce((s, r) => s + r.ratio, 0);
+      if (total !== 100) {
+        const diff = 100 - total;
+        const othersIdx = data.map((_, i) => i).filter(i => i !== changedIdx);
+        const adj = diff / othersIdx.length;
+        othersIdx.forEach(i => {
+          data[i].ratio = Math.max(0, data[i].ratio + adj);
+        });
+      }
+      renderSupplyTable();
+    }
+
+    document.getElementById('supplyStoreSelect').addEventListener('change', renderSupplyTable);
+
+    // ====== 4. 走勢圖（最近 7 天） ======
+    const ctx = document.getElementById("forecastChart").getContext("2d");
+    let forecastChart = null;
+
+    function drawChart(storeName) {
+      const s = storeData[storeName];
+      const labels = days;
+      const forecast = s.forecast;
+      const actual = s.actual;
+
+      if (forecastChart) {
+        forecastChart.destroy();
+      }
+
+      forecastChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: '預測銷售量',
+              data: forecast,
+              borderColor: '#bd3c34',
+              borderWidth: 2,
+              fill: false,
+              tension: 0.3
+            },
+            {
+              label: '實際銷售量',
+              data: actual,
+              borderColor: '#4b5563',
+              borderWidth: 2,
+              fill: false,
+              tension: 0.3
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { position: 'bottom' } },
+          scales: { y: { beginAtZero: true } }
+        }
+      });
+
+      const title = document.getElementById("chartTitle");
+      title.textContent = `${storeName}銷售預測走勢（最近 7 天）`;
+    }
+
+    document.getElementById("btnApply").addEventListener("click", () => {
+      const storeSel = document.getElementById("storeSelect").value;
+      drawChart(storeSel);
+    });
+
+    // ====== 5. 門市總覽表 ======
+    function renderStoreTable() {
+      const table = document.getElementById('storeTable');
+      table.innerHTML = '';
+
+      Object.keys(storeData).forEach(k => {
+        if (k === '全部店面') return;
+        const s = storeData[k];
+        const idx = s.actual.length - 1;
+        const actual = s.actual[idx];
+        const forecast = s.forecast[idx];
+        const diff = actual - forecast;
+        const stock = s.stock || 30;
+        const status = Math.abs(diff) <= 3 ? "穩定" : (diff < 0 ? "可能缺貨" : "銷售偏低");
+        const statusColor = status === "穩定" ? "text-green-600" : (diff < 0 ? "text-red-500" : "text-yellow-500");
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="px-3 py-2 text-left">${k}</td>
+          <td class="px-3 py-2 text-right">${actual}</td>
+          <td class="px-3 py-2 text-right">${forecast}</td>
+          <td class="px-3 py-2 text-right ${diff < 0 ? 'text-red-500' : 'text-green-600'}">${diff}</td>
+          <td class="px-3 py-2 text-right">${stock}</td>
+          <td class="px-3 py-2 text-right">${Math.abs(diff) > 3 ? 1 : 0}</td>
+          <td class="px-3 py-2 text-center ${statusColor}">${status}</td>
+        `;
+        table.appendChild(row);
+      });
+    }
+
+    document.getElementById("exportTable").addEventListener("click", () => {
+      let csv = '門店,今日實銷,今日預測,差異,可用庫存,預警數\n';
+      Object.keys(storeData).forEach(k => {
+        if (k === '全部店面') return;
+        const s = storeData[k];
+        const idx = s.actual.length - 1;
+        const actual = s.actual[idx];
+        const forecast = s.forecast[idx];
+        const diff = actual - forecast;
+        const stock = s.stock || 30;
+        const alert = Math.abs(diff) > 3 ? 1 : 0;
+        csv += `${k},${actual},${forecast},${diff},${stock},${alert}\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href = url;
+      a.download = 'store_overview.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // 主下載示意
+    document.getElementById("downloadCSV").addEventListener("click", () => {
+      alert('📦 備貨資料匯出功能目前為示意，之後可改為串接真實備貨表或 Excel。');
+    });
+
+    // ====== 初始化 ======
+    window.addEventListener("DOMContentLoaded", () => {
+      updateKPI();
+      renderSupplyTable();
+      renderStoreTable();
+      drawChart("全部店面");
+    });
+  </script>
+
+</body>
+</html>
+
