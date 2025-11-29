@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>臺慶科 AI Agent 功能驗證報告</title>
+    
+    <!-- 載入 React 和 Babel -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- 載入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 載入 html2pdf.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <!-- 字型設定 -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #F0F4F8;
+        }
+        
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* 隱藏 Scrollbar 但保留功能 */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* PDF 匯出時的樣式 */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background-color: white;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useMemo } = React;
+
+        // --- Icons (SVG Components) ---
+        // 為了單檔運作，將 lucide-react圖示轉為直接 SVG 渲染
+        
+        const IconBase = ({ children, className }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+                {children}
+            </svg>
+        );
+
+        const CheckCircle2 = ({ className }) => (
+            <IconBase className={className}><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></IconBase>
+        );
+        const XCircle = ({ className }) => (
+            <IconBase className={className}><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></IconBase>
+        );
+        const MinusCircle = ({ className }) => (
+            <IconBase className={className}><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></IconBase>
+        );
+        const Cpu = ({ className }) => (
+            <IconBase className={className}><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></IconBase>
+        );
+        const Search = ({ className }) => (
+            <IconBase className={className}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></IconBase>
+        );
+        const Database = ({ className }) => (
+            <IconBase className={className}><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></IconBase>
+        );
+        const Share2 = ({ className }) => (
+            <IconBase className={className}><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></IconBase>
+        );
+        const Activity = ({ className }) => (
+            <IconBase className={className}><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></IconBase>
+        );
+        const Bot = ({ className }) => (
+            <IconBase className={className}><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></IconBase>
+        );
+        const Download = ({ className }) => (
+            <IconBase className={className}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></IconBase>
+        );
+        const AlertTriangle = ({ className }) => (
+            <IconBase className={className}><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></IconBase>
+        );
+        const ShieldCheck = ({ className }) => (
+            <IconBase className={className}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></IconBase>
+        );
+        const LayoutGrid = ({ className }) => (
+            <IconBase className={className}><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></IconBase>
+        );
+        const ClipboardCheck = ({ className }) => (
+            <IconBase className={className}><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></IconBase>
+        );
+
+        // --- Data Structure ---
+        const PROJECT_INFO = {
+            title: "臺慶科 AI Agent 物料比對自動化系統",
+            docTitle: "功能驗證檢查清單報告",
+            version: "v1.0",
+            date: "2025/11/25",
+            company: "TMR",
+            status: "正式版"
+        };
+
+        const ENVIRONMENT = [
+            { label: "OS", value: "Ubuntu 22.04 LTS" },
+            { label: "Python", value: "Python 3.11" },
+            { label: "Framework", value: "Streamlit" },
+            { label: "Database", value: "多個合併後元件 CSV/Excel" },
+        ];
+
+        const SCOPE = [
+            { module: "規格解析", scope: "單筆 / 多筆" },
+            { module: "臺慶科端查詢", scope: "單筆 / 多筆、規格查詢 / 料號查詢" },
+            { module: "競品查詢", scope: "單筆 / 多筆、規格查詢 / 料號查詢" },
+            { module: "競品 vs 台慶科比對", scope: "單筆 / 多筆" },
+            { module: "LLM 規格篩選說明", scope: "規格比對說明" },
+            { module: "檔案上傳 / 下載", scope: "Excel / CSV" },
+            { module: "錯誤處理與例外情境", scope: "錯誤提示、空值處理" },
+        ];
+
+        // 檢查清單資料
+        const CHECKLIST_DATA = [
+            {
+                id: "parsing",
+                title: "規格解析功能 (Parsing)",
+                icon: <Cpu className="w-5 h-5" />,
+                items: [
+                { id: "P-01", name: "單筆規格解析", content: "自由文字可成功解析成欄位" },
+                { id: "P-02", name: "單位自動辨識", content: "uH/nH、Ω/mΩ、A/mA 解析正確" },
+                { id: "P-03", name: "±Tolerance 解析", content: "例如 ±10%、5Ω → 正確辨識" },
+                { id: "P-04", name: "Frequency 解析", content: "100kHz / 100MHz 皆可解析" },
+                { id: "P-05", name: "L/W/T 尺寸", content: "mm 單位可自動解析" },
+                { id: "P-06", name: "DCR/Impedance 區分", content: "自動判斷欄位歸類正確" },
+                { id: "P-07", name: "錯誤格式提示", content: "無法解析時顯示錯誤訊息" },
+                { id: "P-08", name: "批次解析", content: "Excel 多筆規格可成功解析" },
+                { id: "P-09", name: "可編輯解析結果", content: "data_editor 可手動修正欄位" },
+                { id: "P-10", name: "顯示解析統計", content: "成功 / 失敗筆數顯示正確" },
+                ]
+            },
+            {
+                id: "taitech-single",
+                title: "臺慶科端 — 單筆查詢",
+                icon: <Search className="w-5 h-5" />,
+                items: [
+                { id: "T-01", name: "規格查詢", content: "正確比對台慶科料號" },
+                { id: "T-02", name: "查無資料提示", content: "顯示「查無符合條件」" },
+                { id: "T-03", name: "料號查詢", content: "支援模糊搜尋" },
+                { id: "T-04", name: "顯示來源資料表", content: "Source File 正確顯示" },
+                { id: "T-05", name: "下載查詢結果", content: "CSV/Excel 可正常下載" },
+                { id: "T-06", name: "正確分類資料庫", content: "積層 / 繞線 / 一體成形選擇正確" },
+                ]
+            },
+            {
+                id: "taitech-batch",
+                title: "臺慶科端 — 多筆查詢",
+                icon: <Database className="w-5 h-5" />,
+                items: [
+                { id: "B-01", name: "上傳 Excel", content: "可成功讀取檔案" },
+                { id: "B-02", name: "批次解析", content: "多筆規格可正確解析" },
+                { id: "B-03", name: "多筆可編輯", content: "可人工修正後執行查詢" },
+                { id: "B-04", name: "批次查詢成功", content: "每筆可成功比對資料" },
+                { id: "B-05", name: "結果展示", content: "以多個 expander 顯示" },
+                { id: "B-06", name: "批次下載", content: "可下載彙整結果" },
+                ]
+            },
+            {
+                id: "competitor",
+                title: "競品查詢功能",
+                icon: <Share2 className="w-5 h-5" />,
+                items: [
+                { id: "C-01", name: "單筆料號查詢", content: "支援模糊比對競品資料" },
+                { id: "C-02", name: "單筆規格查詢", content: "可解析競品規格與查詢" },
+                { id: "C-03", name: "多筆競品查詢", content: "Excel 多筆查詢成功" },
+                { id: "C-04", name: "解析統計", content: "成功/失敗筆數顯示正確" },
+                { id: "C-05", name: "競品資料載入", content: "所需資料庫可正常載入" },
+                { id: "C-06", name: "下載結果", content: "CSV/Excel 正常開啟" },
+                ]
+            },
+            {
+                id: "cross-ref",
+                title: "Cross Reference (競品 → 臺慶科)",
+                icon: <Activity className="w-5 h-5" />,
+                items: [
+                { id: "X-01", name: "單筆比對", content: "競品 → 台慶料號比對正確" },
+                { id: "X-02", name: "無匹配提示", content: "顯示「無匹配資料」" },
+                { id: "X-03", name: "批次比對", content: "多筆競品可批次比對" },
+                { id: "X-04", name: "顯示匹配數", content: "match_count 顯示正確" },
+                { id: "X-05", name: "顯示台慶規格", content: "結果欄位完整正確" },
+                { id: "X-06", name: "下載比對結果", content: "CSV/Excel 下載正常" },
+                ]
+            },
+            {
+                id: "llm",
+                title: "LLM 規格篩選說明功能",
+                icon: <Bot className="w-5 h-5" />,
+                items: [
+                { id: "L-01", name: "Explain 可正常運作", content: "可產生說明文字" },
+                { id: "L-02", name: "JSON 格式正確", content: "輸入規格 JSON 無錯誤" },
+                { id: "L-03", name: "逾時處理", content: "Explain 逾時不影響查詢結果" },
+                { id: "L-04", name: "顯示格式正確", content: "st.info 正常顯示內容" },
+                ]
+            },
+            {
+                id: "files",
+                title: "檔案上傳 / 下載",
+                icon: <Download className="w-5 h-5" />,
+                items: [
+                { id: "F-01", name: "上傳 Excel（單筆）", content: "格式正確時可成功讀取" },
+                { id: "F-02", name: "上傳 Excel（批次）", content: "多筆內容可成功讀取" },
+                { id: "F-03", name: "CSV 下載", content: "UTF-8-SIG 文字無亂碼" },
+                { id: "F-04", name: "Excel 下載", content: "檔案可正常開啟" },
+                { id: "F-05", name: "格式錯誤提示", content: "上傳錯誤格式有提示" },
+                { id: "F-06", name: "無資料時不顯示下載按鈕", content: "避免空檔案" },
+                ]
+            },
+            {
+                id: "error-ux",
+                title: "錯誤處理 / UX",
+                icon: <AlertTriangle className="w-5 h-5" />,
+                items: [
+                { id: "E-01", name: "查無資料提示正確", content: "顯示友善訊息" },
+                { id: "E-02", name: "規格解析錯誤處理", content: "不閃退，有提示" },
+                { id: "E-03", name: "資料庫缺失處理", content: "顯示「無資料可供比對」" },
+                { id: "E-04", name: "空白輸入處理", content: "顯示提示文字" },
+                { id: "E-05", name: "異常處理完整", content: "Try/Except 防止程式錯誤" },
+                { id: "U-01", name: "首筆結果預設展開", content: "UX 正常" },
+                { id: "U-02", name: "Sidebar 選單正常", content: "所有切換功能正常" },
+                { id: "U-03", name: "Expander 顯示正確", content: "排版正常" },
+                ]
+            }
+        ];
+
+        // --- Components ---
+
+        const ChecklistItem = ({ item, status, onStatusChange }) => {
+            return (
+                <div className="group flex items-start justify-between p-3 hover:bg-slate-50 rounded-lg transition-colors border border-transparent hover:border-slate-100">
+                <div className="flex gap-3">
+                    <div className="flex-shrink-0 mt-0.5 text-xs font-mono text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">
+                    {item.id}
+                    </div>
+                    <div>
+                    <h4 className="text-sm font-semibold text-slate-700">{item.name}</h4>
+                    <p className="text-xs text-slate-500 mt-0.5">{item.content}</p>
+                    </div>
+                </div>
+                
+                <div className="flex gap-1">
+                    <div className="p-1.5 rounded-md bg-emerald-500 text-white shadow-md shadow-emerald-200">
+                        <CheckCircle2 className="w-4 h-4" />
+                    </div>
+                </div>
+                </div>
+            );
+        };
+
+        const SectionCard = ({ section, itemStatuses, onItemStatusChange }) => {
+            // Calculate progress for this section
+            const total = section.items.length;
+            const passed = section.items.filter(item => itemStatuses[item.id] === 'pass').length;
+            const progress = Math.round((passed / total) * 100);
+
+            return (
+                <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow duration-300">
+                <div className="px-5 py-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                    <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+                        {section.icon}
+                    </div>
+                    <h3 className="font-bold text-slate-800">{section.title}</h3>
+                    </div>
+                    <div className="flex items-center gap-2">
+                    <div className="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                        <div 
+                        className="h-full bg-blue-500 rounded-full transition-all duration-500"
+                        style={{ width: `${progress}%` }}
+                        />
+                    </div>
+                    <span className="text-xs font-medium text-slate-400">{progress}%</span>
+                    </div>
+                </div>
+                <div className="p-2 space-y-1">
+                    {section.items.map(item => (
+                    <ChecklistItem 
+                        key={item.id} 
+                        item={item} 
+                        status={itemStatuses[item.id] || 'pending'} 
+                        onStatusChange={onItemStatusChange}
+                    />
+                    ))}
+                </div>
+                </div>
+            );
+        };
+
+        function App() {
+            // 預設所有項目都通過
+            const getInitialStatuses = () => {
+                const statuses = {};
+                CHECKLIST_DATA.forEach(section => {
+                    section.items.forEach(item => {
+                        statuses[item.id] = 'pass';
+                    });
+                });
+                return statuses;
+            };
+
+            const [itemStatuses, setItemStatuses] = useState(getInitialStatuses());
+
+            const handleItemStatusChange = (id, status) => {
+                setItemStatuses(prev => ({
+                ...prev,
+                [id]: prev[id] === status ? 'pending' : status
+                }));
+            };
+            
+            const handleExportPDF = () => {
+                const element = document.body;
+                const opt = {
+                    margin: 10,
+                    filename: '台慶科_AI_Agent_功能驗證報告.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                    pagebreak: { mode: 'avoid-all' }
+                };
+                html2pdf().set(opt).from(element).save();
+            };
+
+            // Stats Calculation
+            const stats = useMemo(() => {
+                let pass = 0, fail = 0, na = 0, pending = 0;
+                let totalItems = 0;
+
+                CHECKLIST_DATA.forEach(section => {
+                section.items.forEach(item => {
+                    totalItems++;
+                    const status = itemStatuses[item.id];
+                    if (status === 'pass') pass++;
+                    else if (status === 'fail') fail++;
+                    else if (status === 'na') na++;
+                    else pending++;
+                });
+                });
+
+                return { pass, fail, na, pending, totalItems, passRate: totalItems ? Math.round((pass / totalItems) * 100) : 0 };
+            }, [itemStatuses]);
+
+            return (
+                <div className="min-h-screen bg-[#F0F4F8] font-sans text-slate-600 pb-20">
+                
+                {/* --- Header / Hero --- */}
+                <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200/60 shadow-sm">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/30">
+                        AI
+                        </div>
+                        <div>
+                        <h1 className="text-lg font-bold text-slate-800 leading-none">TAI-TECH AI Agent</h1>
+                        <p className="text-[10px] text-slate-500 font-medium tracking-wider">VERIFICATION REPORT</p>
+                        </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-4">
+                        <div className="hidden md:flex items-center gap-3 px-3 py-1.5 bg-slate-50 rounded-full border border-slate-200">
+                        <span className="flex items-center gap-1.5 text-xs font-semibold text-slate-700">
+                            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            {PROJECT_INFO.status}
+                        </span>
+                        <div className="w-px h-3 bg-slate-300"></div>
+                        <span className="text-xs text-slate-500 font-mono">{PROJECT_INFO.version}</span>
+                        <div className="w-px h-3 bg-slate-300"></div>
+                        <span className="text-xs text-slate-500">{PROJECT_INFO.date}</span>
+                        </div>
+                        <button 
+                            onClick={handleExportPDF}
+                            className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white px-4 py-1.5 rounded-full text-sm font-medium transition-colors shadow-lg shadow-slate-300"
+                        >
+                        <Download className="w-4 h-4" />
+                        <span>匯出 PDF</span>
+                        </button>
+                    </div>
+                    </div>
+                </header>
+
+                {/* --- Main Content --- */}
+                <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+                    
+                    {/* Project Info & Environment Grid */}
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    
+                    {/* Info Card */}
+                    <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -mr-8 -mt-8 opacity-50 group-hover:scale-110 transition-transform"></div>
+                        <h2 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <ClipboardCheck className="w-4 h-4" /> Project Overview
+                        </h2>
+                        <div className="space-y-4 relative z-10">
+                        <div>
+                            <div className="text-xs text-slate-400">專案名稱</div>
+                            <div className="font-bold text-slate-800 text-lg">{PROJECT_INFO.title}</div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <div className="text-xs text-slate-400">公司</div>
+                                <div className="font-semibold text-slate-700">{PROJECT_INFO.company}</div>
+                            </div>
+                            <div>
+                                <div className="text-xs text-slate-400">驗證目的</div>
+                                <div className="font-semibold text-slate-700">功能驗收與交付</div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    {/* Environment Card */}
+                    <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-bl-full -mr-8 -mt-8 opacity-50 group-hover:scale-110 transition-transform"></div>
+                        <h2 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <Cpu className="w-4 h-4" /> Test Environment
+                        </h2>
+                        <div className="grid grid-cols-2 gap-y-3 gap-x-2 relative z-10">
+                        {ENVIRONMENT.map((env, i) => (
+                            <div key={i} className="bg-slate-50 p-2.5 rounded-lg border border-slate-100 hover:border-blue-100 transition-colors">
+                            <div className="text-[10px] text-slate-400 uppercase">{env.label}</div>
+                            <div className="text-sm font-semibold text-slate-700 truncate" title={env.value}>{env.value}</div>
+                            </div>
+                        ))}
+                        </div>
+                    </div>
+
+                    {/* Scope Summary */}
+                    <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 shadow-lg shadow-slate-300 text-white flex flex-col justify-between relative overflow-hidden">
+                        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                        <div>
+                            <h2 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                            <LayoutGrid className="w-4 h-4" /> Scope
+                            </h2>
+                            <div className="text-3xl font-bold mb-1">{SCOPE.length} <span className="text-sm font-normal text-slate-400">Modules</span></div>
+                            <div className="text-slate-400 text-sm">涵蓋解析、查詢、比對、LLM及UX測試</div>
+                        </div>
+                        <div className="mt-4 flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+                            {['規格解析', '競品比對', 'AI 說明'].map((tag,i) => (
+                            <span key={i} className="px-2 py-1 bg-white/10 backdrop-blur rounded text-xs border border-white/10 whitespace-nowrap">
+                                {tag}
+                            </span>
+                            ))}
+                        </div>
+                    </div>
+                    </div>
+
+                    {/* --- Summary Dashboard Bar --- */}
+                    <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8 sticky top-20 z-40 transition-all">
+                    <div className="flex items-center gap-4 w-full md:w-auto">
+                        <div className="relative w-14 h-14 flex items-center justify-center">
+                            <svg className="w-full h-full transform -rotate-90">
+                                <circle cx="28" cy="28" r="24" stroke="currentColor" strokeWidth="4" fill="transparent" className="text-slate-100" />
+                                <circle cx="28" cy="28" r="24" stroke="currentColor" strokeWidth="4" fill="transparent" 
+                                        strokeDasharray={2 * Math.PI * 24} 
+                                        strokeDashoffset={2 * Math.PI * 24 * (1 - stats.passRate / 100)} 
+                                        className="text-emerald-500 transition-all duration-1000 ease-out" />
+                            </svg>
+                            <span className="absolute text-sm font-bold text-slate-700">{stats.passRate}%</span>
+                        </div>
+                        <div>
+                            <div className="text-sm font-bold text-slate-800">目前驗證進度</div>
+                            <div className="text-xs text-slate-500">總計 {stats.totalItems} 項測試</div>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-4 gap-2 w-full md:flex-1">
+                        <div className="flex flex-col items-center p-2 bg-emerald-50 rounded-lg border border-emerald-100">
+                            <span className="text-xs text-emerald-600 font-semibold mb-1">通過</span>
+                            <span className="text-xl font-bold text-emerald-700">{stats.pass}</span>
+                        </div>
+                        <div className="flex flex-col items-center p-2 bg-rose-50 rounded-lg border border-rose-100">
+                            <span className="text-xs text-rose-600 font-semibold mb-1">未通過</span>
+                            <span className="text-xl font-bold text-rose-700">{stats.fail}</span>
+                        </div>
+                        <div className="flex flex-col items-center p-2 bg-slate-100 rounded-lg border border-slate-200">
+                            <span className="text-xs text-slate-600 font-semibold mb-1">N/A</span>
+                            <span className="text-xl font-bold text-slate-700">{stats.na}</span>
+                        </div>
+                        <div className="flex flex-col items-center p-2 bg-white rounded-lg border border-slate-200 border-dashed">
+                            <span className="text-xs text-slate-400 font-semibold mb-1">待測</span>
+                            <span className="text-xl font-bold text-slate-500">{stats.pending}</span>
+                        </div>
+                    </div>
+                    </div>
+
+                    {/* --- Checklists Grid --- */}
+                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                    {CHECKLIST_DATA.map(section => (
+                        <SectionCard 
+                        key={section.id} 
+                        section={section} 
+                        itemStatuses={itemStatuses}
+                        onItemStatusChange={handleItemStatusChange}
+                        />
+                    ))}
+                    </div>
+
+                    {/* --- Approval Section --- */}
+                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 mt-8">
+                    <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
+                        <ShieldCheck className="w-5 h-5 text-blue-600" />
+                        審核簽署 (Approval)
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {[
+                            { role: '測試人員', name: '北科大 - 智慧金融實驗室' },
+                            { role: '系統負責人', name: '北科大鍾建屏教授與鍾皓軒' },
+                            { role: '客戶代表', name: '' }
+                        ].map((item, i) => (
+                        <div key={i} className="border border-slate-200 rounded-lg p-4 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all">
+                            <div className="text-xs text-slate-400 font-medium uppercase mb-2">{item.role}</div>
+                            {item.name && <div className="text-sm font-semibold text-slate-700 mb-3">{item.name}</div>}
+                            <div className="h-12 border-b-2 border-slate-200 mb-2 flex items-end pb-1 font-handwriting text-2xl text-blue-900 opacity-60">
+                                {/* Signature placeholder */}
+                            </div>
+                            <div className="flex justify-between text-xs text-slate-400">
+                                <span>簽章</span>
+                                <span>日期: ____/____</span>
+                            </div>
+                        </div>
+                        ))}
+                    </div>
+                    </div>
+
+                </main>
+
+                {/* Footer */}
+                <footer className="mt-12 py-8 border-t border-slate-200 text-center text-slate-400 text-sm">
+                    <p>&copy; 2025 TMR. All rights reserved. 臺慶科 AI Agent 物料比對自動化系統</p>
+                </footer>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
