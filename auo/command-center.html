@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 轉型全方位指揮中心</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React & ReactDOM (Using cdnjs for better stability) -->
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+
+    <!-- Prop-types (Required dependency) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.8.1/prop-types.min.js"></script>
+    
+    <!-- Recharts (Switching to cdnjs and a verified stable version) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.12.7/Recharts.min.js"></script>
+
+    <style>
+        body {
+            font-family: "Microsoft JhengHei", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8fafc;
+        }
+        /* Custom scrollbar for better look */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // Ensure libraries are loaded
+        if (typeof React === 'undefined' || typeof ReactDOM === 'undefined' || typeof Recharts === 'undefined') {
+            document.getElementById('root').innerHTML = '<div class="p-4 text-red-600 font-bold">Error: Libraries failed to load. Please check your internet connection.</div>';
+            throw new Error("Libraries not loaded");
+        }
+
+        const { useState, useMemo } = React;
+        const { 
+            BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, 
+            LineChart, Line, AreaChart, Area, PieChart, Pie, Cell 
+        } = Recharts;
+
+        // --- Icons as Components ---
+        const Icon = ({ path, color = "currentColor", size = 24, className = "" }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+                {path}
+            </svg>
+        );
+
+        const Activity = (props) => <Icon {...props} path={<path d="M22 12h-4l-3 9L9 3l-3 9H2" />} />;
+        const Users = (props) => <Icon {...props} path={<><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></>} />;
+        const Briefcase = (props) => <Icon {...props} path={<><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></>} />;
+        const TrendingUp = (props) => <Icon {...props} path={<><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></>} />;
+        const AlertCircle = (props) => <Icon {...props} path={<><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></>} />;
+        const CheckCircle2 = (props) => <Icon {...props} path={<><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></>} />;
+        const Clock = (props) => <Icon {...props} path={<><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></>} />;
+        const FileText = (props) => <Icon {...props} path={<><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></>} />;
+        const DollarSign = (props) => <Icon {...props} path={<><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></>} />;
+        const Target = (props) => <Icon {...props} path={<><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></>} />;
+        const Award = (props) => <Icon {...props} path={<><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></>} />;
+        const Filter = (props) => <Icon {...props} path={<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>} />;
+
+        // --- 部門專屬數據集 (Database) ---
+        const DB = {
+            '行銷部': {
+                projects: [
+                    { id: 201, name: '文案生成助手 v2.0', status: '已上線', progress: 100, owner: '李總監', risk: 'low', type: '增強型' },
+                    { id: 202, name: '社群輿情分析機器人', status: '開發中', progress: 65, owner: 'Sarah', risk: 'low', type: '效率型' },
+                    { id: 203, name: '個人化 EDM 引擎', status: '規劃中', progress: 10, owner: 'Mike', risk: 'medium', type: '創新型' },
+                ],
+                issues: [
+                    { topic: 'AI 生成圖片版權疑慮', count: 12, type: '法規', status: '處理中' },
+                    { topic: 'Midjourney 帳號共用問題', count: 8, type: '行政', status: '已解決' },
+                ],
+                champions: [
+                    { name: 'Sarah', achievement: 'AI 生成社群圖文 SOP', impact: '產出量 3倍' },
+                    { name: 'Mike', achievement: '自動化 SEO 關鍵字探勘', impact: '流量 +20%' },
+                ],
+                actions: [
+                    { title: '審核 Q3 AI 廣告預算', priority: 'High', desc: '投放金額預計增加 20%', btn: '查看預算表' },
+                    { title: '舉辦 Midjourney 進階工作坊', priority: 'Med', desc: '針對設計組同仁', btn: '發送邀請' },
+                ],
+                kpi: { roi: '15.2x', savedHours: '800', completionRate: 85 }
+            },
+            '客服部': {
+                projects: [
+                    { id: 301, name: '智能客服自動回覆', status: '驗證中', progress: 85, owner: '王經理', risk: 'low', type: '效率型' },
+                    { id: 302, name: '客訴情緒分析系統', status: '已上線', progress: 100, owner: 'Amy', risk: 'low', type: '增強型' },
+                ],
+                issues: [
+                    { topic: '擔心被 Chatbot 取代', count: 25, type: '心理', status: '溝通中' },
+                    { topic: 'AI 回覆語氣太生硬', count: 15, type: '技能', status: '培訓中' },
+                ],
+                champions: [
+                    { name: 'Amy', achievement: '建立 50+ 客服話術模板庫', impact: '回應速度 +40%' },
+                ],
+                actions: [
+                    { title: '更新 Chatbot 知識庫', priority: 'High', desc: '因應新產品上市', btn: '匯入文檔' },
+                    { title: '客服人員轉型安撫會', priority: 'Med', desc: '強調人機協作價值', btn: '安排會議' },
+                ],
+                kpi: { roi: '8.5x', savedHours: '2,500', completionRate: 92 }
+            },
+            '研發部': {
+                projects: [
+                    { id: 401, name: 'Copilot 程式碼輔助', status: '已上線', progress: 100, owner: '張技術長', risk: 'low', type: '增強型' },
+                    { id: 402, name: '自動化測試生成', status: '開發中', progress: 70, owner: 'Jason', risk: 'low', type: '效率型' },
+                    { id: 403, name: 'Legacy Code 重構 AI', status: '卡關中', progress: 40, owner: 'David', risk: 'high', type: '效率型' },
+                ],
+                issues: [
+                    { topic: 'Copilot 企業版費用過高', count: 10, type: '行政', status: '研議中' },
+                    { topic: '程式碼隱私外洩疑慮', count: 5, type: '法規', status: '已解決' },
+                ],
+                champions: [
+                    { name: 'Jason', achievement: '開發自動化測試腳本', impact: 'Bug 檢出率 +25%' },
+                    { name: 'David', achievement: 'AI Code Review 流程', impact: 'Review 時間 -50%' },
+                ],
+                actions: [
+                    { title: '評估 Copilot 續約方案', priority: 'High', desc: '使用者增加 30%', btn: '聯繫廠商' },
+                    { title: '解決 Legacy Code 專案技術債', priority: 'High', desc: '調派資深人員支援', btn: '查看進度' },
+                ],
+                kpi: { roi: '18.0x', savedHours: '1,200', completionRate: 95 }
+            },
+            '財務部': {
+                projects: [
+                    { id: 501, name: '發票自動辨識與歸檔', status: '卡關中', progress: 30, owner: '陳副理', risk: 'high', type: '效率型' },
+                    { id: 502, name: '財報異常偵測 AI', status: '規劃中', progress: 20, owner: '林會計', risk: 'medium', type: '創新型' },
+                ],
+                issues: [
+                    { topic: '不信任 AI 算出的數據', count: 18, type: '心理', status: '溝通中' },
+                    { topic: '缺乏 Python 數據分析技能', count: 22, type: '技能', status: '規劃中' },
+                ],
+                champions: [],
+                actions: [
+                    { title: '啟動強制技能補課', priority: 'High', desc: '每週五下午', btn: '發送通知' },
+                    { title: '發票專案廠商緊急會議', priority: 'High', desc: '解決辨識率過低問題', btn: '安排會議' },
+                ],
+                kpi: { roi: '2.1x', savedHours: '150', completionRate: 45 }
+            },
+            '人資部': {
+                projects: [
+                    { id: 601, name: '履歷智能篩選', status: '開發中', progress: 55, owner: '張專員', risk: 'medium', type: '效率型' },
+                    { id: 602, name: '員工滿意度語意分析', status: '驗證中', progress: 80, owner: 'Lisa', risk: 'low', type: '創新型' },
+                ],
+                issues: [
+                    { topic: '篩選演算法是否有偏見', count: 6, type: '法規', status: '研議中' },
+                    { topic: '面試官依賴 AI 建議', count: 8, type: '制度', status: '觀察中' },
+                ],
+                champions: [
+                    { name: 'Lisa', achievement: '優化 JD 生成流程', impact: '招募週期縮短 1 週' },
+                ],
+                actions: [
+                    { title: '修訂 AI 招募倫理規範', priority: 'High', desc: '避免演算法歧視', btn: '查看草案' },
+                    { title: '舉辦 AI 面試官訓練', priority: 'Med', desc: '如何正確解讀 AI 建議', btn: '安排課程' },
+                ],
+                kpi: { roi: '5.5x', savedHours: '400', completionRate: 60 }
+            }
+        };
+
+        // 培訓數據單獨保留，因需做比較圖
+        const trainingData = [
+            { dept: '行銷部', completed: 85, pending: 15, avgScore: 92 },
+            { dept: '客服部', completed: 92, pending: 8, avgScore: 88 },
+            { dept: '人資部', completed: 60, pending: 40, avgScore: 75 },
+            { dept: '研發部', completed: 95, pending: 5, avgScore: 96 },
+            { dept: '財務部', completed: 45, pending: 55, avgScore: 70 },
+        ];
+
+        const roadmapSteps = [
+            { stage: '第一階段：導入期', status: 'completed', desc: '基礎設施建置、種子人員培訓' },
+            { stage: '第二階段：擴散期', status: 'current', desc: '全路徑技能導入、部門試點專案' },
+            { stage: '第三階段：深化期', status: 'upcoming', desc: 'AI Native 工作流重塑、商業模式創新' },
+        ];
+
+        // --- Dashboard Component ---
+        const Dashboard = () => {
+            const [activeTab, setActiveTab] = useState('overview');
+            const [selectedDept, setSelectedDept] = useState('All');
+
+            // --- 核心邏輯：根據部門動態獲取數據 ---
+            const currentData = useMemo(() => {
+                if (selectedDept === 'All') {
+                    // 匯總全公司數據
+                    const allProjects = Object.values(DB).flatMap(d => d.projects);
+                    const allIssues = Object.values(DB).flatMap(d => d.issues);
+                    const allChampions = Object.values(DB).flatMap(d => d.champions);
+                    // 計算平均完成率
+                    const totalCompletion = trainingData.reduce((acc, curr) => acc + curr.completed, 0) / trainingData.length;
+                    
+                    return {
+                        projects: allProjects,
+                        issues: allIssues,
+                        champions: allChampions,
+                        kpi: { roi: '12.5x', savedHours: '5,050', completionRate: totalCompletion.toFixed(1) },
+                        actions: [
+                            { title: '全公司 AI 轉型大會', priority: 'High', desc: 'Q3 戰略發布', btn: '查看議程' },
+                            { title: '審核各部門 API 預算', priority: 'Med', desc: '預算超支預警', btn: '查看報表' },
+                            { title: '公佈轉型英雄獎勵', priority: 'Low', desc: '本月 5 位得主', btn: '通知 HR' }
+                        ],
+                        costData: [ // 全公司成本
+                            { month: '1月', apiCost: 1200, licenseCost: 5000, budget: 8000 },
+                            { month: '2月', apiCost: 1500, licenseCost: 5000, budget: 8000 },
+                            { month: '3月', apiCost: 2800, licenseCost: 5200, budget: 8000 },
+                            { month: '4月', apiCost: 3500, licenseCost: 6000, budget: 9000 },
+                            { month: '5月', apiCost: 3200, licenseCost: 6500, budget: 10000 },
+                            { month: '6月', apiCost: 4100, licenseCost: 6500, budget: 11000 },
+                        ]
+                    };
+                } else {
+                    // 單一部門數據
+                    const deptData = DB[selectedDept];
+                    // 模擬部門成本 (簡單隨機變化以示區別)
+                    const baseCost = selectedDept === '研發部' ? 2000 : 500;
+                    const deptCostData = [
+                        { month: '1月', apiCost: baseCost, licenseCost: baseCost*2, budget: baseCost*4 },
+                        { month: '2月', apiCost: baseCost*1.1, licenseCost: baseCost*2, budget: baseCost*4 },
+                        { month: '3月', apiCost: baseCost*1.5, licenseCost: baseCost*2.1, budget: baseCost*4 },
+                        { month: '4月', apiCost: baseCost*1.8, licenseCost: baseCost*2.2, budget: baseCost*4.5 },
+                        { month: '5月', apiCost: baseCost*1.6, licenseCost: baseCost*2.3, budget: baseCost*5 },
+                        { month: '6月', apiCost: baseCost*2.0, licenseCost: baseCost*2.3, budget: baseCost*5.5 },
+                    ];
+                    
+                    return { ...deptData, costData: deptCostData };
+                }
+            }, [selectedDept]);
+
+            const filteredTrainingData = selectedDept === 'All' 
+                ? trainingData 
+                : trainingData.filter(d => d.dept === selectedDept);
+
+            return (
+                <div className="min-h-screen bg-slate-50 font-sans text-slate-800 p-4 md:p-6 lg:p-8">
+                    {/* Header */}
+                    <header className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div>
+                            <h1 className="text-2xl md:text-3xl font-bold text-slate-900 flex items-center gap-3">
+                                <Activity className="w-8 h-8 text-indigo-600" />
+                                {selectedDept === 'All' ? 'AI 轉型全方位指揮中心' : `${selectedDept} AI 轉型戰情室`}
+                            </h1>
+                            <div className="flex items-center gap-2 mt-2 text-slate-500 text-sm">
+                                <span className={`px-2 py-0.5 rounded font-medium ${selectedDept === '財務部' ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'}`}>
+                                    {selectedDept === '財務部' ? '狀態：落後預警' : '狀態：擴散期'}
+                                </span>
+                                <span>•</span>
+                                <span>資料更新：剛剛</span>
+                            </div>
+                        </div>
+                        
+                        <div className="flex gap-3">
+                            <div className="relative">
+                                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                                    <Filter className="w-4 h-4 text-slate-400" />
+                                </div>
+                                <select 
+                                    value={selectedDept}
+                                    onChange={(e) => setSelectedDept(e.target.value)}
+                                    className="pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm appearance-none cursor-pointer"
+                                >
+                                    <option value="All">全公司總覽</option>
+                                    <option value="行銷部">行銷部</option>
+                                    <option value="客服部">客服部</option>
+                                    <option value="研發部">研發部</option>
+                                    <option value="財務部">財務部</option>
+                                    <option value="人資部">人資部</option>
+                                </select>
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* KPI Cards (Dynamic based on Dept) */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden group hover:border-indigo-300 transition-all">
+                            <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                                <Users className="w-16 h-16 text-indigo-600" />
+                            </div>
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">技能覆蓋率</p>
+                            <div className="flex items-end gap-2 mt-1">
+                                <h3 className="text-2xl font-bold text-slate-800">{currentData.kpi.completionRate}%</h3>
+                                <span className={`text-xs font-medium mb-1 ${currentData.kpi.completionRate < 60 ? 'text-rose-600' : 'text-emerald-600'}`}>
+                                    {currentData.kpi.completionRate < 60 ? '▼ 落後目標' : '▲ 達標'}
+                                </span>
+                            </div>
+                            <div className="w-full bg-slate-100 rounded-full h-1 mt-3">
+                                <div className={`h-1 rounded-full ${currentData.kpi.completionRate < 60 ? 'bg-rose-500' : 'bg-indigo-600'}`} style={{width: `${currentData.kpi.completionRate}%`}}></div>
+                            </div>
+                        </div>
+
+                        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden group hover:border-emerald-300 transition-all">
+                            <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                                <DollarSign className="w-16 h-16 text-emerald-600" />
+                            </div>
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">人效 ROI 估算</p>
+                            <div className="flex items-end gap-2 mt-1">
+                                <h3 className="text-2xl font-bold text-slate-800">{currentData.kpi.roi}</h3>
+                                <span className="text-xs text-emerald-600 font-medium mb-1">▲ 優於預期</span>
+                            </div>
+                            <p className="text-xs text-slate-500 mt-2">月省 {currentData.kpi.savedHours} 工時</p>
+                        </div>
+
+                        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden group hover:border-rose-300 transition-all">
+                            <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                                <AlertCircle className="w-16 h-16 text-rose-600" />
+                            </div>
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">待解決議題</p>
+                            <div className="flex items-end gap-2 mt-1">
+                                <h3 className="text-2xl font-bold text-rose-600">{currentData.issues.length}</h3>
+                                <span className="text-xs text-slate-500 font-medium mb-1">件</span>
+                            </div>
+                            <p className="text-xs text-slate-500 mt-2">需要協商或處理</p>
+                        </div>
+
+                        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden group hover:border-amber-300 transition-all">
+                            <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                                <Target className="w-16 h-16 text-amber-500" />
+                            </div>
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">專案進行數</p>
+                            <div className="flex items-end gap-2 mt-1">
+                                <h3 className="text-2xl font-bold text-slate-800">{currentData.projects.length}</h3>
+                                <span className="text-xs text-slate-400 font-medium mb-1">個專案</span>
+                            </div>
+                            <p className="text-xs text-slate-500 mt-2">
+                                {currentData.projects.filter(p => p.risk === 'high').length > 0 
+                                    ? `${currentData.projects.filter(p => p.risk === 'high').length} 個高風險` 
+                                    : '目前無高風險'}
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Tabs */}
+                    <div className="flex gap-1 mb-6 bg-slate-100 p-1 rounded-lg w-fit overflow-x-auto">
+                        {['overview', 'execution', 'financials', 'people'].map((tab) => (
+                            <button 
+                                key={tab}
+                                onClick={() => setActiveTab(tab)}
+                                className={`px-4 py-2 rounded-md text-sm font-medium transition-all whitespace-nowrap ${
+                                    activeTab === tab 
+                                        ? 'bg-white text-indigo-600 shadow-sm' 
+                                        : 'text-slate-500 hover:text-slate-700'
+                                }`}
+                            >
+                                {tab === 'overview' && '戰略總覽'}
+                                {tab === 'execution' && '執行進度'}
+                                {tab === 'financials' && '成本效益'}
+                                {tab === 'people' && '組織與協商'}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Main Content Area */}
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        
+                        {/* Left Column (Main) */}
+                        <div className="lg:col-span-2 space-y-6">
+                            
+                            {/* TAB: 戰略總覽 */}
+                            {activeTab === 'overview' && (
+                                <React.Fragment>
+                                    <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                                        <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                            <Target className="w-5 h-5 text-indigo-500" />
+                                            {selectedDept === 'All' ? '全公司' : selectedDept} AI 轉型戰略路徑
+                                        </h3>
+                                        <div className="relative">
+                                            {/* Timeline Line */}
+                                            <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-slate-200"></div>
+                                            
+                                            <div className="space-y-8">
+                                                {roadmapSteps.map((step, idx) => (
+                                                    <div key={idx} className="relative flex items-start gap-4 ml-2">
+                                                        <div className={`z-10 w-8 h-8 rounded-full flex items-center justify-center border-2 
+                                                            ${step.status === 'completed' ? 'bg-emerald-100 border-emerald-500 text-emerald-600' : 
+                                                            step.status === 'current' ? 'bg-indigo-100 border-indigo-500 text-indigo-600 animate-pulse' : 
+                                                            'bg-slate-50 border-slate-300 text-slate-400'}`}>
+                                                            {step.status === 'completed' ? <CheckCircle2 className="w-5 h-5" /> : idx + 1}
+                                                        </div>
+                                                        <div className="bg-slate-50 p-4 rounded-lg flex-1 border border-slate-100">
+                                                            <h4 className={`font-bold ${step.status === 'current' ? 'text-indigo-700' : 'text-slate-700'}`}>
+                                                                {step.stage}
+                                                            </h4>
+                                                            <p className="text-sm text-slate-500 mt-1">{step.desc}</p>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                                        <h3 className="text-lg font-bold text-slate-800 mb-4">重點專案監控</h3>
+                                        {currentData.projects.length === 0 ? (
+                                            <p className="text-slate-500 text-sm p-4">目前該部門無重點專案。</p>
+                                        ) : (
+                                            <div className="overflow-x-auto">
+                                                <table className="w-full text-sm text-left">
+                                                    <thead className="bg-slate-50 text-slate-500">
+                                                        <tr>
+                                                            <th className="px-4 py-2">專案名稱</th>
+                                                            <th className="px-4 py-2">負責人</th>
+                                                            <th className="px-4 py-2">類型</th>
+                                                            <th className="px-4 py-2">進度</th>
+                                                            <th className="px-4 py-2">風險</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {currentData.projects.map((p) => (
+                                                            <tr key={p.id} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                                                                <td className="px-4 py-3 font-medium">{p.name}</td>
+                                                                <td className="px-4 py-3 text-slate-500">{p.owner}</td>
+                                                                <td className="px-4 py-3"><span className="bg-slate-100 px-2 py-1 rounded text-xs">{p.type}</span></td>
+                                                                <td className="px-4 py-3">
+                                                                    <div className="flex items-center gap-2">
+                                                                        <div className="w-20 bg-slate-200 rounded-full h-1.5">
+                                                                            <div className={`h-1.5 rounded-full ${p.progress === 100 ? 'bg-emerald-500' : 'bg-indigo-500'}`} style={{width: `${p.progress}%`}}></div>
+                                                                        </div>
+                                                                        <span className="text-xs text-slate-500">{p.progress}%</span>
+                                                                    </div>
+                                                                </td>
+                                                                <td className="px-4 py-3">
+                                                                    {p.risk === 'high' && <span className="text-rose-600 font-bold text-xs flex items-center gap-1"><AlertCircle className="w-3 h-3"/> High</span>}
+                                                                    {p.risk === 'medium' && <span className="text-amber-500 font-bold text-xs">Medium</span>}
+                                                                    {p.risk === 'low' && <span className="text-emerald-500 font-bold text-xs">Low</span>}
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        )}
+                                    </div>
+                                </React.Fragment>
+                            )}
+
+                            {/* TAB: 執行進度 */}
+                            {activeTab === 'execution' && (
+                                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                                    <div className="flex justify-between items-center mb-6">
+                                        <h3 className="text-lg font-bold text-slate-800">
+                                            {selectedDept === 'All' ? '各部門' : selectedDept} 技能轉型滲透率
+                                        </h3>
+                                        <div className="flex gap-2">
+                                            <span className="flex items-center gap-1 text-xs text-slate-500"><div className="w-3 h-3 bg-indigo-500 rounded-sm"></div> 已完成</span>
+                                            <span className="flex items-center gap-1 text-xs text-slate-500"><div className="w-3 h-3 bg-slate-200 rounded-sm"></div> 未完成</span>
+                                        </div>
+                                    </div>
+                                    <div className="h-80 w-full">
+                                        <ResponsiveContainer width="100%" height="100%">
+                                            <BarChart data={filteredTrainingData} layout="vertical" margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                                                <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+                                                <XAxis type="number" domain={[0, 100]} />
+                                                <YAxis dataKey="dept" type="category" tick={{fontWeight: 'bold', fill: '#475569'}} />
+                                                <Tooltip cursor={{fill: 'transparent'}} contentStyle={{borderRadius: '8px'}} />
+                                                <Bar dataKey="completed" name="已完成培訓 (%)" stackId="a" fill="#6366f1" radius={[0, 4, 4, 0]} barSize={24} />
+                                                <Bar dataKey="pending" name="未完成 (%)" stackId="a" fill="#e2e8f0" radius={[0, 4, 4, 0]} barSize={24} />
+                                            </BarChart>
+                                        </ResponsiveContainer>
+                                    </div>
+                                    {(selectedDept === 'All' || selectedDept === '財務部' || selectedDept === '人資部') && (
+                                        <div className="mt-4 p-3 bg-rose-50 border border-rose-100 rounded text-sm text-rose-700 flex items-start gap-2">
+                                            <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                                            <p><strong>注意：</strong> 財務部與人資部的完成率顯著落後，建議人資長介入了解「業務繁忙」是否為主要阻礙。</p>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* TAB: 成本效益 */}
+                            {activeTab === 'financials' && (
+                                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                                    <h3 className="text-lg font-bold text-slate-800 mb-2">AI 運算成本 vs. 預算監控</h3>
+                                    <p className="text-sm text-slate-500 mb-6">追蹤 {selectedDept === 'All' ? '全公司' : selectedDept} API Token 用量與軟體授權 (SaaS License) 費用趨勢</p>
+                                    <div className="h-80 w-full">
+                                        <ResponsiveContainer width="100%" height="100%">
+                                            <AreaChart data={currentData.costData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                                                <defs>
+                                                    <linearGradient id="colorApi" x1="0" y1="0" x2="0" y2="1">
+                                                        <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.8}/>
+                                                        <stop offset="95%" stopColor="#f59e0b" stopOpacity={0}/>
+                                                    </linearGradient>
+                                                    <linearGradient id="colorLicense" x1="0" y1="0" x2="0" y2="1">
+                                                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
+                                                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                                                    </linearGradient>
+                                                </defs>
+                                                <XAxis dataKey="month" />
+                                                <YAxis />
+                                                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                                                <Tooltip />
+                                                <Legend verticalAlign="top" height={36}/>
+                                                <Area type="monotone" dataKey="apiCost" name="API 流量費" stackId="1" stroke="#f59e0b" fill="url(#colorApi)" />
+                                                <Area type="monotone" dataKey="licenseCost" name="軟體訂閱費" stackId="1" stroke="#3b82f6" fill="url(#colorLicense)" />
+                                                <Line type="step" dataKey="budget" name="預算上限" stroke="#ef4444" strokeWidth={2} strokeDasharray="5 5" />
+                                            </AreaChart>
+                                        </ResponsiveContainer>
+                                    </div>
+                                    <div className="mt-4 flex gap-4">
+                                        <div className="flex-1 bg-slate-50 p-3 rounded border border-slate-100">
+                                            <p className="text-xs text-slate-500">本月 API 花費</p>
+                                            <p className="text-lg font-bold text-amber-600">
+                                                ${currentData.costData[5].apiCost.toLocaleString()}
+                                            </p>
+                                        </div>
+                                        <div className="flex-1 bg-slate-50 p-3 rounded border border-slate-100">
+                                            <p className="text-xs text-slate-500">本月軟體訂閱費</p>
+                                            <p className="text-lg font-bold text-blue-600">
+                                                ${currentData.costData[5].licenseCost.toLocaleString()}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* TAB: 組織與協商 */}
+                            {activeTab === 'people' && (
+                                <React.Fragment>
+                                    <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm mb-6">
+                                        <h3 className="text-lg font-bold text-slate-800 mb-4">{selectedDept === 'All' ? '各部門' : selectedDept} 協商議題看板</h3>
+                                        <div className="space-y-3">
+                                            {currentData.issues.length === 0 ? (
+                                                <p className="text-slate-500 text-sm">目前無待協商議題。</p>
+                                            ) : (
+                                                currentData.issues.map((issue, idx) => (
+                                                    <div key={idx} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors">
+                                                        <div className="flex items-center gap-3">
+                                                            <span className={`px-2 py-1 rounded text-xs font-bold w-12 text-center
+                                                                ${issue.type === '行政' ? 'bg-orange-100 text-orange-700' : 
+                                                                issue.type === '制度' ? 'bg-purple-100 text-purple-700' : 
+                                                                issue.type === '法規' ? 'bg-red-100 text-red-700' : 
+                                                                issue.type === '技能' ? 'bg-blue-100 text-blue-700' : 
+                                                                issue.type === '心理' ? 'bg-pink-100 text-pink-700' : 'bg-slate-200 text-slate-600'}`}>
+                                                                {issue.type}
+                                                            </span>
+                                                            <div>
+                                                                <p className="font-medium text-slate-700 text-sm">{issue.topic}</p>
+                                                                <p className="text-xs text-slate-500">{issue.count} 人關注</p>
+                                                            </div>
+                                                        </div>
+                                                        <span className={`text-xs px-2 py-1 rounded-full border 
+                                                            ${issue.status === '已解決' ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 
+                                                            issue.status === '處理中' ? 'bg-blue-50 text-blue-600 border-blue-200' : 'bg-slate-50 text-slate-500 border-slate-200'}`}>
+                                                            {issue.status}
+                                                        </span>
+                                                    </div>
+                                                ))
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* 轉型英雄榜 */}
+                                    <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 rounded-xl shadow-lg text-white">
+                                        <div className="flex items-center gap-2 mb-4">
+                                            <Award className="w-6 h-6 text-yellow-300" />
+                                            <h3 className="text-lg font-bold">本月 {selectedDept === 'All' ? '全公司' : selectedDept} 轉型英雄 (Champions)</h3>
+                                        </div>
+                                        {currentData.champions.length === 0 ? (
+                                            <p className="text-indigo-200 text-sm italic">本部門本月暫無英雄上榜，加油！</p>
+                                        ) : (
+                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                {currentData.champions.map((champ, idx) => (
+                                                    <div key={idx} className="bg-white/10 backdrop-blur-sm p-4 rounded-lg border border-white/20">
+                                                        <div className="flex items-center justify-between mb-2">
+                                                            <span className="font-bold text-yellow-300 text-lg">#{idx + 1}</span>
+                                                            <span className="text-xs bg-white/20 px-2 py-0.5 rounded text-white">{champ.name}</span>
+                                                        </div>
+                                                        <p className="text-sm font-medium mb-1">{champ.achievement}</p>
+                                                        <p className="text-xs text-indigo-200">Impact: {champ.impact}</p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                </React.Fragment>
+                            )}
+                        </div>
+
+                        {/* Right Column: Action Center */}
+                        <div className="space-y-6">
+                            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm h-fit">
+                                <h3 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                    <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                                    {selectedDept === 'All' ? '總部' : selectedDept} 行動待辦
+                                </h3>
+                                
+                                <div className="space-y-4">
+                                    {currentData.actions.map((action, idx) => (
+                                        <div key={idx} className="pb-4 border-b border-slate-100 last:border-0 last:pb-0">
+                                            <div className="flex justify-between items-start mb-1">
+                                                <span className="text-sm font-medium text-slate-700">{action.title}</span>
+                                                <span className={`text-xs px-1.5 py-0.5 rounded font-bold
+                                                    ${action.priority === 'High' ? 'bg-rose-100 text-rose-700' : 
+                                                    action.priority === 'Med' ? 'bg-amber-100 text-amber-700' : 'bg-indigo-100 text-indigo-700'}`}>
+                                                    {action.priority}
+                                                </span>
+                                            </div>
+                                            <p className="text-xs text-slate-500 mb-2">{action.desc}</p>
+                                            <button className="w-full py-1.5 text-xs bg-slate-800 text-white rounded hover:bg-slate-700 transition-colors">
+                                                {action.btn}
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Weekly Wisdom */}
+                            <div className="bg-indigo-900 text-white p-6 rounded-xl shadow-lg">
+                                <h4 className="font-bold text-sm mb-3 text-indigo-200 uppercase tracking-wider">每週心法</h4>
+                                <p className="text-lg font-serif italic mb-4">
+                                "AI 不會取代你，但會使用 AI 的人將會取代你。"
+                                </p>
+                                <div className="flex gap-2">
+                                    <span className="text-xs bg-indigo-800 px-2 py-1 rounded">#擁抱改變</span>
+                                    <span className="text-xs bg-indigo-800 px-2 py-1 rounded">#終身學習</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Dashboard />);
+    </script>
+</body>
+</html>

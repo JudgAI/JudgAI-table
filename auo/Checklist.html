@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企業 AI 風險防範合規儀表板</title>
+    
+    <!-- 引入 Tailwind CSS (用於樣式設計) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 引入 React 與 ReactDOM (用於核心邏輯) -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- 引入 Babel (用於解析 JSX) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Google Fonts: Noto Sans TC -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8fafc; /* Slate-50 */
+        }
+        
+        /* 列印專用樣式 */
+        @media print {
+            body {
+                background-color: white;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-break-inside-avoid {
+                break-inside: avoid;
+            }
+            .print-full-width {
+                width: 100% !important;
+                max-width: none !important;
+                padding: 0 !important;
+            }
+            /* 強制列印背景色與圖形 */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+
+        // --- 圖示組件 (SVG Paths) ---
+        const Icons = {
+            Shield: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+            FileText: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>,
+            Lock: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
+            Scale: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>,
+            Briefcase: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>,
+            Users: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+            CheckCircle: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
+            RotateCcw: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>,
+            Printer: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>,
+            ChevronDown: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>,
+            ChevronUp: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+        };
+
+        const Icon = ({ name, className }) => {
+            const svg = Icons[name];
+            if (!svg) return null;
+            return <span className={`inline-block ${className}`}>{React.cloneElement(svg, { width: '100%', height: '100%' })}</span>;
+        };
+
+        // --- 原始清單資料結構 ---
+        const INITIAL_DATA = [
+            {
+                id: 'section1',
+                title: '一、智慧財產與內容使用風險',
+                iconName: 'FileText',
+                description: '確保 AI 生成內容不侵犯他人權利，並建立合法的創作流程。',
+                items: [
+                { id: '1-1', text: '不要求AI模仿特定創作者風格或重現知名角色形象' },
+                { id: '1-2', text: '不上傳完整他人作品作為AI訓練或修改素材' },
+                { id: '1-3', text: '使用AI生成圖片、影片、文字前，進行反向搜尋與防抄襲檢測' },
+                { id: '1-4', text: '優先使用具有明確授權條款、來源透明的AI平台（如Adobe Firefly、商用版ChatGPT）' },
+                { id: '1-5', text: '對AI生成素材進行二次創作加工（人工潤飾、重新設計）' },
+                { id: '1-6', text: '發布前經法務或主管簽核，避免侵權與不實內容' },
+                { id: '1-7', text: '禁止AI自動發布外部貼文或行銷素材未經人工審核' },
+                ]
+            },
+            {
+                id: 'section2',
+                title: '二、資料與隱私風險',
+                iconName: 'Lock',
+                description: '保護企業機密與客戶個資，防止數據外洩或濫用。',
+                items: [
+                { id: '2-1', text: '不將機密資料、客戶資料、產品計畫輸入公開AI系統' },
+                { id: '2-2', text: '若需分析內部資料，採離線部署或匿名化處理' },
+                { id: '2-3', text: '不輸入任何尚未公開或具商業秘密性資訊' },
+                { id: '2-4', text: '對AI客服或聊天機器人建立關鍵字過濾與人工抽查制度' },
+                { id: '2-5', text: '確保AI服務不會輸出或推測個資（姓名、電話、住址等）' },
+                { id: '2-6', text: '若AI涉及客戶資訊處理，確認符合《個資法》之告知與同意原則' },
+                ]
+            },
+            {
+                id: 'section3',
+                title: '三、內容真實性與法規遵循風險',
+                iconName: 'Scale',
+                description: '防範假訊息與偏見，確保產出內容符合相關法規。',
+                items: [
+                { id: '3-1', text: '不直接引用AI生成內容作為事實陳述或法律依據' },
+                { id: '3-2', text: '發布的AI內容須經人工驗證資料正確性' },
+                { id: '3-3', text: '避免AI生成的文字或圖像含有歧視、誹謗、假訊息或攻擊性言詞' },
+                { id: '3-4', text: '若AI生成醫療、金融或法律建議，須加註免責聲明並經專業人員審核' },
+                { id: '3-5', text: '建立內部「錯誤回報」機制，一旦AI生成錯誤資訊可立即下架修正' },
+                { id: '3-6', text: '內容涉及消費資訊時，確保符合《消費者保護法》與《公平交易法》' },
+                ]
+            },
+            {
+                id: 'section4',
+                title: '四、合約與外包風險',
+                iconName: 'Briefcase',
+                description: '釐清第三方權利義務，降低供應鏈帶來的法律風險。',
+                items: [
+                { id: '4-1', text: '若外包內容創作，合約中應明確要求遵守著作權與保密義務' },
+                { id: '4-2', text: '向AI供應商索取「權利擔保」或「共同應訴條款」' },
+                { id: '4-3', text: 'AI生成的文件、翻譯或訴狀不得直接使用於正式法律程序' },
+                { id: '4-4', text: '檢查AI工具是否取得相關主管機關的合規認證（特別是醫療、金融領域）' },
+                ]
+            },
+            {
+                id: 'section5',
+                title: '五、內部治理與教育機制',
+                iconName: 'Users',
+                description: '建立企業內部的AI使用規範與員工素養。',
+                items: [
+                { id: '5-1', text: '建立AI使用政策（明定可用與禁用情境）' },
+                { id: '5-2', text: '設立審核流程SOP（AI生成→初審→法務→發布）' },
+                { id: '5-3', text: '定期員工教育訓練：AI風險意識、資料保護、合規操作' },
+                { id: '5-4', text: '設立舉報管道：員工若發現AI誤用或侵權，可匿名回報' },
+                ]
+            },
+            {
+                id: 'section6',
+                title: '六、風險轉移與保險建議',
+                iconName: 'Shield',
+                description: '透過保險與合約轉移潛在的賠償責任。',
+                items: [
+                { id: '6-1', text: '評估購買「科技產品責任」或「AI專屬責任保險」' },
+                { id: '6-2', text: '與AI技術供應商簽約時要求對方提供侵權保障' },
+                { id: '6-3', text: '若導入高風險AI應用（如自動決策、醫療AI），提前建立保險與損害補償機制' },
+                ]
+            },
+        ];
+
+        // --- 主程式 ---
+        const App = () => {
+            // 狀態管理：使用 localStorage 來保存勾選狀態
+            const [checkedItems, setCheckedItems] = useState(() => {
+                const saved = localStorage.getItem('aiRiskDashboardState_html_v1');
+                return saved ? JSON.parse(saved) : {};
+            });
+
+            const [expandedSections, setExpandedSections] = useState({
+                section1: true,
+                section2: true,
+                section3: true,
+                section4: true,
+                section5: true,
+                section6: true,
+            });
+
+            // 當 checkedItems 改變時，儲存到 localStorage
+            useEffect(() => {
+                localStorage.setItem('aiRiskDashboardState_html_v1', JSON.stringify(checkedItems));
+            }, [checkedItems]);
+
+            // 切換勾選狀態
+            const toggleItem = (itemId) => {
+                setCheckedItems(prev => ({
+                ...prev,
+                [itemId]: !prev[itemId]
+                }));
+            };
+
+            // 切換區塊展開/收合
+            const toggleSection = (sectionId) => {
+                setExpandedSections(prev => ({
+                ...prev,
+                [sectionId]: !prev[sectionId]
+                }));
+            };
+
+            // 重置所有選項
+            const resetAll = () => {
+                if (window.confirm('確定要重置所有檢查項目嗎？此操作無法復原。')) {
+                setCheckedItems({});
+                }
+            };
+
+            // 列印功能
+            const handlePrint = () => {
+                window.print();
+            };
+
+            // 計算統計數據
+            const stats = useMemo(() => {
+                let totalItems = 0;
+                let completedItems = 0;
+                
+                INITIAL_DATA.forEach(section => {
+                section.items.forEach(item => {
+                    totalItems++;
+                    if (checkedItems[item.id]) {
+                    completedItems++;
+                    }
+                });
+                });
+
+                const percentage = totalItems === 0 ? 0 : Math.round((completedItems / totalItems) * 100);
+                
+                // 風險評級邏輯
+                let riskLevel = '高';
+                let riskColor = 'text-red-600';
+                let riskBg = 'bg-red-100';
+                let borderColor = 'border-red-200';
+                let statusText = '風險極高 - 請立即改善';
+
+                if (percentage >= 90) {
+                riskLevel = '低';
+                riskColor = 'text-emerald-600';
+                riskBg = 'bg-emerald-100';
+                borderColor = 'border-emerald-200';
+                statusText = '合規完善 - 請保持';
+                } else if (percentage >= 60) {
+                riskLevel = '中';
+                riskColor = 'text-amber-600';
+                riskBg = 'bg-amber-100';
+                borderColor = 'border-amber-200';
+                statusText = '尚可 - 需加強特定領域';
+                }
+
+                return { totalItems, completedItems, percentage, riskLevel, riskColor, riskBg, borderColor, statusText };
+            }, [checkedItems]);
+
+            return (
+                <div className="min-h-screen bg-slate-50 text-slate-800 pb-12 print:bg-white print:pb-0">
+                {/* 頂部導航列 (列印時隱藏) */}
+                <nav className="bg-slate-900 text-white shadow-lg no-print">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex justify-between h-16 items-center">
+                        <div className="flex items-center space-x-3">
+                        <Icon name="Shield" className="w-8 h-8 text-blue-400" />
+                        <span className="text-xl font-bold tracking-wider">Enterprise AI Guard</span>
+                        </div>
+                        <div className="flex items-center space-x-4">
+                        <button 
+                            onClick={resetAll}
+                            className="flex items-center px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
+                        >
+                            <Icon name="RotateCcw" className="w-4 h-4 mr-2" />
+                            重置
+                        </button>
+                        <button 
+                            onClick={handlePrint}
+                            className="flex items-center px-4 py-2 rounded-md text-sm font-medium bg-blue-600 hover:bg-blue-500 text-white transition-colors shadow-md"
+                        >
+                            <Icon name="Printer" className="w-4 h-4 mr-2" />
+                            匯出報告
+                        </button>
+                        </div>
+                    </div>
+                    </div>
+                </nav>
+
+                <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 print:px-0 print:py-0 print:max-w-full">
+                    {/* 標題與簡介 */}
+                    <div className="mb-8 print:mb-6">
+                    <div className="hidden print:flex items-center space-x-2 mb-2">
+                         <span className="text-2xl font-bold text-slate-900 tracking-wider">Enterprise AI Guard</span>
+                    </div>
+                    <h1 className="text-3xl font-bold text-slate-900 mb-2">企業 AI 風險防範合規儀表板</h1>
+                    <p className="text-slate-500">
+                        本工具旨在協助企業自我檢視 AI 應用過程中的潛在風險。請逐項核對內部流程，以確保智慧財產、數據隱私及法規遵循之完整性。
+                    </p>
+                    <p className="text-xs text-slate-400 mt-2 print:block hidden">
+                         列印日期: {new Date().toLocaleDateString()}
+                    </p>
+                    </div>
+
+                    {/* 核心指標卡片 (Dashboard Stats) */}
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 print:grid-cols-4 print:gap-4 print:mb-6">
+                    {/* 合規總分 */}
+                    <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-200 flex flex-col items-center justify-center relative overflow-hidden print:border print:border-slate-300">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-blue-500 no-print"></div>
+                        <div className="text-slate-500 text-sm font-medium uppercase tracking-wide mb-1">整體合規完成度</div>
+                        <div className="text-4xl font-bold text-slate-900">{stats.percentage}%</div>
+                        <div className="w-full bg-slate-100 h-2 rounded-full mt-3 overflow-hidden no-print">
+                        <div 
+                            className="h-full bg-blue-500 transition-all duration-500 ease-out"
+                            style={{ width: `${stats.percentage}%` }}
+                        ></div>
+                        </div>
+                    </div>
+
+                    {/* 風險等級 */}
+                    <div className={`rounded-xl shadow-sm p-6 border flex flex-col items-center justify-center ${stats.riskBg} ${stats.borderColor} print:bg-white print:border-slate-300`}>
+                        <div className={`text-sm font-medium uppercase tracking-wide mb-1 ${stats.riskColor} opacity-80 print:text-black`}>當前風險評估</div>
+                        <div className={`text-4xl font-bold ${stats.riskColor} print:text-black`}>{stats.riskLevel}</div>
+                        <div className={`text-xs font-semibold mt-2 px-2 py-1 rounded-full bg-white/50 ${stats.riskColor} print:border print:border-slate-200`}>
+                        {stats.statusText}
+                        </div>
+                    </div>
+
+                    {/* 待辦項目 */}
+                    <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-200 flex flex-col items-center justify-center relative print:hidden">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-orange-400"></div>
+                        <div className="text-slate-500 text-sm font-medium uppercase tracking-wide mb-1">待改善項目</div>
+                        <div className="text-4xl font-bold text-orange-500">{stats.totalItems - stats.completedItems}</div>
+                        <div className="text-xs text-slate-400 mt-2">共 {stats.totalItems} 項檢查點</div>
+                    </div>
+
+                    {/* 已完成項目 */}
+                    <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-200 flex flex-col items-center justify-center relative print:hidden">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-emerald-500"></div>
+                        <div className="text-slate-500 text-sm font-medium uppercase tracking-wide mb-1">已落實項目</div>
+                        <div className="text-4xl font-bold text-emerald-600">{stats.completedItems}</div>
+                        <div className="text-xs text-slate-400 mt-2">持續保持監控</div>
+                    </div>
+                    </div>
+
+                    {/* 檢查清單區域 */}
+                    <div className="space-y-6 print:space-y-4">
+                    {INITIAL_DATA.map((section) => {
+                        const sectionTotal = section.items.length;
+                        const sectionCompleted = section.items.filter(item => checkedItems[item.id]).length;
+                        const sectionProgress = Math.round((sectionCompleted / sectionTotal) * 100);
+                        const isAllDone = sectionCompleted === sectionTotal;
+                        const isExpanded = expandedSections[section.id];
+                        // 列印時強制展開
+                        const showContent = isExpanded; 
+
+                        return (
+                        <div key={section.id} className={`print-break-inside-avoid bg-white rounded-lg shadow-sm border transition-all duration-200 ${isAllDone ? 'border-emerald-200' : 'border-slate-200'} print:border-slate-300 print:shadow-none`}>
+                            {/* 卡片標題區 */}
+                            <div 
+                            className="p-5 flex items-center justify-between cursor-pointer hover:bg-slate-50 transition-colors select-none print:bg-white print:p-3 print:border-b print:border-slate-100"
+                            onClick={() => toggleSection(section.id)}
+                            >
+                            <div className="flex items-center space-x-4">
+                                <div className={`p-2 rounded-lg ${isAllDone ? 'bg-emerald-100 text-emerald-600' : 'bg-blue-50 text-blue-600'} print:bg-transparent print:p-0 print:text-black`}>
+                                {isAllDone ? <Icon name="CheckCircle" className="w-6 h-6" /> : <Icon name={section.iconName} className="w-6 h-6" />}
+                                </div>
+                                <div>
+                                <h3 className="text-lg font-bold text-slate-800">{section.title}</h3>
+                                <p className="text-sm text-slate-500 hidden sm:block print:block print:text-xs">{section.description}</p>
+                                </div>
+                            </div>
+                            
+                            <div className="flex items-center space-x-4">
+                                {/* 進度文字 (列印時顯示) */}
+                                <div className="text-right hidden sm:block print:block">
+                                <div className="text-sm font-semibold text-slate-700">{sectionCompleted} / {sectionTotal}</div>
+                                </div>
+                                {/* 箭頭 (列印時隱藏) */}
+                                <div className="text-slate-400 no-print">
+                                {isExpanded ? <Icon name="ChevronUp" className="w-5 h-5" /> : <Icon name="ChevronDown" className="w-5 h-5" />}
+                                </div>
+                            </div>
+                            </div>
+
+                            {/* 展開的內容區 - 利用 CSS 在列印時強制顯示 */}
+                            <div className={`${showContent ? 'block' : 'hidden'} print:block border-t border-slate-100 p-5 bg-slate-50/50 print:bg-white print:p-2`}>
+                                <div className="grid grid-cols-1 gap-3 print:gap-2">
+                                {section.items.map((item) => (
+                                    <label 
+                                    key={item.id} 
+                                    className={`flex items-start p-3 rounded-md border cursor-pointer transition-all duration-200 group print:border-0 print:p-1
+                                        ${checkedItems[item.id] 
+                                        ? 'bg-blue-50/50 border-blue-200 shadow-sm print:bg-white' 
+                                        : 'bg-white border-slate-200 hover:border-blue-300 hover:shadow-sm print:bg-white'
+                                        }`}
+                                    >
+                                    <div className="flex items-center h-6">
+                                        <input
+                                        type="checkbox"
+                                        className="w-5 h-5 text-blue-600 border-slate-300 rounded focus:ring-blue-500 cursor-pointer print:text-black"
+                                        checked={!!checkedItems[item.id]}
+                                        onChange={() => toggleItem(item.id)}
+                                        />
+                                    </div>
+                                    <div className="ml-3">
+                                        <span className={`text-sm md:text-base font-medium transition-colors ${checkedItems[item.id] ? 'text-slate-800' : 'text-slate-600'}`}>
+                                        {item.text}
+                                        </span>
+                                    </div>
+                                    </label>
+                                ))}
+                                </div>
+                            </div>
+                            
+                            {/* 底部進度條 (收合時顯示微型進度) - 列印時隱藏 */}
+                            {!isExpanded && (
+                            <div className="h-1 w-full bg-slate-100 rounded-b-lg overflow-hidden no-print">
+                                <div className="h-full bg-blue-500" style={{ width: `${sectionProgress}%` }}></div>
+                            </div>
+                            )}
+                        </div>
+                        );
+                    })}
+                    </div>
+
+                    {/* 頁尾 */}
+                    <div className="mt-12 pt-8 border-t border-slate-200 text-center text-slate-400 text-sm pb-8 print:mt-8">
+                    <p className="mb-2">© 2025 Enterprise AI Guard System. All rights reserved.</p>
+                    <p>
+                        免責聲明：本檢查清單僅供內部風險評估參考，不構成正式法律建議。具體個案請諮詢專業法律顧問。
+                        <br />
+                        資料來源：企業 AI 風險防範 Checklist v2
+                    </p>
+                    </div>
+                </main>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
