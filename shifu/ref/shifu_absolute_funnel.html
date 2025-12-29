@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShiFu 絕對漏斗戰情室</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0f1115;
+            --card: #181c23;
+            --text: #f5f6f7;
+            --text-sub: #b7bec8;
+            --accent: #d4af37;
+            --danger: #ff6b6b;
+            --grid: #2a2f38;
+            --muted: #1f242d;
+        }
+        body { margin:0; padding:24px; font-family: 'Helvetica Neue', Arial, 'Microsoft JhengHei', sans-serif; background: var(--bg); color: var(--text); }
+        header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:1px solid var(--muted); padding-bottom:12px; }
+        h1 { margin:0; font-size:22px; letter-spacing:0.5px; }
+        h1 span { color: var(--accent); }
+        .meta { font-size:12px; color: var(--text-sub); }
+        .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap:18px; }
+        .card { background: var(--card); border:1px solid var(--muted); border-radius:12px; padding:16px; box-shadow:0 6px 18px rgba(0,0,0,0.2); }
+        .card h3 { margin:0 0 8px 0; font-size:16px; display:flex; align-items:center; gap:8px; }
+        .badge { background: rgba(212,175,55,0.12); color: var(--accent); padding:2px 8px; border-radius:6px; font-size:11px; }
+        canvas { width:100%; height:220px; }
+        .insight { margin-top:10px; background: rgba(212,175,55,0.08); border:1px solid rgba(212,175,55,0.4); border-radius:8px; padding:10px; font-size:13px; line-height:1.5; color: var(--text); }
+        .insight strong { color: var(--accent); }
+        .pill { display:inline-block; padding:2px 10px; border-radius:999px; background: var(--muted); color: var(--text-sub); font-size:12px; margin-left:auto; }
+        .summary { margin-bottom:18px; background: var(--card); border:1px solid var(--muted); border-radius:12px; padding:14px; color: var(--text-sub); line-height:1.6; }
+        a { color: var(--accent); text-decoration:none; }
+    </style>
+</head>
+<body>
+<header>
+    <div>
+        <h1><span>ShiFu</span> 絕對漏斗戰情室</h1>
+        <div class="meta">資料來自附檔 CSV（行銷漏斗-絕對漏斗），僅新增本頁，未動其他既有漏斗。</div>
+    </div>
+    <div class="pill">2025-01 (樣本)</div>
+</header>
+<div class="summary">
+    依 CSV 中「絕對漏斗」行，將每個流量來源的階段百分比直接嵌入並視覺化。每張卡都會自動找出最低轉化的瓶頸階段，給出具體 AI 洞察建議。
+</div>
+<div class="grid" id="funnelGrid"></div>
+<script>
+const rawData = [
+    { channel: 'Facebook Ads', stages: ['100%','3%','84%','22%','47%','30%'] },
+    { channel: 'Google Search', stages: ['100%','8%','92%','22%','58%','36%'] },
+    { channel: 'Email Newsletter', stages: ['100%','16%','94%','27%','55%','41%'] },
+    { channel: 'Organic Social', stages: ['100%','5%','93%','14%','50%','25%'] },
+    { channel: 'KOL A Referral', stages: ['100%','6%','83%','35%','51%','50%'] },
+];
+
+const stageLabels = ['Impressions', 'Clicks', 'Landing Page Views', 'Add To Cart', 'Initiate Checkout', 'Purchases'];
+
+function parsePercent(str) {
+    return parseFloat(str.replace('%',''));
+}
+
+function stageAdvice(stage, value) {
+    if (stage === 'Clicks') return `頂層流量瓶頸：只有 ${value}% 觸發點擊，強化首屏鉤子、前 3 秒素材對比測試，並替換 CTA 文案，目標將 CTR 拉升到 6~8%。`;
+    if (stage === 'Landing Page Views') return `點擊後流失：到達率 ${value}% 偏低，檢查跳轉延遲與 MMP 標記，縮短落地頁載入到 2 秒內，並開啟預取(prefetch)。`;
+    if (stage === 'Add To Cart') return `加入購物車不足：${value}% 表現薄弱，將主方案與價格 anchor 上移首屏，加上 1 段 60 字痛點文案 + 社會證明，並啟用 2 組 A/B (價格/方案數)。`;
+    if (stage === 'Initiate Checkout') return `結帳意圖不足：僅 ${value}% 進入結帳，簡化表單欄位(移除非必填)、提供快速付款選項，並在購物車頁加上「缺貨/優惠到期」輕量稀缺提示。`;
+    if (stage === 'Purchases') return `成交掉水：${value}% 轉單，檢查付款失敗率與 OTP 超時，增加付款失敗即時提醒 + 重試入口，並加入安心保證(退費/客服入口)於結帳側欄。`;
+    return '強化此階段的體驗以提升轉化。';
+}
+
+function buildCard({ channel, stages }, index) {
+    const numeric = stages.map(parsePercent);
+    // 找出最低轉化的非起點階段
+    const bottleneckIdx = numeric.slice(1).reduce((minIdx, val, i, arr) => val < arr[minIdx] ? i : minIdx, 0) + 1;
+    const bottleneckLabel = stageLabels[bottleneckIdx];
+    const bottleneckVal = numeric[bottleneckIdx];
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+        <h3><i class="fa-solid fa-filter"></i> ${channel} <span class="badge">絕對漏斗</span></h3>
+        <div style="height:220px"><canvas id="chart-${index}"></canvas></div>
+        <div class="insight"><strong>AI 洞察｜${bottleneckLabel}</strong>：${stageAdvice(bottleneckLabel, bottleneckVal)}</div>
+    `;
+    document.getElementById('funnelGrid').appendChild(card);
+
+    const ctx = card.querySelector('canvas').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: stageLabels,
+            datasets: [{
+                label: 'Stage % (絕對漏斗)',
+                data: numeric,
+                backgroundColor: stageLabels.map((_, i) => i === bottleneckIdx ? 'rgba(255,107,107,0.65)' : 'rgba(212,175,55,0.55)'),
+                borderColor: stageLabels.map((_, i) => i === bottleneckIdx ? '#ff6b6b' : '#d4af37'),
+                borderWidth: 1,
+                borderRadius: 6,
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            maintainAspectRatio: false,
+            scales: {
+                x: { beginAtZero: true, max: 110, grid: { color: '#2a2f38' }, ticks: { color: '#e8eaed', callback: v => v + '%' } },
+                y: { grid: { display:false }, ticks: { color: '#e8eaed' } }
+            },
+            plugins: { legend: { display:false } },
+            animation: { duration: 500 }
+        }
+    });
+}
+
+rawData.forEach(buildCard);
+</script>
+</body>
+</html>

@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShiFu 師父 | 雙軌戰略數據戰情室</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* CSS 變數定義：支援深淺模式切換 */
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #ffffff;
+            --text-sub: #e0e0e0;
+            --accent-gold: #D4AF37; /* 師父品牌金 */
+            --accent-red: #ff6b6b;
+            --accent-green: #51cf66;
+            --border-color: #333333;
+            --chart-grid: #333333;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f4f6f8;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+            --text-sub: #666666;
+            --accent-gold: #b8860b;
+            --accent-red: #d63031;
+            --accent-green: #00b894;
+            --border-color: #e0e0e0;
+            --chart-grid: #eeeeee;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Microsoft JhengHei', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--accent-gold);
+        }
+
+       .brand h1 {
+            margin: 0;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+        
+       .brand span {
+            color: var(--accent-gold);
+            font-weight: bold;
+        }
+
+       .controls button {
+            background: transparent;
+            border: 1px solid var(--text-sub);
+            color: var(--text-main);
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: 0.3s;
+        }
+
+       .controls button:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        /* KPI Cards */
+       .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+       .kpi-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent-gold);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+       .kpi-card.alert { border-left-color: var(--accent-red); }
+       .kpi-card.good { border-left-color: var(--accent-green); }
+
+       .kpi-title { font-size: 14px; color: var(--text-sub); margin-bottom: 5px; }
+       .kpi-value { font-size: 28px; font-weight: bold; margin-bottom: 5px; }
+       .kpi-trend { font-size: 12px; }
+       .trend-up { color: var(--accent-green); }
+       .trend-down { color: var(--accent-red); }
+
+        /* Dashboard Grid */
+       .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr; /* 左2右1 */
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+       .chart-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+       .chart-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+       .badge {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: var(--border-color);
+            color: var(--text-sub);
+        }
+
+        /* Table Styles */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { text-align: left; color: var(--text-sub); font-size: 12px; padding: 10px; border-bottom: 1px solid var(--border-color); }
+        td { padding: 10px; font-size: 14px; border-bottom: 1px solid var(--border-color); }
+       .score-box {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #fff;
+        }
+       .score-pos { background-color: var(--accent-green); }
+       .score-neg { background-color: var(--accent-red); }
+       .score-neu { background-color: #7f8c8d; }
+
+        /* Insight Box */
+       .insight-box {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--accent-gold);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+       .insight-title { font-weight: bold; color: var(--accent-gold); margin-bottom: 5px; }
+
+        /* Tabs */
+       .tab-nav {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0 20px 0;
+        }
+       .tab-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+       .tab-btn.active {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+        }
+
+        /* Absolute Funnel Cards */
+       .summary-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+            color: var(--text-sub);
+            line-height: 1.6;
+        }
+       .abs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 16px;
+        }
+       .abs-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+        }
+       .abs-card h3 { margin: 0 0 6px 0; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+       .abs-badge { font-size: 12px; padding: 2px 8px; border-radius: 10px; background: rgba(212, 175, 55, 0.15); color: var(--accent-gold); }
+       .abs-insight {
+            margin-top: 10px;
+            background: rgba(212, 175, 55, 0.08);
+            border: 1px solid rgba(212, 175, 55, 0.45);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+    </style>
+</head>
+<body data-theme="dark">
+
+<header>
+    <div class="brand">
+        <h1><span>ShiFu</span> 戰略數據戰情室</h1>
+        <div style="font-size: 12px; color: var(--text-sub);">Dual-Track Analytics: Funnel & Experience</div>
+    </div>
+    <div class="controls">
+        <span id="date-range" style="font-size:14px; margin-right:15px; color:var(--text-sub);">資料區間: 2025 Q1 (預測)</span>
+        <button onclick="toggleTheme()"><i class="fas fa-adjust"></i> 切換模式</button>
+        <button><i class="fas fa-download"></i> 匯出報告</button>
+    </div>
+</header>
+
+<div class="tab-nav">
+    <button class="tab-btn active" data-target="tab-overview">戰情室總覽</button>
+    <button class="tab-btn" data-target="tab-absolute">絕對漏斗</button>
+</div>
+
+<div id="tab-overview">
+
+<div class="kpi-row">
+    <div class="kpi-card">
+        <div class="kpi-title">總營收 (Total Revenue)</div>
+        <div class="kpi-value">NT$ 12.8M</div>
+        <div class="kpi-trend"><span class="trend-up">▲ 5.2%</span> MoM</div>
+    </div>
+    <div class="kpi-card alert">
+        <div class="kpi-title">結帳流失率 (Checkout Drop-off)</div>
+        <div class="kpi-value">68.4%</div>
+        <div class="kpi-trend"><span class="trend-down">▲ 3.0%</span> 高於平均 (需注意)</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-title">顧客經驗淨分 (NXS)</div>
+        <div class="kpi-value">+0.8</div>
+        <div class="kpi-trend" style="color:var(--text-sub);">區間: -2 ~ +2</div>
+    </div>
+    <div class="kpi-card alert">
+        <div class="kpi-title">退費申請金額 (Refunds)</div>
+        <div class="kpi-value">NT$ 420K</div>
+        <div class="kpi-trend"><span class="trend-down">▲ 12%</span> 主因: 重複購買</div>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+    <div class="chart-card">
+        <div class="chart-title">
+            行銷漏斗轉化分析 (Marketing Funnel)
+            <span class="badge">資料來源: GA4 + Teachify</span>
+        </div>
+        <div style="height: 300px;">
+            <canvas id="funnelChart"></canvas>
+        </div>
+        <div class="insight-box">
+            <div class="insight-title"><i class="fas fa-lightbulb"></i> AI 洞察</div>
+            儘管 MOFU (加入購物車) 表現強勁，但 BOFU (結帳完成) 出現斷層。數據顯示 68% 用戶在輸入優惠碼環節離開，建議優化優惠券自動帶入功能。
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <div class="chart-title">
+            顧客經驗評分表 (Scorecard)
+            <span class="badge">Scale: -2 to +2</span>
+        </div>
+        <div style="height: 300px;">
+            <canvas id="scoreChart"></canvas>
+        </div>
+        <div style="margin-top:10px; font-size:12px; color:var(--text-sub); text-align:center;">
+            *紅條代表體驗痛點 (Pain Points)，需優先處理
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-grid" style="grid-template-columns: 1fr 2fr;">
+    <div class="chart-card">
+        <div class="chart-title">
+            退費原因語意分析 (NLP)
+        </div>
+        <div style="height: 250px; position: relative;">
+            <canvas id="refundChart"></canvas>
+        </div>
+        <div style="margin-top:15px; font-size:13px;">
+            <span style="color:var(--accent-red); font-weight:bold;">42%</span> 為「忘記使用優惠券/買錯方案」，屬於可透過系統優化避免的損失。
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <div class="chart-title">
+            課程資產健康度矩陣 (Dual-Track Matrix)
+            <span class="badge">結合 銷售數據 & 體驗評分</span>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>課程名稱</th>
+                    <th>漏斗轉化率 (CVR)</th>
+                    <th>體驗評分 (Avg Score)</th>
+                    <th>診斷結果</th>
+                    <th>建議行動</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="color:var(--accent-gold);">愛紗日文會話 2025</td>
+                    <td>High (4.8%)</td>
+                    <td><span class="score-box score-neg">-0.5</span></td>
+                    <td>隱形炸彈 (高買氣/低體驗)</td>
+                    <td>解決重複購買與退費流程</td>
+                </tr>
+                <tr>
+                    <td>湯鎮瑋風水應用</td>
+                    <td>Low (1.2%)</td>
+                    <td><span class="score-box score-neu">+0.2</span></td>
+                    <td>價值傳遞不足</td>
+                    <td>加強分期付款標示，降低門檻</td>
+                </tr>
+                <tr>
+                    <td>Daisy 奶油蛋糕</td>
+                    <td>Medium (2.5%)</td>
+                    <td><span class="score-box score-pos">+1.8</span></td>
+                    <td>增長引擎 (口碑好)</td>
+                    <td>啟動 MGM (舊帶新) 活動</td>
+                </tr>
+                <tr>
+                    <td>AI 商業決策術</td>
+                    <td>Low (0.8%)</td>
+                    <td><span class="score-box score-neg">-1.2</span></td>
+                    <td>硬傷 (Critical)</td>
+                    <td>檢視課程難度與內容架構</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- 新增：決策樹歸因分析區塊 -->
+<div class="dashboard-grid" style="grid-template-columns: 1fr;">
+    <div class="chart-card">
+        <div class="chart-title">
+            <i class="fas fa-project-diagram"></i> 決策樹歸因分析 (Decision Tree Attribution)
+            <span class="badge">找出流失關鍵決策路徑</span>
+        </div>
+        
+        <div id="decision-tree-container" style="background: var(--card-bg); padding: 20px; border-radius: 10px; margin-top: 15px; overflow-x: auto;">
+            <!-- SVG 決策樹將在此繪製 -->
+            <svg id="decisionTreeSvg" width="100%" height="500" style="background: transparent;"></svg>
+        </div>
+
+        <div class="insight-box">
+            <div class="insight-title"><i class="fas fa-brain"></i> 決策樹歸因解讀</div>
+            <p style="margin: 8px 0;">
+                <strong>📊 關鍵發現：</strong>當使用者進入「結帳頁面」後，若<span style="color: var(--accent-red); font-weight: bold;">「優惠碼欄位」顯示錯誤或無法自動帶入</span>，流失率高達 <strong>85%</strong>。
+            </p>
+            <p style="margin: 8px 0;">
+                <strong>💡 建議行動：</strong>
+            </p>
+            <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
+                <li>優先修復優惠碼自動填入邏輯，減少手動輸入錯誤</li>
+                <li>針對「重複購買」老客戶自動偵測並跳出提醒彈窗</li>
+                <li>在結帳頁加入「需要協助？」即時客服按鈕</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</div> <!-- tab-overview -->
+
+<div id="tab-absolute" style="display:none;">
+    <div class="summary-card">
+        依附檔 CSV「行銷漏斗-絕對漏斗」的百分比資料，為各流量來源直接繪製絕對漏斗。每張卡會自動找出轉化最低的階段並給出具體 AI 洞察，便於對症優化；其他既有漏斗資料保持不變。
+    </div>
+    <div class="abs-grid" id="absoluteFunnelGrid"></div>
+</div>
+
+<script>
+    // 預設圖表全域設定
+    Chart.defaults.font.family = "'Microsoft JhengHei', 'Helvetica Neue', 'Arial', sans-serif";
+
+    // 取得當前主題顏色的函數
+    function getThemeColors() {
+        const theme = document.body.getAttribute('data-theme');
+        return {
+            textColor: theme === 'light' ? '#2c3e50' : '#e0e0e0',
+            gridColor: theme === 'light' ? '#eeeeee' : '#333333'
+        };
+    }
+
+    const colors = getThemeColors();
+
+    // 絕對漏斗資料（取自附件 CSV 的百分比行）
+    const absoluteFunnelData = [
+        { channel: 'Facebook Ads', stages: [100, 3, 84, 22, 47, 30] },
+        { channel: 'Google Search', stages: [100, 8, 92, 22, 58, 36] },
+        { channel: 'Email Newsletter', stages: [100, 16, 94, 27, 55, 41] },
+        { channel: 'Organic Social', stages: [100, 5, 93, 14, 50, 25] },
+        { channel: 'KOL A Referral', stages: [100, 6, 83, 35, 51, 50] },
+    ];
+    const absoluteStageLabels = ['Impressions', 'Clicks', 'Landing Page Views', 'Add To Cart', 'Initiate Checkout', 'Purchases'];
+    const absoluteFunnelCharts = [];
+
+    function stageAdvice(stage, value) {
+        if (stage === 'Clicks') return `頂層流量瓶頸：只有 ${value}% 觸發點擊，強化首屏鉤子、前 3 秒素材對比測試，並替換 CTA 文案，目標將 CTR 拉升到 6~8%。`;
+        if (stage === 'Landing Page Views') return `點擊後流失：到達率 ${value}% 偏低，檢查跳轉延遲與標記，縮短落地頁載入到 2 秒內，並開啟預取 (prefetch)。`;
+        if (stage === 'Add To Cart') return `加入購物車不足：${value}% 表現薄弱，將主方案與價格 anchor 上移首屏，補 60 字痛點文案 + 社會證明，並啟用 2 組 A/B (價格/方案數)。`;
+        if (stage === 'Initiate Checkout') return `結帳意圖不足：僅 ${value}% 進入結帳，簡化表單欄位、提供快速付款選項，並在購物車頁加上「缺貨/優惠到期」輕量稀缺提示。`;
+        if (stage === 'Purchases') return `成交掉水：${value}% 轉單，檢查付款失敗率與 OTP 超時，增加付款失敗即時提醒 + 重試入口，並在結帳側欄加入安心保證 (退費/客服入口)。`;
+        return '強化此階段的體驗以提升轉化。';
+    }
+
+    function renderAbsoluteFunnel() {
+        const grid = document.getElementById('absoluteFunnelGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        absoluteFunnelCharts.length = 0;
+        absoluteFunnelData.forEach((item, index) => {
+            const bottleneckIdx = item.stages.slice(1).reduce((minIdx, val, i, arr) => val < arr[minIdx] ? i : minIdx, 0) + 1;
+            const bottleneckLabel = absoluteStageLabels[bottleneckIdx];
+            const card = document.createElement('div');
+            card.className = 'abs-card';
+            card.innerHTML = `
+                <h3><i class="fa-solid fa-filter"></i> ${item.channel} <span class="abs-badge">絕對漏斗</span></h3>
+                <div style="height:220px;"><canvas id="abs-chart-${index}"></canvas></div>
+                <div class="abs-insight"><strong>AI 洞察｜${bottleneckLabel}</strong>：${stageAdvice(bottleneckLabel, item.stages[bottleneckIdx])}</div>
+            `;
+            grid.appendChild(card);
+
+            const ctx = card.querySelector('canvas').getContext('2d');
+            const theme = getThemeColors();
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: absoluteStageLabels,
+                    datasets: [{
+                        label: 'Stage % (絕對漏斗)',
+                        data: item.stages,
+                        backgroundColor: absoluteStageLabels.map((_, i) => i === bottleneckIdx ? 'rgba(255,107,107,0.65)' : 'rgba(212, 175, 55, 0.55)'),
+                        borderColor: absoluteStageLabels.map((_, i) => i === bottleneckIdx ? '#ff6b6b' : '#D4AF37'),
+                        borderWidth: 1,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 110,
+                            grid: { color: theme.gridColor },
+                            ticks: { color: theme.textColor, callback: (v) => v + '%' }
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: { color: theme.textColor }
+                        }
+                    },
+                    plugins: { legend: { display: false } },
+                    animation: { duration: 500 }
+                }
+            });
+            chart._bottleneckIdx = bottleneckIdx;
+            absoluteFunnelCharts.push(chart);
+        });
+    }
+
+    // 1. 行銷漏斗圖表 (Mixed Chart)
+    const ctxFunnel = document.getElementById('funnelChart').getContext('2d');
+    const funnelChart = new Chart(ctxFunnel, {
+        type: 'bar',
+        data: {
+            // [修正] 補上缺失的 labels
+            labels: ['曝光 (Awareness)', '點擊 (Interest)', '加入購物車 (MOFU)', '結帳頁面 (BOFU)', '購買完成 (Action)'],
+            datasets: [{
+                label: '人數/次數',
+                // [修正] 補上缺失的 data，模擬漏斗數據
+                data: [45000, 28000, 12000, 3800, 1200], 
+                backgroundColor: [
+                    'rgba(212, 175, 55, 0.2)',
+                    'rgba(212, 175, 55, 0.4)',
+                    'rgba(212, 175, 55, 0.6)',
+                    'rgba(212, 175, 55, 0.8)', // 結帳
+                    'rgba(81, 207, 102, 0.8)'  // 完課
+                ],
+                borderColor: '#D4AF37',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y', // 轉為橫向漏斗
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    ticks: { color: colors.textColor },
+                    grid: { color: colors.gridColor }
+                },
+                y: {
+                    ticks: { color: colors.textColor },
+                    grid: { color: colors.gridColor }
+                }
+            },
+            plugins: {
+                legend: { 
+                    display: false,
+                    labels: { color: colors.textColor }
+                }
+            }
+        }
+    });
+
+    // 2. 顧客經驗評分表 (Horizontal Bar with Negative Values)
+    const ctxScore = document.getElementById('scoreChart').getContext('2d');
+    const scoreChart = new Chart(ctxScore, {
+        type: 'bar',
+        data: {
+            labels: ['內容品質 (+2)', '講師魅力 (+2)', '影片流暢度 (0)', '客服回應 (-1)', '結帳流程 (-2)'],
+            datasets: [{
+                label: '體驗分數 (-2 ~ +2)',
+                data: [1.8, 1.9, 0.2, -0.8, -1.6], 
+                backgroundColor: (context) => {
+                    const value = context.raw;
+                    return value >= 0 ? 'rgba(81, 207, 102, 0.7)' : 'rgba(255, 107, 107, 0.7)';
+                },
+                borderRadius: 4
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    min: -2,
+                    max: 2,
+                    ticks: { color: colors.textColor },
+                    grid: { color: colors.gridColor }
+                },
+                y: {
+                    ticks: { color: colors.textColor },
+                    grid: { color: colors.gridColor }
+                }
+            },
+            plugins: {
+                legend: { 
+                    display: false,
+                    labels: { color: colors.textColor }
+                }
+            }
+        }
+    });
+
+    // 3. 退費原因圖表 (Doughnut)
+    const ctxRefund = document.getElementById('refundChart').getContext('2d');
+    const refundChart = new Chart(ctxRefund, {
+        type: 'doughnut',
+        data: {
+            labels: ['忘記用優惠券 (42%)', '重複購買舊生 (25%)', '課程不如預期 (15%)', '技術問題 (10%)', '其他 (8%)'],
+            datasets: [{
+                // [修正] 補上缺失的 data，對應 labels 百分比
+                data: [42, 25, 15, 10, 8],
+                backgroundColor: [
+                    '#ff6b6b', // 忘記優惠券 - 警示紅
+                    '#ffa502', // 重複購買 - 警示橘
+                    '#2ed573',
+                    '#1e90ff',
+                    '#747d8c'
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: { color: colors.textColor, font: { size: 11 } }
+                }
+            }
+        }
+    });
+
+    // 分頁切換：預設總覽，點擊才渲染絕對漏斗，避免隱藏狀態尺寸錯誤
+    function switchTab(targetId) {
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.target === targetId);
+        });
+        ['tab-overview', 'tab-absolute'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = id === targetId ? 'block' : 'none';
+        });
+        if (targetId === 'tab-absolute') {
+            if (absoluteFunnelCharts.length === 0) renderAbsoluteFunnel();
+            absoluteFunnelCharts.forEach(chart => chart.resize());
+        } else {
+            [funnelChart, scoreChart, refundChart].forEach(chart => chart.resize());
+        }
+    }
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.target));
+    });
+
+    // ========== 決策樹歸因視覺化 ==========
+    function drawDecisionTree() {
+        const svg = document.getElementById('decisionTreeSvg');
+        const theme = document.body.getAttribute('data-theme');
+        const textColor = theme === 'light' ? '#2c3e50' : '#e0e0e0';
+        const lineColor = theme === 'light' ? '#999' : '#555';
+        const highlightColor = '#ff6b6b'; // 高流失節點顏色
+
+        // 清空 SVG
+        svg.innerHTML = '';
+
+        // 決策樹資料結構（模擬歸因分析結果）
+        const treeData = {
+            name: '進入結帳頁',
+            value: '3,800人',
+            x: 400,
+            y: 50,
+            children: [
+                {
+                    name: '優惠碼正常',
+                    value: '1,200人 (32%)',
+                    x: 200,
+                    y: 170,
+                    rate: '轉化率 85%',
+                    color: '#51cf66',
+                    children: [
+                        { name: '完成購買', value: '1,020人', x: 100, y: 300, color: '#51cf66', isLeaf: true },
+                        { name: '付款失敗', value: '180人', x: 300, y: 300, color: '#ffa502', isLeaf: true }
+                    ]
+                },
+                {
+                    name: '優惠碼錯誤/未帶入',
+                    value: '2,600人 (68%)',
+                    x: 600,
+                    y: 170,
+                    rate: '流失率 85%',
+                    color: highlightColor,
+                    isHighlight: true,
+                    children: [
+                        { name: '離開頁面', value: '2,210人', x: 500, y: 300, color: highlightColor, isLeaf: true, isHighlight: true },
+                        { name: '修正後購買', value: '210人', x: 650, y: 300, color: '#ffa502', isLeaf: true },
+                        { name: '聯繫客服', value: '180人', x: 800, y: 300, color: '#2ed573', isLeaf: true }
+                    ]
+                }
+            ]
+        };
+
+        // 繪製連線
+        function drawLine(x1, y1, x2, y2, isHighlight = false) {
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('x1', x1);
+            line.setAttribute('y1', y1);
+            line.setAttribute('x2', x2);
+            line.setAttribute('y2', y2);
+            line.setAttribute('stroke', isHighlight ? highlightColor : lineColor);
+            line.setAttribute('stroke-width', isHighlight ? 3 : 2);
+            line.setAttribute('stroke-dasharray', isHighlight ? '5,5' : '0');
+            svg.appendChild(line);
+        }
+
+        // 繪製節點
+        function drawNode(node, isRoot = false) {
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            
+            // 節點外框
+            const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            const width = node.isLeaf ? 110 : 150;
+            const height = node.isLeaf ? 60 : 80;
+            rect.setAttribute('x', node.x - width/2);
+            rect.setAttribute('y', node.y);
+            rect.setAttribute('width', width);
+            rect.setAttribute('height', height);
+            rect.setAttribute('rx', 8);
+            rect.setAttribute('fill', node.color || (isRoot ? '#D4AF37' : '#444'));
+            rect.setAttribute('fill-opacity', node.isHighlight ? 0.3 : 0.2);
+            rect.setAttribute('stroke', node.color || (isRoot ? '#D4AF37' : textColor));
+            rect.setAttribute('stroke-width', node.isHighlight ? 3 : 2);
+            g.appendChild(rect);
+
+            // 節點標題
+            const title = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            title.setAttribute('x', node.x);
+            title.setAttribute('y', node.y + 25);
+            title.setAttribute('text-anchor', 'middle');
+            title.setAttribute('fill', textColor);
+            title.setAttribute('font-size', node.isLeaf ? 12 : 14);
+            title.setAttribute('font-weight', 'bold');
+            title.textContent = node.name;
+            g.appendChild(title);
+
+            // 節點數值
+            const value = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            value.setAttribute('x', node.x);
+            value.setAttribute('y', node.y + 45);
+            value.setAttribute('text-anchor', 'middle');
+            value.setAttribute('fill', textColor);
+            value.setAttribute('font-size', 11);
+            value.textContent = node.value;
+            g.appendChild(value);
+
+            // 轉化率 / 流失率
+            if (node.rate) {
+                const rate = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                rate.setAttribute('x', node.x);
+                rate.setAttribute('y', node.y + 65);
+                rate.setAttribute('text-anchor', 'middle');
+                rate.setAttribute('fill', node.isHighlight ? highlightColor : '#51cf66');
+                rate.setAttribute('font-size', 10);
+                rate.setAttribute('font-weight', 'bold');
+                rate.textContent = node.rate;
+                g.appendChild(rate);
+            }
+
+            svg.appendChild(g);
+        }
+
+        // 遞迴繪製樹
+        function renderTree(node, parentX = null, parentY = null, isRoot = false) {
+            // 繪製連線
+            if (parentX !== null && parentY !== null) {
+                drawLine(parentX, parentY + 80, node.x, node.y, node.isHighlight);
+            }
+
+            // 繪製節點
+            drawNode(node, isRoot);
+
+            // 繪製子節點
+            if (node.children) {
+                node.children.forEach(child => {
+                    renderTree(child, node.x, node.y, false);
+                });
+            }
+        }
+
+        renderTree(treeData, null, null, true);
+    }
+
+    // 初始繪製決策樹
+    drawDecisionTree();
+
+    // 深淺模式切換邏輯
+    function toggleTheme() {
+        const body = document.body;
+        const currentTheme = body.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        body.setAttribute('data-theme', newTheme);
+
+        // 更新圖表顏色配置
+        const textColor = newTheme === 'light' ? '#2c3e50' : '#e0e0e0';
+        const gridColor = newTheme === 'light' ? '#eeeeee' : '#333333';
+
+        console.log('切換主題:', newTheme, '文字顏色:', textColor);
+
+        const chartsToUpdate = [funnelChart, scoreChart, refundChart, ...absoluteFunnelCharts];
+
+        chartsToUpdate.forEach(chart => {
+            // 更新 X/Y 軸顏色 (如果是 Doughnut 則沒有 scales)
+            if (chart.config.type !== 'doughnut') {
+                if (chart.options.scales.x) {
+                    chart.options.scales.x.ticks.color = textColor;
+                    chart.options.scales.x.grid.color = gridColor;
+                }
+                if (chart.options.scales.y) {
+                    chart.options.scales.y.ticks.color = textColor;
+                    chart.options.scales.y.grid.color = gridColor;
+                }
+            }
+            
+            // 更新 Legend 文字顏色
+            if (chart.options.plugins.legend && chart.options.plugins.legend.labels) {
+                chart.options.plugins.legend.labels.color = textColor;
+            }
+            
+            chart.update('none'); // 使用 'none' 模式強制立即更新
+        });
+
+        // 重新繪製決策樹以更新顏色
+        drawDecisionTree();
+    }
+</script>
+
+</body>
+</html>
