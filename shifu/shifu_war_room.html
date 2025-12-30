@@ -334,6 +334,48 @@
             }
         }
 
+        @media (max-width: 1200px) {
+            #tab-settings > div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+    /* 數據設定表單樣式 */
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .input-group label {
+        font-weight: 600;
+        color: var(--text-color);
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .input-group input {
+        padding: 12px 15px;
+        font-size: 1rem;
+        border: 2px solid var(--border-color);
+        border-radius: 6px;
+        background: var(--bg-secondary);
+        color: var(--text-color);
+        transition: all 0.3s;
+    }
+    
+    .input-group input:focus {
+        outline: none;
+        border-color: var(--accent-gold);
+        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+    }
+    
+    .input-group input:hover {
+        border-color: var(--accent-gold);
+    }
+
     </style>
 </head>
 <body data-theme="light">
@@ -357,6 +399,7 @@
     <button class="tab-btn" data-target="tab-absolute">絕對漏斗</button>
     <button class="tab-btn" data-target="tab-aisa">愛紗日文會話 2025</button>
     <button class="tab-btn" data-target="tab-priority">可以建議先執行的分析</button>
+    <button class="tab-btn" data-target="tab-settings">數據設定</button>
 </div>
 
 <div id="tab-overview">
@@ -385,9 +428,9 @@
 </div>
 
 <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr 1fr;">
-    <div class="chart-card">
+    <div class="chart-card" onclick="toggleFunnelTitle('funnel-title-main')" style="cursor: pointer;">
         <div class="chart-title">
-            相對漏斗 (Relative Funnel)
+            <span id="funnel-title-main">行銷漏斗轉化分析 (Marketing Funnel)</span>
             <span class="badge">資料來源: GA4 + Teachify</span>
         </div>
         <div style="height: 300px;">
@@ -859,9 +902,9 @@
 </div>
 
 <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr 1fr;">
-    <div class="chart-card">
+    <div class="chart-card" onclick="toggleFunnelTitle('funnel-title-aisa')" style="cursor: pointer;">
         <div class="chart-title">
-            相對漏斗 (Relative Funnel)
+            <span id="funnel-title-aisa">行銷漏斗轉化分析 (Marketing Funnel)</span>
             <span class="badge">資料來源: GA4 + Teachify</span>
         </div>
         <div style="height: 300px;">
@@ -1340,9 +1383,9 @@
 </div>
 
 <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr;">
-    <div class="chart-card">
+    <div class="chart-card" onclick="toggleFunnelTitle('funnel-title-priority')" style="cursor: pointer;">
         <div class="chart-title">
-            相對漏斗 (Relative Funnel)
+            <span id="funnel-title-priority">行銷漏斗轉化分析 (Marketing Funnel)</span>
             <span class="badge">資料來源: GA4 + Teachify</span>
         </div>
         <div style="height: 300px;">
@@ -1429,6 +1472,132 @@
     </div>
 </div>
 
+</div>
+
+<!-- 數據設定分頁 -->
+<div id="tab-settings" style="display: none;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; padding: 40px 20px; max-width: 1600px; margin: 0 auto;">
+        <!-- 相對漏斗設定 -->
+        <div class="chart-card">
+        <div class="chart-title" style="font-size: 1.5rem; margin-bottom: 30px;">
+            <i class="fas fa-chart-bar"></i> 相對漏斗數據設定
+        </div>
+        <div style="margin-bottom: 20px; padding: 15px; background: rgba(212, 175, 55, 0.1); border-left: 4px solid var(--accent-gold); border-radius: 4px;">
+            <p style="margin: 0; color: var(--text-main); font-size: 0.95rem;">
+                <i class="fas fa-info-circle"></i> 輸入各階段的實際數字（人數/次數），系統會自動計算轉化率。
+            </p>
+        </div>
+        
+        <div style="display: grid; gap: 20px;">
+            <div class="input-group">
+                <label for="input-awareness">
+                    <i class="fas fa-eye"></i> 曝光 (Awareness)
+                </label>
+                <input type="number" id="input-awareness" value="45000" min="0" />
+            </div>
+            
+            <div class="input-group">
+                <label for="input-interest">
+                    <i class="fas fa-mouse-pointer"></i> 點擊 (Interest)
+                </label>
+                <input type="number" id="input-interest" value="15750" min="0" />
+            </div>
+            
+            <div class="input-group">
+                <label for="input-mofu">
+                    <i class="fas fa-shopping-cart"></i> 加入購物車 (MOFU)
+                </label>
+                <input type="number" id="input-mofu" value="11025" min="0" />
+            </div>
+            
+            <div class="input-group">
+                <label for="input-bofu">
+                    <i class="fas fa-credit-card"></i> 結帳頁面 (BOFU)
+                </label>
+                <input type="number" id="input-bofu" value="772" min="0" />
+            </div>
+            
+            <div class="input-group">
+                <label for="input-action">
+                    <i class="fas fa-check-circle"></i> 購買完成 (Action)
+                </label>
+                <input type="number" id="input-action" value="425" min="0" />
+            </div>
+            
+            <div style="margin-top: 30px; display: flex; gap: 15px; justify-content: center;">
+                <button onclick="updateFunnelData()" style="padding: 12px 30px; font-size: 1rem; background: var(--accent-gold); color: white; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s;" onmouseover="this.style.background='#b8860b'" onmouseout="this.style.background='var(--accent-gold)'">
+                    <i class="fas fa-sync-alt"></i> 更新相對漏斗
+                </button>
+                <button onclick="resetFunnelData()" style="padding: 12px 30px; font-size: 1rem; background: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s;" onmouseover="this.style.background='#5a6268'" onmouseout="this.style.background='#6c757d'">
+                    <i class="fas fa-undo"></i> 重置為預設值
+                </button>
+            </div>
+            
+            <div id="update-message" style="margin-top: 20px; padding: 15px; border-radius: 6px; text-align: center; display: none;"></div>
+        </div>
+    </div>
+
+        <!-- 絕對漏斗設定 -->
+        <div class="chart-card">
+        <div class="chart-title" style="font-size: 1.5rem; margin-bottom: 30px;">
+            <i class="fas fa-percentage"></i> 絕對漏斗轉化率設定
+        </div>
+        <div style="margin-bottom: 20px; padding: 15px; background: rgba(81, 207, 102, 0.1); border-left: 4px solid var(--accent-green); border-radius: 4px;">
+            <p style="margin: 0; color: var(--text-main); font-size: 0.95rem;">
+                <i class="fas fa-info-circle"></i> 輸入各階段的轉化率（%），用於絕對漏斗分頁的多渠道比較。
+            </p>
+        </div>
+        
+        <div style="display: grid; gap: 20px;">
+            <div class="input-group">
+                <label for="input-abs-awareness">
+                    <i class="fas fa-eye"></i> 曝光基準
+                </label>
+                <input type="number" id="input-abs-awareness" value="100" readonly style="background: var(--bg-color); opacity: 0.6;" />
+                <small style="color: var(--text-sub); font-size: 0.85rem;">固定為 100%</small>
+            </div>
+            
+            <div class="input-group">
+                <label for="input-abs-interest">
+                    <i class="fas fa-mouse-pointer"></i> 點擊率 (%)
+                </label>
+                <input type="number" id="input-abs-interest" value="35" min="0" max="100" step="0.1" />
+            </div>
+            
+            <div class="input-group">
+                <label for="input-abs-mofu">
+                    <i class="fas fa-shopping-cart"></i> 加購轉化率 (%)
+                </label>
+                <input type="number" id="input-abs-mofu" value="70" min="0" max="100" step="0.1" />
+            </div>
+            
+            <div class="input-group">
+                <label for="input-abs-bofu">
+                    <i class="fas fa-credit-card"></i> 結帳轉化率 (%)
+                </label>
+                <input type="number" id="input-abs-bofu" value="7" min="0" max="100" step="0.1" />
+            </div>
+            
+            <div class="input-group">
+                <label for="input-abs-action">
+                    <i class="fas fa-check-circle"></i> 購買轉化率 (%)
+                </label>
+                <input type="number" id="input-abs-action" value="55" min="0" max="100" step="0.1" />
+            </div>
+            
+            <div style="margin-top: 30px; display: flex; gap: 15px; justify-content: center;">
+                <button onclick="updateAbsoluteFunnelData()" style="padding: 12px 30px; font-size: 1rem; background: var(--accent-green); color: white; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s;" onmouseover="this.style.background='#00b894'" onmouseout="this.style.background='var(--accent-green)'">
+                    <i class="fas fa-sync-alt"></i> 更新絕對漏斗
+                </button>
+                <button onclick="resetAbsoluteFunnelData()" style="padding: 12px 30px; font-size: 1rem; background: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s;" onmouseover="this.style.background='#5a6268'" onmouseout="this.style.background='#6c757d'">
+                    <i class="fas fa-undo"></i> 重置為預設值
+                </button>
+            </div>
+            
+            <div id="update-absolute-message" style="margin-top: 20px; padding: 15px; border-radius: 6px; text-align: center; display: none;"></div>
+        </div>
+        </div>
+    </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -1832,12 +2001,12 @@
         }
     });
 
-    // 分頁切換：支援總覽、絕對漏斗、愛紗課程
+    // 分頁切換：支援總覽、絕對漏斗、愛紗課程、優先分析、數據設定
     function switchTab(targetId) {
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.target === targetId);
         });
-        ['tab-overview', 'tab-absolute', 'tab-aisa', 'tab-priority'].forEach(id => {
+        ['tab-overview', 'tab-absolute', 'tab-aisa', 'tab-priority', 'tab-settings'].forEach(id => {
             const el = document.getElementById(id);
             if (el) el.style.display = id === targetId ? 'block' : 'none';
         });
@@ -2527,6 +2696,202 @@
             drawDecisionTree('decisionTreeSvgAisa2', treeDataAisa2);
         }
     }
+
+    // 數據設定功能
+    function updateFunnelData() {
+        const awareness = parseInt(document.getElementById('input-awareness').value) || 0;
+        const interest = parseInt(document.getElementById('input-interest').value) || 0;
+        const mofu = parseInt(document.getElementById('input-mofu').value) || 0;
+        const bofu = parseInt(document.getElementById('input-bofu').value) || 0;
+        const action = parseInt(document.getElementById('input-action').value) || 0;
+
+        // 驗證數據合理性
+        if (awareness < interest || interest < mofu || mofu < bofu || bofu < action) {
+            showMessage('數據不合理：每個階段的數字應該要遞減（漏斗形狀）', 'error');
+            return;
+        }
+
+        if (awareness === 0) {
+            showMessage('曝光數不能為 0', 'error');
+            return;
+        }
+
+        // 更新主頁相對漏斗圖表數據
+        const newData = [awareness, interest, mofu, bofu, action];
+        funnelChart.data.datasets[0].data = newData;
+        funnelChart.update();
+
+        // 更新絕對漏斗圖表數據（計算轉化率）
+        const conversionRates = [
+            100, // 曝光基準
+            parseFloat((interest / awareness * 100).toFixed(1)),
+            parseFloat((mofu / interest * 100).toFixed(1)),
+            parseFloat((bofu / mofu * 100).toFixed(1)),
+            parseFloat((action / bofu * 100).toFixed(1))
+        ];
+
+        absoluteFunnelMainChart.data.datasets[0].data = conversionRates;
+        absoluteFunnelMainChart.update();
+
+        // 同步更新絕對漏斗的輸入框
+        document.getElementById('input-abs-interest').value = conversionRates[1];
+        document.getElementById('input-abs-mofu').value = conversionRates[2];
+        document.getElementById('input-abs-bofu').value = conversionRates[3];
+        document.getElementById('input-abs-action').value = conversionRates[4];
+
+        // 更新優先分析分頁的圖表（如果已初始化）
+        if (funnelChartPriority) {
+            funnelChartPriority.data.datasets[0].data = newData;
+            funnelChartPriority.update();
+        }
+
+        if (absoluteFunnelPriorityChart) {
+            absoluteFunnelPriorityChart.data.datasets[0].data = conversionRates;
+            absoluteFunnelPriorityChart.update();
+        }
+
+        showMessage('相對漏斗與絕對漏斗數據已同步更新！', 'success');
+    }
+
+    function resetFunnelData() {
+        // 重置為預設值
+        document.getElementById('input-awareness').value = 45000;
+        document.getElementById('input-interest').value = 15750;
+        document.getElementById('input-mofu').value = 11025;
+        document.getElementById('input-bofu').value = 772;
+        document.getElementById('input-action').value = 425;
+
+        // 更新圖表
+        updateFunnelData();
+        showMessage('已重置為預設值', 'success');
+    }
+
+    function showMessage(text, type) {
+        const messageDiv = document.getElementById('update-message');
+        messageDiv.style.display = 'block';
+        messageDiv.textContent = text;
+        
+        if (type === 'success') {
+            messageDiv.style.background = '#d4edda';
+            messageDiv.style.color = '#155724';
+            messageDiv.style.border = '1px solid #c3e6cb';
+        } else if (type === 'error') {
+            messageDiv.style.background = '#f8d7da';
+            messageDiv.style.color = '#721c24';
+            messageDiv.style.border = '1px solid #f5c6cb';
+        }
+
+        // 3秒後自動隱藏
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+        }, 3000);
+    }
+
+    // 絕對漏斗數據更新功能
+    function updateAbsoluteFunnelData() {
+        const awareness = 100; // 固定基準
+        const interest = parseFloat(document.getElementById('input-abs-interest').value) || 0;
+        const mofu = parseFloat(document.getElementById('input-abs-mofu').value) || 0;
+        const bofu = parseFloat(document.getElementById('input-abs-bofu').value) || 0;
+        const action = parseFloat(document.getElementById('input-abs-action').value) || 0;
+
+        // 驗證數據合理性
+        if (interest > 100 || mofu > 100 || bofu > 100 || action > 100) {
+            showAbsoluteMessage('轉化率不能超過 100%', 'error');
+            return;
+        }
+
+        if (interest < 0 || mofu < 0 || bofu < 0 || action < 0) {
+            showAbsoluteMessage('轉化率不能為負數', 'error');
+            return;
+        }
+
+        // 更新主頁絕對漏斗圖表
+        const newData = [awareness, interest, mofu, bofu, action];
+        absoluteFunnelMainChart.data.datasets[0].data = newData;
+        absoluteFunnelMainChart.update();
+
+        // 更新優先分析分頁的絕對漏斗圖表（如果已初始化）
+        if (absoluteFunnelPriorityChart) {
+            absoluteFunnelPriorityChart.data.datasets[0].data = newData;
+            absoluteFunnelPriorityChart.update();
+        }
+
+        // 根據絕對漏斗的轉化率，反向計算相對漏斗的實際數字
+        // 使用當前相對漏斗的曝光數作為基準
+        const baseAwareness = parseInt(document.getElementById('input-awareness').value) || 45000;
+        const calculatedInterest = Math.round(baseAwareness * (interest / 100));
+        const calculatedMofu = Math.round(calculatedInterest * (mofu / 100));
+        const calculatedBofu = Math.round(calculatedMofu * (bofu / 100));
+        const calculatedAction = Math.round(calculatedBofu * (action / 100));
+
+        // 更新相對漏斗的輸入框
+        document.getElementById('input-interest').value = calculatedInterest;
+        document.getElementById('input-mofu').value = calculatedMofu;
+        document.getElementById('input-bofu').value = calculatedBofu;
+        document.getElementById('input-action').value = calculatedAction;
+
+        // 更新相對漏斗圖表
+        const relativeFunnelData = [baseAwareness, calculatedInterest, calculatedMofu, calculatedBofu, calculatedAction];
+        funnelChart.data.datasets[0].data = relativeFunnelData;
+        funnelChart.update();
+
+        // 更新優先分析分頁的相對漏斗圖表（如果已初始化）
+        if (funnelChartPriority) {
+            funnelChartPriority.data.datasets[0].data = relativeFunnelData;
+            funnelChartPriority.update();
+        }
+
+        showAbsoluteMessage('絕對漏斗與相對漏斗數據已同步更新！', 'success');
+    }
+
+    function resetAbsoluteFunnelData() {
+        // 重置為預設值
+        document.getElementById('input-abs-interest').value = 35;
+        document.getElementById('input-abs-mofu').value = 70;
+        document.getElementById('input-abs-bofu').value = 7;
+        document.getElementById('input-abs-action').value = 55;
+
+        // 更新圖表
+        updateAbsoluteFunnelData();
+        showAbsoluteMessage('已重置為預設值', 'success');
+    }
+
+    function showAbsoluteMessage(text, type) {
+        const messageDiv = document.getElementById('update-absolute-message');
+        messageDiv.style.display = 'block';
+        messageDiv.textContent = text;
+        
+        if (type === 'success') {
+            messageDiv.style.background = '#d4edda';
+            messageDiv.style.color = '#155724';
+            messageDiv.style.border = '1px solid #c3e6cb';
+        } else if (type === 'error') {
+            messageDiv.style.background = '#f8d7da';
+            messageDiv.style.color = '#721c24';
+            messageDiv.style.border = '1px solid #f5c6cb';
+        }
+
+        // 3秒後自動隱藏
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+        }, 3000);
+    }
+
+    // 切換漏斗標題功能
+    function toggleFunnelTitle(elementId) {
+        const titleElement = document.getElementById(elementId);
+        if (!titleElement) return;
+
+        const currentText = titleElement.textContent.trim();
+        
+        if (currentText === '行銷漏斗轉化分析 (Marketing Funnel)') {
+            titleElement.textContent = '相對漏斗 (Relative Funnel)';
+        } else {
+            titleElement.textContent = '行銷漏斗轉化分析 (Marketing Funnel)';
+        }
+    }
+
 </script>
 
 </body>
