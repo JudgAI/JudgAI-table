@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 應用規劃師 - 專業輔考課程網站</title>
+    <title>AI 應用規劃師 - 專業輔考課程網站 AI 新秀計畫 | 北科大 NTUT - 驅動 AI 世代的創新能量</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://aistar.tw/wp-content/uploads/2025/06/cropped-臺北科大logo-270x270.png"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -169,7 +171,6 @@
         
         /* Mobile Menu Styles */
         .mobile-menu {
-            display: none;
             position: fixed;
             top: 0;
             right: -100%;
@@ -181,6 +182,8 @@
             transition: right 0.3s ease;
             z-index: 9998;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
         .mobile-menu.active {
             right: 0;
@@ -203,16 +206,27 @@
             flex-direction: column;
             cursor: pointer;
             z-index: 9999;
+            gap: 4px;
+            padding: 8px;
         }
         .hamburger span {
-            width: 25px;
+            width: 28px;
             height: 3px;
             background: #4f46e5;
-            margin: 3px 0;
-            transition: 0.3s;
-            border-radius: 3px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 2px;
+            display: block;
         }
-        @media (max-width: 768px) {
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(12px, 12px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+        @media (max-width: 1024px) {
             .hamburger {
                 display: flex;
             }
@@ -221,10 +235,10 @@
         /* Responsive header adjustments */
         @media (max-width: 640px) {
             header nav {
-                padding: 1rem 1rem !important;
+                padding: 0.875rem 1rem !important;
             }
-            header .text-2xl {
-                font-size: 1.25rem !important;
+            header .text-lg {
+                font-size: 0.875rem !important;
             }
             .mobile-menu {
                 display: block;
@@ -243,30 +257,46 @@
 
 <body class="bg-gray-50 text-gray-800">
 
+    <!-- Top Logo Section -->
+    <div class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 py-3 md:py-4 px-4 md:px-6 text-center">
+        <div class="flex items-center justify-center">
+            <div class="text-2xl md:text-4xl font-black text-white drop-shadow-lg flex items-center flex-wrap justify-center">
+                <i class="fas fa-brain mr-2 md:mr-3"></i>
+                <span>AI 應用規劃師</span>
+            </div>
+        </div>
+        <p class="text-white/90 text-xs md:text-sm mt-2">經濟部 AI 新秀計畫 | 國家級專業認證課程</p>
+    </div>
+
     <!-- Header / Navigation -->
     <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
-        <nav class="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
-            <div class="text-xl sm:text-2xl font-bold gradient-text whitespace-nowrap">
-                <i class="fas fa-brain"></i> AI應用規劃師
+        <nav class="container mx-auto px-3 md:px-6 py-2 md:py-4 flex justify-between items-center gap-2">
+            <div class="text-sm md:text-lg lg:text-xl font-bold text-indigo-600 whitespace-nowrap flex-shrink-0">
+                <i class="fas fa-graduation-cap hidden sm:inline"></i><span class="hidden sm:inline"> AI規劃師課程</span>
+                <i class="fas fa-graduation-cap sm:hidden"></i><span class="sm:hidden">AI課程</span>
             </div>
             
             <!-- Desktop Menu -->
-            <div class="hidden lg:flex items-center space-x-4 xl:space-x-8">
-                <a href="#aistar" class="text-sm xl:text-base text-gray-600 hover:text-indigo-600 transition duration-300 whitespace-nowrap">AI新秀計畫</a>
-                <a href="#levels" class="text-sm xl:text-base text-gray-600 hover:text-indigo-600 transition duration-300 whitespace-nowrap">課程級別</a>
-                <a href="#schedule" class="text-sm xl:text-base text-gray-600 hover:text-indigo-600 transition duration-300 whitespace-nowrap">重要考期</a>
-                <a href="#highlights" class="text-sm xl:text-base text-gray-600 hover:text-indigo-600 transition duration-300 whitespace-nowrap">上課花絮</a>
-                <a href="#videos" class="text-sm xl:text-base text-gray-600 hover:text-indigo-600 transition duration-300 whitespace-nowrap">精選短影音</a>
-                <a href="#testimonials" class="text-sm xl:text-base text-gray-600 hover:text-indigo-600 transition duration-300 whitespace-nowrap">學員證言</a>
+            <div class="hidden lg:flex items-center space-x-2 xl:space-x-6 flex-1 justify-center px-4">
+                <a href="#aistar" class="text-xs xl:text-sm text-gray-600 hover:text-indigo-600 transition duration-300 whitespace-nowrap">AI新秀計畫</a>
+                <a href="#levels" class="text-xs xl:text-sm text-gray-600 hover:text-indigo-600 transition duration-300 whitespace-nowrap">課程級別</a>
+                <a href="#schedule" class="text-xs xl:text-sm text-gray-600 hover:text-indigo-600 transition duration-300 whitespace-nowrap">重要考期</a>
+                <a href="#schedule-detail" class="text-xs xl:text-sm text-gray-600 hover:text-indigo-600 transition duration-300 whitespace-nowrap">專班日程</a>
+                <a href="#highlights" class="text-xs xl:text-sm text-gray-600 hover:text-indigo-600 transition duration-300 whitespace-nowrap">上課花絮</a>
+                <a href="#videos" class="text-xs xl:text-sm text-gray-600 hover:text-indigo-600 transition duration-300 whitespace-nowrap">精選短影音</a>
+                <a href="#teachers" class="text-xs xl:text-sm text-gray-600 hover:text-indigo-600 transition duration-300 whitespace-nowrap">師資介紹</a>
+                <a href="#testimonials" class="text-xs xl:text-sm text-gray-600 hover:text-indigo-600 transition duration-300 whitespace-nowrap">學員證言</a>
+                <a href="#faq" class="text-xs xl:text-sm text-gray-600 hover:text-indigo-600 transition duration-300 whitespace-nowrap">學員FAQ</a>
+                <a href="#contact" class="text-xs xl:text-sm text-gray-600 hover:text-indigo-600 transition duration-300 whitespace-nowrap">聯絡資訊</a>
             </div>
             
-            <div class="flex items-center space-x-4">
-                <a href="#register" class="hidden sm:inline-flex bg-indigo-600 text-white px-4 sm:px-6 py-2 rounded-full hover:bg-indigo-700 transition duration-300 shadow-lg text-sm sm:text-base whitespace-nowrap">
+            <div class="flex items-center space-x-2 md:space-x-4 flex-shrink-0">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSezSFRfHQKcPbsF2A6oZ49PhWcUyvOHjT-yWKdI3p7egVR3Sw/viewform" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex bg-indigo-600 text-white px-3 md:px-6 py-2 rounded-full hover:bg-indigo-700 transition duration-300 shadow-lg text-xs md:text-sm whitespace-nowrap">
                     立即報名
                 </a>
                 
                 <!-- Hamburger Menu Button -->
-                <div class="hamburger lg:hidden" onclick="toggleMobileMenu()">
+                <div class="hamburger lg:hidden" id="hamburgerBtn" onclick="toggleMobileMenu()">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -278,40 +308,56 @@
     <!-- Mobile Menu -->
     <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
     <div class="mobile-menu" id="mobileMenu">
-        <div class="p-6">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-xl font-bold gradient-text">選單</h2>
+        <div class="p-4 md:p-6">
+            <div class="flex justify-between items-center mb-6 md:mb-8">
+                <h2 class="text-lg md:text-xl font-bold gradient-text">選單</h2>
                 <button onclick="toggleMobileMenu()" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times text-2xl"></i>
+                    <i class="fas fa-times text-xl md:text-2xl"></i>
                 </button>
             </div>
-            <nav class="flex flex-col space-y-4">
-                <a href="#aistar" onclick="toggleMobileMenu()" class="text-gray-700 hover:text-indigo-600 py-3 px-4 rounded-lg hover:bg-indigo-50 transition duration-300 flex items-center">
+            <nav class="flex flex-col space-y-3 md:space-y-4">
+                <a href="#aistar" onclick="toggleMobileMenu()" class="text-gray-700 hover:text-indigo-600 py-2 md:py-3 px-3 md:px-4 rounded-lg hover:bg-indigo-50 transition duration-300 flex items-center text-sm md:text-base">
                     <i class="fas fa-star mr-3 text-indigo-500"></i>
                     AI新秀計畫
                 </a>
-                <a href="#levels" onclick="toggleMobileMenu()" class="text-gray-700 hover:text-indigo-600 py-3 px-4 rounded-lg hover:bg-indigo-50 transition duration-300 flex items-center">
+                <a href="#levels" onclick="toggleMobileMenu()" class="text-gray-700 hover:text-indigo-600 py-2 md:py-3 px-3 md:px-4 rounded-lg hover:bg-indigo-50 transition duration-300 flex items-center text-sm md:text-base">
                     <i class="fas fa-graduation-cap mr-3 text-indigo-500"></i>
                     課程級別
                 </a>
-                <a href="#schedule" onclick="toggleMobileMenu()" class="text-gray-700 hover:text-indigo-600 py-3 px-4 rounded-lg hover:bg-indigo-50 transition duration-300 flex items-center">
+                <a href="#schedule" onclick="toggleMobileMenu()" class="text-gray-700 hover:text-indigo-600 py-2 md:py-3 px-3 md:px-4 rounded-lg hover:bg-indigo-50 transition duration-300 flex items-center text-sm md:text-base">
                     <i class="fas fa-calendar-alt mr-3 text-indigo-500"></i>
                     重要考期
                 </a>
-                <a href="#highlights" onclick="toggleMobileMenu()" class="text-gray-700 hover:text-indigo-600 py-3 px-4 rounded-lg hover:bg-indigo-50 transition duration-300 flex items-center">
+                <a href="#schedule-detail" onclick="toggleMobileMenu()" class="text-gray-700 hover:text-indigo-600 py-2 md:py-3 px-3 md:px-4 rounded-lg hover:bg-indigo-50 transition duration-300 flex items-center text-sm md:text-base">
+                    <i class="fas fa-clock mr-3 text-indigo-500"></i>
+                    專班日程
+                </a>
+                <a href="#highlights" onclick="toggleMobileMenu()" class="text-gray-700 hover:text-indigo-600 py-2 md:py-3 px-3 md:px-4 rounded-lg hover:bg-indigo-50 transition duration-300 flex items-center text-sm md:text-base">
                     <i class="fas fa-camera mr-3 text-indigo-500"></i>
                     上課花絮
                 </a>
-                <a href="#videos" onclick="toggleMobileMenu()" class="text-gray-700 hover:text-indigo-600 py-3 px-4 rounded-lg hover:bg-indigo-50 transition duration-300 flex items-center">
+                <a href="#videos" onclick="toggleMobileMenu()" class="text-gray-700 hover:text-indigo-600 py-2 md:py-3 px-3 md:px-4 rounded-lg hover:bg-indigo-50 transition duration-300 flex items-center text-sm md:text-base">
                     <i class="fas fa-video mr-3 text-indigo-500"></i>
                     精選短影音
                 </a>
-                <a href="#testimonials" onclick="toggleMobileMenu()" class="text-gray-700 hover:text-indigo-600 py-3 px-4 rounded-lg hover:bg-indigo-50 transition duration-300 flex items-center">
+                <a href="#teachers" onclick="toggleMobileMenu()" class="text-gray-700 hover:text-indigo-600 py-2 md:py-3 px-3 md:px-4 rounded-lg hover:bg-indigo-50 transition duration-300 flex items-center text-sm md:text-base">
+                    <i class="fas fa-chalkboard-user mr-3 text-indigo-500"></i>
+                    師資介紹
+                </a>
+                <a href="#testimonials" onclick="toggleMobileMenu()" class="text-gray-700 hover:text-indigo-600 py-2 md:py-3 px-3 md:px-4 rounded-lg hover:bg-indigo-50 transition duration-300 flex items-center text-sm md:text-base">
                     <i class="fas fa-quote-left mr-3 text-indigo-500"></i>
                     學員證言
                 </a>
-                <a href="#register" onclick="toggleMobileMenu()" class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 px-4 rounded-lg text-center font-bold hover:from-indigo-700 hover:to-purple-700 transition duration-300 flex items-center justify-center mt-4">
-                    <i class="fas fa-user-plus mr-3"></i>
+                <a href="#faq" onclick="toggleMobileMenu()" class="text-gray-700 hover:text-indigo-600 py-2 md:py-3 px-3 md:px-4 rounded-lg hover:bg-indigo-50 transition duration-300 flex items-center text-sm md:text-base">
+                    <i class="fas fa-question-circle mr-3 text-indigo-500"></i>
+                    學員FAQ
+                </a>
+                <a href="#contact" onclick="toggleMobileMenu()" class="text-gray-700 hover:text-indigo-600 py-2 md:py-3 px-3 md:px-4 rounded-lg hover:bg-indigo-50 transition duration-300 flex items-center text-sm md:text-base">
+                    <i class="fas fa-phone mr-3 text-indigo-500"></i>
+                    聯絡資訊
+                </a>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSezSFRfHQKcPbsF2A6oZ49PhWcUyvOHjT-yWKdI3p7egVR3Sw/viewform" target="_blank" rel="noopener noreferrer" onclick="toggleMobileMenu()" class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 md:py-4 px-4 rounded-lg text-center font-bold hover:from-indigo-700 hover:to-purple-700 transition duration-300 flex items-center justify-center mt-6 md:mt-8 text-sm md:text-base">
+                    <i class="fas fa-user-plus mr-2"></i>
                     立即報名
                 </a>
             </nav>
@@ -471,96 +517,85 @@
             </div>
 
             <!-- Recruitment Information -->
-            <div class="premium-card bg-white rounded-3xl shadow-2xl p-8 md:p-12 border border-gray-100">
-                <div class="text-center mb-10">
-                    <div class="inline-block bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-bold mb-4">
-                        <i class="fas fa-star mr-2"></i>立即加入
+            <div class="premium-card bg-gradient-to-br from-white via-indigo-50 to-white rounded-3xl shadow-2xl p-8 md:p-16 border border-indigo-100">
+                <div class="text-center mb-16">
+                    <div class="inline-block bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-8 py-3 rounded-full text-sm font-bold mb-6 shadow-lg transform hover:scale-105 transition">
+                        <i class="fas fa-star mr-2"></i>2025 年重點招生班次
                     </div>
-                    <h3 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+                    <h3 class="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-700 mb-4">
                         招生資訊
                     </h3>
-                    <div class="w-20 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto rounded-full"></div>
+                    <div class="w-24 h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 mx-auto rounded-full shadow-lg"></div>
+                    <p class="mt-6 text-gray-600 text-lg max-w-2xl mx-auto">與經濟部攜手培育AI應用人才，名額有限，現正開放報名</p>
                 </div>
                 
-                <div class="grid md:grid-cols-2 gap-6 mb-10">
-                    <div class="premium-card bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-50 rounded-2xl p-8 border-2 border-indigo-100">
-                        <div class="flex items-center mb-5">
-                            <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-xl flex items-center justify-center mr-3 shadow-lg">
-                                <i class="fas fa-coins text-white text-xl"></i>
+                <div class="mb-12">
+                    <div class="premium-card bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-50 rounded-3xl p-10 border-2 border-indigo-200 hover:shadow-2xl transition duration-300 transform hover:translateY(-4px)">
+                        <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
+                            <div class="flex items-center mb-6 md:mb-0">
+                                <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-2xl flex items-center justify-center mr-5 shadow-xl">
+                                    <i class="fas fa-coins text-white text-3xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-black text-2xl text-indigo-700">金融科技與資訊安全班</h4>
+                                    <p class="text-sm text-indigo-600 mt-1">AI在金融應用領域的實戰培訓</p>
+                                </div>
                             </div>
-                            <h4 class="font-bold text-xl text-indigo-700">智慧金融班</h4>
+                            <div class="hidden md:inline-flex items-center space-x-4">
+                                <div class="text-right">
+                                    <p class="text-sm text-gray-600 font-semibold uppercase tracking-wide">招生名額</p>
+                                    <p class="text-3xl font-black text-indigo-600">20名</p>
+                                </div>
+                            </div>
                         </div>
-                        <ul class="space-y-4 text-gray-700">
-                            <li class="flex items-center bg-white/60 backdrop-blur-sm p-3 rounded-lg">
-                                <i class="fas fa-users text-indigo-500 mr-3 text-lg"></i>
-                                <div>
-                                    <strong class="block text-sm text-gray-500">招生名額</strong>
-                                    <span class="text-lg font-bold text-indigo-700">40名</span>
-                                </div>
-                            </li>
-                            <li class="flex items-start bg-white/60 backdrop-blur-sm p-3 rounded-lg">
-                                <i class="fas fa-graduation-cap text-indigo-500 mr-3 text-lg mt-1"></i>
-                                <div>
-                                    <strong class="block text-sm text-gray-500">資格</strong>
-                                    <span class="text-sm">以台北科技大學學資財系(所)學生為優先</span>
-                                </div>
-                            </li>
-                            <li class="flex items-center bg-white/60 backdrop-blur-sm p-3 rounded-lg">
-                                <i class="fas fa-phone text-indigo-500 mr-3 text-lg"></i>
-                                <div>
-                                    <strong class="block text-sm text-gray-500">聯絡</strong>
-                                    <span class="text-sm">李先生 (02) 2771-2171 #5901</span>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
 
-                    <div class="premium-card bg-gradient-to-br from-pink-50 via-purple-50 to-pink-50 rounded-2xl p-8 border-2 border-pink-100">
-                        <div class="flex items-center mb-5">
-                            <div class="w-12 h-12 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl flex items-center justify-center mr-3 shadow-lg">
-                                <i class="fas fa-robot text-white text-xl"></i>
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-indigo-100 hover:border-indigo-300 transition">
+                                <div class="flex items-center mb-3">
+                                    <i class="fas fa-users text-indigo-500 text-2xl mr-3"></i>
+                                    <strong class="text-gray-700">招生名額</strong>
+                                </div>
+                                <p class="text-2xl font-black text-indigo-600">20名</p>
+                                <p class="text-xs text-gray-500 mt-2">優先錄取順序</p>
                             </div>
-                            <h4 class="font-bold text-xl text-pink-700">智慧科技班</h4>
+
+                            <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-indigo-100 hover:border-indigo-300 transition">
+                                <div class="flex items-center mb-3">
+                                    <i class="fas fa-graduation-cap text-indigo-500 text-2xl mr-3"></i>
+                                    <strong class="text-gray-700">資格要求</strong>
+                                </div>
+                                <p class="text-sm font-semibold text-indigo-700 leading-relaxed">台北科技大學學資財系(所)學生優先</p>
+                                <p class="text-xs text-gray-500 mt-2">其他符合者亦可申請</p>
+                            </div>
+
+                            <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-indigo-100 hover:border-indigo-300 transition">
+                                <div class="flex items-center mb-3">
+                                    <i class="fas fa-phone text-indigo-500 text-2xl mr-3"></i>
+                                    <strong class="text-gray-700">聯絡方式</strong>
+                                </div>
+                                <p class="font-semibold text-indigo-700">李先生</p>
+                                <p class="text-sm text-gray-600 mt-1">(02) 2771-2171 #5901</p>
+                            </div>
                         </div>
-                        <ul class="space-y-4 text-gray-700">
-                            <li class="flex items-center bg-white/60 backdrop-blur-sm p-3 rounded-lg">
-                                <i class="fas fa-users text-pink-500 mr-3 text-lg"></i>
-                                <div>
-                                    <strong class="block text-sm text-gray-500">招生名額</strong>
-                                    <span class="text-lg font-bold text-pink-700">依各班公告</span>
-                                </div>
-                            </li>
-                            <li class="flex items-start bg-white/60 backdrop-blur-sm p-3 rounded-lg">
-                                <i class="fas fa-graduation-cap text-pink-500 mr-3 text-lg mt-1"></i>
-                                <div>
-                                    <strong class="block text-sm text-gray-500">資格</strong>
-                                    <span class="text-sm">已考過初級/中級者優先錄取</span>
-                                </div>
-                            </li>
-                            <li class="flex items-center bg-white/60 backdrop-blur-sm p-3 rounded-lg">
-                                <i class="fas fa-phone text-pink-500 mr-3 text-lg"></i>
-                                <div>
-                                    <strong class="block text-sm text-gray-500">聯絡</strong>
-                                    <span class="text-sm">王小姐 (02) 2771-2171 #1075</span>
-                                </div>
-                            </li>
-                        </ul>
                     </div>
                 </div>
 
-                <div class="text-center bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8">
-                    <a href="https://aistar.tw/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-10 py-5 rounded-2xl text-lg font-bold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl">
-                        <i class="fas fa-rocket mr-3 text-xl"></i>
-                        前往AI新秀計畫官網
-                        <i class="fas fa-arrow-right ml-3 text-xl"></i>
-                    </a>
-                    <p class="mt-6 text-sm text-gray-600 flex items-center justify-center flex-wrap">
-                        <span class="flex items-center">
-                            <i class="fas fa-gift mr-2 text-indigo-500"></i>
-                            <strong class="text-indigo-600">報名免費</strong>
-                        </span>
-                        <span class="mx-2">|</span>
-                        <span>更多詳情請至官網查詢</span>
+                <div class="bg-gradient-to-r from-indigo-100 via-purple-50 to-pink-100 rounded-3xl p-10 border-2 border-indigo-200">
+                    <div class="flex flex-col sm:flex-row items-center justify-between">
+                        <div class="text-center sm:text-left mb-6 sm:mb-0">
+                            <h4 class="text-xl font-bold text-gray-900 mb-2">了解更多詳情</h4>
+                            <p class="text-gray-700">前往AI新秀計畫官網查看完整課程內容與申請方式</p>
+                        </div>
+                        <a href="https://aistar.tw/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-10 py-4 rounded-2xl font-bold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl whitespace-nowrap ml-0 sm:ml-6 mt-4 sm:mt-0">
+                            <i class="fas fa-external-link-alt mr-2"></i>
+                            立即訪問官網
+                        </a>
+                    </div>
+                    <p class="mt-4 text-sm text-gray-600 text-center">
+                        <i class="fas fa-star text-yellow-500 mr-2"></i>
+                        <strong class="text-indigo-600">報名完全免費</strong>
+                        <span class="mx-2">•</span>
+                        <strong>全額補助培訓費用</strong>
                     </p>
                 </div>
             </div>
@@ -582,74 +617,84 @@
             </div>
 
             <!-- Content -->
-            <div id="content-beginner" class="fade-in">
-                <div class="bg-gray-50 rounded-2xl shadow-lg overflow-hidden md:flex">
-                    <div class="md:w-1/2 p-8 md:p-12">
-                        <h3 class="text-2xl font-bold text-indigo-700">初級 AI 應用規劃師</h3>
-                        <p class="mt-4 text-gray-600">本課程專為AI領域入門者、跨領域學習者及在職人士設計，透過實務導向的教學，協助您取得國家級專業證照，開啟您的AI職涯。</p>
-                        
-                        <div class="mt-8">
-                            <h4 class="font-semibold text-lg text-gray-800 border-b pb-2">核心特色</h4>
-                            <ul class="mt-4 space-y-3 text-gray-600">
-                                <li class="flex items-start"><i class="fas fa-certificate text-green-500 mt-1 mr-3"></i><span><strong class="font-semibold">國家級認證：</strong>精實培訓，增強履歷競爭力，提升職場價值。</span></li>
-                                <li class="flex items-start"><i class="fas fa-lightbulb text-green-500 mt-1 mr-3"></i><span><strong class="font-semibold">實務導向：</strong>結合真實產業案例與AI導入流程，確保學以致用。</span></li>
-                                <li class="flex items-start"><i class="fas fa-tools text-green-500 mt-1 mr-3"></i><span><strong class="font-semibold">工具實作：</strong>學習ChatGPT、Midjourney等生成式AI工具，深化應用技能。</span></li>
-                                <li class="flex items-start"><i class="fas fa-chalkboard-teacher text-green-500 mt-1 mr-3"></i><span><strong class="font-semibold">資深業師授課：</strong>業界專家傳授核心知識，帶您快速上手。</span></li>
-                            </ul>
+            <div id="content-beginner" class="fade-in mt-12 md:mt-16">
+                <div class="bg-gradient-to-r from-indigo-50 to-blue-50 overflow-hidden hover:shadow-xl transition duration-300">
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-0 max-w-7xl mx-auto">
+                        <div class="p-6 sm:p-6 xl:p-12 flex flex-col justify-start xl:justify-center break-words">
+                            <h3 class="text-3xl sm:text-3xl xl:text-5xl font-bold text-indigo-700 mb-4 break-words">初級 AI 應用規劃師</h3>
+                            <p class="text-base sm:text-base xl:text-xl text-gray-600 leading-relaxed mb-6 break-words">本課程專為AI領域入門者、跨領域學習者及在職人士設計，透過實務導向的教學，協助您取得國家級專業證照，開啟您的AI職涯。</p>
+                            
+                            <div class="mt-6 sm:mt-8">
+                                <h4 class="font-bold text-lg sm:text-lg xl:text-2xl text-gray-800 border-b-2 pb-2 sm:pb-3 mb-3 sm:mb-4 break-words">核心特色</h4>
+                                <ul class="space-y-3 sm:space-y-4 text-gray-600">
+                                    <li class="flex items-start break-words"><i class="fas fa-certificate text-green-500 mt-1 mr-2 sm:mr-2 xl:mr-3 text-base sm:text-base xl:text-lg flex-shrink-0"></i><span class="text-base sm:text-base xl:text-lg break-words"><strong class="font-semibold">國家級認證：</strong>精實培訓，增強履歷競爭力，提升職場價值。</span></li>
+                                    <li class="flex items-start break-words"><i class="fas fa-lightbulb text-green-500 mt-1 mr-2 sm:mr-2 xl:mr-3 text-base sm:text-base xl:text-lg flex-shrink-0"></i><span class="text-base sm:text-base xl:text-lg break-words"><strong class="font-semibold">實務導向：</strong>結合真實產業案例與AI導入流程，確保學以致用。</span></li>
+                                    <li class="flex items-start break-words"><i class="fas fa-tools text-green-500 mt-1 mr-2 sm:mr-2 xl:mr-3 text-base sm:text-base xl:text-lg flex-shrink-0"></i><span class="text-base sm:text-base xl:text-lg break-words"><strong class="font-semibold">工具實作：</strong>學習ChatGPT、Midjourney等生成式AI工具，深化應用技能。</span></li>
+                                    <li class="flex items-start break-words"><i class="fas fa-chalkboard-teacher text-green-500 mt-1 mr-2 sm:mr-2 xl:mr-3 text-base sm:text-base xl:text-lg flex-shrink-0"></i><span class="text-base sm:text-base xl:text-lg break-words"><strong class="font-semibold">資深業師授課：</strong>業界專家傳授核心知識，帶您快速上手。</span></li>
+                                </ul>
+                            </div>
+                            <div class="mt-8 sm:mt-10">
+                                <h4 class="font-bold text-lg sm:text-lg xl:text-2xl text-gray-800 border-b-2 pb-2 sm:pb-3 mb-3 sm:mb-4 break-words">適合對象</h4>
+                                <ul class="space-y-3 sm:space-y-4 text-gray-600">
+                                    <li class="flex items-start break-words"><i class="fas fa-user-friends text-indigo-500 mt-1 mr-2 sm:mr-2 xl:mr-3 text-base sm:text-base xl:text-lg flex-shrink-0"></i><span class="text-base sm:text-base xl:text-lg break-words"><strong class="font-semibold">轉型人士：</strong>想進入AI領域，建立扎實基礎，開啟職涯新篇章。</span></li>
+                                    <li class="flex items-start break-words"><i class="fas fa-briefcase text-indigo-500 mt-1 mr-2 sm:mr-2 xl:mr-3 text-base sm:text-base xl:text-lg flex-shrink-0"></i><span class="text-base sm:text-base xl:text-lg break-words"><strong class="font-semibold">在職人士：</strong>希望強化AI應用與數據分析技能，在職場中脫穎而出。</span></li>
+                                    <li class="flex items-start break-words"><i class="fas fa-search text-indigo-500 mt-1 mr-2 sm:mr-2 xl:mr-3 text-base sm:text-base xl:text-lg flex-shrink-0"></i><span class="text-base sm:text-base xl:text-lg break-words"><strong class="font-semibold">興趣愛好者：</strong>對AI規劃感興趣，尋求系統性學習機會，探索未來發展。</span></li>
+                                    <li class="flex items-start break-words"><i class="fas fa-building text-indigo-500 mt-1 mr-2 sm:mr-2 xl:mr-3 text-base sm:text-base xl:text-lg flex-shrink-0"></i><span class="text-base sm:text-base xl:text-lg break-words"><strong class="font-semibold">企業內訓：</strong>培養內部AI專家，提升數據管理與決策效率。</span></li>
+                                </ul>
+                            </div>
                         </div>
-                         <div class="mt-8">
-                            <h4 class="font-semibold text-lg text-gray-800 border-b pb-2">適合對象</h4>
-                            <ul class="mt-4 space-y-3 text-gray-600">
-                                <li class="flex items-start"><i class="fas fa-user-friends text-indigo-500 mt-1 mr-3"></i><span><strong class="font-semibold">轉型人士：</strong>想進入AI領域，建立扎實基礎，開啟職涯新篇章。</span></li>
-                                <li class="flex items-start"><i class="fas fa-briefcase text-indigo-500 mt-1 mr-3"></i><span><strong class="font-semibold">在職人士：</strong>希望強化AI應用與數據分析技能，在職場中脫穎而出。</span></li>
-                                <li class="flex items-start"><i class="fas fa-search text-indigo-500 mt-1 mr-3"></i><span><strong class="font-semibold">興趣愛好者：</strong>對AI規劃感興趣，尋求系統性學習機會，探索未來發展。</span></li>
-                                <li class="flex items-start"><i class="fas fa-building text-indigo-500 mt-1 mr-3"></i><span><strong class="font-semibold">企業內訓：</strong>培養內部AI專家，提升數據管理與決策效率。</span></li>
-                            </ul>
+                        <div class="bg-white p-4 sm:p-6 xl:p-8 flex items-center justify-center" style="border: none; box-shadow: none;">
+                            <img src="./初級(修改後).jpg" alt="初級 AI 應用規劃師" class="w-full h-auto object-contain" loading="lazy" style="border: none; outline: none; box-shadow: none;">
                         </div>
-                    </div>
-                    <div class="md:w-1/2 bg-cover bg-center" style="background-image: url('basic.jpg')">
-                        <!-- EDM-style image -->
                     </div>
                 </div>
             </div>
 
-            <div id="content-intermediate" class="hidden fade-in">
-                <div class="bg-gray-50 rounded-2xl shadow-lg overflow-hidden md:flex">
-                    <div class="md:w-1/2 p-8 md:p-12">
-                        <h3 class="text-2xl font-bold text-pink-600">中級 AI 應用規劃師</h3>
-                        <p class="mt-4 text-gray-600">專為具備基礎AI知識的專業人士設計，旨在深化專案管理與技術導入能力，讓您成為企業AI轉型的核心推手。</p>
-                        
-                        <div class="mt-8">
-                            <h4 class="font-semibold text-lg text-gray-800 border-b pb-2">核心特色</h4>
-                             <ul class="mt-4 space-y-3 text-gray-600">
-                                <li class="flex items-start"><i class="fas fa-cogs text-green-500 mt-1 mr-3"></i><span><strong class="font-semibold">深化專業技能：</strong>結合NLP、電腦視覺、生成式AI等實務案例，強化技術落地能力。</span></li>
-                                <li class="flex items-start"><i class="fas fa-code text-green-500 mt-1 mr-3"></i><span><strong class="font-semibold">強化Python實作：</strong>從數據處理、模型建構到應用部署，掌握核心開發技術。</span></li>
-                                <li class="flex items-start"><i class="fas fa-users text-green-500 mt-1 mr-3"></i><span><strong class="font-semibold">多元分組培訓：</strong>分為「統計組」與「機器學習組」，進行精準技能培訓。</span></li>
-                                <li class="flex items-start"><i class="fas fa-project-diagram text-green-500 mt-1 mr-3"></i><span><strong class="font-semibold">完整專案管理：</strong>涵蓋需求分析、技術評估、成本效益、風險管理到系統部署。</span></li>
-                            </ul>
-                        </div>
-                        
-                        <div class="mt-8">
-                            <h4 class="font-semibold text-lg text-gray-800 border-b pb-2">學習目標</h4>
-                             <ul class="mt-4 space-y-3 text-gray-600">
-                                <li class="flex items-start"><i class="fas fa-tasks text-pink-500 mt-1 mr-3"></i><span>具備完整AI專案規劃與導入能力。</span></li>
-                                <li class="flex items-start"><i class="fas fa-chart-bar text-pink-500 mt-1 mr-3"></i><span>【統計組】深化大數據分析與商業決策技能。</span></li>
-                                <li class="flex items-start"><i class="fas fa-robot text-pink-500 mt-1 mr-3"></i><span>【機器學習組】精進模型建置、驗證與優化能力。</span></li>
-                                <li class="flex items-start"><i class="fas fa-shield-alt text-pink-500 mt-1 mr-3"></i><span>強化AI倫理、安全與治理觀念，應對潛在風險。</span></li>
-                            </ul>
-                        </div>
+            <!-- Separator Line -->
+            <div class="flex justify-center my-8 md:my-12">
+                <div class="h-1 w-24 bg-gradient-to-r from-indigo-400 via-pink-400 to-purple-400 rounded-full"></div>
+            </div>
 
-                         <div class="mt-8">
-                            <h4 class="font-semibold text-lg text-gray-800 border-b pb-2">適合對象</h4>
-                             <ul class="mt-4 space-y-3 text-gray-600">
-                                <li class="flex items-start"><i class="fas fa-user-tie text-pink-500 mt-1 mr-3"></i><span>具備AI基礎，想轉型為AI規劃師或專案經理的專業人士。</span></li>
-                                <li class="flex items-start"><i class="fas fa-network-wired text-pink-500 mt-1 mr-3"></i><span>企業內IT、數據分析、產品研發等部門，希望協助公司轉型的技術人員。</span></li>
-                                 <li class="flex items-start"><i class="fas fa-sitemap text-pink-500 mt-1 mr-3"></i><span>企業決策者、技術長(CTO)或數據部門主管。</span></li>
-                            </ul>
+            <div id="content-intermediate" class="hidden fade-in mt-12 md:mt-16">
+                <div class="bg-gradient-to-r from-pink-50 to-purple-50 overflow-hidden hover:shadow-xl transition duration-300">
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-0 max-w-7xl mx-auto">
+                        <div class="p-6 sm:p-6 xl:p-12 flex flex-col justify-start xl:justify-center break-words">
+                            <h3 class="text-3xl sm:text-3xl xl:text-5xl font-bold text-pink-600 mb-4 break-words">中級 AI 應用規劃師</h3>
+                            <p class="text-base sm:text-base xl:text-xl text-gray-600 leading-relaxed mb-6 break-words">專為具備基礎AI知識的專業人士設計，旨在深化專案管理與技術導入能力，讓您成為企業AI轉型的核心推手。</p>
+                            
+                            <div class="mt-6 sm:mt-8">
+                                <h4 class="font-bold text-lg sm:text-lg xl:text-2xl text-gray-800 border-b-2 pb-2 sm:pb-3 mb-3 sm:mb-4 break-words">核心特色</h4>
+                                 <ul class="space-y-3 sm:space-y-4 text-gray-600">
+                                    <li class="flex items-start break-words"><i class="fas fa-cogs text-green-500 mt-1 mr-2 sm:mr-2 xl:mr-3 text-base sm:text-base xl:text-lg flex-shrink-0"></i><span class="text-base sm:text-base xl:text-lg break-words"><strong class="font-semibold">深化專業技能：</strong>結合NLP、電腦視覺、生成式AI等實務案例，強化技術落地能力。</span></li>
+                                    <li class="flex items-start break-words"><i class="fas fa-code text-green-500 mt-1 mr-2 sm:mr-2 xl:mr-3 text-base sm:text-base xl:text-lg flex-shrink-0"></i><span class="text-base sm:text-base xl:text-lg break-words"><strong class="font-semibold">強化Python實作：</strong>從數據處理、模型建構到應用部署，掌握核心開發技術。</span></li>
+                                    <li class="flex items-start break-words"><i class="fas fa-users text-green-500 mt-1 mr-2 sm:mr-2 xl:mr-3 text-base sm:text-base xl:text-lg flex-shrink-0"></i><span class="text-base sm:text-base xl:text-lg break-words"><strong class="font-semibold">多元分組培訓：</strong>分為「統計組」與「機器學習組」，進行精準技能培訓。</span></li>
+                                    <li class="flex items-start break-words"><i class="fas fa-project-diagram text-green-500 mt-1 mr-2 sm:mr-2 xl:mr-3 text-base sm:text-base xl:text-lg flex-shrink-0"></i><span class="text-base sm:text-base xl:text-lg break-words"><strong class="font-semibold">完整專案管理：</strong>涵蓋需求分析、技術評估、成本效益、風險管理到系統部署。</span></li>
+                                </ul>
+                            </div>
+                            
+                            <div class="mt-8 sm:mt-10">
+                                <h4 class="font-bold text-lg sm:text-lg xl:text-2xl text-gray-800 border-b-2 pb-2 sm:pb-3 mb-3 sm:mb-4 break-words">學習目標</h4>
+                                 <ul class="space-y-3 sm:space-y-4 text-gray-600">
+                                    <li class="flex items-start break-words"><i class="fas fa-tasks text-pink-500 mt-1 mr-2 sm:mr-2 xl:mr-3 text-base sm:text-base xl:text-lg flex-shrink-0"></i><span class="text-base sm:text-base xl:text-lg break-words">具備完整AI專案規劃與導入能力。</span></li>
+                                    <li class="flex items-start break-words"><i class="fas fa-chart-bar text-pink-500 mt-1 mr-2 sm:mr-2 xl:mr-3 text-base sm:text-base xl:text-lg flex-shrink-0"></i><span class="text-base sm:text-base xl:text-lg break-words">【統計組】深化大數據分析與商業決策技能。</span></li>
+                                    <li class="flex items-start break-words"><i class="fas fa-robot text-pink-500 mt-1 mr-2 sm:mr-2 xl:mr-3 text-base sm:text-base xl:text-lg flex-shrink-0"></i><span class="text-base sm:text-base xl:text-lg break-words">【機器學習組】精進模型建置、驗證與優化能力。</span></li>
+                                    <li class="flex items-start break-words"><i class="fas fa-shield-alt text-pink-500 mt-1 mr-2 sm:mr-2 xl:mr-3 text-base sm:text-base xl:text-lg flex-shrink-0"></i><span class="text-base sm:text-base xl:text-lg break-words">強化AI倫理、安全與治理觀念，應對潛在風險。</span></li>
+                                </ul>
+                            </div>
+
+                            
+                            <div class="mt-8 sm:mt-10">
+                                <h4 class="font-bold text-lg sm:text-lg xl:text-2xl text-gray-800 border-b-2 pb-2 sm:pb-3 mb-3 sm:mb-4 break-words">適合對象</h4>
+                                 <ul class="space-y-3 sm:space-y-4 text-gray-600">
+                                    <li class="flex items-start break-words"><i class="fas fa-user-tie text-pink-500 mt-1 mr-2 sm:mr-2 xl:mr-3 text-base sm:text-base xl:text-lg flex-shrink-0"></i><span class="text-base sm:text-base xl:text-lg break-words">具備AI基礎，想轉型為AI規劃師或專案經理的專業人士。</span></li>
+                                    <li class="flex items-start break-words"><i class="fas fa-network-wired text-pink-500 mt-1 mr-2 sm:mr-2 xl:mr-3 text-base sm:text-base xl:text-lg flex-shrink-0"></i><span class="text-base sm:text-base xl:text-lg break-words">企業內IT、數據分析、產品研發等部門，希望協助公司轉型的技術人員。</span></li>
+                                     <li class="flex items-start break-words"><i class="fas fa-sitemap text-pink-500 mt-1 mr-2 sm:mr-2 xl:mr-3 text-base sm:text-base xl:text-lg flex-shrink-0"></i><span class="text-base sm:text-base xl:text-lg break-words">企業決策者、技術長(CTO)或數據部門主管。</span></li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                    <div class="md:w-1/2 bg-cover bg-center" style="background-image: url('intermediate.png')">
-                        <!-- EDM-style image -->
+                        <div class="bg-white p-4 sm:p-4 xl:p-8 flex items-center justify-center" style="border: none; box-shadow: none;">
+                            <img src="./中級(修改後).png" alt="中級 AI 應用規劃師" class="w-full h-auto object-contain" loading="lazy" style="border: none; outline: none; box-shadow: none;">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -673,31 +718,249 @@
                     </thead>
                     <tbody class="divide-y divide-gray-200">
                         <tr>
-                            <td class="p-4 md:p-6 font-medium text-gray-800">中級</td>
-                            <td class="p-4 md:p-6 text-gray-600">2025 年 11 月 06 日</td>
-                            <td class="p-4 md:p-6 text-gray-600">即日起至 10 月 25 日</td>
-                            <td class="p-4 md:p-6"><span class="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">開放報名</span></td>
-                        </tr>
-                        <tr>
                             <td class="p-4 md:p-6 font-medium text-gray-800">初級</td>
-                            <td class="p-4 md:p-6 text-gray-600">2025 年 11 月 15 日</td>
-                            <td class="p-4 md:p-6 text-gray-600">即日起至 10 月 31 日</td>
-                            <td class="p-4 md:p-6"><span class="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">開放報名</span></td>
-                        </tr>
-                        <tr>
-                            <td class="p-4 md:p-6 font-medium text-gray-800">初級</td>
-                            <td class="p-4 md:p-6 text-gray-600">2026 年 03 月 20 日</td>
-                            <td class="p-4 md:p-6 text-gray-600">2026 年 01 月 10 日起</td>
-                            <td class="p-4 md:p-6"><span class="bg-yellow-100 text-yellow-800 text-sm font-medium px-3 py-1 rounded-full">即將開放</span></td>
+                            <td class="p-4 md:p-6 text-gray-600">2026/03/21 (六)</td>
+                            <td class="p-4 md:p-6 text-gray-600">2026/01/01（三）～2026/02/09 12:00（一）</td>
+                            <td class="p-4 md:p-6"><span class="bg-green-500 text-white text-base font-bold px-4 py-2 rounded-lg shadow-md hover:shadow-lg hover:bg-green-600 transition duration-300 inline-flex items-center gap-2"><i class="fas fa-circle-check"></i>報名中</span></td>
                         </tr>
                         <tr>
                             <td class="p-4 md:p-6 font-medium text-gray-800">中級</td>
-                            <td class="p-4 md:p-6 text-gray-600">2026 年 03 月 21 日</td>
-                            <td class="p-4 md:p-6 text-gray-600">2026 年 01 月 10 日起</td>
-                            <td class="p-4 md:p-6"><span class="bg-yellow-100 text-yellow-800 text-sm font-medium px-3 py-1 rounded-full">即將開放</span></td>
+                            <td class="p-4 md:p-6 text-gray-600">2026/05/23 (六)</td>
+                            <td class="p-4 md:p-6 text-gray-600">2026/01/01（三）～2026/04/09 12:00（四）</td>
+                            <td class="p-4 md:p-6"><span class="bg-green-500 text-white text-base font-bold px-4 py-2 rounded-lg shadow-md hover:shadow-lg hover:bg-green-600 transition duration-300 inline-flex items-center gap-2"><i class="fas fa-circle-check"></i>報名中</span></td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Class Schedule Section -->
+    <section id="schedule-detail" class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <div class="inline-block bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-6 py-2 rounded-full text-sm font-bold mb-4">
+                    <i class="fas fa-calendar-check mr-2"></i>重要時程
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">專班日程</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">掌握報名、報到和開課的重要時間節點</p>
+            </div>
+
+            <div class="max-w-5xl mx-auto">
+                <!-- Main Timeline -->
+                <div class="grid md:grid-cols-2 gap-6 mb-12">
+                    <!-- Timeline Item 1 -->
+                    <div class="bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl p-8 border-l-4 border-red-500 shadow-lg hover:shadow-xl transition duration-300">
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mr-4">
+                                <i class="fas fa-bullhorn text-white text-lg"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-600 font-semibold uppercase tracking-wide">放榜時間</p>
+                                <p class="text-2xl md:text-3xl font-black text-red-600 mt-2">2026/01/30</p>
+                                <p class="text-xs text-gray-500 mt-2">✓ 公布錄取名單</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Item 2 -->
+                    <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8 border-l-4 border-green-500 shadow-lg hover:shadow-xl transition duration-300">
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mr-4">
+                                <i class="fas fa-check-circle text-white text-lg"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-600 font-semibold uppercase tracking-wide">正式上課時間</p>
+                                <p class="text-2xl md:text-3xl font-black text-green-600 mt-2">2026/02/05</p>
+                                <p class="text-xs text-gray-500 mt-2">✓ 課程正式開始</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Schedule Table -->
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+                    <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-6">
+                        <h3 class="text-xl font-bold text-white flex items-center">
+                            <i class="fas fa-list mr-3"></i>詳細時程表
+                        </h3>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <tbody class="divide-y divide-gray-200">
+                                <!-- 放榜 -->
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="p-4 md:p-6 min-w-[200px]">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                                                <i class="fas fa-megaphone text-red-600 text-sm"></i>
+                                            </div>
+                                            <span class="font-bold text-gray-800">放榜</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-4 md:p-6 text-gray-600"><strong>2026 年 01 月 30 日</strong></td>
+                                    <td class="p-4 md:p-6">
+                                        <span class="bg-red-500 text-white text-sm font-bold px-4 py-2 rounded-lg shadow-md inline-flex items-center gap-2"><i class="fas fa-star"></i>重要</span>
+                                    </td>
+                                </tr>
+
+                                <!-- 正取生報到 -->
+                                <tr class="hover:bg-gray-50 transition bg-green-50">
+                                    <td class="p-4 md:p-6 min-w-[200px]">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                                                <i class="fas fa-check-double text-green-600 text-sm"></i>
+                                            </div>
+                                            <span class="font-bold text-gray-800">正取生報到</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-4 md:p-6 text-gray-600"><strong>2026 年 02 月 02 日</strong></td>
+                                    <td class="p-4 md:p-6">
+                                        <span class="bg-green-500 text-white text-sm font-bold px-4 py-2 rounded-lg shadow-md inline-flex items-center gap-2"><i class="fas fa-crown"></i>第一優先</span>
+                                    </td>
+                                </tr>
+
+                                <!-- 第一波備取生報到 -->
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="p-4 md:p-6 min-w-[200px]">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                                                <i class="fas fa-users text-blue-600 text-sm"></i>
+                                            </div>
+                                            <span class="font-bold text-gray-800">第一波備取生報到</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-4 md:p-6 text-gray-600"><strong>2026 年 02 月 03 日</strong></td>
+                                    <td class="p-4 md:p-6">
+                                        <span class="bg-blue-500 text-white text-sm font-bold px-4 py-2 rounded-lg shadow-md inline-flex items-center gap-2"><i class="fas fa-list-check"></i>備選</span>
+                                    </td>
+                                </tr>
+
+                                <!-- 第二波備取生報到 -->
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="p-4 md:p-6 min-w-[200px]">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                                                <i class="fas fa-user-plus text-blue-600 text-sm"></i>
+                                            </div>
+                                            <span class="font-bold text-gray-800">第二波備取生報到</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-4 md:p-6 text-gray-600"><strong>2026 年 02 月 04 日</strong></td>
+                                    <td class="p-4 md:p-6">
+                                        <span class="bg-blue-500 text-white text-sm font-bold px-4 py-2 rounded-lg shadow-md inline-flex items-center gap-2"><i class="fas fa-list-check"></i>備選</span>
+                                    </td>
+                                </tr>
+
+                                <!-- 正式上課 -->
+                                <tr class="hover:bg-gray-50 transition bg-gradient-to-r from-indigo-50 to-purple-50">
+                                    <td class="p-4 md:p-6 min-w-[200px]">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                                                <i class="fas fa-graduation-cap text-indigo-600 text-sm"></i>
+                                            </div>
+                                            <span class="font-bold text-gray-800">正式上課時間</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-4 md:p-6 text-gray-600"><strong>2026 年 02 月 05 日</strong></td>
+                                    <td class="p-4 md:p-6">
+                                        <span class="bg-indigo-600 text-white text-sm font-bold px-4 py-2 rounded-lg shadow-md inline-flex items-center gap-2"><i class="fas fa-play-circle"></i>開課</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- February Class Schedule -->
+                <div class="mt-12 bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 rounded-2xl shadow-lg p-8 border-2 border-indigo-200">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                        <i class="fas fa-calendar-week text-indigo-600 mr-3"></i>
+                        二月份上課時間表
+                    </h3>
+                    <p class="text-gray-600 mb-6 text-sm md:text-base">
+                        <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                        <strong>上課日期：每週四、五、六</strong>
+                    </p>
+                    
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <!-- Week 1 -->
+                        <div class="bg-white rounded-xl p-6 shadow-md border-t-4 border-indigo-500 hover:shadow-lg transition">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mr-3">
+                                    <span class="text-indigo-600 font-bold">1</span>
+                                </div>
+                                <h4 class="text-lg font-bold text-gray-800">第一週</h4>
+                            </div>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-center">
+                                    <i class="fas fa-calendar-day text-indigo-500 mr-2"></i>
+                                    <span>2026/02/05 (四)</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-calendar-day text-indigo-500 mr-2"></i>
+                                    <span>2026/02/06 (五)</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-calendar-day text-indigo-500 mr-2"></i>
+                                    <span>2026/02/07 (六)</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Week 2 -->
+                        <div class="bg-white rounded-xl p-6 shadow-md border-t-4 border-purple-500 hover:shadow-lg transition">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                                    <span class="text-purple-600 font-bold">2</span>
+                                </div>
+                                <h4 class="text-lg font-bold text-gray-800">第二週</h4>
+                            </div>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-center">
+                                    <i class="fas fa-calendar-day text-purple-500 mr-2"></i>
+                                    <span>2026/02/12 (四)</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-calendar-day text-purple-500 mr-2"></i>
+                                    <span>2026/02/13 (五)</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-calendar-day text-purple-500 mr-2"></i>
+                                    <span>2026/02/14 (六)</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Week 3 -->
+                        <div class="bg-white rounded-xl p-6 shadow-md border-t-4 border-pink-500 hover:shadow-lg transition">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center mr-3">
+                                    <span class="text-pink-600 font-bold">3</span>
+                                </div>
+                                <h4 class="text-lg font-bold text-gray-800">第三週</h4>
+                            </div>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-center">
+                                    <i class="fas fa-calendar-day text-pink-500 mr-2"></i>
+                                    <span>2026/02/26 (四)</span>
+                                </li>
+                                <li class="text-gray-500 text-sm italic">
+                                    <i class="fas fa-exclamation-circle mr-2"></i>
+                                    後續課程安排將通知
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 bg-white rounded-lg p-4 border-l-4 border-amber-500">
+                        <p class="text-sm text-gray-700">
+                            <i class="fas fa-bell text-amber-500 mr-2"></i>
+                            <strong>重要提醒：</strong>請務必準時參與，如遇特殊情況需提前告知執行單位
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -991,6 +1254,533 @@
         </div>
     </section>
 
+    <!-- Teacher Introduction Section -->
+    <section id="teachers" class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-500 to-blue-600 text-white px-6 py-3 rounded-full text-sm font-bold mb-4 shadow-lg hover:shadow-xl transition-shadow">
+                    <i class="fas fa-chalkboard-user"></i>師資陣容
+                </div>
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                    <span class="bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">頂尖師資介紹</span>
+                </h2>
+                <div class="flex items-center justify-center gap-4 mb-6">
+                    <div class="w-12 h-1 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-full"></div>
+                    <i class="fas fa-sparkles text-yellow-400"></i>
+                    <div class="w-12 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"></div>
+                </div>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    聘請全國知名 <span class="font-semibold text-indigo-600">AI 與資安專長</span> 師資與業師，提供專業培訓與實務指導
+                </p>
+            </div>
+
+            <!-- Generative AI Section -->
+            <div class="mb-20">
+                <div class="bg-gradient-to-r from-indigo-50 via-blue-50 to-indigo-50 rounded-2xl p-8 md:p-10 border-l-4 border-indigo-600 mb-10 shadow-md hover:shadow-lg transition-shadow relative overflow-hidden">
+                    <div class="absolute top-0 right-0 -mr-10 -mt-10 w-40 h-40 bg-indigo-200 rounded-full opacity-10"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="fas fa-robot text-2xl text-indigo-600"></i>
+                            <h3 class="text-3xl font-bold text-indigo-900">Generative AI 賦能課程</h3>
+                        </div>
+                        <p class="text-gray-700 ml-11">生成式 AI 核心概念、應用實務與專案實作</p>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Teacher Card 1 -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 transform hover:translateY(-4px) group">
+                        <!-- 對角線背景區域 -->
+                        <div class="relative h-48 bg-gradient-to-br from-blue-600 to-indigo-600 overflow-hidden">
+                            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 300" preserveAspectRatio="none">
+                                <path d="M0,150 Q100,100 200,150 T400,150 L400,0 L0,0 Z" fill="white" opacity="0.95"/>
+                            </svg>
+                            <!-- 圓形照片 -->
+                            <div class="absolute top-4 left-6 z-10">
+                                <div class="w-32 h-32 rounded-full bg-white border-4 border-white shadow-lg overflow-hidden flex items-center justify-center">
+                                    <img src="https://aistar.tw/wp-content/uploads/2025/06/截圖-2025-06-10-晚上10.10.12.webp" alt="范書愷" class="w-full h-full object-contain">
+                                </div>
+                            </div>
+                            <!-- 右側文字 -->
+                            <div class="absolute top-4 right-6 text-right z-10">
+                                <h4 class="font-bold text-2xl text-blue-900">范書愷</h4>
+                                <p class="text-sm text-blue-700 font-semibold">北科大工業工程與管理系</p>
+                            </div>
+                        </div>
+                        <!-- 課程詳情 -->
+                        <div class="p-6 bg-white">
+                            <p class="text-2xl font-bold text-blue-700 mb-3 leading-relaxed">強化學習與專案實作</p>
+                            <div class="space-y-2 text-sm text-gray-700 leading-relaxed">
+                                <p>• 強化學習基礎理論</p>
+                                <p>• 強化學習經典算法</p>
+                                <p>• 深度強化學習模型</p>
+                                <p>• 強化學習實務應用與專案實作</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Card 2 -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 transform hover:translateY(-4px) group">
+                        <div class="relative h-48 bg-gradient-to-br from-cyan-600 to-blue-600 overflow-hidden">
+                            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 300" preserveAspectRatio="none">
+                                <path d="M0,150 Q100,100 200,150 T400,150 L400,0 L0,0 Z" fill="white" opacity="0.95"/>
+                            </svg>
+                            <div class="absolute top-4 left-6 z-10">
+                                <div class="w-32 h-32 rounded-full bg-white border-4 border-white shadow-lg overflow-hidden flex items-center justify-center">
+                                    <img src="https://aistar.tw/wp-content/uploads/2025/06/截圖-2025-06-10-晚上10.10.16.webp" alt="翁頌舜" class="w-full h-full object-contain">
+                                </div>
+                            </div>
+                            <div class="absolute top-4 right-6 text-right z-10">
+                                <h4 class="font-bold text-2xl text-blue-900">翁頌舜</h4>
+                                <p class="text-sm text-blue-700 font-semibold">北科大資訊與財金管理系</p>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-white">
+                            <p class="text-2xl font-bold text-blue-700 mb-3 leading-relaxed">生成式AI與生成式對抗網路</p>
+                            <div class="space-y-2 text-sm text-gray-700 leading-relaxed">
+                                <p>• 生成式AI核心概念與應用介紹</p>
+                                <p>• 生成對抗網路（GAN）概念與AI生成圖片</p>
+                                <p>• ChatGPT 與 AI 文字生成的原理與體驗</p>
+                                <p>• 專案實務及成果發表</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Card 3 -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 transform hover:translateY(-4px) group">
+                        <div class="relative h-48 bg-gradient-to-br from-blue-500 to-cyan-600 overflow-hidden">
+                            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 300" preserveAspectRatio="none">
+                                <path d="M0,150 Q100,100 200,150 T400,150 L400,0 L0,0 Z" fill="white" opacity="0.95"/>
+                            </svg>
+                            <div class="absolute top-4 left-6 z-10">
+                                <div class="w-32 h-32 rounded-full bg-white border-4 border-white shadow-lg overflow-hidden flex items-center justify-center">
+                                    <img src="https://aistar.tw/wp-content/uploads/2025/06/截圖-2025-06-10-晚上10.10.16.webp" alt="黃正魁" class="w-full h-full object-contain">
+                                </div>
+                            </div>
+                            <div class="absolute top-4 right-6 text-right z-10">
+                                <h4 class="font-bold text-2xl text-blue-900">黃正魁</h4>
+                                <p class="text-sm text-blue-700 font-semibold">中正大學企管系</p>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-white">
+                            <p class="text-2xl font-bold text-blue-700 mb-3 leading-relaxed">大數據與產學實務個案分析</p>
+                            <div class="space-y-2 text-sm text-gray-700 leading-relaxed">
+                                <p>• 大數據與AI 的底層邏輯</p>
+                                <p>• 大數據與AI 的管理策略</p>
+                                <p>• 產學實務個案分析</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Card 4 -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 transform hover:translateY(-4px) group">
+                        <div class="relative h-48 bg-gradient-to-br from-indigo-600 to-purple-600 overflow-hidden">
+                            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 300" preserveAspectRatio="none">
+                                <path d="M0,150 Q100,100 200,150 T400,150 L400,0 L0,0 Z" fill="white" opacity="0.95"/>
+                            </svg>
+                            <div class="absolute top-4 left-6 z-10">
+                                <div class="w-32 h-32 rounded-full bg-white border-4 border-white shadow-lg overflow-hidden flex items-center justify-center">
+                                    <img src="https://aistar.tw/wp-content/uploads/2025/06/截圖-2025-06-10-晚上10.24.08-251x300.webp" alt="黃乾怡" class="w-full h-full object-contain">
+                                </div>
+                            </div>
+                            <div class="absolute top-4 right-6 text-right z-10">
+                                <h4 class="font-bold text-2xl text-blue-900">黃乾怡</h4>
+                                <p class="text-sm text-blue-700 font-semibold">北科大工業工程與管理系</p>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-white">
+                            <p class="text-2xl font-bold text-indigo-700 mb-3 leading-relaxed">資料分析與模型評估</p>
+                            <div class="space-y-2 text-sm text-gray-700 leading-relaxed">
+                                <p>• 資料特性與前處理</p>
+                                <p>• 資料視覺化與解析</p>
+                                <p>• 關聯規則與群集分析</p>
+                                <p>• 監督式學習與模型績效評估</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Card 5 -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 transform hover:translateY(-4px) group">
+                        <div class="relative h-48 bg-gradient-to-br from-blue-600 to-purple-600 overflow-hidden">
+                            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 300" preserveAspectRatio="none">
+                                <path d="M0,150 Q100,100 200,150 T400,150 L400,0 L0,0 Z" fill="white" opacity="0.95"/>
+                            </svg>
+                            <div class="absolute top-4 left-6 z-10">
+                                <div class="w-32 h-32 rounded-full bg-white border-4 border-white shadow-lg overflow-hidden flex items-center justify-center">
+                                    <img src="https://aistar.tw/wp-content/uploads/2025/06/截圖-2025-06-10-晚上10.24.13-216x300.webp" alt="王貞淑" class="w-full h-full object-contain">
+                                </div>
+                            </div>
+                            <div class="absolute top-4 right-6 text-right z-10">
+                                <h4 class="font-bold text-2xl text-blue-900">王貞淑</h4>
+                                <p class="text-sm text-blue-700 font-semibold">北科大資訊與財金管理系</p>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-white">
+                            <p class="text-2xl font-bold text-blue-700 mb-3 leading-relaxed">深度學習模型實作與應用</p>
+                            <div class="space-y-2 text-sm text-gray-700 leading-relaxed">
+                                <p>• 深度學習與神經網路基礎</p>
+                                <p>• 反向傳播與優化方法</p>
+                                <p>• 經典深度學習模型介紹與應用</p>
+                                <p>• 實作練習與模型設計</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Card 6 -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 transform hover:translateY(-4px) group">
+                        <div class="relative h-48 bg-gradient-to-br from-purple-600 to-pink-600 overflow-hidden">
+                            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 300" preserveAspectRatio="none">
+                                <path d="M0,150 Q100,100 200,150 T400,150 L400,0 L0,0 Z" fill="white" opacity="0.95"/>
+                            </svg>
+                            <div class="absolute top-4 left-6 z-10">
+                                <div class="w-32 h-32 rounded-full bg-white border-4 border-white shadow-lg overflow-hidden flex items-center justify-center">
+                                    <img src="https://aistar.tw/wp-content/uploads/2025/06/截圖-2025-06-10-晚上10.24.16.webp" alt="賴正育" class="w-full h-full object-contain">
+                                </div>
+                            </div>
+                            <div class="absolute top-4 right-6 text-right z-10">
+                                <h4 class="font-bold text-2xl text-blue-900">賴正育</h4>
+                                <p class="text-sm text-blue-700 font-semibold">中原大學企管系</p>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-white">
+                            <p class="text-2xl font-bold text-purple-700 mb-3 leading-relaxed">敏捷開發與跨場域機器學習</p>
+                            <div class="space-y-2 text-sm text-gray-700 leading-relaxed">
+                                <p>• Scrum敏捷開發與專案管理</p>
+                                <p>• Git與GitHub軟體創作歷程管理</p>
+                                <p>• 深度學習模型實戰</p>
+                                <p>• 機器學習跨場域應用實務及成果發表</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financial Technology Section -->
+            <div>
+                <div class="bg-gradient-to-r from-green-50 via-emerald-50 to-green-50 rounded-2xl p-8 md:p-10 border-l-4 border-green-600 mb-10 shadow-md hover:shadow-lg transition-shadow relative overflow-hidden">
+                    <div class="absolute top-0 right-0 -mr-10 -mt-10 w-40 h-40 bg-green-200 rounded-full opacity-10"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="fas fa-coins text-2xl text-green-600"></i>
+                            <h3 class="text-3xl font-bold text-green-900">金融科技課程</h3>
+                        </div>
+                        <p class="text-gray-700 ml-11">AI 在金融領域的實務應用與創新解決方案</p>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Teacher Card 7 -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 transform hover:translateY(-4px) group">
+                        <div class="relative h-48 bg-gradient-to-br from-green-600 to-emerald-600 overflow-hidden">
+                            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 300" preserveAspectRatio="none">
+                                <path d="M0,150 Q100,100 200,150 T400,150 L400,0 L0,0 Z" fill="white" opacity="0.95"/>
+                            </svg>
+                            <div class="absolute top-4 left-6 z-10">
+                                <div class="w-32 h-32 rounded-full bg-white border-4 border-white shadow-lg overflow-hidden flex items-center justify-center">
+                                    <img src="https://aistar.tw/wp-content/uploads/2025/06/截圖-2025-06-10-晚上10.24.22.webp" alt="鍾建屏" class="w-full h-full object-contain">
+                                </div>
+                            </div>
+                            <div class="absolute top-4 right-6 text-right z-10">
+                                <h4 class="font-bold text-2xl text-green-900">鍾建屏</h4>
+                                <p class="text-sm text-green-700 font-semibold">北科大資訊與財金管理系</p>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-white">
+                            <p class="text-2xl font-bold text-green-700 mb-3 leading-relaxed">金融科技</p>
+                            <div class="space-y-2 text-sm text-gray-700 leading-relaxed">
+                                <p>• 金融科技發展現況及應用趨勢</p>
+                                <p>• 人工智慧在智慧金融業務的創新應用</p>
+                                <p>• 大數據與保險科技</p>
+                                <p>• 支付、P2P匯兌與數位貨幣</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Card 8 -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 transform hover:translateY(-4px) group">
+                        <div class="relative h-48 bg-gradient-to-br from-emerald-600 to-teal-600 overflow-hidden">
+                            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 300" preserveAspectRatio="none">
+                                <path d="M0,150 Q100,100 200,150 T400,150 L400,0 L0,0 Z" fill="white" opacity="0.95"/>
+                            </svg>
+                            <div class="absolute top-4 left-6 z-10">
+                                <div class="w-32 h-32 rounded-full bg-white border-4 border-white shadow-lg overflow-hidden flex items-center justify-center">
+                                    <img src="https://aistar.tw/wp-content/uploads/2025/06/截圖-2025-06-10-晚上10.24.31.webp" alt="吳牧恩" class="w-full h-full object-contain">
+                                </div>
+                            </div>
+                            <div class="absolute top-4 right-6 text-right z-10">
+                                <h4 class="font-bold text-2xl text-green-900">吳牧恩</h4>
+                                <p class="text-sm text-green-700 font-semibold">北科大資訊與財金管理系</p>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-white">
+                            <p class="text-2xl font-bold text-emerald-700 mb-3 leading-relaxed">AI智慧金融與量化交易實務</p>
+                            <div class="space-y-2 text-sm text-gray-700 leading-relaxed">
+                                <p>• 量化交易與資金管理介紹</p>
+                                <p>• 人工智慧於量化交易之應用</p>
+                                <p>• GenAI與AI Agent 在金融領域之應用與未來發展</p>
+                                <p>• 人工智慧於場景金融之議題探討</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Card 9 -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 transform hover:translateY(-4px) group">
+                        <div class="relative h-48 bg-gradient-to-br from-teal-600 to-cyan-600 overflow-hidden">
+                            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 300" preserveAspectRatio="none">
+                                <path d="M0,150 Q100,100 200,150 T400,150 L400,0 L0,0 Z" fill="white" opacity="0.95"/>
+                            </svg>
+                            <div class="absolute top-4 left-6 z-10">
+                                <div class="w-32 h-32 rounded-full bg-white border-4 border-white shadow-lg overflow-hidden flex items-center justify-center">
+                                    <img src="https://aistar.tw/wp-content/uploads/2025/06/截圖-2025-06-10-晚上10.38.41-249x300.webp" alt="林湘霖" class="w-full h-full object-contain">
+                                </div>
+                            </div>
+                            <div class="absolute top-4 right-6 text-right z-10">
+                                <h4 class="font-bold text-2xl text-green-900">林湘霖</h4>
+                                <p class="text-sm text-green-700 font-semibold">輔仁大學資管系</p>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-white">
+                            <p class="text-2xl font-bold text-teal-700 mb-3 leading-relaxed">區塊鏈技術與商業應用實務</p>
+                            <div class="space-y-2 text-sm text-gray-700 leading-relaxed">
+                                <p>• 區塊鏈概論與基礎技術介紹</p>
+                                <p>• 智能合約技術原理與應用</p>
+                                <p>• 加密貨幣與NFT的商業應用</p>
+                                <p>• 區塊鏈應用專案實務及成果發表</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Card 10 -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 transform hover:translateY(-4px) group">
+                        <div class="relative h-48 bg-gradient-to-br from-cyan-600 to-blue-600 overflow-hidden">
+                            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 300" preserveAspectRatio="none">
+                                <path d="M0,150 Q100,100 200,150 T400,150 L400,0 L0,0 Z" fill="white" opacity="0.95"/>
+                            </svg>
+                            <div class="absolute top-4 left-6 z-10">
+                                <div class="w-32 h-32 rounded-full bg-white border-4 border-white shadow-lg overflow-hidden flex items-center justify-center">
+                                    <img src="https://www.caemolding.org/website/wp-content/uploads/2022/04/%E5%91%A8%E6%A3%9F%E7%A5%A5%E6%95%99%E6%8E%88.jpg" alt="周棟祥" class="w-full h-full object-contain">
+                                </div>
+                            </div>
+                            <div class="absolute top-4 right-6 text-right z-10">
+                                <h4 class="font-bold text-2xl text-green-900">周棟祥</h4>
+                                <p class="text-sm text-green-700 font-semibold">高雄科技大學資管系</p>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-white">
+                            <p class="text-2xl font-bold text-cyan-700 mb-3 leading-relaxed">數位客戶體驗設計與創新應用</p>
+                            <div class="space-y-2 text-sm text-gray-700 leading-relaxed">
+                                <p>• 客戶體驗設計基礎</p>
+                                <p>• 使用者研究與需求洞察</p>
+                                <p>• 服務創新與設計思維</p>
+                                <p>• 數位科技在客戶體驗中的應用</p>
+                                <p>• 客戶體驗管理與績效評估</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Card 11 -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 transform hover:translateY(-4px) group">
+                        <div class="relative h-48 bg-gradient-to-br from-blue-600 to-indigo-600 overflow-hidden">
+                            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 300" preserveAspectRatio="none">
+                                <path d="M0,150 Q100,100 200,150 T400,150 L400,0 L0,0 Z" fill="white" opacity="0.95"/>
+                            </svg>
+                            <div class="absolute top-4 left-6 z-10">
+                                <div class="w-32 h-32 rounded-full bg-white border-4 border-white shadow-lg overflow-hidden flex items-center justify-center">
+                                    <img src="https://aistar.tw/wp-content/uploads/2025/06/截圖-2025-06-10-晚上10.39.22-260x300.webp" alt="黃增隆" class="w-full h-full object-contain">
+                                </div>
+                            </div>
+                            <div class="absolute top-4 right-6 text-right z-10">
+                                <h4 class="font-bold text-2xl text-green-900">黃增隆</h4>
+                                <p class="text-sm text-green-700 font-semibold">北科大經營管理系</p>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-white">
+                            <p class="text-2xl font-bold text-blue-700 mb-3 leading-relaxed">AI行銷與顧客關係管理實作</p>
+                            <div class="space-y-2 text-sm text-gray-700 leading-relaxed">
+                                <p>• 創新金融服務行銷之行動支付生態系</p>
+                                <p>• AI分析商業服務行銷文本應用</p>
+                                <p>• 顧客關係系統會員數據分析與管理</p>
+                                <p>• 顧客關係會員數據分析專案實務及成果發表</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Card 12 -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 transform hover:translateY(-4px) group">
+                        <div class="relative h-48 bg-gradient-to-br from-indigo-600 to-purple-600 overflow-hidden">
+                            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 300" preserveAspectRatio="none">
+                                <path d="M0,150 Q100,100 200,150 T400,150 L400,0 L0,0 Z" fill="white" opacity="0.95"/>
+                            </svg>
+                            <div class="absolute top-4 left-6 z-10">
+                                <div class="w-32 h-32 rounded-full bg-white border-4 border-white shadow-lg overflow-hidden flex items-center justify-center">
+                                    <img src="https://aistar.tw/wp-content/uploads/2025/06/截圖-2025-06-10-晚上10.39.32-246x300.webp" alt="魏銪志" class="w-full h-full object-contain">
+                                </div>
+                            </div>
+                            <div class="absolute top-4 right-6 text-right z-10">
+                                <h4 class="font-bold text-2xl text-green-900">魏銪志</h4>
+                                <p class="text-sm text-green-700 font-semibold">北科大資訊與財金管理系</p>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-white">
+                            <p class="text-2xl font-bold text-indigo-700 mb-3 leading-relaxed">金融資料安全與AI治理</p>
+                            <div class="space-y-2 text-sm text-gray-700 leading-relaxed">
+                                <p>• 金融資訊安全導論與資安管理</p>
+                                <p>• 個人資料保護與管理</p>
+                                <p>• 金融資安相關法規與稽核</p>
+                                <p>• AI資安與AI治理及學生專題報告</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Card 13 -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 transform hover:translateY(-4px) group">
+                        <div class="relative h-48 bg-gradient-to-br from-amber-600 to-orange-600 overflow-hidden">
+                            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 300" preserveAspectRatio="none">
+                                <path d="M0,150 Q100,100 200,150 T400,150 L400,0 L0,0 Z" fill="white" opacity="0.95"/>
+                            </svg>
+                            <div class="absolute top-4 left-6 z-10">
+                                <div class="w-32 h-32 rounded-full bg-white border-4 border-white shadow-lg overflow-hidden flex items-center justify-center">
+                                    <img src="https://aistar.tw/wp-content/uploads/2025/06/截圖-2025-06-10-晚上10.40.43-255x300.webp" alt="陳凱瀛" class="w-full h-full object-contain">
+                                </div>
+                            </div>
+                            <div class="absolute top-4 right-6 text-right z-10">
+                                <h4 class="font-bold text-2xl text-green-900">陳凱瀛</h4>
+                                <p class="text-sm text-green-700 font-semibold">北科大工業工程與管理系</p>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-white">
+                            <p class="text-2xl font-bold text-amber-700 mb-3 leading-relaxed">大數據分析與資訊系統 / AIOT</p>
+                            <div class="space-y-2 text-sm text-gray-700 leading-relaxed">
+                                <p>• AIOT</p>
+                                <p>• 大數據分析與資訊系統</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Card 14 -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 transform hover:translateY(-4px) group">
+                        <div class="relative h-48 bg-gradient-to-br from-green-600 to-teal-600 overflow-hidden">
+                            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 300" preserveAspectRatio="none">
+                                <path d="M0,150 Q100,100 200,150 T400,150 L400,0 L0,0 Z" fill="white" opacity="0.95"/>
+                            </svg>
+                            <div class="absolute top-4 left-6 z-10">
+                                <div class="w-32 h-32 rounded-full bg-white border-4 border-white shadow-lg overflow-hidden flex items-center justify-center">
+                                    <img src="https://aistar.tw/wp-content/uploads/2025/06/截圖-2025-06-10-晚上10.39.27-218x300.webp" alt="劉亮志" class="w-full h-full object-contain">
+                                </div>
+                            </div>
+                            <div class="absolute top-4 right-6 text-right z-10">
+                                <h4 class="font-bold text-2xl text-green-900">劉亮志</h4>
+                                <p class="text-sm text-green-700 font-semibold">北科大資訊與財金管理系</p>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-white">
+                            <p class="text-2xl font-bold text-green-700 mb-3 leading-relaxed">綠色與碳權財務金融</p>
+                            <div class="space-y-2 text-sm text-gray-700 leading-relaxed">
+                                <p>• 財務金融概論</p>
+                                <p>• 金融商品設計概論</p>
+                                <p>• 碳金融市場與碳權資產</p>
+                                <p>• 綠色金融創新</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Coming Soon Card -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-dashed border-gray-300 hover:shadow-2xl transition duration-300 transform hover:translateY(-4px)">
+                        <div class="relative h-40 bg-gradient-to-br from-gray-300 to-gray-400 overflow-hidden flex items-center justify-center">
+                            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 300" preserveAspectRatio="none">
+                                <path d="M0,150 Q100,100 200,150 T400,150 L400,0 L0,0 Z" fill="white" opacity="0.85"/>
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center relative z-10">
+                                <style>
+                                    @keyframes float {
+                                        0%, 100% { transform: translateY(0px) scale(1); opacity: 0.6; }
+                                        50% { transform: translateY(-15px) scale(1.1); opacity: 1; }
+                                    }
+                                    @keyframes pulse-dot {
+                                        0%, 100% { opacity: 0.4; }
+                                        50% { opacity: 1; }
+                                    }
+                                    .animate-float { animation: float 3s ease-in-out infinite; }
+                                    .dot-1 { animation: pulse-dot 1.2s ease-in-out infinite; }
+                                    .dot-2 { animation: pulse-dot 1.2s ease-in-out infinite 0.2s; }
+                                    .dot-3 { animation: pulse-dot 1.2s ease-in-out infinite 0.4s; }
+                                </style>
+                                <div class="mb-2 animate-float">
+                                    <i class="fas fa-sparkles text-3xl text-gray-400"></i>
+                                </div>
+                                <div class="flex gap-1 justify-center">
+                                    <span class="dot-1 text-2xl text-gray-400">·</span>
+                                    <span class="dot-2 text-2xl text-gray-400">·</span>
+                                    <span class="dot-3 text-2xl text-gray-400">·</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-white text-center">
+                            <h4 class="font-bold text-lg text-gray-600 mb-2">還有更多師資</h4>
+                            <p class="text-gray-500 text-sm">敬請期待</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="mt-20 bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-600 rounded-3xl p-10 md:p-16 text-center shadow-2xl">
+                <h3 class="text-2xl md:text-3xl font-bold text-white mb-6">準備好跟頂尖師資一起學習了嗎？</h3>
+                <p class="text-indigo-100 text-lg mb-8 max-w-2xl mx-auto">系統化的課程設計搭配業界經驗豐富的師資，讓您快速掌握AI規劃核心技能</p>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSezSFRfHQKcPbsF2A6oZ49PhWcUyvOHjT-yWKdI3p7egVR3Sw/viewform" target="_blank" rel="noopener noreferrer" class="inline-flex items-center bg-white text-indigo-600 px-10 py-4 rounded-full font-bold hover:bg-gray-100 transition duration-300 transform hover:scale-105 shadow-xl text-lg">
+                    <i class="fas fa-user-plus mr-3"></i>
+                    立即報名參加
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partners & Certification Section -->
+    <section class="py-16 md:py-20 bg-gradient-to-r from-gray-50 via-indigo-50 to-gray-50 border-y border-gray-200">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h3 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">合作夥伴 / 認證單位</h3>
+                <p class="text-gray-600">與產官學研攜手，共同培育AI應用人才</p>
+            </div>
+            
+            <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12 lg:gap-16">
+                <!-- 經濟部標誌 -->
+                <div class="flex flex-col items-center group">
+                    <div class="bg-white rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                        <img src="https://yt3.googleusercontent.com/3VUfiXC4FpJuyojezVGP0bUJO6udPHmkKolRMskX_58Y7E3pm-bQojoQqTIMo4JU7073koTD=s900-c-k-c0x00ffffff-no-rj" alt="經濟部標誌" class="h-20 md:h-24 object-contain">
+                    </div>
+                    <p class="mt-3 text-sm font-semibold text-gray-700">經濟部</p>
+                    <p class="text-xs text-gray-500">政策主導單位</p>
+                </div>
+
+                <!-- 北科大標誌 -->
+                <div class="flex flex-col items-center group">
+                    <div class="bg-white rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                        <img src="https://upload.wikimedia.org/wikipedia/zh/7/7e/National_Taipei_University_of_Technology_seal.svg" alt="臺北科技大學標誌" class="h-20 md:h-24 object-contain">
+                    </div>
+                    <p class="mt-3 text-sm font-semibold text-gray-700">臺北科技大學</p>
+                    <p class="text-xs text-gray-500">執行合作單位</p>
+                </div>
+
+                <!-- iPAS 認證標誌 -->
+                <div class="flex flex-col items-center group">
+                    <div class="bg-white rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                        <img src="https://talent.ipas.org.tw/_next/static/media/logo.e9d038d5.svg" alt="iPAS 認證標誌" class="h-20 md:h-24 object-contain">
+                    </div>
+                    <p class="mt-3 text-sm font-semibold text-gray-700">iPAS 認證</p>
+                    <p class="text-xs text-gray-500">專業認證單位</p>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <p class="text-sm text-gray-600 inline-flex items-center bg-white rounded-full px-6 py-2 shadow-md">
+                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                    取得國家級專業認證，開啟職涯新機遇
+                </p>
+            </div>
+        </div>
+    </section>
+
     <!-- Testimonials Section -->
     <section id="testimonials" class="py-16 md:py-24 bg-white">
         <div class="container mx-auto px-6">
@@ -1039,15 +1829,204 @@
         </div>
     </section>
 
+    <!-- FAQ Section -->
+    <section id="faq" class="py-16 md:py-24 bg-gradient-to-b from-gray-50 to-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <div class="inline-block bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-bold mb-4">
+                    <i class="fas fa-question-circle mr-2"></i>常見問題
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">學員常見問題</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">快速解答您對課程、報名、認證等方面的疑問</p>
+            </div>
+
+            <div class="max-w-3xl mx-auto">
+                <!-- FAQ Item 1 -->
+                <div class="mb-6 bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                    <button onclick="toggleFAQ(this)" class="w-full px-8 py-6 flex justify-between items-center cursor-pointer hover:bg-gray-50 transition">
+                        <div class="flex items-center">
+                            <i class="fas fa-users text-indigo-600 text-2xl mr-4"></i>
+                            <h3 class="text-lg font-bold text-gray-900 text-left">誰可以報名參加AI新秀計畫？</h3>
+                        </div>
+                        <i class="fas fa-chevron-down text-indigo-600 text-xl transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-8 pb-6 text-gray-700 border-t border-gray-200">
+                        <p class="mt-4"><strong>【金融科技與資訊安全班】招生對象：</strong></p>
+                        <ul class="mt-3 space-y-2 ml-4">
+                            <li class="flex items-start"><i class="fas fa-check text-green-500 mr-2 mt-1"></i><span><strong>本科生 20名：</strong>應屆資訊、商管相關科系學士與碩士畢業生，或畢業未滿三年者（含僑外生）</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-500 mr-2 mt-1"></i><span><strong>其他學歷：</strong>我國大專校院副學士(含二專、五專)以上學歷(含僑外生)</span></li>
+                        </ul>
+                        <p class="mt-4 text-sm text-gray-600">報名完全免費，名額有限，速速把握機會！</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="mb-6 bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                    <button onclick="toggleFAQ(this)" class="w-full px-8 py-6 flex justify-between items-center cursor-pointer hover:bg-gray-50 transition">
+                        <div class="flex items-center">
+                            <i class="fas fa-hand-holding-usd text-indigo-600 text-2xl mr-4"></i>
+                            <h3 class="text-lg font-bold text-gray-900 text-left">參加計畫需要付費嗎？補助金額是多少？</h3>
+                        </div>
+                        <i class="fas fa-chevron-down text-indigo-600 text-xl transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-8 pb-6 text-gray-700 border-t border-gray-200">
+                        <p class="mt-4"><strong class="text-green-600 text-lg">計畫期間全額補助！</strong></p>
+                        <div class="mt-4 bg-indigo-50 rounded-lg p-4">
+                            <p class="font-semibold mb-2">💰 補助標準：</p>
+                            <p><strong>培訓期間：</strong>每月 2 萬元（4個月）</p>
+                            <p><strong>實習期間：</strong>每月 3 萬元（4個月）</p>
+                            <p class="mt-3 font-bold text-lg text-indigo-600">總補助金額最高 28 萬元</p>
+                        </div>
+                        <p class="mt-4 text-sm text-gray-600">✓ 報名免費 ✓ 培訓費用全免 ✓ 還有高額獎勵金</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="mb-6 bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                    <button onclick="toggleFAQ(this)" class="w-full px-8 py-6 flex justify-between items-center cursor-pointer hover:bg-gray-50 transition">
+                        <div class="flex items-center">
+                            <i class="fas fa-book text-indigo-600 text-2xl mr-4"></i>
+                            <h3 class="text-lg font-bold text-gray-900 text-left">課程內容包括哪些？</h3>
+                        </div>
+                        <i class="fas fa-chevron-down text-indigo-600 text-xl transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-8 pb-6 text-gray-700 border-t border-gray-200">
+                        <p class="mt-4"><strong>【金融科技與資訊安全班】課程模組：</strong></p>
+                        <ul class="mt-3 space-y-2 ml-4">
+                            <li class="flex items-start"><i class="fas fa-arrow-right text-indigo-500 mr-2 mt-1"></i><span><strong>基礎紮根：</strong>AI基礎線上課程、資訊安全</span></li>
+                            <li class="flex items-start"><i class="fas fa-arrow-right text-indigo-500 mr-2 mt-1"></i><span><strong>核心課程：</strong>生成式AI賦能、機器學習與深度學習</span></li>
+                            <li class="flex items-start"><i class="fas fa-arrow-right text-indigo-500 mr-2 mt-1"></i><span><strong>綜整課程：</strong>UMichigan/IBM/UVA課程、生成式AI實務、金融科技與區塊鏈、金融服務轉型、永續金融與資安</span></li>
+                            <li class="flex items-start"><i class="fas fa-arrow-right text-indigo-500 mr-2 mt-1"></i><span><strong>實做/專題：</strong>金融科技與區塊鏈實務、金融服務與轉型專案</span></li>
+                        </ul>
+                        <p class="mt-4 text-sm text-gray-600">總課程時數共 300 小時，涵蓋理論與實務應用</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="mb-6 bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                    <button onclick="toggleFAQ(this)" class="w-full px-8 py-6 flex justify-between items-center cursor-pointer hover:bg-gray-50 transition">
+                        <div class="flex items-center">
+                            <i class="fas fa-calendar-alt text-indigo-600 text-2xl mr-4"></i>
+                            <h3 class="text-lg font-bold text-gray-900 text-left">課程時程如何安排？</h3>
+                        </div>
+                        <i class="fas fa-chevron-down text-indigo-600 text-xl transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-8 pb-6 text-gray-700 border-t border-gray-200">
+                        <p class="mt-4"><strong>培訓模式：8個月</strong></p>
+                        <div class="mt-4 bg-indigo-50 rounded-lg p-4">
+                            <p class="mb-3"><strong>📚 AI應用培訓：4個月</strong></p>
+                            <p class="mb-4 text-sm">系統化教學，建立紮實基礎</p>
+                            <p><strong>💼 企業實習：4個月</strong></p>
+                            <p class="text-sm">與合作企業進行實務工作，學以致用</p>
+                        </div>
+                        <p class="mt-4 text-sm text-gray-600">授課地點：臺北科技大學（捷運忠孝新生站旁）</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 5 -->
+                <div class="mb-6 bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                    <button onclick="toggleFAQ(this)" class="w-full px-8 py-6 flex justify-between items-center cursor-pointer hover:bg-gray-50 transition">
+                        <div class="flex items-center">
+                            <i class="fas fa-briefcase text-indigo-600 text-2xl mr-4"></i>
+                            <h3 class="text-lg font-bold text-gray-900 text-left">完成後會安排工作嗎？</h3>
+                        </div>
+                        <i class="fas fa-chevron-down text-indigo-600 text-xl transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-8 pb-6 text-gray-700 border-t border-gray-200">
+                        <p class="mt-4"><strong>畢業即就業！</strong></p>
+                        <ul class="mt-3 space-y-2 ml-4">
+                            <li class="flex items-start"><i class="fas fa-check text-green-500 mr-2 mt-1"></i><span>與眾多知名企業合作，提供AI與金融產業、資訊服務相關工作實習職缺</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-500 mr-2 mt-1"></i><span>實習表現優異可獲得正職職缺，且免綁約，自己可選擇是否留任</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-500 mr-2 mt-1"></i><span>打造未來兩年職涯跳板，成為企業即戰力人才</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 6 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                    <button onclick="toggleFAQ(this)" class="w-full px-8 py-6 flex justify-between items-center cursor-pointer hover:bg-gray-50 transition">
+                        <div class="flex items-center">
+                            <i class="fas fa-phone text-indigo-600 text-2xl mr-4"></i>
+                            <h3 class="text-lg font-bold text-gray-900 text-left">如何報名？聯絡方式？</h3>
+                        </div>
+                        <i class="fas fa-chevron-down text-indigo-600 text-xl transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-8 pb-6 text-gray-700 border-t border-gray-200">
+                        <p class="mt-4"><strong>📝 本科生(資訊，資工，商管)報名期間：</strong>2026/01/09 (五) ～ 2026/01/26 21:00 (一) 中午12:00截止</p>
+                        <div class="mt-4 bg-indigo-50 rounded-lg p-4">
+                            <p class="font-semibold mb-2">聯絡課程顧問：</p>
+                            <p><strong>李先生</strong></p>
+                            <p>(02) 2771-2171 #5901</p>
+                            <p class="text-sm text-gray-600 mt-2">週一至週五 09:00-18:00</p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSezSFRfHQKcPbsF2A6oZ49PhWcUyvOHjT-yWKdI3p7egVR3Sw/viewform" target="_blank" rel="noopener noreferrer" class="inline-flex items-center bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-bold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-xl">
+                    <i class="fas fa-user-plus mr-3"></i>
+                    立即報名諮詢
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- Call to Action Section -->
     <section id="register" class="bg-indigo-700">
         <div class="container mx-auto px-6 py-16 md:py-20 text-center">
             <h2 class="text-3xl md:text-4xl font-bold text-white">立即開啟您的 AI 職涯新篇章！</h2>
             <p class="mt-4 text-indigo-200 max-w-2xl mx-auto">名額有限，立即報名最近期班次，或留下資料索取完整課程簡章。</p>
             <div class="mt-8">
-                <a href="#" class="bg-pink-500 text-white px-10 py-4 rounded-full text-xl font-semibold hover:bg-pink-600 transition duration-300 transform hover:scale-105 inline-block shadow-lg">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSezSFRfHQKcPbsF2A6oZ49PhWcUyvOHjT-yWKdI3p7egVR3Sw/viewform" class="bg-pink-500 text-white px-10 py-4 rounded-full text-xl font-semibold hover:bg-pink-600 transition duration-300 transform hover:scale-105 inline-block shadow-lg">
                     立即報名課程
                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 智慧金融班聯絡資訊 -->
+    <section id="contact" class="bg-gray-700 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- 左列：地點 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-map-marker-alt text-red-400 mr-3"></i>
+                        課程地點
+                    </h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        106臺北市大安區忠孝東路三段1號<br>
+                        資訊與財金管理系<br>
+                        <span class="text-sm">智慧金融實驗室(宏裕科技大樓727)</span>
+                    </p>
+                </div>
+
+                <!-- 中列：班級與聯絡人 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-graduation-cap text-blue-400 mr-3"></i>
+                        課程資訊
+                    </h3>
+                    <p class="text-gray-300 mb-4 font-semibold">【智慧金融班】</p>
+                    <p class="text-gray-300 mb-2"><strong>聯絡人：</strong>李先生</p>
+                    <p class="text-gray-300"><strong>電話：</strong>（02）2771-2171 #5901</p>
+                </div>
+
+                <!-- 右列：Email -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-envelope text-green-400 mr-3"></i>
+                        聯絡方式
+                    </h3>
+                    <p class="text-gray-300 break-all">
+                        <strong>Email：</strong><br>
+                        <a href="mailto:willy.workinifm@gmail.com" class="text-blue-300 hover:text-blue-100 transition">
+                            willy.workinifm@gmail.com
+                        </a>
+                    </p>
+                </div>
             </div>
         </div>
     </section>
@@ -1055,7 +2034,7 @@
     <!-- Footer -->
     <footer class="bg-gray-800 text-white">
         <div class="container mx-auto px-6 py-8 text-center text-sm text-gray-400">
-            <p>&copy; 2025 AI 應用規劃師專業輔考. All Rights Reserved.</p>
+            <p>&copy; 2026 AI 應用規劃師專業輔考. All Rights Reserved.</p>
             <p class="mt-2">本網站僅為展示用途，所有資訊以官方公告為準。</p>
         </div>
     </footer>
@@ -1072,9 +2051,11 @@
         function toggleMobileMenu() {
             const mobileMenu = document.getElementById('mobileMenu');
             const overlay = document.getElementById('mobileMenuOverlay');
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
             
             mobileMenu.classList.toggle('active');
             overlay.classList.toggle('active');
+            hamburgerBtn.classList.toggle('active');
             
             // Prevent body scroll when menu is open
             if (mobileMenu.classList.contains('active')) {
@@ -1082,6 +2063,15 @@
             } else {
                 document.body.style.overflow = 'auto';
             }
+        }
+
+        // FAQ toggle function
+        function toggleFAQ(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('i:last-child');
+            
+            content.classList.toggle('hidden');
+            icon.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
         }
 
         function changeTab(tabName) {
