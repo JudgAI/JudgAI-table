@@ -1,0 +1,208 @@
+/**
+ * 轉導至店鋪首頁
+ * @param {string} entpCode 廠編
+ */
+function redirectToShopMain(entpCode) {
+  if (!entpCode) {
+    return;
+  }
+  let domain = `//${location.hostname}`;
+  if (/(www|m)\.momoshop\.com\.tw/.test(location.hostname)) {
+    domain = '//www.momoshop.com.tw'
+  }else if (location.hostname.includes('qc')||location.hostname.includes('uat')) {
+    //將uat或qc的小網domain轉成對應3p的大網domain
+    domain = domain.replace(/mqc/, 'momoqc');
+    domain = domain.replace(/muat/, 'momouat');
+   }
+  location.href = `${domain}/TP/${entpCode}/main`;
+}
+
+/**
+ * 轉導店鋪商品頁
+ * @param {*} entpCode 
+ * @param {*} goodsCode 
+ */
+function toShopGoodsPage(entpCode, goodsCode) {
+  if (!entpCode) {
+    return;
+  }
+
+  let domain = `//${location.hostname}`;
+
+  if (/(www|m)\.momoshop\.com\.tw/.test(location.hostname)) {
+    domain = '//www.momoshop.com.tw'
+  }else if (location.hostname.includes('qc')||location.hostname.includes('uat')) {
+   //將uat或qc的小網domain轉成對應3p的大網domain
+   domain = domain.replace(/mqc/, 'momoqc');
+   domain = domain.replace(/muat/, 'momouat');
+  }
+  location.href = domain+`/TP/${entpCode}/goodsDetail/${goodsCode}`;
+}
+
+
+/**
+ * 將uat或qc的小網domain轉成對應3p的大網domain
+ * @param {*} currentDomain 
+ */
+function convertTest3pDomain(currentDomain) {
+  let newDomain='';
+  let numMatchUat = currentDomain.match(/muat(\d+)/)
+  if (numMatchUat) {
+    let num = parseInt(numMatchUat[1]);
+    newDomain = currentDomain.replace('muat' + num, 'momouat' + num);
+  }
+  let numMatchQc = currentDomain.match(/mqc(\d+)/)
+  if (numMatchQc) {
+    let num = parseInt(numMatchQc[1]);
+    newDomain = currentDomain.replace('mqc' + num, 'momoqc' + num);
+  }
+  return newDomain;
+}
+
+/**
+ * 判斷3p網址是不是舊的
+ * @param {string} href 
+ * @returns 是=>retun 新的格式url;否=>return 空
+ */
+function checkShopUrl(href) {
+  let domain = `${location.hostname}`;
+  if (/(www|m)\.momoshop\.com\.tw/.test(location.hostname)) {
+    domain = 'www.momoshop.com.tw'
+  }
+  const regex = /\/TP\/(goods|main|category|search)\/(goodsDetail|main|glist|clist|edmlist|custedm|qa|category|promoDtList|search)\.jsp/;
+  const regex2 = /\/TP\/(storeInfo|goodsRank)\.jsp/;
+  const match = href.match(regex);
+  const match2 = href.match(regex2);
+  let newHref = '';
+  if (match) {
+    const params = getQueryParams(href);
+    switch (match[1]) {
+      case 'goods':
+        newHref = `//${domain}/TP/${params['entpCode']}/goodsDetail/${params['i_code']}`;
+        break;
+      case 'main':
+        switch (match[2]) {
+          case 'main': //商店_首頁
+            newHref = `//${domain}/TP/${params['entpCode']}/main`;
+            break;
+          case 'glist': //商店_首頁_商店頁籤
+            newHref = `//${domain}/TP/${params['entpCode']}/goods`;
+            break;
+          case 'clist': //商店_首頁_分類頁籤
+            newHref = `//store.momo.com.tw/${params['entpCode']}`;
+            break;
+          case 'edmlist': //商店_首頁_熱門活動頁
+            newHref = `//${domain}/TP/${params['entpCode']}/activities`;
+            break;
+          case 'custedm': //商店_自訂頁籤(EDM)
+            newHref = `//${domain}/TP/${params['entpCode']}/edm/edmID`;
+            break;
+          case 'qa': //商店_Q&A
+            newHref = `//${domain}/TP/${params['entpCode']}/qa`;
+            break;
+          default:
+            break;
+        }
+        break;
+      case 'category':
+        newHref = `//${location.hostname}/category.momo?cn=${params['cateCode']}&cid=dir&entpCode=${params['entpCode']}`;
+        newHref = getNewQueryString(["cateCode", "entpCode"], params, newHref);
+        break;
+      case 'search':
+        if ('promoDtList' == match[2]) {
+          newHref = `//${location.hostname}/promoDtList.momo?promoNo=${params['promo']}&entpCode=${params['entpCode']}`;
+          newHref = getNewQueryString(["promo", "entpCode"], params, newHref);
+        } else if ('search' == match[2]) {
+          newHref = `//${location.hostname}/search.momo?searchKeyword=${params['keyword']}&entpCode=${params['entpCode']}`;
+          newHref = getNewQueryString(["keyword", "entpCode"], params, newHref);
+        }
+        break;
+      default:
+        break;
+    }
+  } else if (match2) {
+    const params = getQueryParams(href);
+    switch (match2[1]) {
+      case 'storeInfo': //商店_詳情頁
+        newHref = `//${domain}/TP/${params['entpCode']}/about`;
+        break;
+      case 'goodsRank': //商店_商店評價頁
+        newHref = `//${domain}/TP/${params['entpCode']}/comments`;
+        newHref = getNewQueryString(["entpCode"], params, newHref);
+        break;
+      default:
+        break;
+    }
+  }else {
+    newHref = href;
+  }
+  return newHref;
+}
+
+/**
+ * 取得params
+ * @param {string} url 
+ * @returns 
+ */
+function getQueryParams(url) {
+  const params = {};
+  const queryString = url.split('?')[1];
+  if (queryString) {
+    const pairs = queryString.split('&');
+    pairs.forEach(pair => {
+      const [key, value] = pair.split('=');
+      params[key] = value;
+    });
+  }
+  return params;
+}
+
+function keysToRemove(keyArray, queryObject) {
+  let filteredObj = {};
+  for (let key in queryObject) {
+    if (queryObject.hasOwnProperty(key) && !keyArray.includes(key)) {
+      filteredObj[key] = queryObject[key];
+    }
+  }
+  return filteredObj;
+}
+
+function getNewQueryString(keyArray, queryObject, newHref) {
+  let filteredObj = keysToRemove(keyArray, queryObject);
+  let newQueryString = Object.keys(filteredObj).map(key => {
+    return `${key}=${filteredObj[key]}`;
+  }).join('&');
+  if (newQueryString) {
+    newHref += `&${newQueryString}`;
+  }
+  return newHref;
+}
+
+/**
+ * 店鋪商品頁url
+ * @param {*} entpCode 
+ * @param {*} goodsCode 
+ */
+function getShopGoodsPageUrl(entpCode, goodsCode) {
+  if (!entpCode) {
+    return;
+  }
+
+  let domain = `//${location.hostname}`;
+  if (/(www|m)\.momoshop\.com\.tw/.test(location.hostname)) {
+    domain = '//www.momoshop.com.tw'
+  }
+  return `${domain}/TP/${entpCode}/goodsDetail/${goodsCode}`;
+}
+
+/**
+ * 店鋪首頁url
+ * @param {string} entpCode 廠編
+ */
+function getShopMainUrl(entpCode) {
+  let domain = `//${location.hostname}`;
+  if (/(www|m)\.momoshop\.com\.tw/.test(location.hostname)) {
+    domain = '//www.momoshop.com.tw'
+  }
+  return `${domain}/TP/${entpCode}/main`;
+}

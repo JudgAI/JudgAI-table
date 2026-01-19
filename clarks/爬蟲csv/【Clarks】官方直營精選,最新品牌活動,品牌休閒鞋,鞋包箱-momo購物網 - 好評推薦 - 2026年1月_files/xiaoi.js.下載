@@ -1,0 +1,21 @@
+(function($) {
+  var domainType = momoj().getDomainType();
+  var showXiaoi = momoj().showXiaoi(domainType);
+  if(showXiaoi) {
+    if(domainType == "mWeb") {//小網
+      let xiaoRtn = momoj.ajaxTool({data:{flag:"getXiaoiToken"}});
+      if(xiaoRtn && xiaoRtn.rtnData){
+        let token = xiaoRtn.rtnData.token || "";
+        let xiaoVer = xiaoRtn.rtnData.version || "1";
+        momoj().importXiaoiWebChatJs(domainType,token, xiaoVer);
+      }
+    } else if(domainType == "bWeb") {//大網
+      let xiaoRtn = momoj.ajaxTool({data:{flag:6004}});
+      if(xiaoRtn && xiaoRtn.rtnData){
+        let token = xiaoRtn.rtnData.token || "";
+        let xiaoVer = xiaoRtn.rtnData.version || "1";
+        momoj().importXiaoiWebChatJs(domainType, token, xiaoVer);
+      }
+    }
+  }
+})(jQuery);

@@ -1,0 +1,55 @@
+var GoodsTagUtil = {  //GoodsTag 跟會員的物件命名衝突，故改名為 "GoodsTagUtil"
+  /**
+   * @private
+   * 組裝 goodsTag 畫面實作
+   * @param {Object} tag
+   * @returns {string} 標籤 HTML
+   * @author tashuchiu
+   */
+  _createTagHtml: function (tag) {
+    const tagTypes = {
+      '店⁺': 'icon-store',// 文字（全形加號）
+      '店+': 'icon-store',// 文字（半形加號）
+      '&#24215;&#8314;': 'icon-store',// HTML 寫法（店⁺）
+      '&#24215;&#43;': 'icon-store',// HTML 寫法（店+)
+      '預': 'icon-preorder',
+      '預購': 'icon-preorder',
+      '&#38960;': 'icon-preorder',// HTML 寫法（預）
+      '&#38960;&#36028;': 'icon-preorder',// HTML 寫法（預購
+      '限時搶購': 'ec-tag ec-tag-sm ec-flash-sale',
+      '跨境': 'ec-intl',//跨境tag
+      '&#36328;&#22659;': 'ec-intl',// HTML 寫法（跨境）
+      '好店':'ec-tag ec-tag-sm ec-good-store',
+      '&#22909;&#24215;':'ec-tag ec-tag-sm ec-good-store',// HTML 寫法（好店）
+    };
+
+    const { content = '', textColor = '', bgColor = '', imgUrl = '' } = tag;
+    const className = tagTypes[content];
+    if (className) {
+      if (imgUrl) {
+        return `<span class="${className}" style="color:${textColor}; background-color:${bgColor};">
+                <img src="${imgUrl}" alt="${content}"/>
+              </span>`;
+      } else {
+        return `<span class="${className}" style="color:${textColor}; background-color:${bgColor};">
+                ${content}
+              </span>`;
+      }
+    }
+    return "";
+  },
+
+  /**
+   * 一般畫面 goodsTag 組畫面
+   * @param {Array} goodsTag
+   * @returns {string}
+   * @author tashuchiu
+   */
+  createAllGoodsTag: function (goodsTag) {
+    if (!goodsTag || !Array.isArray(goodsTag) || goodsTag.length === 0) {
+      return '';
+    }
+    let tagsHtml = goodsTag.map(tag => this._createTagHtml(tag)).join('');
+    return tagsHtml ? `<span class="icon-group">${tagsHtml}</span>` : '';
+  },
+};

@@ -1,0 +1,333 @@
+@charset "UTF-8";
+/** 新增屬性區塊(新版) **/
+.bt_2_layout_Content .attributesListArea {margin:10px 0 0; position:relative; z-index:3; -moz-transition: 500ms; -ms-transition: 500ms; -o-transition: 500ms; -webkit-transition: 500ms; transition: 500ms;}
+.bt_2_layout_Content .attributesListArea table {border:1px solid #CCCCCC; border-top:0px}
+.bt_2_layout_Content .attributesListArea table tr th,
+.bt_2_layout_Content .attributesListArea table tr td {max-height:80px; font:13px/20px Helvetica; color:#333333; padding:0px 10px; vertical-align:top; position:relative}
+.bt_2_layout_Content .attributesListArea table tr th {background-color:#F4F4F4; width:70px; color:#333333; text-align:left; white-space:nowrap; overflow:hidden; padding:9px 10px}
+.bt_2_layout_Content .attributesListArea table tr th::after,
+.bt_2_layout_Content .attributesListArea table tr td::after {background-color:#CCCCCC; width:100%; height:1px; content:''; position:absolute; top:0px; left:0px}
+.bt_2_layout_Content .attributesListArea table tbody tr:first-child th,
+.bt_2_layout_Content .attributesListArea table tbody tr:first-child td {border:0px}
+
+.bt_2_layout_Content .attributesListArea table tr td .expansionUlBtn,
+.bt_2_layout_Content .attributesListArea table tr td .collapseUlBtn {border:1px solid #CCCCCC; background:transparent url(//image.momoshop.com.tw/ecm/img/cmm/search/expansionBtnBk.png) no-repeat 40px 7px; height:18px; font:13px/18px Helvetica; padding:0px 20px 0px 10px; position:absolute; top:10px; right:5px}
+.bt_2_layout_Content .attributesListArea table tr td .collapseUlBtn {background:transparent url(//image.momoshop.com.tw/ecm/img/cmm/search/collapseBtnBk.png) no-repeat 40px 7px}
+.bt_2_layout_Content .attributesListArea table tr td .multipleChoiceBtn {height:18px; font:13px/18px Helvetica; padding:0px 5px 0px 15px; border:1px solid #CCCCCC; position:absolute; top:10px; right:5px}
+.bt_2_layout_Content .attributesListArea table tr td .multipleChoiceBtn::before {background-color:#333333; width:6px; height:2px; content:''; position:absolute; top:8px; left:5px}
+.bt_2_layout_Content .attributesListArea table tr td .multipleChoiceBtn::after {background-color:#333333; width:2px; height:6px; content:''; position:absolute; top:6px; left:7px}
+.bt_2_layout_Content .attributesListArea table tr td ul {width:97%; margin:0px; padding:0px; list-style:none; overflow:hidden}
+.bt_2_layout_Content .attributesListArea table .multipleType td div {width:100%; max-height:200px; overflow-y:auto}
+.bt_2_layout_Content .attributesListArea table tr td ul li {float:left; width:160px; height:40px; margin:0px 5px 0px 0px; position:relative}
+.bt_2_layout_Content .attributesListArea table tr td ul li input {margin:0px; position:absolute; top:13px; display:none; left: 0px}
+.bt_2_layout_Content .attributesListArea table tr td ul li label {width:auto;max-width: 160px; font:13px/40px Helvetica; white-space:nowrap; text-overflow:ellipsis; margin:0px; overflow:hidden; cursor:pointer; display:inline-block}
+.bt_2_layout_Content .attributesListArea table tr td ul li label:hover {color:#D62872}
+.bt_2_layout_Content .attributesListArea table tr td ul li a {width:160px; font:13px/40px Helvetica; white-space:nowrap; text-overflow:ellipsis; margin:0px; display:inline-block; overflow:hidden}
+.bt_2_layout_Content .attributesListArea table tr td ul li a:hover {color:#D62872}
+.bt_2_layout_Content .attributesListArea table tr td .minHeight {height:40px}
+.bt_2_layout_Content .attributesListArea table .brandList td .minHeight {height:80px}
+.bt_2_layout_Content .attributesListArea table tr td .brandsList li {width:160px}
+/** 20170628點擊多選後的樣式 **/
+.bt_2_layout_Content .attributesListArea table .multipleType th {background-color:#5B5B5B; color:#FFFFFF}
+.bt_2_layout_Content .attributesListArea table .multipleType th::after,
+.bt_2_layout_Content .attributesListArea table .multipleType td::after {background-color:#333333}
+
+/** 20170720其他選項 **/
+.bt_2_layout_Content .attributesListArea table .otheroptionArea td {padding:10px 70px 0px 10px}
+.bt_2_layout_Content .attributesListArea table .otheroptionArea td .otherTitle {float:left; margin:0px 20px 10px 0px; cursor:pointer}
+.bt_2_layout_Content .attributesListArea table .otheroptionArea td .otherTitle span {height:18px; line-height:18px; padding:0px 15px 0px 5px; border:1px solid #CCCCCC; position:relative; transition:all 200ms ease-out 0s; display:block}
+.bt_2_layout_Content .attributesListArea table .otheroptionArea td .otherTitle span::before {background: transparent url(//image.momoshop.com.tw/ecm/img/cmm/search/expansionBtnBk.png) no-repeat center/8px;width: 8px;height: 6px;content: '';position: absolute;top: 5px;right: 5px;}
+.bt_2_layout_Content .attributesListArea table .otheroptionArea td .moreTitleBtn {margin:0px; position:absolute; top:10px; right:5px}
+.bt_2_layout_Content .attributesListArea table .otheroptionArea td .openList {position:relative; z-index:6}
+.bt_2_layout_Content .attributesListArea table .otheroptionArea td .openList span {border-color:#666666; border-bottom-color:#FFFFFF;color: #D62872}
+.bt_2_layout_Content .attributesListArea table .otheroptionArea td .openList span::before {transform:scaley(-1);background: transparent url(//image.momoshop.com.tw/ecm/img/cmm/search/expansionBtnPK_down.png) no-repeat center/8px;}
+/** 20210615_新增篩選mouseover範圍 **/
+.bt_2_layout_Content .attributesListArea .attributesotherListArea{width:1000px;padding: 15px; position:absolute;top:0px;right:-15px;z-index:5;display:none; transition:all 200ms ease-out 0s;}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea .innerArea {background: #fff;padding: 10px;box-sizing: border-box;border: 1px solid #666;position: relative; box-shadow:5px 5px 5px rgba(0,0,0,0.3); }
+
+.bt_2_layout_Content .attributesListArea .attributesotherListArea .multipleChoiceBtn {height:18px; font:13px/18px Helvetica; padding:0px 5px 0px 15px; border:1px solid #CCCCCC; position:absolute; top:10px; right:5px}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea .multipleChoiceBtn::before {background-color:#333333; width:6px; height:2px; content:''; position:absolute; top:8px; left:5px}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea .multipleChoiceBtn::after {background-color:#333333; width:2px; height:6px; content:''; position:absolute; top:6px; left:7px}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea ul {width:97%; margin:0px; padding:0px; list-style:none; overflow:hidden}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea ul li {float:left; width:160px; height:40px; margin:0px 5px 0px 0px; position:relative}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea ul li input {margin:0px; position:absolute; top:13px; display:none; left: 0px;}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea ul li label {width:110px; font:13px/40px Helvetica; white-space:nowrap; text-overflow:ellipsis; margin:0px; overflow:hidden; cursor:pointer; display:inline-block}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea ul li label:hover {color:#D62872}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea ul li a {width:160px; font:13px/40px Helvetica; white-space:nowrap; text-overflow:ellipsis; margin:0px; display:inline-block; overflow:hidden}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea .multipleType li input {display:block}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea .multipleType li input[type="checkbox"]:checked + label {color:#E40480}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea .multipleType li label {width:140px; margin:0px 0px 0px 20px}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea .multipleShowBtnArea {height:30px; text-align:center; margin:0px 0px 5px 0px; display:none}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea .multipleShowBtnArea a {background-color:#E7E7E7; font:13px/24px Helvetica; color:#434343; margin:3px 5px; padding:0px 25px; display:inline-block}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea .multipleShowBtnArea a.confirm {background-color:#D62872; color:#FFFFFF;}
+
+.bt_2_layout_Content .attributesListArea table .multipleType th::before,
+.bt_2_layout_Content .attributesListArea table .multipleType td::before {background-color:#333333; width:100%; height:1px; content:''; position:absolute; bottom:-1px; left:0px; z-index:1}
+.bt_2_layout_Content .attributesListArea table .multipleType th span,
+.bt_2_layout_Content .attributesListArea table .multipleType td .line {background-color:#333333; width:1px; height:100%; display:inline-block; position:absolute; top:0px; left:0px}
+.bt_2_layout_Content .attributesListArea table .multipleType td .line {left:inherit; right:0px}
+.bt_2_layout_Content .attributesListArea table .multipleType td ul li input {display:block}
+.bt_2_layout_Content .attributesListArea table .multipleType td ul li input[type="checkbox"]:checked + label {color:#E40480}
+.bt_2_layout_Content .attributesListArea table .multipleType td ul li label {width:140px; margin:0px 0px 0px 20px}
+.bt_2_layout_Content .attributesListArea table tr td .multipleShowBtnArea {height:30px; text-align:center; margin:0px 0px 5px 0px; display:none}
+.bt_2_layout_Content .attributesListArea table tr td .multipleShowBtnArea a {background-color:#E7E7E7; font:13px/24px Helvetica; color:#434343; margin:3px 5px; padding:0px 25px; display:inline-block}
+.bt_2_layout_Content .attributesListArea table tr td .multipleShowBtnArea a.confirm {background-color:#D62872; color:#FFFFFF;}
+.bt_2_layout_Content .attributesListArea table .multipleType td .multipleShowBtnArea {display:block}
+.bt_2_layout_Content .attributesListArea table .multipleType td .expansionUlBtn {display:none}
+.bt_2_layout_Content .attributesListArea .floatTable{background: transparent;position: absolute;top: 0px;display: none;padding: 15px;box-sizing: border-box;width: calc(100% + 30px);left: -15px;border:none;}
+.bt_2_layout_Content .attributesListArea table tr td{background: #fff;}
+
+
+/** 篩選 **/
+.menuArea {background-color:#E7E7E7; height:40px; display: flex; position:relative;font:13px/20px Helvetica; color:#333333;}
+.menuSearchType,
+.menuSearchType li {margin:0px; padding:0px; list-style:none}
+.menuSearchType{width: 100%; display: flex; box-sizing: border-box;}
+.menuSearchType li {position:relative; flex: 1; font:13px/40px Helvetica; color:#333333; text-align:center; cursor:pointer;width: 75px;}
+.menuSearchType li:hover,
+.menuSearchType .selected {background-color:#D62872; color:#FFFFFF}
+.priceHeight,.review-height {background:transparent url(http://image.momoshop.com.tw/ecm/img/cmm/search/priceHeightBk.png) no-repeat calc(50% + 20px) center}
+.priceHeight:hover,
+.priceHeight.selected,
+.review-height:hover,
+.review-height.selected {background:#D62872 url(http://image.momoshop.com.tw/ecm/img/cmm/search/priceHeightBk_h.png) no-repeat calc(50% + 20px) center}
+.priceHeight.selected.up,.priceHeight.selected.down,.review-height.selected.up,.review-height.selected.down{background-image: none;}
+.priceHeight.selected.up::before,.priceHeight.selected.down::before,.review-height.selected.up::before,.review-height.selected.down::before{content:'';position:absolute;top:14px;display:block;width:5px;height:9px;background-image:url(https://www.momoshop.com.tw/ecm/img/cmm/search/priceHeightBk_h.png); background-repeat: no-repeat; left: calc(50% + 17px);}
+.priceHeight.selected.up::before,.review-height.selected.up::before {background-position: 0 top;}
+.priceHeight.selected.down::before,.review-height.selected.down::before {background-position: 0 bottom;}
+.priceInput,.optionsLi,.viewType{height:20px;  margin:10px 0;}
+.priceInput{width: 220px;}
+.priceInput input[type=text] {width:60px; height:18px; font:13px/18px Helvetica; color:#333333; text-align:right; border:0px; margin:0px 10px 0px 0px; padding:1px 5px; vertical-align:middle; position:relative; top:-1px}
+.priceInput input[type=text]:first-child {margin:0}
+.priceInput .priceBtn {background-color:#333333; height:20px; font:13px/20px Helvetica; color:#FFFFFF; padding:0px 10px; display:inline-block}
+.optionsLi{flex: 1; display: flex; padding:0 10px;border-left:1px solid #A0A0A0; overflow:hidden; position:relative}
+.openOption {overflow:inherit}
+.optionsBox{width: calc(100% - 38px);}
+.optionBtn {background: transparent url(http://image.momoshop.com.tw/ecm/img/cmm/search/expansionBtnPK_down.png) no-repeat center right / 8px; line-height:20px; color:#D62872; padding:0px 12px 0px 0px; display:block; order: 2; cursor: pointer;}
+.openOption .optionBtn {background-image:url(http://image.momoshop.com.tw/ecm/img/cmm/search/expansionBtnPK_up.png); height:20px; line-height:20px; position: absolute; top:6px; right: -65px; z-index: 4; pointer-events: none;}
+.optionsList{margin: 0; padding: 0; display: flex; flex-wrap: wrap; overflow: hidden; order: 1;}
+.optionsList [class*="optionsList__"]{ display: flex; align-items: center; align-content: center; padding-right: 10px; user-select: none;}
+.optionsList input[type=checkbox] {margin:0px; display: block;}
+.optionsList label {display: block; padding-left: 5px;}
+.optionsList input[type=checkbox]:checked + label {color:#D62872;}
+.optionsList [class*="optionsList__title"]{display: none;  background-color: #f4f4f4; }
+.openOption .optionsList{width: 760px; display: grid; grid-template: repeat(3,1fr) / repeat(5,1fr) 110px 1fr; padding: 0; background-color: #fff; border-radius: 2px; border: 1px solid #999; position: absolute; top: -3px;right: -75px; z-index: 5; box-sizing: border-box;}
+.openOption .optionsList li{padding: 10px 5px;}
+.openOption .optionsList [class*="optionsList__title"]{display: flex; grid-column: 1/2;}
+.optionsList__title1 {grid-row: 1 / 2;}
+.optionsList__title2 {grid-row: 2 / 3;}
+.optionsList__title3 {grid-row: 3 / 4;}
+.openOption .optionsList__01,.openOption .optionsList__02,.openOption .optionsList__04,.openOption .optionsList__18 {order: 1;}
+.openOption .optionsList__07,.openOption .optionsList__05,.openOption .optionsList__11,.openOption .optionsList__19 {order: 2;}
+.openOption .optionsList__03,.openOption .optionsList__09,.openOption .optionsList__12,.openOption .optionsList__20 {order: 3;}
+.openOption .optionsList__08,.openOption .optionsList__10,.openOption .optionsList__21 {order: 4;}
+.openOption .optionsList__06,.openOption .optionsList__16,.openOption .optionsList__22 {order: 5;}
+.openOption .optionsList__13{order: 6;}
+.openOption .optionsList__17{order: 7;}
+.openOption .optionsList__01,.openOption .optionsList__07,.openOption .optionsList__03,.openOption .optionsList__08,.openOption .optionsList__16 {grid-row: 1 / 2;}
+.openOption .optionsList__04,.openOption .optionsList__05,.openOption .optionsList__09,.openOption .optionsList__10,.openOption .optionsList__06,.openOption .optionsList__13,.openOption .optionsList__17 {grid-row: 2 / 3;}
+.openOption .optionsList__02,.openOption .optionsList__11,.openOption .optionsList__12 {grid-row: 3 / 4;}
+.viewType {width: 77px; padding:0px 10px; border-left:1px solid #A0A0A0; box-sizing: border-box;}
+.viewType input[type=radio] {display:none}
+.viewType input[type=radio]:checked + label {color:#E40480}
+.viewType label {width:0px; height:20px; font:13px/20px Helvetica; color:#333333; margin:0px 0px 0px 5px; padding:0px 0px 0px 20px; display:inline-block; cursor:pointer; overflow:hidden}
+.viewType .chessboardType {background:transparent url(http://image.momoshop.com.tw/ecm/img/cmm/search/chessboardTypeBk.png) no-repeat 0px 4px}
+.viewType input[type=radio]:checked + .chessboardType {background: transparent url(http://image.momoshop.com.tw/ecm/img/cmm/search/chessboardTypeBk_checked.png) no-repeat 0 4px/13px;}
+.viewType .columnType {background:transparent url(http://image.momoshop.com.tw/ecm/img/cmm/search/columnTypeBk.png) no-repeat 0 4px/13px}
+.viewType input[type=radio]:checked + .columnType {background: transparent url(http://image.momoshop.com.tw/ecm/img/cmm/search/columnTypeBk_checked.png) no-repeat 0px 4px/13px;}
+.productRatingStar { display: inline-block; width: 15px; height: 15px; vertical-align: text-top; background-repeat: no-repeat; background-size: 15px 15px; background-position: center center; }
+.productRatingStar.starFull { background-image: url(/ecm/img/cmm/icon_star_full_24x24.svg); }
+
+/** 頁碼 **/
+.bt_2_layout_Content .pageArea {display:inline-block; width:1000px; height:42px; line-height:42px; overflow:hidden; }
+.bt_2_layout_Content .pageArea ul {margin:0px; padding:5px 0px 2px 0px; height:35px; list-style:none; display:inline-block;}
+.bt_2_layout_Content .pageArea ul li {display:inline-block; height:24px; margin:4px 3px 4px 0px; }
+.bt_2_layout_Content .pageArea ul li a { float:left; width:auto; border:1px solid #ABABAB; color:#434343; font:13px/18px Helvetica; padding:3px 5px 3px 5px; text-align:center; text-decoration:none; }
+.bt_2_layout_Content .pageArea dl {float:right; margin:0px 10px 0px 0px; padding:0px; width:220px; text-align:right; }
+.bt_2_layout_Content .pageArea dl dt {margin:0px 5px 0px 5px; padding:0px; display:inline-block; font:bold 13px/18px Helvetica; }
+.bt_2_layout_Content .pageArea dl dt span {font:13px/18px Helvetica; }
+.bt_2_layout_Content .pageArea dl dt span b {font:bold 13px/18px Helvetica; margin:0px 3px;}
+.bt_2_layout_Content .pageArea dl dd {margin:0px; padding:0px; display:inline-block}
+.bt_2_layout_Content .pageArea dl dd a {border:1px solid #ABABAB; font:bold 13px/18px Helvetica; color:#434343; padding:2px 5px 3px; text-decoration:none; }
+.bt_2_layout_Content .pageArea ul li a:hover, 
+.bt_2_layout_Content .pageArea .selected, 
+.bt_2_layout_Content .pageArea dl dd a {background-color:#4A9AE7; color:#FFFFFF; cursor:pointer; }
+.bt_2_layout_Content .pageArea dl dd a:hover {background-color:#FFFFFF; color:#000000; }
+
+#bt_2_layout_NAV ul #keyword4 a {font:13px/21px Helvetica; color:#000000; padding:5px 15px 5px 5px; border:1px solid #FFFFFF; display:initial; position:relative}
+#bt_2_layout_NAV #keyword4 a::after {background:transparent url(//image.momoshop.com.tw/ecm/img/cmm/search/expansionBtnBk.png) no-repeat; width:6px; height:4px; content:''; position:absolute; top:11px; right:5px}
+#bt_2_layout_NAV #keyword1 {cursor:pointer}
+#bt_2_layout_NAV .result {background:none; color:#000000; font-family:Helvetica, Geneva; line-height:18px; display:none}
+#bt_2_layout_NAV .result b {font-family:Helvetica, Geneva; font-size:13px; margin:0px 3px}
+#bt_2_layout_NAV .first a {background:none; color:#A18050; padding:0px}
+#bt_2_layout_NAV .first a:hover {color:#E40480; text-decoration:none}
+#bt_2_layout_NAV .first a::after {display:none}
+#bt_2_layout_NAV #keyword4.open a {border:1px solid #CCCCCC; border-bottom:1px solid #FFFFFF; position:relative; z-index:4}
+#bt_2_layout_NAV #keyword4.open a::after {background:transparent url(//image.momoshop.com.tw/ecm/img/cmm/search/collapseBtnBk.png) no-repeat}
+#bt_2_layout_NAV ul li h3,
+#bt_2_layout_NAV ul li h4,
+#bt_2_layout_NAV ul li h5,
+#bt_2_layout_NAV ul li h6 {margin:0px; padding:0px; font:13px/25px Helvetica; color:#666666}
+
+#goodsAttrRoot {float: right; margin-top: 0px}
+#goodsAttrRoot .attributesBox {background-color:#FFFFFF; width:810px; padding:20px 20px 0px; border:1px solid #CCCCCC; box-shadow:5px 5px 5px rgba(0,0,0,0.3); display:none; position:absolute; top:23px; left:223px; z-index:3}
+#goodsAttrRoot .attributesBox .delMoreBtn {height:18px; font:13px/18px Helvetica; padding:0px 5px 0px 15px; border:1px solid #CCCCCC; position:absolute; bottom:20px; right:10px}
+#goodsAttrRoot .attributesBox .delMoreBtn::before {background-color:#333333; width:6px; height:2px; content:''; position:absolute; top:8px; left:5px}
+#goodsAttrRoot .attributesBox .delMoreBtn::after {background-color:#333333; width:2px; height:6px; content:''; position:absolute; top:6px; left:7px}
+#goodsAttrRoot .attributesBox ul {margin:0px; padding:0px; list-style:none}
+#goodsAttrRoot .attributesBox ul li {background:none; float:left; width:175px; height:25px; font:13px/25px Helvetica; color:#000000; white-space:nowrap; text-overflow:ellipsis; margin:0px 30px 15px 0px; padding:0px 10px; cursor:pointer; display:inline-block; overflow:hidden}
+#goodsAttrRoot .attributesBox ul li img {display:none}
+#goodsAttrRoot .attributesBox .optionsStyle li {background:none; float:left; height:25px; font:13px/25px Helvetica; color:#000000; margin:10px 30px 10px 0px; padding:0px; border:1px solid #A0A0A0; position:relative; cursor:pointer}
+#goodsAttrRoot .attributesBox .optionsStyle li label {width:140px; padding:0px 25px 0px 10px; display:block; position:absolute; top:0px; left:0px}
+#goodsAttrRoot .attributesBox .optionsStyle li input {position:absolute; top:3px; display:none; left: 0px;}
+#goodsAttrRoot .attributesBox .optionsStyle li img {background-color:#A0A0A0; width:15px; height:15px; border:5px solid #A0A0A0; position:absolute; top:0px; right:0px; z-index:1; display:inline-block}
+#goodsAttrRoot .attributesBox .multipleShowBtnArea {height:30px; text-align:center; margin:0px 0px 5px 0px; display:none}
+#goodsAttrRoot .attributesBox .multipleShowBtnArea a {background-color:#D62672; font:13px/24px Helvetica; color:#FFFFFF; margin:3px 5px; padding:0px 25px; display:inline-block}
+#goodsAttrRoot .attributesBox .multipleShowBtnArea a:first-child {background-color:#E7E7E7; color:#000000}
+#goodsAttrRoot .attributesBox .multipleShowBtnArea label {height:25px; font:13px/25px Helvetica; margin:0px 0px 0px 10px; padding:0px 10px; display:inline-block; cursor:pointer}
+#goodsAttrRoot .attributesBox .multipleShowBtnArea label input {position:relative; top:2px}
+#goodsAttrRoot .attributesBox .selectMore {display:inline-block}
+#goodsAttrRoot .attributesBox .selectMore li {border-color:#FFFFFF}
+#goodsAttrRoot .attributesBox .selectMore li input {display:inline-block} 
+#goodsAttrRoot .attributesBox .selectMore li label {padding:0px 11px 0px 24px}
+#goodsAttrRoot .attributesBox .selectMore li img {display:none}
+
+
+/** 分類品牌共用 **/
+.attributesBrandsArea {clear:both; margin-bottom: 10px;}
+.attributesBrandsArea ul {margin:0px; padding:0px; list-style:none}
+.attributesBrandsArea ul li {height:34px; font:13px/34px Helvetica; color:#333333; margin:0px; padding:0px 10px; border-top:1px solid #DADADA; position:relative}
+.attributesBrandsArea ul li:first-child {border:0px}
+.attributesBrandsArea ul li label {height:34px; font:13px/35px Helvetica; padding:0px 0px 0px 21px; display:block; overflow:hidden}
+.attributesBrandsArea ul li input {margin:0px; padding:0px; position:absolute; top:11px; left:15px}
+.attributesBrandsArea ul li input[type=checkbox]:checked + label {color:#D62872}
+.attributesBrandsArea ul li h2 {margin: 0; padding: 0;}
+.attributesBrandsArea ul .cateM .openMoreBtn,
+.attributesBrandsArea ul .cateM .closeMoreBtn {padding:0px 10px; position:absolute; top:0px; right:0px; display:none}
+.attributesBrandsArea ul .hide {display:none}
+.attributesBrandsArea ul .More a {text-align:right; display:block}
+.attributesBrandsArea.open {background-color:#FFFFFF; width:1220px; position:absolute; z-index:4}
+.attributesBrandsArea.open .cateS {width:199px; margin:0px 0px 0px 4px; display:inline-block; box-sizing:content-box; box-sizing:border-box; vertical-align:top; border-top:0px; border-bottom:1px solid #DADADA}
+.attributesBrandsArea.open li:nth-child(2),
+.attributesBrandsArea.open li:nth-child(3),
+.attributesBrandsArea.open li:nth-child(4),
+.attributesBrandsArea.open li:nth-child(5),
+.attributesBrandsArea.open li:nth-child(6),
+.attributesBrandsArea.open li:nth-child(7) {border-top:0px}
+.attributesBrandsArea.open #bt_0_142_01 {width:auto}
+
+.prdListArea .eachGood .btnArea .insertWishList {background:transparent url(/ecm/img/cmm/wishList/icon_heart_FFFFFF_24x24.svg) no-repeat center center; background-size:25px 25px ;}
+.prdListArea .eachGood .btnArea .checkedWishList {background:transparent url(/ecm/img/cmm/wishList/icon_solid-heart_FFFFFF_24x24_.svg) no-repeat center center; background-size:25px 25px;}
+
+.brand-side-list.attributesBrandsArea ul li { padding:0px;}
+.brand-side-list.attributesBrandsArea ul li label { padding: 0;}
+.brand-side-list.attributesBrandsArea ul li:first-child { border-top:1px solid #DADADA;}
+
+/** 篩選無結果時 **/
+#goodsAttrRoot .adjustmentTextArea {border:1px solid #E7E7E7; margin:10px 0px 0px; padding:10px}
+
+/*20191005_商品分類頁*/
+.bt_2_layout_Content .attributesListArea table tr td ul li label.selected{border: 1px solid #D62872;color: #D62872;position: relative;padding: 0 15px 0 5px;margin: 5px 0;box-sizing: border-box;font: 13px/28px Helvetica;width: auto;max-width: 160px;border-radius: 3px}
+.bt_2_layout_Content .attributesListArea table tr td ul li label.selected span{width: 0px;height: 0px;border-top: 18px solid rgba(44, 44, 44, 0);border-right: 18px solid #D62872;position: absolute;bottom: 0px;right: 0px;}
+.bt_2_layout_Content .attributesListArea table tr td ul li label.selected span:before{width: 9px;height: 2px;background-color: #FFFFFF;content: '';transform: rotate(-55deg);-webkit-transform: rotate(-55deg);position: absolute;top: -6px;left: 8px;}
+.bt_2_layout_Content .attributesListArea table tr td ul li label.selected span:after{width: 2px;height: 5px;background-color: #FFFFFF;content: '';transform: rotate(-45deg);-webkit-transform: rotate(-45deg);position: absolute;left: 8px;top: -6px;}
+.bt_2_layout_Content .attributesListArea table tr td ul li label.selected:hover span:before{transform: rotate(-45deg);-webkit-transform: rotate(-45deg);}
+.bt_2_layout_Content .attributesListArea table tr td ul li label.selected:hover span:after{width: 9px;height: 2px;transform: rotate(45deg);-webkit-transform: rotate(45deg);top: -6px;left: 8px;}
+.bt_2_layout_Content .attributesListArea table.selectMore .multipleType td ul li input{display: none}
+.bt_2_layout_Content .attributesListArea table tr td .brandsList li label{width:auto;max-width: 160px;}
+
+/*20191008_分類頁_其他選項*/
+.bt_2_layout_Content .attributesListArea .attributesotherListArea ul li.selected label{border: 1px solid #D62872;color: #D62872;position: relative;padding: 0 15px 0 5px;margin: 5px 0;box-sizing: border-box;font: 13px/28px Helvetica;width: auto;max-width: 160px;border-radius: 3px}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea ul li.selected label span{width: 0px;height: 0px;border-top: 18px solid rgba(44, 44, 44, 0);border-right: 18px solid #D62872;position: absolute;bottom: 0px;right: 0px;}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea li.selected label span:before{width: 9px;height: 2px;background-color: #FFFFFF;content: '';transform: rotate(-55deg);-webkit-transform: rotate(-55deg);position: absolute;top: -6px;left: 8px;}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea li.selected label span:after{width: 2px;height: 5px;background-color: #FFFFFF;content: '';transform: rotate(-45deg);-webkit-transform: rotate(-45deg);position: absolute;left: 8px;top: -6px;}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea li.selected:hover  label span:before{transform: rotate(-45deg);-webkit-transform: rotate(-45deg);}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea li.selected:hover  label span:after{width: 9px;height: 2px;transform: rotate(45deg);-webkit-transform: rotate(45deg);top: -6px;left: 8px;}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea.selectMore ul li.selected label input{display: none;}
+
+/*20191008_分類頁_更多按鈕*/
+.bt_2_layout_Content .attributesListArea table tr td .multipleChoiceBtn.moreBtn{padding: 0px 5px 0px 5px}
+.bt_2_layout_Content .attributesListArea table tr td .multipleChoiceBtn.moreBtn:before{display: none}
+.bt_2_layout_Content .attributesListArea table tr td .multipleChoiceBtn.moreBtn:after{display: none}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea .multipleChoiceBtn.moreBtn{padding: 0px 5px 0px 5px}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea .multipleChoiceBtn.moreBtn::before{display: none}
+.bt_2_layout_Content .attributesListArea .attributesotherListArea .multipleChoiceBtn.moreBtn::after{display: none}
+
+/* 20191025_分類頁_屬性選取後變色*/
+.bt_2_layout_Content .attributesListArea table .otheroptionArea td .otherTitle.alreadySelect span{color:#D62872}
+.bt_2_layout_Content .attributesListArea table .otheroptionArea td .otherTitle.alreadySelect span::before{background: transparent url(//image.momoshop.com.tw/ecm/img/cmm/search/expansionBtnPK_down.png) no-repeat center/8px;}
+
+
+/* 品牌功能清單 */
+.brand-side-list { background-color: #fff; font-family: var(--primary-font-family);}
+.brand-side-list.open-list { width: 1220px; position: absolute; box-sizing: border-box; border: 1px solid #dadada; z-index: 10;}
+.brand-side-list-header { display: flex; justify-content: space-between;}
+.brand-side-list-footer { display: flex; justify-content: flex-end; border-top: 1px solid #dadada;}
+.brand-side-list.over-items .brand-side-list-btn-group { display: block;}
+.brand-side-list-header .brand-side-list-btn-group,
+.brand-side-list-footer .brand-side-list-btn-group { padding: 0 10px; display: none;}
+.brand-side-list.open-list .brand-side-list-footer {display: none;}
+.brand-side-list .btn-close,
+.brand-side-list.open-list .btn-more { display: none; }
+.brand-side-list.open-list .btn-close,
+.brand-side-list .btn-more { display: inline-block; color: #333;}
+.brand-side-list-btn { font-size: 13px; line-height: 38px;}
+.brand-side-list .brand-side-list-title { font-size: 13px; padding: 10px 10px; margin: 0;}
+.brand-list-group { margin: 0; padding: 0;}
+.brand-list-group-item { display: flex; justify-content: space-between; box-sizing: border-box; border-top: 1px solid #dadada; height: 34px;}
+.brand-list-group-item.hide {display: none;}
+.open-list .brand-list-group-item.hide {display: flex;}
+.brand-side-list.open-list .brand-list-group { display: flex; flex-wrap: wrap; gap: 4px;}
+.brand-side-list.open-list .brand-list-group-item:nth-child(n+1):nth-child(-n+6) { border-top: 0;}
+.brand-side-list.open-list .brand-list-group-item { width: 199px;}
+.brand-track .track-status { display: flex; align-items: center;justify-content: center;  font-size: 13px; text-align: center; width: 30px;}
+.brand-track .track-btn { color: #454545; background-color: transparent; border: 0; margin: 0; padding: 0; align-self: center; cursor: pointer;}
+.brand-track .track-icon { display: block; box-sizing: border-box; border-radius: 50%; width: 30px; height: 30px; text-decoration: none; font-style: normal; background: url(https://m.momoshop.com.tw/ecm/img/cmm/mobile/brandTrack/trackHeart.svg) no-repeat center center/ 20px 20px; transition: background .2s; }
+.brand-track .track-btn:hover .track-icon { background-color: #f2f2f2;  }
+.brand-track .track-status.tracking .track-icon{ background-image: url(//image.momoshop.com.tw/ecm/img/cmm/mobile/brandTrack/trackHeart_selected.svg);}
+.brand-track .track-status.tracking .track-btn { color: var(--primary-pink);}
+
+.form-check-label {display: flex;gap: 0;align-items: center;position: relative;cursor: pointer;font-size: 22px;max-width: 170px;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}  
+/* Hide the browser's default checkbox */
+.form-check-label .form-check-input {position: absolute;opacity: 0;cursor: pointer;height: 0;width: 0;}  
+/* Create a custom checkbox */
+.form-checkmark,
+.form-checkmark-child {position: relative;display: inline-block;box-sizing: border-box;vertical-align: middle;height: 16px;width: 16px;margin: 8px 5px 8px 10px;background-color: #fff;border: 1px solid #D7D7D7;outline: 2px solid #ffffff;border-radius: 4px;transition: .3s;}  
+.form-check-text {font-size: 13px;margin: 0;padding: 0;max-width: 137px;display: inline-block;vertical-align: middle;white-space: nowrap; overflow: hidden; text-overflow: ellipsis;    }  
+/* On mouse-over, add a grey background color */
+.form-check-label:hover .form-check-input ~ .form-checkmark,
+.form-check-label:hover .form-check-input ~ .form-checkmark-child {
+border: 1px solid #D7D7D7;
+outline: 2px solid #f2f2f2;}  
+/* When the checkbox is checked, add a blue background */
+.form-check-label .form-check-input:checked ~ .form-checkmark {background-color: #d62872;border-color: #d62872;}  
+.form-check-label .form-check-input:checked ~ .form-checkmark-child {background-color: #ffffff;}  
+/* When the checkbox is checked / disabled , add a #d62872 background */
+.form-check-label .form-check-input:checked:disabled ~ .form-checkmark {background-color: #d62872;border-color: #d62872;opacity: 0.5;}  
+.form-check-label .form-check-input:checked:disabled ~ .form-checkmark-child {background-color: #ededed;border-color: #ededed;}  
+/* When the checkbox is disabled, add a #ededed background */
+.form-check-label .form-check-input:disabled ~ .form-checkmark,
+.form-check-label .form-check-input:disabled ~ .form-checkmark-child {background-color: #ffffff;border-color: #f2f2f2;outline: 2px solid #ffffff;}  
+/* Create the checkmark/indicator (hidden when not checked) */
+.form-checkmark:before,
+.form-checkmark:after,
+.form-checkmark-child:before,
+.form-checkmark-child:after {content: "";position: absolute;display: none;}  
+/* Show the checkmark when checked */
+.form-check-label .form-check-input:checked ~ .form-checkmark:before,
+.form-check-label .form-check-input:checked ~ .form-checkmark:after,
+.form-check-label .form-check-input:checked ~ .form-checkmark-child:before,
+.form-check-label .form-check-input:checked ~ .form-checkmark-child:after {display: block;}  
+/* Style the checkmark/indicator */
+.form-check-label .form-checkmark:before,
+.form-check-label .form-checkmark:after,
+.form-check-label .form-checkmark-child:before,
+.form-check-label .form-checkmark-child:after {background-color: #fff;width: 2px;border-radius: 2px;}  
+.form-check-label .form-checkmark-child:before,
+.form-check-label .form-checkmark-child:after {background-color: #727272;}  
+.form-check-label .form-check-input:disabled ~ .form-checkmark-child:before,
+.form-check-label .form-check-input:disabled ~ .form-checkmark-child:after {background-color: #ffffff;}  
+.form-check-label .form-checkmark:before,
+.form-check-label .form-checkmark-child:before {height: 10px;  left: 7px;top: 2px;-webkit-transform: rotate(45deg);-ms-transform: rotate(45deg);transform: rotate(45deg);}  
+.form-check-label .form-checkmark:after,
+.form-check-label .form-checkmark-child:after {height: 5px;top: 6px;left: 3px;-webkit-transform: rotate(-45deg);-ms-transform: rotate(-45deg);transform: rotate(-45deg);}

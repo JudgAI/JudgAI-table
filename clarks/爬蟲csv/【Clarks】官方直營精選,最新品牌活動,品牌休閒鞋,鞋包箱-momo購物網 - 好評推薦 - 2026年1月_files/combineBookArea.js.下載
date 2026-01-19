@@ -1,0 +1,149 @@
+var combineBookArea = {
+  filterBookData:function(bookData){
+    var newBookdata = {};
+    momoj.each(bookData, function(i, book){
+      if(!book.type) {
+        return {};  //資料不完整，continue
+      }else{
+        if(book.type == 1){//書類商品資訊
+          if(!book.authorInfo){
+            return {};  //資料不完整，continue
+          }else{
+            newBookdata[book.type] = book;
+          }
+        }else{
+          if(!book.name){
+            return {};  //資料不完整，continue
+          }else{
+            newBookdata[book.type] = book;
+          }
+        }
+        newBookdata[book.type] = book;
+      }
+    });
+    return newBookdata;
+  },
+  
+  //產生搜尋和分類,5h書類商品資訊區塊
+  genBookArea:function(bookData){
+    var isComingSoon = false;
+    var outStock = "";
+    var publishInfo = momoj('<p class="publishInfo"></p>');
+    var description = momoj('<p class="description"></p>');
+
+    if(!isUndefined(bookData)) {
+      
+      var newBookdata = {};
+      newBookdata = combineBookArea.filterBookData(bookData);
+      if(!newBookdata || newBookdata.length == 0){
+        return true;
+      }
+      if(1 in newBookdata){
+        //作者，導搜尋結果頁
+        if(newBookdata[1].authorInfo.length > 0){
+          momoj.each(newBookdata[1].authorInfo,function(i,authorData){
+            var authorNo = authorData.authorNo;
+            var authorName = authorData.authorName;
+            var allAuthorName = authorData.allAuthorName;
+            var authorTag='';
+            if(window.isFiveHour) {
+              var fiveHourAddressData = getFiveHourAddressData();//from 5hcommon.js
+              authorTag = '<a class="writer" href="/goods/5hSubpage.jsp?keyword=' + encodeURIComponent(allAuthorName) + (!!newBookdata[1].action && !!newBookdata[1].action.extraValue && !!newBookdata[1].action.extraValue.specialGoodsType ? '&specialGoodsType=' + newBookdata[1].action.extraValue.specialGoodsType : '')+'&searchType=6&whCode=' + fiveHourAddressData.whCode +
+                          '&authorNo='+ authorNo +'">' + authorName + '</a>&nbsp;';
+            } else {
+              authorTag = '<a class="writer" href="/search/searchShop.jsp?keyword=' + encodeURIComponent(allAuthorName) +
+                          (!!newBookdata[1].action && !!newBookdata[1].action.extraValue && !!newBookdata[1].action.extraValue.specialGoodsType ? '&specialGoodsType=' + newBookdata[1].action.extraValue.specialGoodsType : '')+
+                          '&searchType=6' +'&authorNo='+ authorNo +
+                        '">' + authorName + '</a>&nbsp;';
+            }
+            
+            publishInfo.append(authorTag);
+          });
+        } 
+      }
+      if(2 in newBookdata){
+        //出版社(品牌)，導搜尋結果頁
+        var publisheNo="";
+        var publisher="";
+        if(!!newBookdata[2].action ){
+          if(!!newBookdata[2].action.extraValue ){
+            var bookExtraValue = newBookdata[2].action.extraValue;
+            if(bookExtraValue.brandNo != undefined && bookExtraValue.brandNo.length >0){
+              publisheNo = bookExtraValue.brandNo;//出版社代碼
+            }
+          }
+        }
+        if(window.isFiveHour) {
+          var fiveHourAddressData = getFiveHourAddressData();//from 5hcommon.js
+          publisher = momoj('<a class="publishing"></a>').attr('href', '/goods/5hSubpage.jsp?keyword=' + encodeURIComponent(newBookdata[2].name)
+          + '&brand=' + encodeURIComponent(newBookdata[2].name) 
+          + '&brandNo=' + newBookdata[2].action.extraValue.brandNo
+          + (!!newBookdata[2].action && !!newBookdata[2].action.extraValue && !!newBookdata[2].action.extraValue.specialGoodsType ? '&specialGoodsType=' + newBookdata[2].action.extraValue.specialGoodsType : '') 
+          + '&whCode=' + fiveHourAddressData.whCode).html(newBookdata[2].name);
+        } else {
+          publisher = momoj('<a class="publishing"></a>').attr('href', '/search/searchShop.jsp?keyword=' + encodeURIComponent(newBookdata[2].name)
+          + '&brand=' + encodeURIComponent(newBookdata[2].name)
+          + (!!newBookdata[2].action && !!newBookdata[2].action.extraValue && !!newBookdata[2].action.extraValue.specialGoodsType ? '&specialGoodsType=' + newBookdata[2].action.extraValue.specialGoodsType : '')
+          + (!!publisheNo ? '&brandNo=' + publisheNo : '')).html(newBookdata[2].name);
+        }
+        publishInfo.append(publisher);
+      }
+      
+      if(4 in newBookdata){
+        //裝訂方式
+        var binding = momoj('<span></span>').html(newBookdata[4].name);
+        publishInfo.append(binding);
+      }
+      
+      if(3 in newBookdata){
+        //出版日期
+        var publication_date = momoj('<span class="publishDate"></span>').html('出版日期:' + newBookdata[3].name);
+        publishInfo.append(publication_date);
+        var publicationDate = newBookdata[3].name;//出版日期
+        var bookDate = new Date();
+        bookDate.setYear(publicationDate.split("/")[0]);
+        bookDate.setMonth(publicationDate.split("/")[1]-1);
+        bookDate.setDate(publicationDate.split("/")[2]);
+        var dateStamp = new Date();
+        if(bookDate > dateStamp){
+          isComingSoon = true;
+          outStock = momoj('<a class="comingSoon" title="即將上市"></a>');
+        }
+      }
+      
+      if(5 in newBookdata){
+        //內容簡介摘要
+        description.html(newBookdata[5].name);
+      }
+      
+    }
+
+    var bookArea = {
+      "publishInfo" : publishInfo,
+      "description" : description,
+      "isComingSoon" : isComingSoon,
+      "outStock" : outStock
+    }
+
+    return bookArea;
+  },
+  //產生商品頁作者資訊區塊
+  genGoodsAuthorArea:function(isBookKind, isEBookKind, authorArray){
+    if((!isBookKind && !isEBookKind) || authorArray.length <= 0) {
+      return;
+    }
+
+    var authorList = momoj.map(authorArray, function(authorData) {
+      var authorNo = authorData.authorNo;
+      var allAuthorName = authorData.allAuthorName;
+      if(window.isFiveHour) {
+        var fiveHourAddressData = getFiveHourAddressData();//from 5hcommon.js
+        return '<a class="authorSearchLink" href="/goods/5hSubpage.jsp?keyword=' + encodeURIComponent(allAuthorName) + '&authorNo='+authorNo+'&specialGoodsType=1&searchType=6&whCode='+ fiveHourAddressData.whCode +'">' + allAuthorName + '</a>&nbsp;';
+      } else {
+        return '<a class="authorSearchLink" href="/search/searchShop.jsp?keyword=' + encodeURIComponent(allAuthorName) +'&authorNo='+authorNo+ '&specialGoodsType=1&searchType=6'+'">' + allAuthorName + '</a>&nbsp;';
+      }
+    });
+
+    momoj('.authorList').append(authorList);
+  }
+}

@@ -1,0 +1,3470 @@
+/**
+ * 由於此js為小分類用
+ */
+//目前分類代碼及其位階lv(-1:未指定, 0:牙齒, 1:大分類, 2:中分類, 3:小分類)
+var nowCate = {
+    code:"",
+    lv:"",
+    funcYn:"0",
+    
+    isCateTooth: function(){//是否為牙齒
+      return this.lv=='0';
+    },
+    
+    isCateL: function(){//是否為大分類
+      return this.lv=='1';
+    },
+    
+    isCateM: function(){//是否為中分類
+      return this.lv=='2';
+    },
+    
+    isCateS: function(){//是否為小分類
+      return this.lv=='3';
+    },
+    
+    isCateBrand: function(){//是否品牌館
+      return /^21/.test(this.code);
+    },
+    
+    isCateMofun: function(){//是否旅遊館(25),新增判斷(38019)開頭的館架
+      return /^(25|38019)/.test(this.code);
+    },
+
+    isFuncYn: function(){//是否行銷館
+      return /^[1]$/.test(this.funcYn);
+    }
+};
+//url parameters
+var params = {
+    keyword: "",
+    checkedBrands: [],
+    checkedBrandsNo: [],
+    checkedBrandSeries: [],
+    checkedAttrs: {},
+    checkedAttrsNo: {},
+    isBrandZone: false,
+    specialGoodsType: "",  //特殊商品種類搜尋(1:書類)
+    cateCode :"", 
+    cateLevel :"", 
+    cp:"", 
+    NAM :"", 
+    normal:"", 
+    first:"",
+    freeze:"",    
+    superstore:"", 
+    tvshop:"", 
+    china:"", 
+    tomorrow:"", 
+    stockYN:"", 
+    prefere:"", 
+    threeHours:"", 
+    video:"", 
+    cycle:"", 
+    cod:"", 
+    superstorePay:"", 
+    curPage:"", 
+    priceS:"", 
+    priceE:"", 
+    brandName : []
+};
+
+// 處理HTML5 history功能
+  window.onpopstate = function(event) {
+    var state = event.state;
+    if (state) {
+      restoreQryStatus(state.qryStatus);
+      if(state.pageNum=='0'){
+        restoreThisCate();  //還原原本的分類頁
+      }else{
+        showPage(getSearchResult(state.pageNum));
+      }
+    }
+  };
+  
+var brandsList = [];
+var brandsbyAphabetList = [];
+var start2 = new Date();
+var duration = 0;
+var errlog = {};
+var chekedAttrPool = {};
+var chekedBrandPool = {};
+var chekedBrandSeriesPool = {};
+
+momoj(document).ready(function(){
+  initPage();
+  nowCate.code = momoj('#goodsAttrRoot').attr('cateCode');//目前館架代碼
+  nowCate.lv = momoj('#goodsAttrRoot').attr('cateCodeLv');//目前館架層級
+  if (typeof funcYn != 'undefined') {
+    nowCate.funcYn = funcYn;
+  }
+  
+  if(nowCate.isCateS()){  //小分類
+    //momoj('#goodsAttrRoot .menuArea').hide();
+    momoj('#goodsAttrRoot').css({'margin-top': '30px', 'overflow': 'visible'});
+    if(!nowCate.isCateBrand()){  //非品牌館,就是打api
+
+      if (duration == 0) {
+          //取品牌失敗，重做一次
+          if (brandsList.length == 0) {
+            showPage(getSearchResult(1));
+          } else {
+            showBrands2022(brandsList,"");
+          }
+      }
+      
+      if(nowCate.isCateMofun()){//不知為何要從地裡面把mofunTxt(富昇旅遊區塊),拉出來再另外append?
+        if( momoj(".ft25 #Dgrp_LCatRightPBase").length > 0 ){
+          momoj(".ft25 #Dgrp_LCatRightPBase").append(momoj(".mofunTxt"));
+        }else{
+          momoj("#Dgrp_rightExtend").after(momoj(".mofunTxt"));
+        }
+      }
+    }
+  }
+  //小分類頁且是行銷館
+//  if(nowCate.isCateS() && nowCate.isFuncYn() && curPage>0){
+//    //>0，代表是呈現新畫面
+//    showPage(getSearchResult(curPage));
+//  }
+
+  //addHistory(curPage, false);
+  
+  //頁碼觸發
+  momoj('#goodsAttrRoot .pageArea, #goodsAttrRoot .toppageArea').delegate('[pageIdx]', 'click', function(){
+    if(!momoj(this).is('.selected')){
+      var pageIdx = momoj(this).attr('pageIdx');
+      showPage(getSearchResult(pageIdx));
+      move2Navi();
+      addHistory(pageIdx);
+    }
+  });
+  
+  //api部分的 熱銷 精準度 新品 價格 (#searchType)
+  //打db的熱銷 精準度 新品 價格在category.js中觸發 (.orderType)
+  momoj('#goodsAttrRoot #searchType').delegate('.recommend, .popularPrd, .accuracyPrd, .newPrd, .priceHeight, #evaluateHeight', 'click', function(){
+    var _this = momoj(this);
+    
+    if(_this.is('.selected')){
+      
+      if(_this.is('.priceHeight') || _this.is('#evaluateHeight')){
+        _this.toggleClass('up down');
+      }else{
+        //do nothing
+        return false;
+      }
+      
+    }else{
+      momoj('#goodsAttrRoot #searchType .selected').removeClass('selected');
+      _this.addClass('selected');
+    }
+    
+    /* 館長推薦且有勾選品牌、屬性、商品有量，改走搜尋 */
+    var _stock = momoj('#goodsAttrRoot .optionsLi #optionsLi_03').prop('checked');
+    var _threeHours = momoj('#goodsAttrRoot .optionsLi #optionsLi_10').prop('checked');
+    var alen = getCheckedAttrNBrandNum();
+   
+    showPage(getSearchResult(1));
+    addHistory('1');
+   
+  });
+  
+  //折價券、速達... 勾選
+  momoj('#goodsAttrRoot .menuArea').delegate('.optionsLi [type=checkbox]', 'change', function(){
+    //星評篩選評價只能選一個
+    if(momoj(this).parents("li").is('.commentRate')){
+      momoj('#goodsAttrRoot .menuArea .commentRate [type=checkbox]').not(this).prop('checked', false); // 只能選一個
+    }
+    showPage(getSearchResult(1));
+    addHistory('1');
+  });
+  
+  //價格區間 送出
+  momoj('#goodsAttrRoot .menuArea').delegate('.priceBtn', 'click', function() {
+    showPage(getSearchResult(1));
+    addHistory('1');
+  });
+  
+  
+  //麵包屑浮層內的品牌/屬性被點X
+  momoj('#goodsAttrRoot .attributesBox ul').delegate('li img', 'click', function(){
+    var li = momoj(this).closest('li');
+    var id = li.attr('checkBoxId');
+    momoj('input[indexno="' + id + '"]').trigger('click').trigger('change');
+    refreshCheckedContent();
+  });
+  
+  //被點擊過的浮層品牌或屬性取消
+  momoj('#goodsAttrRoot').delegate('[cateLv=gAttr]', 'click', function(){
+    var _this = momoj(this);
+    var cb = _this.find('input');
+    _this.removeAttr('cateLv').removeClass('selected');
+    if(!cb.is('.others')){    
+      cb.prop('checked', false).removeAttr('checked').trigger('change');
+    }else{
+      var indexName = _this.attr('title');
+      momoj('.attributesListArea input[value="' + indexName + '"]').prop('checked', false);
+      momoj('.attributesListArea input[value="' + indexName + '"]').trigger('change');
+    }
+  });
+  
+  //Banner品牌被勾選or反勾選
+  momoj('body').delegate('#goodsAttrRoot .attributesListArea table .brandsList input', 'change', function() {
+    var _this = momoj(this);
+    var tr = _this.closest('tr');
+    if(tr.is('.multipleType')){  //多選模式
+      var value = _this.attr("brandno");
+      var checkedNum = tr.find('input:checked').length;
+      var label = _this.closest('label');
+      if(_this.prop('checked')){
+        label.css({'color': '#D62872'});
+        tr.find('.confirm').css({'display': 'inline-block'});
+      }else {
+        label.css({'color': '#000000'});
+        tr.find('.confirm').hide();
+      }
+    }else {
+      var value = _this.attr("brandno");
+       //將左下角的品牌同步勾選,並觸發change
+      if(_this.prop('checked')){
+        momoj('#attributesBrandsArea input[brandno="' + value + '"]').trigger('click').trigger('change');
+      }else{
+        momoj('#attributesBrandsArea input[brandno="' + value + '"]').prop('checked', false);
+        momoj('#attributesBrandsArea input[brandno="' + value + '"]').trigger('change');
+      }
+    }    
+  });
+  
+  //右邊品牌/屬性banner/左下角品牌/品牌系列被勾選or反勾選
+  momoj('body').delegate('#goodsAttrRoot .attributesListArea table .attrList input, #attributesBrandsArea input ,#goodsAttrRoot .attributesListArea table .brandSeriesList input', 'change', function() {
+    var _this = momoj(this);
+    var tr = _this.closest('tr');
+    var li = _this.closest('li');
+    var ulId = _this.closest('ul').attr("id")||''; 
+    if(tr.is('.multipleType')){  //多選模式
+      var fTable = momoj('.attributesListArea .floatTable');
+      if(fTable.is('.selectMore')){//更多(已經選取過要反勾選)
+        // 還原原本勾選的
+        if (tr.is('.goodsAttr')) {
+          momoj(tr).find('input:checked').each(function(i, input){
+            momoj('.attributesListArea .wrapTable .goodsAttr').prop('checked', false);
+            momoj('.attributesListArea .wrapTable .goodsAttr').each(function(i, trw){
+              if (momoj(trw).attr('indexname') != momoj(tr).attr('indexname')) {
+                momoj(trw).find('input[value="' + momoj(input).val() + '"]').prop('checked', true);
+                return false;
+              }
+            });
+            return true;
+          });
+        }
+        rebuildParamCheckedAttrsFloat();
+        rebuildParamCheckedBrandsFloat();
+        rebuildParamCheckedBrandSeriesFloat();
+        showPage(getSearchResult(1));
+        addHistory('1');
+      }else{//選更多(尚未選取過)
+        var checkedNum = tr.find('input:checked').length;
+        var label = _this.closest('label');
+        if(_this.prop('checked')){
+          label.css({'color': '#D62872'});
+        }else{
+          label.css({'color': '#000000'});
+        }
+        if(checkedNum > 0) {
+          tr.find('.confirm').css({'display': 'inline-block'});
+        }else {
+          tr.find('.confirm').hide();
+        }
+      }
+    }else {
+      //if(nowCate.isFuncYn() && getCheckedAttrNBrandNum()==0){
+      //  addHistory('0');
+      //  restoreThisCate();  //還原原本的分類頁
+      //  return;
+      //}
+      if(("attributesBrandsArea" == ulId || "brandsList" == ulId) && !_this.prop('checked')){//若是左下角品牌和banner品牌反勾選,則品牌系列也要一起反勾選
+        momoj("#brandSeriesList  input").prop('checked', false).removeAttr('checked');
+      }   
+      li.removeAttr('cateLv').removeClass('selected'); 
+      rebuildParamCheckedAttrs();
+      momoj(".attributesotherListArea").find('ul').empty();
+      closeOtherAttrBox();
+      rebuildParamCheckedBrands();
+      rebuildParamCheckedBrandSeries();
+      showPage(getSearchResult(1));
+      addHistory('1');
+    }
+  });
+  
+  //左下品牌被勾選or反勾選
+  momoj('#attributesBrandsArea').delegate('input', 'change', function(){
+    var cateS = _this.closest('.cateS');
+    var idx = momoj('#attributesBrandsArea .cateS').index(cateS);
+    if(idx>=15 && !_this.is(':checked')){
+      cateS.addClass('hide');
+    }
+  });
+  
+  //其他選項的屬性浮層內容被點擊
+  momoj('#goodsAttrRoot .attributesListArea').delegate('.attributesotherListArea ul input', 'change', function(){
+    var _this = momoj(this);
+    var ul = _this.closest('ul');
+    if(ul.is('.multipleType')){  //多選模式
+      var checkedNum = ul.find('input:checked').length;
+      var label = _this.closest('label');
+      if(_this.prop('checked')){
+        label.css({'color': '#D62872'});
+      }else{
+        label.css({'color': '#000000'});
+      }
+      ul.siblings('.multipleShowBtnArea').find('.confirm').toggle(checkedNum > 0);
+    }else{
+      var li = _this.closest('li');
+      var indexno = li.attr('idno');
+      momoj('.attributesListArea .wrapTable .goodsAttr input[indexno="' + indexno + '"]').prop('checked', true).trigger('change');
+      closeOtherAttrBox();
+    }
+  });
+  
+  //類別裡的收合被點擊時，收合當列全部內容
+  momoj("#goodsAttrRoot .attributesListArea").delegate(".collapseUlBtn", "click",function(){
+    var tr = momoj(this).closest('tr');
+    if(tr.height()>80){
+      momoj(this).hide().prev(".expansionUlBtn").show().parents("td").find("ul").addClass("minHeight");//增加minHeight會限制該高度
+    }
+  });
+    
+  momoj('#goodsAttrRoot .prdListArea').delegate(".btnArea .insertWishList", "click", function(){
+    var li = momoj(this).closest('li');
+    var gcode = li.attr('gCode');
+    var is18Goods = li.attr('is18Goods') == '1';
+    var trackedVal = li.attr('tracked');
+    var status = '0';
+    console.info('goodsAttrDgrp4cate.js ' + gcode + ' clicked tracked : ' + trackedVal);
+    if(trackedVal == 'true') {
+      status = '1';
+    }
+    insertWishList(gcode, momoj('#goodsAttrRoot').attr('cateCode'), status, is18Goods);
+  });
+  
+  momoj('#goodsAttrRoot .prdListArea').delegate('.btnArea .addToCart', 'click', function(){
+    var li = momoj(this).closest('li');
+    var gcode = li.attr('gCode');
+    var imgUrl = li.find('img').last().attr('src');
+    var name = li.find('.prdName').html();
+    var price = li.find('.prdPrice b').html();
+    var discountTxt = li.find('.afterSale').text();
+    var is18Goods = li.attr('is18Goods') == '1';
+    var entpCode = li.attr('entpCode');
+    const isMoProPrice = li.find('.prdPrice').attr('isMoProPrice') === '1';
+    const moProPriceSaving = li.find('.prdPrice').attr('moProPriceSaving');
+    addToCartCate(gcode, imgUrl, name, price, nowCate.code, discountTxt, is18Goods, entpCode, isMoProPrice, moProPriceSaving);
+  });
+  
+  //滑鼠移入更多,選更多事件
+  momoj('#goodsAttrRoot .attributesListArea').delegate(".wrapTable .multipleChoiceBtn", "mouseenter", function() {
+    //分類展開
+    var btn = momoj(this);
+    btn.hide();
+    var tr = btn.closest("tr");
+    var thWidth = tr.find('th').width();
+    
+    var trClone = tr.clone();
+    trClone.find("th, td").prepend("<span class='line'></span>");
+    trClone.addClass("multipleType");
+    trClone.find('ul').removeClass("minHeight");
+    
+    var top = tr.offset().top - momoj('.attributesListArea .wrapTable').offset().top;
+    
+    var fTable = momoj('.attributesListArea .floatTable');
+    if(btn.is('.moreBtn')){//更多or選更多
+      fTable.addClass('selectMore');//加上浮層新樣式
+    }else{
+      fTable.removeClass('selectMore');//移除浮層新樣式
+    }
+    fTable.empty().append(trClone).css({'top': top - 15 + 'px','position': 'absolute','z-index': '4'}).show();
+    fTable.find('th').css({'width': thWidth + 'px'});
+    
+    if(trClone.is('.goodsAttr')) {
+      var indexName = tr.attr('indexName');
+      if(indexName in chekedAttrPool){
+        var cbs = trClone.find('input[type=checkbox]');
+        for(var i = 0 ; i< chekedAttrPool[indexName].length ; i++){
+          var cb = cbs.eq(chekedAttrPool[indexName][i]);
+          cb.prop('checked', true);
+          var label = cb.closest('label');
+          label.css({'color': '#D62872'});
+          if(i == chekedAttrPool[indexName].length-1){
+            if(!btn.is('.moreBtn')){
+              momoj('.floatTable .multipleChoiceBtn').closest('td').find('.confirm').show();
+            } 
+          }
+        }
+      }
+    } else if(trClone.is('.goodsBrandTr')){
+      for(var i = 0 ; i< chekedBrandPool.length ; i++){
+        var cb = trClone.find('input[brandno="' + chekedBrandPool[i] + '"]');
+        cb.prop('checked', true);
+        var label = cb.closest('label');
+        label.css({'color': '#D62872'});
+        if(i == chekedBrandPool.length-1){
+          if(!btn.is('.moreBtn')){
+            momoj('.floatTable .multipleChoiceBtn').closest('td').find('.confirm').show();
+          }
+        }
+      }
+    } else if(trClone.is('.goodsBrandSeriesTr')){
+      for(var i = 0 ; i< chekedBrandSeriesPool.length ; i++){
+        var cb = trClone.find('input[brandno="' + chekedBrandSeriesPool[i] + '"]');
+        cb.prop('checked', true);
+        var label = cb.closest('label');
+        label.css({'color': '#D62872'});
+        if(i == chekedBrandSeriesPool.length-1){
+          if(!btn.is('.moreBtn')){
+            momoj('.floatTable .multipleChoiceBtn').closest('td').find('.confirm').show();
+          }
+        }
+      }
+    }
+  });
+  
+  //滑鼠移出事件
+  momoj('#goodsAttrRoot .attributesListArea').delegate(".floatTable", "mouseleave", function() {
+    var fTable = momoj(this);
+    var tr = fTable.find('tr');
+    if(tr.is('.goodsAttr')){
+      var indexName = tr.attr('indexName');
+      chekedAttrPool[indexName] = [];//reset
+      tr.find('input[type=checkbox]').each(function(i, cb){
+        if(momoj(cb).is(':checked')){
+          chekedAttrPool[indexName].push(i);
+        }
+      });
+    }
+    if(tr.is('.goodsBrandTr')){
+      chekedBrandPool= [];//reset
+      tr.find('input[type=checkbox]').each(function(i, cb){
+        if(momoj(cb).is(':checked')){
+          var brandno = momoj(cb).attr("brandno")
+          chekedBrandPool.push(brandno);
+        }
+      });
+    }
+    if(tr.is('.goodsBrandSeriesTr')){
+      chekedBrandSeriesPool= [];//reset
+      tr.find('input[type=checkbox]').each(function(i, cb){
+        if(momoj(cb).is(':checked')){
+          var brandno = momoj(cb).attr("brandno")
+          chekedBrandSeriesPool.push(brandno);
+        }
+      });
+    }
+    closeFloatTable();
+  });
+  
+  //多選品牌/屬性的TR滑出
+  momoj('#goodsAttrRoot .attributesListArea').delegate(".wrapTable .goodsAttr,.wrapTable .goodsBrandTr ,.wrapTable .goodsBrandSeriesTr", "mouseleave", function() {
+    var tr = momoj(this);
+    var cancelBtn = tr.find('.multipleShowBtnArea a.cancel');
+    cancelBtn.trigger('click');
+  });
+  
+  //多選品牌/屬性的取消/確認
+  momoj('#goodsAttrRoot .attributesListArea').delegate("table .multipleShowBtnArea a", "click", function() {
+    var _this = momoj(this);
+    var tr = _this.closest('tr');
+    if (_this.is('.confirm')) {
+      momoj('.attributesListArea .wrapTable tr').fadeOut('fast');
+      
+      //將浮層table(.floatTable)勾選過的,也同步到另一個table(.wrapTable)中
+      if(tr.is('.goodsAttr')){
+        momoj(tr).find('input:checked').each(function(i, input){
+          momoj('.attributesListArea .wrapTable .goodsAttr').each(function(i, trw){
+            if (momoj(trw).attr('indexname') == momoj(tr).attr('indexname')) {
+              momoj(trw).find('input[value="' + momoj(input).val() + '"]').prop('checked', true);
+              return false;
+            }
+          });
+          return true;
+        });
+      }else if(tr.is('.goodsBrandTr')){
+        momoj(tr).find('input:checked').each(function(j, inputBrand){
+          momoj('.attributesBrandsArea .cateS input').each(function(j, trwBrand){
+            if (momoj(trwBrand).attr('brandno') == momoj(inputBrand).attr('brandno')) {
+              momoj(trwBrand).prop('checked', true);
+              return false;
+            }
+          });
+          return true;
+        });
+      }else if(tr.is('.goodsBrandSeriesTr')){
+        momoj(tr).find('input:checked').each(function(j, inputBrand){
+          momoj('.attributesListArea .wrapTable .goodsBrandSeriesTr').each(function(j, trwBrand){
+            if (momoj(trwBrand).attr('brandno') == momoj(inputBrand).attr('brandno')) {
+              momoj(trwBrand).prop('checked', true);
+              return false;
+            }
+          });
+          return true;
+        });
+      }
+      
+      rebuildParamCheckedAttrs();
+      rebuildParamCheckedBrandsFloat();
+      rebuildParamCheckedBrandSeriesFloat();
+      closeFloatTable();
+      showPage(getSearchResult(1));
+      addHistory('1');
+    } else if (_this.is('.cancel')) {
+      tr.find('.line').remove();
+      tr.removeClass("multipleType");
+      tr.find('.multipleShowBtnArea .confirm').hide();
+      tr.find('.multipleChoiceBtn').show();
+      var ul = tr.find('ul');
+      ul.addClass("minHeight");
+  
+      // 還原原本勾選的
+      tr.find('input[type="checkbox"]').prop('checked', false);
+      if (tr.is('.goodsBrandSeriesTr')) {
+        momoj.each(params.checkedBrandSeries, function(i, brandseries) {
+          var brandSer = brandseries.split("##");
+          momoj('input[value="' + brandSer[0] + '"]').prop('checked', true);
+        });
+      }else if (tr.is('.goodsAttr')) {
+        var indexName = tr.attr('indexName');
+        var uniIndexName =momoj.str2Unicode(indexName);
+        if (uniIndexName in params.checkedAttrs) {
+          momoj.each(params.checkedAttrs[uniIndexName], function(i, attr) {
+            momoj('input[value="' + attr + '"]').prop('checked', true);
+          });
+        }
+      }
+    }
+  });
+  
+  //其他選項的屬性title滑鼠移入事件
+  momoj('#goodsAttrRoot .attributesListArea').delegate('.wrapTable .otheroptionArea .otherTitle:not(.moreTitleBtn)', "mouseenter", function(){
+    var _this = momoj(this);
+    var idno = _this.attr('idno');
+    var indexName = _this.attr('indexName');
+    _this.siblings('.otherTitle').removeClass("openList");
+    _this.addClass("openList");
+    refreshAttributesOtherListArea(idno, indexName);
+    //重新定位浮層高度
+    var _parentTop = momoj('.wrapTable').offset().top;
+    var _thisTop = _this.offset().top;
+    var _finalTop = _thisTop + _this.height() - _parentTop - 1;
+    momoj(".attributesotherListArea").css({"top": _finalTop-15}).show();
+  });
+  
+  //其他選項的屬性title滑鼠移出事件
+  momoj('#goodsAttrRoot .attributesListArea').delegate('.wrapTable .otheroptionArea .otherTitle:not(.moreTitleBtn)', "mouseleave", function(e){
+    var _this = momoj(this);
+    var bottom = _this.offset().top + _this.height() -1;
+    if(bottom <= e.pageY){
+      //leave via bottom edge, do nothing
+    }else{
+      closeOtherAttrBox();
+    }
+  });
+  
+  //其他選項的[更多]被點擊
+  momoj('#goodsAttrRoot .attributesListArea').delegate('.wrapTable .otheroptionArea .moreTitleBtn', "click", function(){
+    var _this = momoj(this);
+    var td = _this.closest('td');
+    if(td.height() > 30) {
+      td.css('display', 'inline-block').css('height', '30px').css('overflow', 'hidden');
+    }else{
+      td.css('display', '').css('height', 'auto').css('overflow', 'hidden');
+    }
+  });
+    
+  //其他選項的[選更多]被點擊
+  momoj('#goodsAttrRoot .attributesListArea').delegate(".attributesotherListArea .multipleChoiceBtn", "click", function(){
+    var _this = momoj(this);
+    _this.hide();
+    _this.siblings("ul").addClass("multipleType");
+    var div = _this.closest('div');
+    if(_this.is('.moreBtn')){
+      div.addClass('selectMore');
+      _this.siblings(".multipleShowBtnArea").hide();
+    }else{
+      div.removeClass('selectMore');
+    _this.siblings(".multipleShowBtnArea").show();
+      var checkboxs = momoj(div).find('input[type="checkbox"]');
+      momoj.each(checkboxs, function(colIdx, cb){
+        var label = momoj(cb).closest('label');
+        var checked = momoj(cb).is(':checked');
+        if(checked){//如果有勾選擇文字給#D62872色碼
+          label.css({'color': '#D62872'});
+        }
+  });
+    }
+  });
+  
+  //其他選項移出
+  momoj('#goodsAttrRoot .attributesListArea').delegate(".attributesotherListArea", "mouseleave", function(){
+    var indexName = momoj(this).attr('indexName');
+    chekedAttrPool[indexName] = [];//reset;
+    var cbs = momoj('.attributesotherListArea ul li input[type=checkbox]');
+    cbs.each(function(i, cb){
+      if(momoj(cb).is(':checked')){
+        chekedAttrPool[indexName].push(i);
+      }
+    });
+    closeOtherAttrBox();
+  });
+  
+  //其他選項選更多的取消/確認
+  momoj('#goodsAttrRoot .attributesListArea').delegate(".attributesotherListArea .multipleShowBtnArea a", "click", function(){
+    var _this = momoj(this);
+    if(_this.is('.cancel')){
+      var otherAttrBox = _this.closest('.attributesotherListArea');
+      var indexName = otherAttrBox.attr('indexName');
+      
+      //reset
+      chekedAttrPool[indexName] = [];
+      otherAttrBox.find('input[type=checkbox]').prop('checked', false);
+      closeOtherAttrBox();
+    }else if(_this.is('.confirm')){
+      closeOtherAttrBox();
+      var checkedItems = momoj('.attributesotherListArea ul li input:checked');  //取得被勾選的項目
+      if(checkedItems.length > 0) {
+        for(var i=0 ; i < checkedItems.length ; i++) {
+          var itemIdNo = momoj(checkedItems[i]).attr('checkboxid');
+          var cb = momoj('input[indexno="' + itemIdNo + '"]');
+          cb.prop('checked', true);
+          if(i == checkedItems.length - 1) {
+            cb.trigger('change');
+          }
+        }
+      }
+      closeAttrBox();
+    }
+  });
+  
+  //固定篩選的展開 滑鼠移入事件(#goodsAttrRoot & #Dgrp_LCatRightPBase)
+  momoj('#goodsAttrRoot .menuArea .optionsLi').delegate('.optionBtn', 'mouseenter', function() {
+    momoj(this).html('').parent('div.optionsLi').addClass('openOption');
+    momoj(this).removeClass("optionBtn");
+  });
+  
+  //固定篩選被展開後 滑鼠移出事件(#goodsAttrRoot & #Dgrp_LCatRightPBase)
+  momoj('#goodsAttrRoot .menuArea').delegate('.openOption ul','mouseleave', function() {
+ //   momoj(this).parents('dd.openOption').removeClass('openOption').find('.optionBtn').html('展開');
+    momoj(this).parents().find('.optionsLi a').addClass('optionBtn');
+    momoj(this).parents().find('div.openOption').removeClass("openOption").find('.optionBtn').html('展開');
+  });
+  
+  //固定篩選的title滑鼠移出事件(#goodsAttrRoot & #Dgrp_LCatRightPBase)
+  momoj('#goodsAttrRoot .menuArea .optionsLi').delegate('.optionBtn', "mouseleave", function(e){
+    var _this = momoj(this);
+    var bottom = _this.offset().top;
+    if(bottom < e.pageY){
+      //leave via bottom edge, do nothing
+    }else{
+//      momoj(this).parent('dd.openOption').removeClass('openOption').find('.optionBtn').html('展開');
+      momoj(this).parents().find('div.openOption').removeClass("openOption").find('.optionBtn').html('展開');
+    }
+  });
+  
+  //重整"其他選項"的屬性浮層內容
+  function refreshAttributesOtherListArea(indo, indexName) {
+    var checkedIdx = [];
+    if(indexName in chekedAttrPool){
+      checkedIdx = chekedAttrPool[indexName];
+    }
+    
+    var otherAttrBox = momoj(".attributesotherListArea");
+    otherAttrBox.find('.multipleChoiceBtn').show();    //顯示選更多按鈕
+    otherAttrBox.find('.multipleShowBtnArea').hide();  //隱藏取消按鈕
+    otherAttrBox.attr('indexName', indexName);
+    var ul = otherAttrBox.find('ul');
+    ul.empty().removeClass('multipleType');
+    var tr = momoj('.attributesListArea .wrapTable tr[indexname="' + indexName + '"].goodsAttr');
+    var indexNameChoice = false;
+    var choiceCnt = 0;
+    var checkboxs = momoj(tr).find('input[type="checkbox"]');
+    momoj.each(checkboxs, function(colIdx, cb){
+      var cbli = momoj(cb).closest('li');
+      var labelTxt = momoj(cb).closest('label').text();
+      var value = momoj(cb).val();
+      var indexno = momoj(cb).attr('indexno');
+      var idno = momoj(cb).attr('idno');
+      var li ='';
+      var label='';
+      if(cbli.is('.selected')){
+        li = momoj('<li class="selected" catelv="gAttr"></li>');
+        label = momoj('<label class="selected"><label>').text(labelTxt);
+        indexNameChoice = true;
+        choiceCnt++;
+      }else{
+        if(cbli.css('display') == "none"){
+          li = momoj('<li style="display: none;"></li>');
+        }else{
+          li = momoj('<li></li>');
+        }
+        label = momoj('<label><label>').text(labelTxt);
+      }
+      var checked = momoj(cb).is(':checked') || checkedIdx.indexOf(colIdx)>=0;
+      var input = momoj('<input class="others" type="checkbox">').attr({'checkboxid': indexno}).prop('checked', checked);
+      label.append(input);
+      label.append('<span></span>');
+      li.append(label).attr({'title': value, 'idno': indexno});
+      ul.append(li);
+    });
+    //屬性內容或被選屬性不超過五個,則不顯示更多或選更多
+    if(momoj('.attributesotherListArea ul').find('li').length > 1){
+      if(indexNameChoice){
+        if(choiceCnt > 5){
+          otherAttrBox.find('.multipleChoiceBtn').addClass("moreBtn").text("更多").toggle(checkboxs.length > 1);
+        }else{
+           otherAttrBox.find('.multipleChoiceBtn').addClass("moreBtn").text("更多").hide();
+  }
+      }else{
+        otherAttrBox.find('.multipleChoiceBtn').removeClass("moreBtn").text("選更多").toggle(checkboxs.length > 1);
+      }
+    }else{
+      otherAttrBox.find('.multipleChoiceBtn').removeClass("moreBtn").text("選更多").hide();
+    }
+  }
+  
+  //關閉選更多浮層
+  function closeFloatTable(){
+    momoj('.attributesListArea .floatTable').removeAttr("style").empty().hide();
+  }
+  
+  //關閉其他選項浮層
+  function closeOtherAttrBox(){
+    momoj(".otheroptionArea .otherTitle").removeClass("openList");
+    momoj(".attributesotherListArea").hide();
+  }
+
+  momoj('#goodsAttrRoot .menuArea .viewType').delegate("input[name=showType2]","click",function(){ 
+    momoj("#goodsAttrRoot .prdListArea ul .nodata").css({'width':'100%','padding':'20px 15px'});
+    if (momoj(this).val() == "columnType") {       
+      momoj("#goodsAttrRoot .prdListArea").attr("id","columnType");
+    } else {
+      momoj("#goodsAttrRoot .prdListArea").removeAttr("id");
+      if(momoj(".swiper-container").hasClass("manyPics")){
+        momoj(".swiper-container").removeClass("swiper-no-swiping");
+        momoj(".swiper-pagination,.swiper-button-next,.swiper-button-prev").show();
+      }
+    }
+    var curPage = momoj('.toppageArea li.pageval span:eq(0)').text();
+    addHistory(curPage);
+  });
+  
+});
+
+//取得搜尋結果
+function initPage(){ 
+  //小分類頁且非行銷館或是品牌館
+  if (location.href.indexOf("/category/DgrpCategory.jsp") > -1) {
+    getUrlParamater();//取得url中的參數塞到全域變數params中,並將有些參數的值判斷畫面中是否要選定例如折價卷等
+    if (typeof funcYn != 'undefined' && typeof cateCode != 'undefined') {
+        duration = 1;
+        var data = new Object();
+        data.params = params;
+        var _data = new Object();
+        _data.flag = 2035;
+        _data.data = data;
+        //先打AJAX , 再處理網頁。約快500ms
+        momoj.ajax({
+          async: true,
+          url:'/ajax/ajaxTool.jsp?n=2035&t='+start2.getTime(),
+          data:{data:JSON.stringify(_data)},
+          type:'post',    
+          cache:false,    
+          dataType:'json', 
+          timeout:15000,
+          success:function(data) {
+            var end = new Date();
+            duration = end.getTime()-start2.getTime();
+            
+            momoj('#searchType li').removeClass('selected');
+            if (orderType=='4') { //orderType是url中的p_orderType的值
+              momoj('#searchType li.recommend').addClass('selected');
+            } else if (orderType=='2') {
+              momoj('#searchType li.priceHeight').addClass('selected').removeClass('down').addClass('up');
+            } else if (orderType=='3') {
+              momoj('#searchType li.priceHeight').addClass('selected').removeClass('up').addClass('down');
+            } else if (orderType=='5') {
+              momoj('#searchType li.newPrd').addClass('selected');
+            } else if (orderType=='6') {
+              momoj('#searchType li.popularPrd').addClass('selected');
+            } else if (orderType=='8') {
+              momoj('#searchType li#evaluateHeight').addClass('selected').removeClass('down').addClass('up');
+            } else if (orderType=='9') {
+              momoj('#searchType li#evaluateHeight').addClass('selected').removeClass('up').addClass('down');
+            } else {
+              momoj('#searchType li.recommend').addClass('selected');//預設為館長推薦
+            }
+            var searchResult = data.rtnData.rtnGoodsData;
+            if(!!searchResult && !!searchResult.resultCode && searchResult.resultCode=='200'){
+              brandsList = searchResult;
+              //ajax first
+              if (momoj(".attributesBrandsArea").length == 0) {
+                showBrands2022(searchResult,"");
+              }
+              searchResult.cateCode = nowCate.code;
+              showPage(searchResult);
+            } else {
+              showPage(new Object());
+            }  
+           },    
+           error : function(xhr,ajaxOptions,thrownError) {    
+             var end = new Date();
+             duration = end.getTime()-start2.getTime();
+             errlog.xhr = JSON.stringify(xhr);
+             errlog.ajaxOptions = ajaxOptions;
+             errlog.thrownError = JSON.stringify(thrownError);
+           
+              //ajax first
+              if (momoj(".attributesBrandsArea").length == 0) {
+              showBrands2022(searchResult,"");
+              }
+             showPage(new Object());
+           }    
+        });      
+    }
+  }
+}
+/*******************************
+ *-+-+-+-+-+ 搜尋區 -+-+-+-+-+
+ *******************************/
+
+//取得搜尋結果
+function getSearchResult(pageNum){ 
+  var p1 = (momoj('#goodsAttrRoot #priceS').length > 0 ? momoj('#goodsAttrRoot #priceS').val() : '');
+  var p2 = (momoj('#goodsAttrRoot #priceE').length > 0 ? momoj('#goodsAttrRoot #priceE').val() : '');
+  
+  if(!isFinite(p1) || !isFinite(p2)){
+    alert('價格區間請輸入非零數字');
+    momoj('#goodsAttrRoot #priceS').val('');
+    momoj('#goodsAttrRoot #priceE').val('');
+    return false;
+  }
+
+  var obj = new Object();
+  obj.cateCode = nowCate.code;
+  obj.cateLevel = nowCate.lv;
+  //抓取目前畫面上的篩選條件.折價卷....
+  obj.cp = momoj('#goodsAttrRoot .optionsLi #optionsLi_01').is(':checked') ? 'Y' : 'N';          //折價券
+  params.cp = obj.cp;
+  obj.NAM = momoj('#goodsAttrRoot .optionsLi #optionsLi_02').is(':checked') ? 'Y' : 'N';         //分期0利率
+  params.NAM = obj.NAM;
+  obj.first = momoj('#goodsAttrRoot .optionsLi #optionsLi_04').is(':checked') ? 'Y' : 'N';       //快速到貨
+  params.first = obj.first;
+  obj.freeze = momoj('#goodsAttrRoot .optionsLi #optionsLi_11').is(':checked') ? 'Y' : 'N';       //低溫宅配
+  params.freeze = obj.freeze;
+  obj.superstore = momoj('#goodsAttrRoot .optionsLi #optionsLi_05').is(':checked') ? 'Y' : 'N';  //超取
+  params.superstore = obj.superstore;
+  obj.tvshop = momoj('#goodsAttrRoot .optionsLi #optionsLi_06').is(':checked') ? 'Y' : 'N';      //TV商品
+  params.tvshop = obj.tvshop;
+  obj.china = momoj('#goodsAttrRoot .optionsLi #optionsLi_07').is(':checked') ? 'Y' : 'N';       //直配大陸
+  params.china = obj.china;
+  obj.tomorrow = momoj('#goodsAttrRoot .optionsLi #optionsLi_08').is(':checked') ? 'Y' : 'N';    //隔日配
+  params.tomorrow = obj.tomorrow;
+  obj.stockYN = momoj('#goodsAttrRoot .optionsLi #optionsLi_03').is(':checked') ? 'Y' : 'N';    //商品有量
+  params.stockYN = obj.stockYN;
+  obj.prefere = momoj('#goodsAttrRoot .optionsLi #optionsLi_09').is(':checked') ? 'Y' : 'N';    //大家電安心配
+  params.prefere = obj.prefere;
+  obj.threeHours = momoj('#goodsAttrRoot .optionsLi #optionsLi_10').is(':checked') ? 'Y' : 'N';    //3h到貨
+  params.threeHours = obj.threeHours;
+  obj.video = momoj('#goodsAttrRoot .optionsLi #optionsLi_12').is(':checked') ? 'Y' : 'N';    //有影片
+  params.video = obj.video;
+  obj.cycle = momoj('#goodsAttrRoot .optionsLi #optionsLi_13').is(':checked') ? 'Y' : 'N';    //週期購
+  params.cycle = obj.cycle;
+  obj.cod = momoj('#goodsAttrRoot .optionsLi #optionsLi_14').is(':checked') ? 'Y' : 'N';    //貨到付款
+  params.cod = obj.cod;
+  obj.superstorePay = momoj('#goodsAttrRoot .optionsLi #optionsLi_15').is(':checked') ? 'Y' : 'N';    //超商付款
+  params.superstorePay = obj.superstorePay;
+  obj.moCoinFeedback = momoj('#goodsAttrRoot .optionsLi #optionsLi_16').is(':checked') ? 'Y' : 'N'; //是否有MO幣加碼(Y/N)
+  params.moCoinFeedback = obj.moCoinFeedback;
+  obj.superstoreFree = momoj('#goodsAttrRoot .optionsLi #optionsLi_17').is(':checked') ? 'Y' : 'N';  //是否有超商免運卷(Y/N)
+  params.superstoreFree = obj.superstoreFree;
+  obj.commentRate = getCheckedCommenRate();  //星評篩選條件("": 空字串無篩選, "1": 1星到5星, "2": 2星到5星, "3": 3星到5星, "4": 4星到5星, "5": 5星)
+  params.commentRate = obj.commentRate;
+  obj.curPage = pageNum.toString();
+  obj.priceS = p1 ? p1 : "";
+  if(obj.NAM=='Y'){
+    obj.priceS = Math.max(obj.priceS, 1000).toString();
+  }
+  obj.priceE = p2 ? p2 : "";
+  obj.sortType = getSearchType().toString();
+  var selectedAttr = getSelectedAttr();
+  if(selectedAttr.length>0){
+    obj.indexInfoList = selectedAttr;
+  }
+  momoj('.goodsAttr').remove();
+  
+  var selectedBrands = getSelectedBrands();
+  if(selectedBrands.names.length>0){
+    obj.brandName = selectedBrands.names;
+    obj.brandCode = selectedBrands.brandNos;
+  } else {
+    obj.brandName = [];
+    obj.brandCode = [];
+  }
+  var selectedBrandsSeries = getSelectedBrandSeries();
+  if(selectedBrandsSeries.length>0){
+    obj.brandSeriesList = selectedBrandsSeries;
+  }else {
+    obj.brandSeriesList = [];
+  }
+  momoj('.goodsBrandSeriesTr').remove();
+
+  var sendobj = new Object() 
+  //有勾選品牌或屬性，改打新上市
+  if(selectedAttr.length>0 || selectedBrands.names.length>0) {
+    if (obj.sortType == '4') {
+      obj.sortType = '5';
+      params.sortType = '5';//因為後端接收是sortType,之後要全部要改成sortType
+    }
+    sendobj = obj;
+  }else if( (typeof params.brandCode != 'undefined' && Object.keys(params.brandCode).length > 0) || (typeof params.checkedIndexName != 'undefined' && Object.keys(params.checkedIndexName).length > 0) ){//url重整或是分享過來
+    if (params.sortType == '4' ) {
+      params.sortType = '5';//因為後端接收是sortType,之後要全部要改成sortType
+    }
+    params.brandCode = obj.brandCode;
+    params.brandName = obj.brandName;
+    sendobj = params;//使用url 組出的參數
+  }else{
+    sendobj = obj;
+  }
+  
+  var _data = {flag: 2035, params: sendobj}
+  var result = momoj.ajaxTool({data:_data});
+  var searchResult = result.rtnData.rtnGoodsData;
+  
+  if(searchResult && searchResult.resultCode=='200'){
+    searchResult.cateCode = obj.cateCode;
+    return searchResult;
+  }else{
+    return new Object();
+  }
+
+}
+
+//排序方式
+function getSearchType(){
+
+  var sType = 1;
+  var selected = null;
+  selected = momoj('#goodsAttrRoot #searchType .selected');
+
+  if(selected.is('.popularPrd')){//銷量排行
+    sType=6;
+  }else if(selected.is('.recommend')){//館長推薦
+    sType=4;
+  }else if(selected.is('.newPrd')){//新上市
+    sType=5;
+  }else if(selected.is('.priceHeight')){
+    if(selected.is('.up')){
+      sType=2;
+    }else{
+      sType=3;
+    }
+  }else if(selected.is('#evaluateHeight')){//評價
+    if(selected.is('.up')){
+      sType=8;
+    }else{
+      sType=9;
+    }
+  }
+  return sType;
+}
+
+//已勾選的屬性
+function getSelectedAttr(){
+  var indexInfoList = new Array();
+  momoj('.goodsAttr').each(function(i, tr){
+    var unicoededObj = new Object();
+    var indexName = "";
+    var indexNameNo = "";
+    var indexSpecialType = "";
+    var unicoededArr = new Array();
+    var contentNoArr = new Array();
+//    var ContentCntArr = new Array();
+    
+    momoj(tr).find('input').each(function(i, input){
+      var li = momoj(input).closest('li');
+      if(momoj(input).prop('checked') || li.is('.selected')){
+        unicoededArr.push(momoj.str2Unicode(momoj(input).val()));
+        contentNoArr.push(momoj(input).attr("indexno"));
+//        ContentCntArr.push(momoj(input).attr("cnt"));
+      }
+    });
+    
+    if(unicoededArr.length>0){
+      indexName = momoj(tr).attr('indexName');
+      //indexNameNo = momoj(tr).attr('idno');
+      indexSpecialType = momoj(tr).attr('indexSpecialType');
+      unicoededObj.indexName = momoj.str2Unicode(indexName);
+      //unicoededObj.indexNameNo = indexNameNo;
+      unicoededObj.indexContent = unicoededArr;
+      unicoededObj.indexContentNo = contentNoArr;
+//      unicoededObj.indexContentCnt = ContentCntArr;
+      unicoededObj.indexSpecialType = indexSpecialType;
+      indexInfoList.push(unicoededObj);
+    }
+  });
+  return indexInfoList;
+}
+
+
+function getSelectedBrands() {
+  var names = new Array();
+  var ids = new Array();
+  var brandNos = new Array();
+  params.checkedBrands = [];
+  params.checkedBrandsNo = [];
+  var checkedValues = momoj('#attributesBrandsArea .cateS [type="checkbox"]:checked');
+  momoj.each(checkedValues, function(i, val){
+    names.push(momoj.str2Unicode(momoj(val).val()));
+    ids.push(momoj(val).attr('idno'));
+    brandNos.push(momoj(val).attr('brandno'));
+    params.checkedBrands.push(momoj(val).val());
+    params.checkedBrandsNo.push(momoj(val).attr('brandno'));
+  });
+  
+  var brand = {
+      names: names,
+      ids: ids ,
+      brandNos :brandNos
+  }
+  
+  return brand;
+}
+
+function getSelectedBrandSeries() {
+  /*var brandSeriesLt = [];
+  params.checkedBrandSeries = [];
+  var checkedValues = momoj('.attributesListArea .goodsBrandSeriesTr input:checked')
+  momoj.each(checkedValues , function(i, val){
+    var names = momoj.str2Unicode(momoj(val).val());
+    var brandNo = momoj(val).attr('brandno');
+    var brandSeries  = new Object
+    brandSeries.brandSeriesName = names;
+    brandSeries.brandSeriesNo = brandNo;
+    brandSeriesLt.push(brandSeries);
+    params.checkedBrandSeries.push(names.concat("##",brandNo))
+
+  });
+  return brandSeriesLt;*/
+  var brandSeriesLt = [];
+  momoj.each(params.checkedBrandSeries, function(i, brandSeries){
+    var brandSeriesObj  = new Object
+    var brandSeriesData = brandSeries.split("##")
+    if(brandSeriesData.length > 0){
+      brandSeriesObj.brandSeriesName = brandSeriesData[0];
+      brandSeriesObj.brandSeriesNo = brandSeriesData[1];
+      brandSeriesLt.push(brandSeriesObj);
+    }
+  });
+  
+  return brandSeriesLt;
+}
+
+
+//顯示搜尋結果
+function showPage(val){
+  const mainProcess = (val, memberInfo={}) => {
+    //reset
+    chekedAttrPool = {};
+    chekedBrandPool = {};
+    chekedBrandSeriesPool = {};
+    
+    var searchResult = val.rtnGoodsData;
+    momoj('#goodsAttrRoot').show().find(".contentArea").show();
+    //折價卷...重新被選定
+    optionChecked();
+  
+    if(!isUndefined(searchResult) && !!searchResult){
+      hideAdjustmentTips();
+      
+      //小分類SHOW浮層品牌
+      if (!!searchResult.brandName) {
+        showBrands2022(val ,"")
+        showBrandsBanner(searchResult.brandName);
+      }
+      //小分類SHOW浮層品牌系列
+      if (!!searchResult.brandSeriesList && searchResult.brandSeriesList.length >0 ) {
+        showBrandSeries(searchResult.brandSeriesList);
+      }
+      
+      //top30開關
+      if (isAttrChecked() || parseInt(val.curPage,10) > 1 || parseInt(val.totalCnt,10) < 9) {
+        momoj('#bt_9_002_01').remove();
+      } else {
+        momoj('#bt_9_002_01').remove();
+        if (!!searchResult.top123) {
+          var div = top123(searchResult.top123);
+          momoj('#goodsAttrRoot .menuArea').after(div);
+          momoj('#bt_9_002_01 .money').fixGoodsPrice({elsLimit:1,mainDiv:'bt_9_002_01'});
+        }
+      }
+      
+      //棋盤式、條列式
+      if (momoj('#goodsAttrRoot .menuArea .viewType input[name=showType2]:checked').length == 0) {
+        if (/^\s*$/.test(nowCate.code)) {
+          nowCate.code = momoj('#goodsAttrRoot').attr('cateCode');
+        }
+        if (/^(40|41001)/.test(nowCate.code)) {
+          momoj('#goodsAttrRoot .menuArea .viewType input[name=showType2]#columnType2').prop('checked',true);
+        } else {
+          momoj('#goodsAttrRoot .menuArea .viewType input[name=showType2]#chessboardType2').prop('checked',true);
+        }      
+      }
+      //圖書館架新上市變出版日
+      if (!!nowCate.code && /^(40)/.test(nowCate.code)) {
+        momoj('#searchType .newPrd').text('出版日');
+      }
+      var curPage = parseInt(val.curPage,10);
+      var maxPage = parseInt(val.maxPage,10);
+      var totCnt = parseInt(val.totalCnt,10);
+      showGoods(searchResult.goodsInfoList, memberInfo);//組本頁商品
+      showGoodsAttrs(searchResult.indexInfoList);       //組屬性區塊
+      momoj('[name=showType2]:checked').trigger('click');//判斷是否為棋盤式或列表示
+      showOtherGoodsAttrs(searchResult.indexInfoList);  //組其他選項區塊
+      adjustGoodsAttrLayout();                          //調整屬性區塊&其他選項區塊縮排
+      showPageBtns(curPage, maxPage, totCnt);
+      updGoodsList();                             //對本頁商品做修正
+      setGoodsTotalSales();                       //組出商品列表各個總銷售數量
+      //綁定swiper
+      var serchPrdSwiper = imgSwiper.init();//接住 imgSwiper.js new 出來的實例
+      function handleSlideChange (){
+        const currentSlide = this.slides[this.activeIndex]
+        const siblings = momoj(currentSlide.closest('.swiper-wrapper')).siblings();
+        //圓標(長標)
+        const imgTag = siblings.closest('.imgTag');
+        if(imgTag.length > 0){
+          if(this.activeIndex === 0){//滑動到第一張圖片才顯示圖標們
+            imgTag.show();
+          }else{
+            imgTag.hide();
+          }
+        }
+        //上標(長標)
+        const imgTagRectangle = siblings.closest('.imgTagRectangle');
+        if(imgTagRectangle.length > 0){
+          if(this.activeIndex === 0){
+            imgTagRectangle.show();
+          }else{
+            imgTagRectangle.hide();
+          }
+        }
+        //下標
+        const imgTagBottom = siblings.closest('.imgTagBottom');
+        if(imgTagBottom.length > 0){
+          if(this.activeIndex === 0){
+            imgTagBottom.show();
+          }else{
+            imgTagBottom.hide();
+          }
+        }
+        //官方標
+        const officialTagImgUrl = siblings.closest('.ec-tag-official');
+        if(officialTagImgUrl.length > 0){
+          if(this.activeIndex === 0){
+            officialTagImgUrl.show();
+          }else{
+            officialTagImgUrl.hide();
+          }
+        }
+        //mo幣和免運卷
+        const moPlusTagGroup = siblings.closest('.mo-plus-tag-group');
+        if(moPlusTagGroup.length > 0){
+          if(this.activeIndex === 0){
+            moPlusTagGroup.show();
+          }else{
+            moPlusTagGroup.hide();
+          }
+        }
+      }
+      if(Array.isArray(serchPrdSwiper)) {//多個 swiper實例
+        for(let i = 0; i < serchPrdSwiper.length; i++){
+          let swiperArea = serchPrdSwiper[i];
+          swiperArea.on('slideChange', handleSlideChange);
+        }
+      }else {//單個 swiper實例
+        serchPrdSwiper.on('slideChange', handleSlideChange);
+      }
+    }else{
+      showAdjustmentTips();//篩選無結果
+      showPageBtns(1, 1, 0);//頁碼
+      momoj('#bt_9_002_01').remove();
+    }
+    
+    return true;  
+  }
+  
+  getMemberInfo().then(memberInfo => {
+    mainProcess(val, memberInfo);
+  })
+}
+
+//還原原本的分類頁
+function restoreThisCate(){
+  
+  if(nowCate.isCateS()){
+    momoj('#Dgrp_LCatRightPBase').show();
+    momoj('#Dgrp_banner').show();
+  }else if(nowCate.isCateL() || nowCate.isCateM()){
+    momoj('#bt_2_layout_b1').show();
+    momoj('.mofunTxt:eq(0)').hide();
+    momoj('.mofunTxt:eq(1)').show();
+  }
+  
+  momoj('#goodsAttrRoot').hide();
+}
+
+//所有商品列表資訊
+var goodsCodeList = [];
+function showGoods(goodsList, memberInfo){
+  console.info("showGoods");
+  momoj('#goodsAttrRoot').show().find(".contentArea").show();
+  var ul = momoj('#goodsAttrRoot .prdListArea ul');
+  ul.empty();
+  momoj.each(goodsList, function(i, goodsInfo){
+    var gCode = goodsInfo.goodsCode;
+    ul.append(genGoodsLi(goodsInfo, memberInfo));
+    goodsCodeList.push(gCode);
+    
+    changeWishListIconByTrackStatus(goodsInfo.goodsCode, goodsInfo.isTracked);
+  });
+  const getGoodsIdList = function(){
+    let result = [];
+    const goodsElements = Array.from(document.querySelectorAll('.prdListArea > ul > li'));
+    if (goodsElements.length === 0) return []
+    result = goodsElements.slice(0, 3).reduce((goodsInfoList, element) => {
+      goodsInfoList.push(element.getAttribute('gcode') || '')
+      return goodsInfoList;
+    }, [])
+    return result
+  }
+  //taboola track
+  if(typeof taboolaEvents !== 'undefined' && typeof window._tfa === 'object') {
+    const urlParams = new URLSearchParams(window.location.search);
+    const d_code = urlParams.get('d_code');
+    const name = momoj("input#tempDName").val();
+    const productIds = getGoodsIdList();
+    taboolaEvents.categoryView({ productIds, categoryId: d_code, category: name });
+  }
+
+  //產生seo結構化資料
+  genSeoData();
+
+  oUrlCache.appendSourcePageType(oUrlCache.TYPE_CATEGORY);
+}
+
+
+
+//產生"一個"商品資訊的區塊
+function genGoodsLi(g, memberInfo){
+  var nowCateCode = momoj('#goodsAttrRoot').attr('cateCode');//momoj.url.param('d_code');
+  var salePrice = parseInt(g.SALE_PRICE.replace(/[^0-9]/g,''),10);//價格去掉數字以外符號
+  var goodsPrice = parseInt(g.goodsPrice.replace(/[^0-9]/g,''),10);//價格去掉數字以外符號
+  var isSuperstore = (g.shopWay && g.shopWay.indexOf('3') > -1) || false;//shopWay有2可速達，否則宅配；有3可超取
+  var isTV = g.isTVGoods;
+  var isNormalDely = g.goodsIconType!='0';
+  
+  var isInStock = parseInt(g.goodsStock,10)>0;
+  var isGift = !!g.haveGift;
+  var isDiscount = !!g.isDiscount;
+  var isCp = !!g.useCounpon;
+  var isCycle = !!(g.cycleYn == "1");
+  var isRegister = !!g.isRegister;
+  var canTipInfoObj = getSaleDescription(g.canTipStock ,g.onSaleDescription);
+  var chkSetGoodsYn = g.isSetGoods == 1;
+  var isAdultLimit = g.isAdultLimit | false;
+  var is3CDIYGoods = !!g.is3CDIYGoods;
+  
+  var li = momoj('<li class="eachGood"></li>').attr({'gcode': g.goodsCode, 'is18Goods': isAdultLimit, 'tracked': g.isTracked, 'entpCode':g.entpCode||'' });
+  var btnArea = genBtnArea(chkSetGoodsYn, canTipInfoObj,is3CDIYGoods);
+  var aLink = momoj('<a class="prdUrl"></a>').attr('href', genGoodsUrl(g.goodsCode, g.promotUrl, g.categoryCode, g.action));
+
+  const string2Number = (str='') => parseInt(str.replaceAll(',', '')) || 0;
+  const { mopro={}, isLogin=false } = memberInfo;
+  const { basePrice: { price: moProBasePrice = '0' } = {}, slogan: moProSlogan = '', } = g.moProPriceModel || {};
+  const { basePrice: { price: goodsBasePrice = '0' } = {} } = g.goodsPriceModel || {};
+
+  const isFlashSalePrice = g.goodsTag.some(tag => tag.content === '限時搶購'); //是否為限時搶購價
+  const isMoProMember = (isLogin) && (mopro.isMoPro === '1'); //是否為 MoPro 會員
+  const isMoProPriceLessThanLastPrice = moProBasePrice != 0 && (string2Number(moProBasePrice) < string2Number(goodsBasePrice)); //MoPro定價是否低於折後價
+  const isShowMoProPrice = isMoProMember && isMoProPriceLessThanLastPrice && !isFlashSalePrice;
+  const moProPriceSaving = string2Number(goodsBasePrice) - string2Number(moProBasePrice); // moPro價格便宜多少$
+
+  var discountWoringFlag = g.discountWoringFlag;
+  const productImageConfig = generateProductImageConfig(g, isAgeCheck, isAdultLimit);
+  var img = imgSwiper.combine(productImageConfig);
+  var specialTitle = momoj('<span class="specialTitle"></span>').html(isShowMoProPrice ? moProSlogan : g.goodsSubName);
+  var prdNameTitle =momoj('<div class="prdNameTitle"></div>');
+  var gName = momoj('<h3 class="prdName"></h3>').html(g.goodsName).attr('title', g.goodsName);
+  var goodsTagContent ="";
+  if(!isUndefined(g.goodsTag) && g.goodsTag.length>0){
+    goodsTagContent = GoodsTagUtil.createAllGoodsTag(g.goodsTag);
+  }
+  prdNameTitle.append(goodsTagContent,gName);
+  var savePrice = momoj('<span class="savePrice" style="display:none;"></span>');
+
+  var price = genGoodsPrice(
+    isShowMoProPrice ? g.moProPriceModel : g.goodsPriceModel,
+    discountWoringFlag,
+    isShowMoProPrice,
+    (!isMoProMember && isMoProPriceLessThanLastPrice && !isFlashSalePrice) ? moProPriceSaving : 0,
+  );
+  var totalSales = genTotalSales(g.goodsCode);
+  var carData = g.carData;  //新增中古車類商品資訊 juchou 2018.04.18
+  var carArea = genCarArea(carData);
+//標註該商品是否為中古車，之後重新整理價格(updPromoPrice())，若為中古車不用改價 juchou 2018.02.22
+  if(carArea.length>0){
+    price = genPrice(salePrice, false, "");
+    price.find('b').addClass("isOldCar");
+  }
+  var bookDetails = getBookDetails(g.bookData);
+  var iconArea = genIconArea(isInStock, isCycle, bookDetails.isComingSoon, isDiscount, g.icon, canTipInfoObj);///12H 折價等icon / 售完補貨中
+//  var iconArea = genIconArea(isInStock, isTV, g.goodsIconType, isCp, isGift, isDiscount, isRegister, isCycle, isComingSoon);//12H 折價等icon / 售完補貨中
+  var NAM = momoj('<p class="stage"></p>').attr('nam', g.norestAllotMonth);//分期付款
+  //var delyMethod = genDelyMethod(isSuperstore, isNormalDely);//配送方式
+  var ratingInfo ={};//組出星等和評價還有銷售量
+  ratingInfo.rating = g.rating;
+  ratingInfo.ratingTimes = g.ratingTimes;
+  var ratingStarBox = goodsRating.showRatingInfo(ratingInfo);
+  var prdInfo = momoj('<div class="prdInfo"></div>');
+  prdInfo.append(specialTitle, prdNameTitle ,bookDetails.publishInfo, carArea, bookDetails.description, savePrice, price, ratingStarBox, totalSales ,iconArea);
+  aLink.append(img, prdInfo);
+  li.append(btnArea, aLink);
+  
+  return li;
+}
+
+function getBookDetails(bookData) {
+  let bookDetails = {
+    isComingSoon: false,
+    publishInfo: "",
+    description: ""
+  };
+
+  if (bookData != null) {
+    var bookArea = combineBookArea.genBookArea(bookData);
+    if (bookArea) {
+      if (bookArea.publishInfo) {
+        bookDetails.publishInfo = bookArea.publishInfo;
+      }
+      if (bookArea.description) {
+        bookDetails.description = bookArea.description;
+      }
+      if (bookArea.isComingSoon) {
+        bookDetails.isComingSoon = bookArea.isComingSoon;
+      }
+    }
+  }
+
+  return bookDetails;
+}
+
+//解析商品狀態
+function getSaleDescription(canTipStock ,onSaleDescription){
+  var canTipStockInfo = new Object();
+  if(typeof canTipStock !='undefined'){
+    var descObj ="";
+    switch(canTipStock){
+      case '0':
+        if(!!onSaleDescription && onSaleDescription.indexOf("開賣") > 0){ 
+          descObj = momoj('<a class="timeAlert">'+onSaleDescription+'</a>');
+        }else{
+          descObj = momoj('<a class="buy_no" title="'+onSaleDescription+'"></a>');
+        }
+        break;
+      case '1': 
+        if(!!onSaleDescription && onSaleDescription.indexOf("開賣") > 0){ 
+          descObj = momoj('<a class="timeAlert">'+onSaleDescription+'</a>');
+        }else{
+          descObj = momoj('<a class="buy_no" title="'+onSaleDescription+'"></a>');
+        }
+        break;
+      case '2': 
+        if(!!onSaleDescription && onSaleDescription.indexOf("開賣") > 0){ 
+          descObj = momoj('<a class="timeAlert">'+onSaleDescription+'</a>');
+        }else{
+          descObj = momoj('<a class="comingSoon" title="'+onSaleDescription+'"></a>');
+        }
+        break;
+      case '5': 
+        if(!!onSaleDescription && onSaleDescription.indexOf("開賣") > 0){ 
+          descObj = momoj('<a class="timeAlert">'+onSaleDescription+'</a>');
+        }else{
+          descObj = momoj('<a class="buyAlert" title="'+onSaleDescription+'"></a>');
+        }
+        break;
+      default:
+        if(canTipStock =="" && !!onSaleDescription){//暫時用來判斷是否為開賣通知時間,未來要請api規劃給他一個canTipStock的值
+          descObj = momoj('<a class="timeAlert">'+onSaleDescription+'</a>');
+        }else if(canTipStock !="" && !!onSaleDescription){
+          descObj = momoj('<a class="buy_no" title="'+onSaleDescription+'"></a>');
+        }
+        break;
+    }
+    canTipStockInfo = {
+      "canTipStock" : canTipStock||'',
+      "onSaleDescription" : onSaleDescription||'',
+      "descObj" : descObj
+    };
+  }
+  return canTipStockInfo;
+}
+
+function genBtnArea(chkSetGoodsYn, canTipInfoObj,is3CDIYGoods){
+  var btnArea = momoj('<p class="btnArea"></p>');
+  var trace = momoj('<a class="insertWishList" title="加入追蹤清單"></a>');
+  var addToCart = momoj('<a class="addToCart" title="放入購物車"></a>').css('display', 'inline-block').toggle(!chkSetGoodsYn);
+  if(typeof canTipInfoObj != 'undefined' && Object.keys(canTipInfoObj).length >0 && canTipInfoObj.descObj!="" &&is3CDIYGoods){
+    btnArea.append(canTipInfoObj.descObj);
+  }else if(typeof canTipInfoObj != 'undefined' && Object.keys(canTipInfoObj).length >0 && canTipInfoObj.descObj!="" && !is3CDIYGoods){
+    btnArea.append(trace, addToCart, canTipInfoObj.descObj);
+  }else if(typeof canTipInfoObj != 'undefined' && Object.keys(canTipInfoObj).length >0 && canTipInfoObj.descObj =="" && !is3CDIYGoods){
+    btnArea.append(trace, addToCart);
+  }else if(typeof canTipInfoObj != 'undefined' && Object.keys(canTipInfoObj).length >0 && canTipInfoObj.descObj =="" && is3CDIYGoods){
+    btnArea="";
+  }else if(typeof canTipInfoObj == 'undefined' && is3CDIYGoods){
+    btnArea="";
+  }else{
+    btnArea.append(trace, addToCart);
+  }
+  
+  return btnArea;
+}
+
+
+function genGoodsUrl(gCode, promotUrl, categoryCodes, action){
+  
+  var cateCodeS = getRelatedCateCodeS(categoryCodes);
+  
+  var url = "";
+  if(promotUrl.length>0){
+    url = promotUrl;
+  }else{
+    if (!gCode.startsWith("TP")){
+      url = "/goods/GoodsDetail.jsp?i_code=" + gCode;
+      if(cateCodeS){
+        url += '&str_category_code=' + cateCodeS;
+      }
+    }else if(gCode.startsWith("TP")){
+      url = gen3pGoodsUrl(gCode, action);
+    }
+  }
+  return url;
+}
+//組出3p商品頁網址
+function gen3pGoodsUrl(gCode, action){
+  var url3p ="";
+  if(gCode.startsWith("TP") && typeof action !== 'undefined' && action.actionType =='10002'){
+    let urlParameter = action.extraValue.urlParameter||'';
+    let entpCode = action.extraValue.entpCode||'';
+    let categoryCode = action.extraValue.categoryCode||''
+    url3p += `/TP/${entpCode}/goodsDetail/${gCode}`;
+    if(typeof categoryCode!== 'undefined' && categoryCode!='') {
+       url3p = url3p +`?categoryCode=${_categoryCode}`;
+       if(urlParameter!='' ){
+         url3p = url3p +`&${urlParameter}`;
+       }
+    }else{
+      if(urlParameter!='' ){
+         url3p = url3p +`?${urlParameter}`;
+       }
+    }
+  }
+  return url3p;
+}
+//取得與在目前分類下，第一個相關的小分類代碼(CateCodeS)
+function getRelatedCateCodeS(categoryCodes){
+  
+  var resultCode = "";
+  try {
+    switch(parseInt(nowCate.lv,10)){
+      case -1:
+        resultCode = "";//categoryCodes.match(new RegExp('(\\d{10})'))[1];//patten: 小 中 大 牙
+        break;
+      case 0: 
+        resultCode = categoryCodes.match(new RegExp('(\\d{10})##\\d{10}##\\d{10}##' + nowCate.code))[1];
+        break;
+      case 1: 
+        resultCode = categoryCodes.match(new RegExp('(\\d{10})##\\d{10}##'+nowCate.code))[1];
+        break;
+      case 2: 
+        resultCode = categoryCodes.match(new RegExp('(\\d{10})##'+nowCate.code))[1];
+        break;
+      case 3: 
+        resultCode = nowCate.code;
+        break;
+    }
+  }catch(e) {}
+  
+  return resultCode;
+}
+
+//產生售價區塊(可共用)
+function genPrice(goodsPrice, isDiscounted, discountWoringFlag){
+  var priceTag = momoj('<span class="prdPrice"></span>');
+  
+  var price = momoj('<b></b>').append(goodsPrice.toLocaleString());
+  
+  //已折  2018.05.22 smhsu
+  var discount = momoj('<i class="afterSale"></i>');
+  //折價文案
+  if(discountWoringFlag==1){
+    discount.html('(售價已折)');
+  }else if(discountWoringFlag==2){
+    discount.html('(下單再折)');
+  }
+  
+  priceTag.append('$', price, discount);
+  
+  return priceTag;
+}
+
+//產生一品多價售價區塊
+function genGoodsPrice(goodsPriceModel, discountWoringFlag, isMoProPrice, moProPriceSaving){
+  let priceTag=''; 
+  if(goodsPriceModel){
+    let sign = goodsPriceModel.basePrice.sign||'';
+    let goodsPrice = goodsPriceModel.basePrice.price||'';
+    let strPrice = goodsPriceModel.basePrice.strPrice||'';
+    let goodsStatus = goodsPriceModel.basePrice.goodsStatus||'';
+    //折價文案
+    if(goodsStatus==''){
+      if(discountWoringFlag==1){
+        goodsStatus = '(售價已折)';
+      }else if(discountWoringFlag==2){
+        goodsStatus='(下單再折)';
+      }
+    }
+          
+    priceTag = (
+      `<span class="prdPrice current-price" isMoProPrice=${ isMoProPrice ? '1' : '0' } moProPriceSaving=${ moProPriceSaving }>` + 
+        `${ sign }<b>${ goodsPrice }</b>` +
+        `<span class="price-from">${ strPrice }</span>` +
+        `<span class="afterSale after-sale" style="${ isMoProPrice ? 'display:none;' : '' }">${ goodsStatus }</span>` +
+        `${ isMoProPrice ? `<div class="ec-badge ec-moPro-price"><span class="badge-text">moPro會員價</span></div>` : '' }` +
+      `</span>`
+    );
+  }
+  return priceTag;
+}
+
+
+//產生各式icon區塊
+function genIconArea(isInStock, isCycle, isComingSoon, isDiscount, icon, canTipInfoObj){
+  var iconArea = momoj('<p class="iconArea"></p>');
+  if(isInStock){
+    if(Object.keys(canTipInfoObj).length >0 && !!canTipInfoObj.onSaleDescription && canTipInfoObj.onSaleDescription.indexOf("開賣") > 0){
+      var saleDesc = momoj('<b>'+canTipInfoObj.onSaleDescription+'</b>');
+      iconArea.append(saleDesc);
+      iconArea.addClass("description-text");
+    }else{
+      if(icon){
+        for (var i = 0; i < icon.length; i++) {
+          var iconType = icon[i].iconContentType;
+          if(isCycle && /^(is12H|isFreeze)$/.test(iconType)){
+            continue;
+          }
+          var iconhtml = '<i style="background-color: '+icon[i].iconBgColor+'; color:'+icon[i].iconContentColor+'">'+icon[i].iconContent+'</i>';
+          iconArea.append(momoj(iconhtml));
+        }
+      }
+    }
+  }else{
+    if(Object.keys(canTipInfoObj).length >0 && !!canTipInfoObj.onSaleDescription){
+      var saleDesc = momoj('<b>'+canTipInfoObj.onSaleDescription+'</b>');
+      iconArea.append(saleDesc);
+      iconArea.addClass("description-text");
+    }
+  }
+  return iconArea;
+}
+//組出總銷量(可以抽出來共用)
+function genTotalSales(goodsCode){
+  var totalSales = momoj('<span class="totalSales goodsTotalSales" totalSalesGD="'+goodsCode+'"></span>');
+  return totalSales;
+}
+
+//組屬性區塊
+function showGoodsAttrs(indexInfoList){
+  momoj('.goodsAttr').remove();
+  
+  if(isUndefined(indexInfoList)) {
+    return false;
+  }
+  
+  momoj.each(indexInfoList, function(i, gAttr){
+    //appendGoodsAttr(gAttr, i);
+    var indexName = gAttr.indexName;              //母屬性名稱
+    var uniIndexName =momoj.str2Unicode(indexName);
+    var indexNameNo = gAttr.indexNameNo || parseInt(Math.random() * 10000000 + 1000000 ,10);    //母屬性ID
+    var indexContent = gAttr.indexContent;        //子屬性名稱[]
+    var indexContentStr = gAttr.indexContentStr;    //子屬性seq[]
+    var indexContentCnt = gAttr.indexContentCnt;  //子屬性商品數[]
+    var indexSpecialType = gAttr.indexSpecialType;  //母屬性 0:一般屬性(show);1:中古車特殊屬性(hide)
+
+    var table = momoj('.attributesListArea .wrapTable');
+    
+    var tr = momoj('<tr></tr>').addClass('goodsAttr').attr({'indexName': indexName, 'idno': indexNameNo, 'indexSpecialType': indexSpecialType});
+    var th = momoj('<th></th>').html(indexName).attr({'title': indexName});
+    var td = momoj('<td></td>');
+    var outdiv = momoj('<div class="wrapDiv"></div>');
+    var ul = momoj('<ul id="attrList" class="attrList minHeight"></ul>');
+    var div = momoj('<div class="multipleShowBtnArea"><a class="cancel">取消</a><a class="confirm">確定</a></div>');
+    div.find('.confirm').hide();
+    if(indexSpecialType==1){       //中古車特殊屬性由API決定要不要Show
+        tr.hide();
+    }
+    var indexNameChoice= false;//該title中的屬性是否有被選取
+    momoj.each(indexContent, function(j, attrValue){
+      var cnt = indexContentCnt[j];
+      var contentStr =indexContentStr[j].split('##');
+      var indexContentNo =contentStr[1];
+      var checked = false;//該屬性是否被選取
+      if(uniIndexName in params.checkedAttrs){
+        indexNameChoice=true;
+        var uniAttrValue =momoj.str2Unicode(attrValue);
+        checked = params.checkedAttrs[uniIndexName].indexOf(uniAttrValue) != -1;
+        if(checked){
+          div.find('.confirm').hide();
+          div.find('.cancel').hide();
+        }
+      }
+      var input='';
+      var label='';
+      if(checked){
+        input = momoj('<input type="checkbox"></input>').attr({'indexno': indexContentNo}).val(attrValue).prop("checked",checked);
+        label = momoj('<label class="selected"></label>').attr({'title': attrValue}).html(attrValue + '(' + cnt + ')');
+      }else{
+        input = momoj('<input type="checkbox"></input>').val(attrValue).attr({'indexno': indexContentNo});
+        label = momoj('<label></label>').attr({'title': attrValue}).html(attrValue + '(' + cnt + ')');
+      }
+      label.append(input);
+      label.append('<span></span>');
+      var li='';
+      if(checked){
+        li= momoj('<li class="selected" cateLv="gAttr"></li>').append(label);
+      }else{
+        if(indexNameChoice && params.checkedAttrs[uniIndexName].length>0){
+          li= momoj('<li style="display: none;"></li>').append(label);
+        }else{
+          li= momoj('<li ></li>').append(label);
+        }
+      }
+      ul.append(li);
+    });
+    outdiv.append(ul);
+    td.append(outdiv, div);
+    tr.append(th, td);
+    if(indexContent.length > 1){
+      if(indexNameChoice){
+        if(params.checkedAttrs[uniIndexName].length>5){
+          td.append('<a class="multipleChoiceBtn moreBtn">更多</a>');
+        }
+      }else{
+      td.append('<a class="multipleChoiceBtn">選更多</a>');
+    }
+    }
+    table.append(tr);
+  });
+  
+  rebuildParamCheckedAttrs();
+  
+  //調整高度
+  var appendedTrs = momoj('.goodsAttr');
+  momoj.each(appendedTrs, function(i, tr){
+    var _this = momoj(tr);
+    if (_this.height() > 80) {
+      _this.find("ul").addClass("minHeight");
+      _this.find(".expansionUlBtn").show();
+    }
+  });
+}
+
+//組其他選項區塊
+function showOtherGoodsAttrs(indexInfoList){
+  momoj('.otheroptionArea').remove();
+  var table = momoj('.attributesListArea .wrapTable');
+  if(isUndefined(indexInfoList)) {
+    return false;
+  }
+  var tr = momoj('<tr class="otheroptionArea"></tr>');
+  var th = momoj('<th>其他選項</th>').attr({'title': '其他選項'});
+  var td = momoj('<td valign="middle"></td>');
+  momoj.each(indexInfoList, function(i, gAttr){
+    var indexName = gAttr.indexName;              //母屬性名稱
+    var indexNameNo = gAttr.indexNameNo;          //母屬性ID
+    
+    var div = momoj('<div class="otherTitle"></div>').attr({'title': indexName, 'indexName': indexName, 'idno': indexNameNo});
+    var span = momoj('<span></span>').text(indexName);
+    div.append(span);
+    td.append(div);
+  });
+  tr.append(th, td);
+  table.append(tr);
+}
+//組左下方品牌區塊 2022
+function showBrands2022(val ,source){
+  var searchResult ="";
+  var brandData="";
+  if(isUndefined(val) || val.length==0){
+    return false;
+  }
+  //因為2027 api回傳的內容和其他的不一樣,所以要另外區分
+  if(source=="2027"){
+    searchResult = val;
+    brandsList = searchResult;
+    brandData = searchResult.brandFilter;
+  }else{
+    brandsList = searchResult;
+    searchResult = val.rtnGoodsData;
+    brandData = searchResult.brandName;
+  }
+  if(isUndefined(brandData) || brandData.length==0){
+      return false;
+    }
+  
+  momoj(".attributesBrandsArea").remove();
+  //if(momoj(".attributesBrandsArea").size()==0){
+  var outerDiv = momoj('<div id="attributesBrandsArea" class="attributesBrandsArea"></div>');
+  var innerDiv = momoj('<div></div>');
+  var ul = momoj('<ul id="attributesBrandsArea"></ul>');
+  momoj('<li class="cateM">品牌總覽(A~Z)<a class="openMoreBtn">更多</a><a class="closeMoreBtn">關閉</a></li>').appendTo(ul);
+  
+  //for brandList
+  momoj.each(brandData, function(i, bInfo){
+    var name = bInfo.brandName;
+    var brandNameStr = bInfo.brandNameStr;
+    var id="";
+    if(name!=""){//ignore emtpy brand name  
+      if (Array.isArray(name)) {
+        for(j=0;j < name.length;j++) {
+          var bName = bInfo.brandName[j];
+          var brandNameStr = bInfo.brandNameStr[j];
+          var tempStr = brandNameStr.split('##');
+          var input='';
+          id = tempStr[1];
+          var li = momoj('<li class="cateS"></li>');
+          if(params.checkedBrandsNo.indexOf(id)>-1){
+            input = momoj('<input type="checkbox"/>').attr('indexno', id).attr('brandno', id).val(bName).prop('checked', true);
+          }else{
+            input = momoj('<input type="checkbox"/>').attr('indexno', id).attr('brandno', id).val(bName);
+          }
+          var label = "<h2><label brandno = '"+ id +"'>"+ bName +"</label></h2>"; 
+          li.append(input, label);
+          ul.append(li);     
+        }
+      }
+    }  
+  });
+  
+  ul.append('<li class="More hide"><a>更多</a></li>');
+  innerDiv.append(ul);
+  outerDiv.append(innerDiv);
+  momoj('#Model_bt_G').after(outerDiv).after('<div id="dummyHeight" style="width:100%; clear:both"></div>');
+  
+  var borderWidth = momoj('#bt_0_142_01').css('border-top-width');
+  var borderStyle = momoj('#bt_0_142_01').css('border-top-style');
+  var borderColor = momoj('#bt_0_142_01').css('border-top-color');
+  var bgColor = momoj('#bt_0_142_01 .cateM').css('background-color');
+  
+  momoj('#attributesBrandsArea div').css('border-width', borderWidth);
+  momoj('#attributesBrandsArea div').css('border-style', borderStyle);
+  momoj('#attributesBrandsArea div').css('border-color', borderColor);
+  momoj('#attributesBrandsArea .cateM').css('background-color', bgColor);
+  showMoreBrands();  
+  //}
+}
+
+
+//組右上角屬性上的品牌
+function showBrandsBanner(brandNameList){
+  
+  // 上次存留的要清掉
+  momoj('.goodsBrandTr').remove();
+  
+  var restBrand = [];//品牌存在
+  var restBrandNo = [];//品牌代碼存在
+  var table = momoj('.attributesListArea .wrapTable');
+  var tr = momoj('<tr></tr>').addClass('goodsBrandTr').attr('indexName', '品牌');
+  var th = momoj('<th></th>').html('品牌').attr({'title': '品牌'});;
+  var td = momoj('<td></td>');
+  var outdiv = momoj('<div class="wrapDiv"></div>');
+  var ul = momoj('<ul id="brandsList" class="brandsList minHeight"></ul>');
+  var div = momoj('<div class="multipleShowBtnArea"><a class="cancel">取消</a><a class="confirm">確定</a></div>');
+  div.find('.confirm').hide();
+  var brandNameChoice = false;
+  momoj.each(brandNameList, function(i, brand){
+    var name = brand.brandName;
+    var count = brand.brandCount;
+    var brandNameStr = brand.brandNameStr;
+    var brandno="";
+    if(name!=""){//ignore emtpy brand name
+      
+      if (Array.isArray(name)) {
+        for(j=0;j < name.length;j++) {
+          var checked = params.checkedBrands.indexOf(name[j])!=-1;
+          if(checked){
+            brandNameChoice = true;
+            restBrand.push(name[j]);
+            var tempStr = brandNameStr[j].split('##');
+            brandno = tempStr[1];
+            restBrandNo.push(brandno);
+            //tr.hide();
+            div.find('.confirm').hide();
+            div.find('.cancel').hide();
+          }
+          //品牌同步
+          if (momoj('#attributesBrandsArea input[value="' + name[j].replace(/'/g,"''") + '"]').length > 0) {
+            var tempStr = brandNameStr[j].split('##');
+            brandno = tempStr[1];
+            var input='';
+            var label='';
+            if(checked){
+              input = momoj('<input type="checkbox"></input>').val(name[j]).prop('checked', checked).attr('brandno', brandno);
+              label = momoj('<label class="selected"></label>').attr({'title': name[j].replace(/'/g,"''")+'('+count[j]+')'}).html(name[j].replace(/'/g,"''") + '(' + count[j] + ')');//'for': id,
+            }else{
+              input = momoj('<input type="checkbox"></input>').val(name[j]).attr('brandno', brandno);
+              label = momoj('<label></label>').attr({'title': name[j].replace(/'/g,"''")+'('+count[j]+')'}).html(name[j].replace(/'/g,"''") + '(' + count[j] + ')');//'for': id,
+            }
+            momoj('#attributesBrandsArea input[value="' + name[j].replace(/'/g,"''") + '"]').attr('brandno', brandno);
+            label.append(input)
+            label.append('<span></span>');
+            var li='';
+            if(checked){
+              li= momoj('<li class="selected" cateLv="gAttr" style="display: block;"></li>').append(label);
+            }else{
+              if(params.checkedBrands.length > 0){
+                li= momoj('<li style="display: none;"></li>').append(label);
+              }else{
+                li= momoj('<li ></li>').append(label);
+              }
+            }
+            ul.append(li);
+          }
+        }        
+      } else {
+      
+        var checked = params.checkedBrands.indexOf(name)!=-1;
+        if(checked){
+          brandNameChoice =true;
+          restBrand.push(name);
+          var tempStr = brandNameStr.split('##');
+          brandno = tempStr[1];
+          restBrandNo.push(brandno);
+          //tr.hide();
+          div.find('.confirm').hide();
+          div.find('.cancel').hide();
+        }
+        //品牌同步
+        if (momoj('#attributesBrandsArea input[value="' + name.replace(/'/g,"''") + '"]').length > 0) {
+          var tempStr = brandNameStr[j].split('##');
+          brandno = tempStr[1];
+          var input='';
+          var label='';
+          if(checked){
+            input = momoj('<input type="checkbox"></input>').val(name).prop('checked', checked).attr('brandno', brandno);
+            label = momoj('<label class="selected"></label>').attr({'title': name.replace(/'/g,"''")+'('+count+')'}).html(name.replace(/'/g,"''") + '(' + count + ')');//'for': id,
+          }else{
+            input = momoj('<input type="checkbox"></input>').val(name).attr('brandno', brandno);
+            label = momoj('<label></label>').attr({'title': name.replace(/'/g,"''")+'('+count+')'}).html(name.replace(/'/g,"''") + '(' + count + ')');//'for': id,
+          }
+          momoj('#attributesBrandsArea input[value="' + name[j].replace(/'/g,"''") + '"]').attr('brandno', brandno);
+          label.append(input)
+          label.append('<span></span>');
+          var li='';
+          if(checked){
+            li= momoj('<li class="selected" cateLv="gAttr" style="display: block;"></li>').append(label);
+          }else{
+            if(params.checkedBrands.length > 0){
+              li= momoj('<li style="display: none;"></li>').append(label);
+            }else{
+              li= momoj('<li ></li>').append(label);
+            }
+          }
+          ul.append(li);
+        }
+      }
+    }
+    
+  });
+  outdiv.append(ul);
+  td.append(outdiv, div);
+  tr.append(th, td);
+  
+  if(ul.find('li').length > 1){
+    if(brandNameChoice){
+      if(params.checkedBrands.length > 5){
+        td.append('<a class="multipleChoiceBtn moreBtn">更多</a>');
+      }
+    }else{
+    td.append('<a class="multipleChoiceBtn">選更多</a>');
+  }
+  }
+  
+  table.append(tr);
+  params.checkedBrands = restBrand;
+  params.checkedBrandsNo = restBrandNo;
+}
+
+//顯示品牌系列
+function showBrandSeries(brandSeriesList){
+  
+  // 上次存留的要清掉
+  momoj('.goodsBrandSeriesTr').remove();
+
+  var restBrandSeries = [];//品牌系列存在
+  var table = momoj('.attributesListArea .wrapTable');
+  var tr = momoj('<tr></tr>').addClass('goodsBrandSeriesTr').attr('indexName', '品牌系列');
+  var th = momoj('<th></th>').html('品牌系列').attr({'title': '品牌系列'});;
+  var td = momoj('<td></td>');
+  var outdiv = momoj('<div class="wrapDiv"></div>');
+  var ul = momoj('<ul id="brandSeriesList" class="brandSeriesList minHeight"></ul>');
+  var div = momoj('<div class="multipleShowBtnArea"><a class="cancel">取消</a><a class="confirm">確定</a></div>');
+  div.find('.confirm').hide();
+  var brandSeriesNameChoice = false;
+  momoj.each(brandSeriesList, function(i, brand){
+    var name = brand.brandSeriesName;
+    var count = brand.brandSeriesCount;
+    var brandNo = brand.brandSeriesNo;
+    if(name!=""){//ignore emtpy brand name
+
+        var checked = decodeURIComponent(params.checkedBrandSeries).indexOf(name.concat("##",brandNo))!=-1;
+        if(checked){
+          brandSeriesNameChoice = true;
+          restBrandSeries.push(name.concat("##",brandNo));
+          //tr.hide();
+          div.find('.confirm').hide();
+          div.find('.cancel').hide();
+        }
+        var input='';
+        var label='';
+        if(checked){
+          input = momoj('<input type="checkbox"></input>').val(name).prop('checked', checked).attr('brandno', brandNo);
+          label = momoj('<label class="selected"></label>').attr({'title': name.replace(/'/g,"''")+'('+count+')'}).html(name.replace(/'/g,"''") + '(' + count + ')');//'for': id,
+        }else{
+          input = momoj('<input type="checkbox"></input>').val(name).attr('brandno', brandNo);
+          label = momoj('<label></label>').attr({'title': name.replace(/'/g,"''")+'('+count+')'}).html(name.replace(/'/g,"''") + '(' + count + ')');//'for': id,
+        }
+        label.append(input)
+        label.append('<span></span>');
+        var li='';
+        if(checked){
+          li= momoj('<li class="selected" cateLv="gAttr" style="display: block;"></li>').append(label);
+        }else{
+          if(params.checkedBrandSeries.length > 0){
+            li= momoj('<li style="display: none;"></li>').append(label);
+          }else{
+            li= momoj('<li ></li>').append(label);
+          }
+        }
+        ul.append(li);
+    }
+    
+  });
+  outdiv.append(ul);
+  td.append(outdiv, div);
+  tr.append(th, td);
+  
+  if(ul.find('li').length > 1){
+    if(brandSeriesNameChoice){
+      if(params.checkedBrandSeries.length > 5){
+        td.append('<a class="multipleChoiceBtn moreBtn">更多</a>');
+      }
+    }else{
+      td.append('<a class="multipleChoiceBtn">選更多</a>');
+    }
+  }
+  table.append(tr);
+  params.checkedBrandSeries = restBrandSeries;
+}
+
+function showMoreBrands(){
+  var lis = momoj(".attributesBrandsArea ul li");
+  if (lis.length > 17) {//考慮到title跟"更多"占了2個li
+    
+    momoj(".attributesBrandsArea ul .cateM .openMoreBtn").show();
+    
+    lis.eq(15).nextAll().filter(function(){
+      return !momoj(this).find('input').is(':checked');//已勾選的不隱藏
+    }).addClass("hide");
+    lis.last().removeClass("hide");//最下方的更多
+    
+    momoj(document).on("click",".attributesBrandsArea ul .openMoreBtn, .More",function(){
+      chekedBrands = getSelectedBrands();
+      showBrands2022(brandsList,"");
+      for (var i=0;i < chekedBrands.ids.length;i++) {
+        momoj('input[idno="' + chekedBrands.ids[i] + '"]').prop('checked', true);
+      }
+      var top = momoj("#dummyHeight").position().top;
+      momoj("html, body").animate({scrollTop: top + 200}, 800);
+      momoj(".attributesBrandsArea").addClass("open").css({"top": top});
+      momoj(".attributesBrandsArea ul .cateM .openMoreBtn").removeAttr("style");
+      momoj(".attributesBrandsArea ul .cateM .closeMoreBtn").show();
+        momoj(".attributesBrandsArea ul li").last().addClass("hide");
+      setDummyHeight(momoj(".attributesBrandsArea").height());
+    });
+
+    momoj(document).on("click",".attributesBrandsArea ul .closeMoreBtn, .More",function(){  
+       chekedBrands = getSelectedBrands();
+      showBrands2022(brandsList,"");
+      for (var i=0;i < chekedBrands.ids.length;i++) {
+        momoj('input[idno="' + chekedBrands.ids[i] + '"]').prop('checked', true);
+      }
+      setDummyHeight(0);
+      momoj(".attributesBrandsArea").removeClass("open").removeAttr("style");
+      momoj(".attributesBrandsArea ul .cateM .openMoreBtn").show();
+      momoj(".attributesBrandsArea ul .cateM .closeMoreBtn").removeAttr("style");
+      momoj(".attributesBrandsArea ul li").last().removeClass("hide");
+      showCheckedBrand();
+    });
+    
+    //點浮層外面可關閉品牌浮層
+    momoj('body').unbind('mouseup').mouseup(function(e){
+      if(momoj('.attributesBrandsArea').is('.open')){
+        var attrBox = momoj('.attributesBrandsArea');
+        if(!momoj(e.target).is('.attributesBrandsArea') && attrBox.has(e.target).length === 0){
+          momoj(".attributesBrandsArea ul .closeMoreBtn").trigger('click');
+        }
+      }
+    });
+  }
+}
+
+function showCheckedBrand(){
+  momoj('#attributesBrandsArea .cateS.hide').filter(function(){
+    return momoj(this).find('input').is(':checked');//已勾選的品牌不隱藏
+  }).removeClass('hide');
+}
+
+function setDummyHeight(height){
+  //展開的品牌會變成浮層，所以要用dummyHeight把地往下推，不然浮層出不來
+  momoj('#dummyHeight').css('height', height);
+}
+
+//修正商品是否隱藏(可共用)
+function updGoodsList(){   
+  
+  var isNamChecked = momoj('.optionsLi #optionsLi_02').is(':checked'); //分期0利率
+  
+  var goodsLi = momoj('#goodsAttrRoot .prdListArea ul li');
+  momoj.each(goodsLi, function(idx, good){
+    var gCode = momoj(good).attr("gcode");
+    var goods = momoj('#goodsAttrRoot .prdListArea ul li[gcode='+gCode+']');
+    if(goods.length==0){
+      return true;//continue
+    }
+    //如果是中古車商品不用修正(在genGoodsLi()時，判斷為中古車時加上Class="isOldCar")
+    if(goods.find('.prdPrice b').hasClass("isOldCar")){
+      return true;//continue
+    }
+    
+    var price2Show = parseInt(goods.find('.prdPrice b').text().replace(/[^0-9]/g,''),10);
+    if(price2Show == 'NaN'){//熱銷一空
+      return true;//continue
+    }
+    
+    if(price2Show<1000 && isNamChecked){
+      goods.hide();
+    }
+    
+  });
+}
+//修正本頁商品價格
+function updPromoPrice(){
+  var gCodes = getGoodsCodes();
+  var pInfos = getPromoInfos(gCodes);
+  
+  var isNamChecked = momoj('#goodsAttrRoot .optionsLi #optionsLi_02').is(':checked');
+  
+  momoj.each(gCodes, function(i, gCode){
+    
+    var goods = momoj('#goodsAttrRoot .prdListArea ul li[gcode="'+gCode+'"]');
+    if(!(gCode in pInfos)){
+      goods.hide();
+      return;
+    }
+  //如果是中古車商品不用修正價格(在genGoodsLi()時，判斷為中古車時加上Class="isOldCar")
+    if(goods.find('.prdPrice b').hasClass("isOldCar")){
+      return true;//continue
+    }
+    var pInfo = pInfos[gCode];
+    
+    var sPrice = parseInt(pInfo.salePrice,10);
+    var pPrice = parseInt(pInfo.promoPrice,10);
+    
+    var isShowPromoPrice = (pInfo.showPromoPriceYn == '1') && (pPrice < sPrice);
+    var isShowSlogan = pInfo.promoDescription.length > 0 && pInfo.canUseBuy1Get1FreeYn != 1;  //買一送一要判斷庫存才可顯示活動文案
+    
+    //搜尋頁要顯示的價格
+    var price2Show = sPrice;
+    
+    //是否顯示折後價
+    if(isShowPromoPrice){
+      price2Show = pPrice;
+      goods.find('.afterSale').html('(售價已折)');
+      goods.find('.iconArea .discount').show();
+    } else if (pInfo.showPromoPriceYn == '0' && pInfo.ecmPromoTypes == '8') {
+      goods.find('.afterSale').html('(下單再折)');
+      goods.find('.iconArea .discount').show();      
+    } else {
+      goods.find('.afterSale').html('');
+    }
+    
+    //修正價格
+    goods.find('.prdPrice b').html(price2Show.toLocaleString());
+    
+    //補分期價格
+    //var nam = genNAM(gCode, price2Show, goods.find('.stage').attr('nam'));
+    //goods.find('.stage').replaceWith(nam);
+    
+    //修正商品副標
+    if(isShowSlogan){
+      goods.find('.specialTitle').html(pInfo.promoDescription);
+    }
+    
+    if(price2Show<1000 && isNamChecked){
+      goods.hide();
+    }
+    
+  });
+  
+}
+
+//取得gCodes的折價資訊
+function getPromoInfos(gCodes){
+  var result = momoj.ajaxTool({data:{flag:2017, goodsCode:gCodes}});
+  
+  if(result.rtnCode!=200){
+    return [];
+  }else{
+    return result.rtnData;
+  }
+}
+
+//取得本頁商品的goodsCode
+function getGoodsCodes(){
+  var gCodes = new Array();
+  var li = momoj('#goodsAttrRoot .prdListArea ul li');
+  momoj.each(li, function(i, obj){
+    gCodes.push(momoj(obj).attr('gcode'));
+  });
+  
+  return gCodes;
+}
+
+//取得gCodes的總銷量
+function setGoodsTotalSales(){
+  if(typeof isSwitchTotalSales != 'undefined'  && isSwitchTotalSales == "true"){ //<%--打雲端api抓取每個商品的總銷量 --%>
+    var gCodes = goodsTotalSales.getGoodsCodeArray();
+    var rtn = goodsTotalSales.getTotalSales(gCodes);  //使用goodsTotalSales.js
+    if(rtn != null ){
+      goodsTotalSales.showTotalSales(rtn, gCodes );
+    }
+  }
+}
+
+//取得gCodes的評鑑星等
+function setStarBox(){
+  if(typeof isSwitchTotalSales != 'undefined'  && isSwitchTotalSales == "true"){ //<%--打雲端api抓取每個商品的評鑑和星等 --%>
+    var gCodes = goodsRating.getGoodsCodeArray();
+    var rtn = goodsRating.getGoodsRatingInfo(gCodes);  //使用goodsRating.js
+    if(rtn != null ){
+      var goodsRatingInfoList = goodsRating.setRatingInfo(rtn, gCodes );
+      if(typeof goodsRatingInfoList != 'undefined' && goodsRatingInfoList.length>0 ){
+        goodsRating.showRatingInfoList(goodsRatingInfoList);
+      }
+    }
+  }
+}
+
+//調整屬性區塊&其他選項區塊縮排
+function adjustGoodsAttrLayout() {
+  var visiblegoodsAttrs = momoj(".goodsAttr:visible");  //可見的屬性tr
+  var visiblegoodsAttrNum = visiblegoodsAttrs.length;   //可見的屬性tr數
+  var visibleBrandSeriesTrNum = momoj(".goodsBrandSeriesTr:visible").length;
+  
+  //小分類頁顯示品牌, 屬性少一行
+  var limit = (nowCate.isCateS?4:5);
+  if(visibleBrandSeriesTrNum>0){
+    limit = limit-1;
+  }
+  if(visiblegoodsAttrNum > limit){
+    var postTrs = visiblegoodsAttrs.slice(limit);
+    postTrs.hide();
+    momoj('.otheroptionArea .otherTitle:not(.moreTitleBtn)').hide();
+    momoj.each(postTrs, function(i, tr){
+      var indexName = momoj(tr).attr('indexName');
+      momoj('.otheroptionArea .otherTitle[indexName="' + indexName + '"]').show();
+      var input = momoj('.attributesListArea .goodsAttr[indexName="' + indexName + '"]');
+      var label = input.find('label');
+      if(label.is('.selected')){
+        momoj('.otheroptionArea .otherTitle[indexName="' + indexName + '"]').addClass("alreadySelect");
+      }
+    });
+  
+    var td = momoj('.otheroptionArea td');
+    if(td.height()>30){
+      var more = momoj('<div class="otherTitle moreTitleBtn"><span>更多</span></div>');
+      td.append(more).css('display', 'inline-block').css('height', '30px').css('overflow', 'hidden');
+    }
+    
+  }else{
+    momoj('tr.otheroptionArea').hide();
+  }
+}
+/*******************************
+ *-+-+-+-+-+ 頁碼區 -+-+-+-+-+
+ *******************************/
+
+//顯示頁碼等相關按鈕
+function showPageBtns(curPage, maxPage, totalCnt){
+  var pgArea = momoj('#goodsAttrRoot .pageArea');
+  var topPgArea = momoj('#goodsAttrRoot .toppageArea');
+  pgArea.empty();
+  pgArea.append(genNextNPrevBtn(curPage, maxPage), genPageIdx(curPage, maxPage, totalCnt));
+  
+  topPgArea.empty();
+  topPgArea.append(genToppageArea(curPage, maxPage, totalCnt));
+}
+
+//產生上一頁/下一頁按鈕
+function genNextNPrevBtn(curPage, maxPage){
+  var dl = momoj('<dl></dl>');
+  var pageInfo = momoj('<dt><span>頁數<b>'+curPage+'</b>/'+maxPage+'</span></dt>');
+  dl.append(pageInfo);
+  
+  if(curPage>1){
+    dl.append('<dd><a pageIdx='+ (curPage-1) +'>上一頁</a></dd>');
+  }
+  
+  if(curPage<maxPage){
+    dl.append('<dd><a pageIdx='+ (curPage+1) +'>下一頁</a></dd>');
+  }
+  
+  return dl;
+}
+
+//產生最前頁/上10頁/頁數/下十頁最後頁 按鈕
+function genPageIdx(curPage, maxPage, totalCnt){
+  
+  var pageBegin = Math.floor((curPage-1)/10)*10 + 1;
+  var pageEnd = Math.min(Math.ceil(curPage/10)*10, maxPage);
+  
+  var ul = momoj('<ul></ul>');
+  
+  if(curPage-10 >= 1){
+    ul.append('<li><a title="最前頁" pageIdx=1>|&lt;</a></li>');
+    ul.append('<li><a title="上10頁" pageIdx='+(pageBegin-1)+' >&lt;&lt;</a></li>');
+  }
+  
+  for(var i=pageBegin ; i<=pageEnd ; i++){
+    var idx = momoj('<li><a pageIdx='+i+'>' + i + '</a></li>');
+    ul.append(idx);
+  }
+  ul.find('[pageIdx="'+curPage+'"]').addClass('selected');
+  
+  if(maxPage >= (pageBegin+10)){
+    ul.append('<li><a title="下10頁" pageIdx='+(pageBegin+10)+' >&gt;&gt;</a></li>');
+  }
+  
+  if(pageEnd < maxPage){
+    ul.append('<li><a title="最終頁" pageIdx='+maxPage+'>&gt;|</a></li>');
+  }
+  
+  return ul;
+}
+
+function genToppageArea(curPage, maxPage, totalCnt){
+  var ul = momoj('<ul></ul>');
+  ul.append(momoj('<li>共<b>'+totalCnt+'</b>個商品</li>'));
+  ul.append(momoj('<li class="pageval">頁數 <span>'+curPage+'</span> / '+maxPage+' </li>'));
+  if(curPage>1){
+    ul.append(momoj('<li><a title="上一頁" pageIdx='+(curPage-1)+'>上一頁</a></li>'));
+  }
+  
+  if(curPage<maxPage){
+    ul.append(momoj('<li><a title="下一頁" pageIdx='+(curPage+1)+'>下一頁</a></li>'));
+  }
+  return ul;
+}
+
+//取得屬性及品牌被勾選的數目
+function getCheckedAttrNBrandNum(){
+  //浮層被清除，只能抓 checkedAttrs
+  var checkedAttrNum = 0;
+  for (item in params.checkedAttrs) {
+    checkedAttrNum++;
+  }
+  var checkedBrandNum = momoj('#attributesBrandsArea :checked').length;  //品牌區塊
+  return checkedAttrNum + checkedBrandNum;
+}
+
+
+/*******************************
+ *-+-+-+-+-+ 搜尋失敗 -+-+-+-+-+
+ *******************************/
+
+//因為勾選品牌屬性而找不到商品的畫面
+function showAdjustmentTips(){
+  momoj('#goodsAttrRoot .prdListArea ul').empty();
+  momoj('#goodsAttrRoot .menuArea').show();
+  momoj('#goodsAttrRoot .adjustmentTextArea').show();
+  momoj('#goodsAttrRoot .attributesListArea').hide();
+}
+
+function hideAdjustmentTips(){
+  momoj('#goodsAttrRoot .menuArea').show();
+  momoj('#goodsAttrRoot .adjustmentTextArea').hide();
+  momoj('#goodsAttrRoot .attributesListArea').show();
+}
+
+/*******************************
+ *-+-+-+-+-+   其他   -+-+-+-+-+
+ *******************************/
+
+//包裝ajaxtool
+function post2AjaxTool(data){
+  var obj = new Object();
+  obj.data=data;
+  var result = momoj.ajaxTool(obj);//注意被拋出的內容，momoj.ajaxTool有多做事
+  return result;
+}
+
+//obj是否undefined
+function isUndefined(obj){
+  return typeof obj == 'undefined';
+}
+
+//畫面移到麵包屑
+function move2Navi(){
+  var offsetVal = momoj("#bt_2_layout_NAV").offset();
+  var position = offsetVal.top - momoj("#bt_0_layout_b250").height() - 10;
+  momoj("html, body").animate({scrollTop: position}, 800);
+}
+
+function addHistory(pgNum, doPush) {
+  if(isUndefined(doPush)){
+    doPush = true;
+  }
+  var nparams = [];
+  var _highestPrice = '';
+  var _lowestPrice = '';
+  var _whCode = '';
+  var _advFreeze = '';
+  var _cpYn = '';
+  var _advNam = '';
+  var _advSuperstore = '';
+  var _advTomorrow = '';
+  var _advTvshop = '';
+  var _advChina = '';
+  var _advStock = '';
+  var _advPrefere = '';
+  var _advThreeHours = '';
+  var _advVideo = '';
+  var _advCycle = '';
+  var _advCod = '';
+  var _advSuperstorePay = '';
+  var _advMoCoinFeedback = '';
+  var _advSuperstoreFree = '';
+  var _advCommentRate = '';
+  var p_orderType = '';
+  var _showType = '';
+  var pageNum = '0';
+  var brand = '';
+  var brandNo = '';
+  var brandSeries = ''
+  var attr = '';
+  var attrNo = '';
+  var mAttL='';
+  var osm='';
+  var utm_source='';
+  var utm_medium='';
+  var scm_activity='';
+  var isAgeCheck = '';
+  var utm_campaign = '';
+  var wa_activity = '';
+  if (location.search != '') {
+    var oparams = location.search.substr(1).split("&") || [];
+    for (var i = 0; i< oparams.length; i++) {
+      var singletone = oparams[i].split("=");
+      if (/^\s*$/.test(unescape(singletone[1]))) {
+        
+      } else if (/_code$/.test(singletone[0])) {
+        nparams.push(singletone[0] + '=' + nowCate.code);
+      } else if (!doPush && singletone[0] == 'highestPrice') {
+        _highestPrice = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'lowestPrice') {
+        _lowestPrice = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'advFirst') {
+        _whCode = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'advFreeze') {
+        _advFreeze = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'advCp') {
+        _cpYn = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'advNam') {
+        _advNam = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'advSuperstore') {
+        _advSuperstore = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'advTomorrow') {
+        _advTomorrow = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'advTV') {
+        _advTvshop = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'advChina') {
+        _advChina = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'advStock') {
+        _advStock = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'advPrefere') {
+        _advPrefere = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'advThreeHours') {
+        _advThreeHours = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'advVideo') {
+        _advVideo = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'advCycle') {
+        _advCycle = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'advCod') {
+        _advCod = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'advSuperstorePay') {
+        _advSuperstorePay = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == '_advMoCoinFeedback') {
+        _advMoCoinFeedback = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == '_advCommentRate') {
+        _advCommentRate = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == '_advSuperstoreFree') {
+        _advSuperstoreFree = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'p_orderType') {
+        p_orderType = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'showType') {
+        _showType = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'p_pageNum') {
+        pageNum = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'brand') {
+        brand = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'brandNo') {
+        brandNo = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'brandSeriesStr') {
+        brandSeries = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'attr') {
+        attr = unescape(singletone[1]);
+      } else if (!doPush &&singletone[0] == 'mAttL') {
+        mAttL = unescape(singletone[1]);
+      } else if (doPush &&singletone[0] == 'osm') {
+        osm = unescape(singletone[1]);
+      } else if (doPush &&singletone[0] == 'utm_source') {
+        utm_source = unescape(singletone[1]);
+      } else if (doPush &&singletone[0] == 'utm_medium') {
+        utm_medium = unescape(singletone[1]);
+      } else if (doPush &&singletone[0] == 'scm_activity') {
+        scm_activity = unescape(singletone[1]);
+      } else if (doPush &&singletone[0] == 'isAgeCheck') {
+        isAgeCheck = unescape(singletone[1]);
+      } else if (doPush &&singletone[0] == 'utm_campaign') {
+        utm_campaign = unescape(singletone[1]);
+      } else if (doPush &&singletone[0] == 'wa_activity') {
+        wa_activity = unescape(singletone[1]);
+      }  else {
+        if(!doPush){
+          nparams.push(oparams[i]);
+        }
+      }
+    }
+  }
+  
+  if (parseInt(pgNum,10) != 0) {
+    
+    _highestPrice = momoj('#goodsAttrRoot #priceE').val();
+    _lowestPrice = momoj('#goodsAttrRoot #priceS').val();
+    _whCode = momoj('#goodsAttrRoot .optionsLi #optionsLi_04').is(':checked')?'Y':'';
+    _advFreeze = momoj('#goodsAttrRoot .optionsLi #optionsLi_11').is(':checked')?'Y':'';
+    _cpYn = momoj('#goodsAttrRoot .optionsLi #optionsLi_01').is(':checked')?'Y':'';
+    _advNam = momoj('#goodsAttrRoot .optionsLi #optionsLi_02').is(':checked')?'Y':'';
+    _advSuperstore = momoj('#goodsAttrRoot .optionsLi #optionsLi_05').is(':checked')?'Y':'';
+    _advTomorrow = momoj('#goodsAttrRoot .optionsLi #optionsLi_08').is(':checked')?'Y':'';
+    _advTvshop = momoj('#goodsAttrRoot .optionsLi #optionsLi_06').is(':checked')?'Y':'';
+    _advChina = momoj('#goodsAttrRoot .optionsLi #optionsLi_07').is(':checked')?'Y':'';
+    _advStock = momoj('#goodsAttrRoot .optionsLi #optionsLi_03').is(':checked')?'Y':'';
+    _advPrefere = momoj('#goodsAttrRoot .optionsLi #optionsLi_09').is(':checked')?'Y':'';
+    _advThreeHours = momoj('#goodsAttrRoot .optionsLi #optionsLi_10').is(':checked')?'Y':'';
+    _advVideo = momoj('#goodsAttrRoot .optionsLi #optionsLi_12').is(':checked')?'Y':'';
+    _advCycle = momoj('#goodsAttrRoot .optionsLi #optionsLi_13').is(':checked')?'Y':'';
+    _advCod = momoj('#goodsAttrRoot .optionsLi #optionsLi_14').is(':checked')?'Y':'';
+    _advSuperstorePay = momoj('#goodsAttrRoot .optionsLi #optionsLi_15').is(':checked')?'Y':'';
+    _advMoCoinFeedback = momoj('#goodsAttrRoot .optionsLi #optionsLi_16').is(':checked')?'Y':'';
+    _advSuperstoreFree = momoj('#goodsAttrRoot .optionsLi #optionsLi_17').is(':checked')?'Y':'';
+    _advCommentRate = getCheckedCommenRate();;
+    
+    _lowestPrice = (isNaN(_lowestPrice)) ? '' : _lowestPrice;
+    _highestPrice = (isNaN(_highestPrice)) ? '' : _highestPrice;
+    p_orderType = getSearchType().toString();
+    //p_orderType = p_orderType=='4'?'5':(p_orderType=='6'?'4':p_orderType);
+    pageNum = pgNum;
+
+    _showType = momoj('#goodsAttrRoot .menuArea .viewType input[name=showType2]:checked').val();
+    if (typeof _showType == 'undefined' || !/^(columnType|chessboardType)$/.test(_showType)) {
+      _showType = (/^(40|41001)/.test(nowCate.code)?'columnType':'');
+    }
+  }
+
+  if (!/^\s*$/.test(_lowestPrice)) {
+    nparams.push('lowestPrice=' + _lowestPrice);
+  }
+  if (!/^\s*$/.test(_highestPrice)) {
+    nparams.push('highestPrice=' + _highestPrice);
+  }
+  if (_whCode == 'Y') {
+    nparams.push('advFirst=' + _whCode);
+  }
+  if (_advFreeze == 'Y') {
+    nparams.push('advFreeze=' + _advFreeze);
+  }
+  if (_cpYn == 'Y') {
+    nparams.push('advCp=' + _cpYn);
+  }
+  if (_advNam == 'Y') {
+    nparams.push('advNam=' + _advNam);
+  }
+  if (_advSuperstore == 'Y') {
+    nparams.push('advSuperstore=' + _advSuperstore);
+  }
+  if (_advTomorrow == 'Y') {
+    nparams.push('advTomorrow=' + _advTomorrow);
+  }
+  if (_advTvshop == 'Y') {
+    nparams.push('advTV=' + _advTvshop);
+  }
+  if (_advChina == 'Y') {
+    nparams.push('advChina=' + _advChina);
+  }
+  if (_advStock == 'Y') {
+    nparams.push('advStock=' + _advStock);
+  }
+  if (_advPrefere == 'Y') {
+    nparams.push('advPrefere=' + _advPrefere);
+  }
+  if (_advThreeHours == 'Y') {
+    nparams.push('_advThreeHours=' + _advThreeHours);
+  }
+  if (_advVideo == 'Y') {
+    nparams.push('_advVideo=' + _advVideo);
+  }
+  if (_advCycle == 'Y') {
+    nparams.push('_advCycle=' + _advCycle);
+  }
+  if (_advCod == 'Y') {
+    nparams.push('_advCod=' + _advCod);
+  }
+  if (_advSuperstorePay == 'Y') {
+    nparams.push('_advSuperstorePay=' + _advSuperstorePay);
+  }
+  if (_advMoCoinFeedback == 'Y') {
+    nparams.push('_advMoCoinFeedback=' + _advMoCoinFeedback);
+  }
+  if (_advSuperstoreFree == 'Y') {
+    nparams.push('_advSuperstoreFree=' + _advSuperstoreFree);
+  }
+  if (_advCommentRate != '') {
+    nparams.push('_advCommentRate=' + _advCommentRate);
+  }
+
+  if (p_orderType != '') {
+    nparams.push('p_orderType=' + p_orderType);
+  }
+  if (_showType != '') {
+    nparams.push('showType=' + _showType);
+  }
+  if (parseInt(pageNum,10) > 1) {
+    nparams.push('p_pageNum=' + pageNum);
+  }
+  if (isAgeCheck != '') {
+    nparams.push('isAgeCheck=' + isAgeCheck);
+  }
+  
+  //品牌中文名稱
+  if(params.checkedBrands.length>0){
+    brand = params.checkedBrands.join(',');
+    nparams.push('brand=' + encodeURIComponent(brand));
+  }else{
+    if(brand!=''){
+      nparams.push('brand=' + encodeURIComponent(brand));
+    }
+  }
+  //品牌號碼
+  if(params.checkedBrandsNo.length>0){
+    brandNo = params.checkedBrandsNo.join(',');
+    nparams.push('brandNo=' + encodeURIComponent(brandNo));
+  }else{
+    if(brandNo!=''){
+      nparams.push('brandNo=' + encodeURIComponent(brandNo));
+    }
+  }
+  //品牌系列
+  if(params.checkedBrandSeries.length>0){
+    brandSeries = params.checkedBrandSeries.join(',');
+    nparams.push('brandSeriesStr=' + encodeURIComponent(brandSeries));
+  }else{
+    if(brandSeries!=''){
+      nparams.push('brandSeriesStr=' + encodeURIComponent(brandSeries));
+    }
+  }
+  //組出屬性中文名稱
+  if(Object.keys(params.checkedAttrs).length>0){
+    attr = JSON.stringify(params.checkedAttrs);
+    nparams.push('attr=' + encodeURIComponent(attr));
+  }else{
+    if(attr!=''){
+      nparams.push('attr=' + encodeURIComponent(attr));
+    }
+  }
+  //組出屬性號碼
+  if(Object.keys(params.checkedAttrsNo).length>0){
+    attrNo = JSON.stringify(params.checkedAttrsNo);
+    nparams.push('attrNo=' + encodeURIComponent(attrNo));
+  }else{
+    if(attrNo!=''){
+      nparams.push('attrNo=' + encodeURIComponent(attrNo));
+    }
+  }
+  
+  //組出屬性title中文名稱
+  if(typeof params.checkedIndexName != 'undefined' && Object.keys(params.checkedIndexName).length>0){
+    mAttL = JSON.stringify(params.checkedIndexName);
+    nparams.push('mAttL=' + encodeURIComponent(mAttL));
+  }else{
+    if(mAttL!=''){
+      nparams.push('mAttL=' + encodeURIComponent(mAttL));
+    }
+  }
+  
+  //組出url中momowa參數
+  if (osm != '') {
+    nparams.push('osm=' + osm);
+  }
+  if (utm_source != '') {
+    nparams.push('utm_source=' + utm_source);
+  }
+  if (utm_medium != '') {
+    nparams.push('utm_medium=' + utm_medium);
+  }
+  if (scm_activity != '') {
+    nparams.push('scm_activity=' + scm_activity);
+  }
+  if(utm_campaign != '') {
+    nparams.push('utm_campaign=' + utm_campaign);
+  }
+  if(wa_activity != '') {
+    nparams.push('wa_activity=' + wa_activity);
+  }
+  
+  var url = location.pathname + '?' + nparams.join('&');
+  
+  if(doPush) {
+    try { history.pushState({"pageNum": pgNum, "qryStatus": getCurrentQryStatus(nparams)}, "", url); } catch(e){console.log(e);}
+  }else{  //不會在上一頁留下紀錄,第一次進來時走這
+    try { history.replaceState({"pageNum": pgNum, "qryStatus": getCurrentQryStatus(nparams)}, "", url); } catch(e){console.log(e);}
+  }
+}
+
+function getCurrentQryStatus(params) {
+  var status = new Object();
+  var checkedIDs = new Array();
+  //取得勾選的品牌,屬性
+  var checkedItems = momoj('#attributesBrandsArea [type=checkbox]:checked, #goodsAttrRoot .attributesListArea .wrapTable :checked');
+  momoj.each(checkedItems, function(i, item){
+    var id = momoj(item).attr('indexno');
+    checkedIDs.push(id);
+  });
+  
+  status.checkedIDs = checkedIDs;
+  status.searchType = momoj('#searchType').html();
+  status.attributesListArea= momoj('.attributesListArea').html();
+  for (var i = 0; i< params.length; i++) {
+    var singletone = params[i].split("=");
+    if (/^\s*$/.test(unescape(singletone[1]))) {
+      
+    } else if (/_code$/.test(singletone[0])) {
+
+    } else if (singletone[0] == 'highestPrice') {
+      status.priceE = singletone[1];
+    } else if (singletone[0] == 'lowestPrice') {
+      status.priceS = singletone[1];
+    } else if (singletone[0] == 'advFirst') {
+      status.whCode = singletone[1];
+    } else if (singletone[0] == 'advFreeze') {
+      status.advFreeze = singletone[1];
+    } else if (singletone[0] == 'advCp') {
+      status.cpYn = singletone[1];
+    } else if (singletone[0] == 'advNam') {
+      status.advNam = singletone[1];
+    } else if (singletone[0] == 'advSuperstore') {
+      status.advSuperstore = singletone[1];
+    } else if (singletone[0] == 'advTomorrow') {
+      status.advTomorrow = singletone[1];
+    } else if (singletone[0] == 'advTV') {
+      status.advTvshop = singletone[1];
+    } else if (singletone[0] == 'advChina') {
+      status.advChina = singletone[1];
+    } else if (singletone[0] == 'advStock') {
+      status.advStock = singletone[1];
+    } else if (singletone[0] == 'advPrefere') {
+      status.advPrefere = singletone[1];
+    } else if (singletone[0] == 'advThreeHours') {
+      status.advThreeHours = singletone[1];
+    } else if (singletone[0] == 'advVideo') {
+      status.advVideo = singletone[1];
+    } else if (singletone[0] == 'advCycle') {
+      status.advCycle = singletone[1];
+    } else if (singletone[0] == 'advCod') {
+      status.advCod = singletone[1];
+    } else if (singletone[0] == 'advSuperstorePay') {
+      status.advSuperstorePay = singletone[1];
+    } else if (singletone[0] == '_advMoCoinFeedback') {
+      status._advMoCoinFeedback = singletone[1];
+    } else if (singletone[0] == '_advSuperstoreFree') {
+      status._advSuperstoreFree = singletone[1];
+    } else if (singletone[0] == '_advCommentRate') {
+      status._advCommentRate = singletone[1];
+    } else if (singletone[0] == 'p_orderType') {
+      status.p_orderType = singletone[1];
+    } else if (singletone[0] == 'showType') {
+      status.showType = singletone[1];
+    } else if (singletone[0] == 'p_pageNum') {
+      status.p_pageNum = singletone[1];
+    } else {
+
+    }
+  }
+  
+  return status;
+}
+
+
+//還原狀態
+function restoreQryStatus(status){
+  
+  if (status == null || Object.keys(status).length == 0) {
+    return;
+  }
+  
+  momoj('#attributesBrandsArea [type=checkbox]').prop('checked', false);
+  momoj('.goodsAttr .brandsList [type=checkbox]').prop('checked', false);
+  momoj('#goodsAttrRoot .optionsLi [type=checkbox]').prop('checked', false);
+  momoj('.attributesListArea').html(status.attributesListArea);
+  momoj('#goodsAttrRoot').css('display', 'block')
+  momoj.each(status.checkedIDs, function(i, id){
+    momoj('input[indexno="' + id + '"]').prop('checked', true);
+
+  });
+  
+  showCheckedBrand();
+  
+  momoj('#searchType').html(status.searchType);
+  momoj('#priceS').val(status.priceS);
+  momoj('#priceE').val(status.priceE);
+  
+  if (status.cpYn=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_01').prop('checked', true);  
+  }
+  if (status.advNam=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_02').prop('checked', true);  
+  }
+  if (status.whCode=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_04').prop('checked', true);  
+  }
+  if (status.advFreeze=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_11').prop('checked', true);  
+  }
+  if (status.advSuperstore=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_05').prop('checked', true);  
+  }
+  if (status.advTvshop=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_06').prop('checked', true);  
+  }
+  if (status.advChina=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_07').prop('checked', true);  
+  }
+  if (status.advTomorrow=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_08').prop('checked', true);  
+  }
+  if (status.advStock=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_03').prop('checked', true);  
+  }
+  if (status.advPrefere=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_09').prop('checked', true);  
+  }
+  if (status.advThreeHours=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_10').prop('checked', true);  
+  }
+  if (status.video=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_12').prop('checked', true);  
+  }
+  if (status.cycle=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_13').prop('checked', true);  
+  }
+  if (status.cod=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_14').prop('checked', true);  
+  }
+  if (status.superstorePay=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_15').prop('checked', true);  
+  }
+  if (status._advMoCoinFeedback=='Y') {//是否有MO幣加碼(Y/N)
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_16').prop('checked', true);  
+  }
+  if (status._advSuperstoreFree=='Y') {//是否有超商免運卷(Y/N)
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_17').prop('checked', true);  
+  }
+  if (status._advCommentRate!='') {//星評篩選條件("": 空字串無篩選, "1": 1星到5星, "2": 2星到5星, "3": 3星到5星, "4": 4星到5星, "5": 5星)
+    momoj("#goodsAttrRoot .optionsLi [name='commentrate_" + status._advCommentRate + "']").prop('checked', true);  
+  }
+  
+  if (status.showType == 'columnType') {
+    momoj('#goodsAttrRoot .menuArea .viewType input[name=showType2]#columnType2').prop('checked',true);
+    momoj("#goodsAttrRoot .prdListArea").attr("id","columnType");
+    momoj(".swiper-container").addClass("swiper-no-swiping");
+    momoj(".swiper-pagination,.swiper-button-next,.swiper-button-prev").hide();
+  } else {
+    momoj('#goodsAttrRoot .menuArea .viewType input[name=showType2]#chessboardType2').prop('checked',true);
+    momoj("#goodsAttrRoot .prdListArea").removeAttr("id");
+    if(momoj(".swiper-container").hasClass("manyPics")){
+        momoj(".swiper-container").removeClass("swiper-no-swiping");
+        momoj(".swiper-pagination,.swiper-button-next,.swiper-button-prev").show();
+      }
+  } 
+}
+
+//組選取的屬性Float
+function rebuildParamCheckedAttrsFloat(){
+  //rebuild checkedAttrs
+  params.checkedAttrs = {};
+  params.checkedAttrsNo = {};
+  params.checkedIndexName =[];
+  momoj('.floatTable .goodsAttr').each(function(i, tr){
+    var vals = [];
+    var valsNo = [];
+    var indexName='';
+    momoj(tr).find('input').each(function(i, input){
+      var li = momoj(input).closest('li');
+      if(momoj(input).prop('checked') || li.is('.selected')){
+        var vls = momoj(input).val();
+        var uniVls =momoj.str2Unicode(vls);
+        vals.push(uniVls);//屬性中文名稱
+        valsNo.push(momoj(input).attr('indexno'));//屬性號碼
+      }
+    });
+    
+    if(vals.length>0){
+      indexName = momoj(tr).attr('indexName');
+      var uniIndexName = momoj.str2Unicode(indexName);
+      params.checkedAttrs[uniIndexName] = vals;
+      params.checkedAttrsNo[uniIndexName] = valsNo;
+      params.checkedIndexName.push(momoj.str2Unicode(uniIndexName));
+    }
+  });
+}
+//組出右邊banner屬性有勾選的,中文名稱及其代碼
+function rebuildParamCheckedAttrs(){
+  //rebuild checkedAttrs,checkedAttrsNo,checkedIndexName
+  params.checkedAttrs = {};
+  params.checkedAttrsNo = {};
+  params.checkedIndexName = [];
+  momoj('.goodsAttr').each(function(i, tr){
+    var vals = [];
+    var valsNo = [];
+    var indexName='';
+    momoj(tr).find('input').each(function(i, input){
+      var li = momoj(input).closest('li');
+      if(momoj(input).prop('checked') || li.is('.selected')){
+        var vls = momoj(input).val();
+        var uniVls =momoj.str2Unicode(vls);
+        vals.push(uniVls);
+        valsNo.push(momoj(input).attr('indexno'));
+      }
+    });
+    
+    if(vals.length>0){
+      indexName = momoj(tr).attr('indexName');
+      var uniIndexName = momoj.str2Unicode(indexName);
+      params.checkedAttrs[uniIndexName] = vals;
+      params.checkedAttrsNo[uniIndexName] = valsNo;
+      params.checkedIndexName.push(uniIndexName);
+    }
+  });
+}
+
+//品牌選取,看左下角
+function rebuildParamCheckedBrands(){
+  params.checkedBrands = [];
+  params.checkedBrandsNo = [];
+  momoj('.attributesBrandsArea .cateS input:checked').each(function(i, brand){
+    var bVal = momoj(brand).val();//品牌中文名稱
+    var bBno = momoj(brand).attr('brandno');//品牌號碼
+    params.checkedBrands.push(bVal);
+    params.checkedBrandsNo.push(bBno);
+  });
+}
+
+//品牌系列選取
+function rebuildParamCheckedBrandSeries(){
+  params.checkedBrandSeries = [];
+  momoj('.goodsBrandSeriesTr input:checked').each(function(i, brand){
+    var bVal = momoj(brand).val();//品牌系列中文名稱
+    var bBno = momoj(brand).attr('brandno');//品牌系列號碼
+    params.checkedBrandSeries.push(bVal.concat("##" ,bBno));
+  });
+}
+
+//品牌選取float
+function rebuildParamCheckedBrandsFloat(){
+  //rebuild checkedBrands,checkedBrandsNo
+  params.checkedBrands = [];
+  params.checkedBrandsNo = [];
+  momoj('.floatTable .goodsBrandTr input:checked').each(function(i, brand){
+    var bVal = momoj(brand).val();//品牌中文名稱
+    var bBno = momoj(brand).attr('brandno');//品牌號碼
+    params.checkedBrands.push(bVal);
+    params.checkedBrandsNo.push(bBno);
+  });
+}
+
+//品牌系列選取float
+function rebuildParamCheckedBrandSeriesFloat(){
+  params.checkedBrandSeries = [];
+  momoj('.floatTable .goodsBrandSeriesTr input:checked').each(function(i, brand){
+    var bVal = momoj(brand).val();//品牌系列中文名稱
+    var bBno = momoj(brand).attr('brandno');//品牌系列號碼
+    params.checkedBrandSeries.push(bVal.concat("##" ,bBno));
+  });
+}
+
+function isAttrChecked() {
+  return !(momoj('#goodsAttrRoot .optionsLi input:checkbox:checked').length == 0 //折價券，快速到貨，超商取貨
+      && getSelectedBrands().names.length == 0 // 無品牌被選
+      && getSelectedAttr().length == 0  // 無屬性被選
+      && /^\s*$/.test(momoj('#priceS').val()) // 無最低價
+      && /^\s*$/.test(momoj('#priceE').val())); // 無最高價
+}
+
+//產生中古車類商品資訊區塊 juchou 2018.02.21
+function genCarArea(carData) {
+  var carArea = "";
+  if(!isUndefined(carData)) {
+        carArea = momoj('<p class="usedCarInfo"></p>');
+        var carYear = momoj('<span></span>').html("出廠年份："+carData.carYear+"&nbsp;年");
+        var carAddr = momoj('<span></span>').html("所在地："+carData.carLocation);
+        var carMileage = momoj('<span></span>').html("行駛里程："+carData.carMiles+"&nbsp;公里");
+        carArea.append(carYear, carAddr, carMileage);
+  }
+  return carArea;
+}
+//產生分期區塊(可共用)
+function genNAM(gCode, salePirce, norestAllotMonth){
+  
+  var NAM = momoj('<p class="stage"></p>').attr('nam', norestAllotMonth);
+  
+  if(norestAllotMonth>1){//最多分期數>1
+    var month = momoj('<span value="'+norestAllotMonth+'">'+norestAllotMonth+'期0利率</span>');
+    var price = momoj('<span>每期<b name="allotMonth_' + gCode + '">'+ Math.floor(salePirce/norestAllotMonth).toLocaleString() +'</b>元</span>');
+    NAM.append(month, price);
+  }
+  
+  return NAM;
+}
+
+
+//產生配送方式區塊
+function genDelyMethod(isSuperstore, isNormalDely){
+  var dMethod = momoj('<p class="convenience"></p>');
+  
+  if(isSuperstore){
+    var superstore = momoj('<img src="/ecm/img/cmm/goodsdetail/7_11.gif" alt="超商取貨" title="超商取貨" />');
+    dMethod.append(superstore);
+  }
+  
+  if(isNormalDely){
+    var normalDely = momoj('<img src="/ecm/img/cmm/goodsdetail/dely.gif" alt="宅配" title="宅配">');
+    dMethod.append(normalDely);
+  }
+  
+  return dMethod;
+}
+
+
+function top123(top123List) {
+  var div_top123 = momoj('<div id="bt_9_002_01" class="hotRankingArea bt770class btclass"></div>');
+  var ul = momoj('<ul></ul>');
+  momoj.each(top123List, function(i, g){
+    var aa = ['<li style="display: list-item;">',
+      '<p class="topTitle">TOP'+(i+1)+'</p>',
+      '<div class="top123">'+genTop123GoodsUrl(g.goodsCode, g.categoryCode, g.action),
+      '<div class="prdImgWrap">',
+      (!(typeof isAgeCheck == 'boolean' && isAgeCheck) && g.isAdultLimit?'<img class="mask" src="/ecm/img/cmm/search/mask_18.png">':''),
+      '<img src="'+g.imgUrl+'" width="200" height="200" class="title-bt_9_002_01_e9">',
+      '</div><span class="specialTitle">'+g.goodsSubName+'</span>',
+      genPrdName(g.goodsTag , g.goodsName),
+      '<span class="eventredBox">&nbsp;</span>',
+      genTop123Price(g.goodsCode, g.goodsPriceModel),
+      genTop123GoodsRating(g),
+      genTop123IconArea(g),
+      '</a></div>',
+      '</li>'];
+    ul.append(momoj(aa.join('')));
+  });
+  div_top123.append(ul);
+  return div_top123;
+}
+
+function genPrdName(goodsTag , goodsName){
+  let prdNameStr = '<div class="prdNameTitle">';
+  prdNameStr += GoodsTagUtil.createAllGoodsTag(goodsTag);
+  prdNameStr += `<h3 class="prdName prdNameTop">${goodsName}</h3>`;
+  prdNameStr += '</div>';
+  return prdNameStr;
+}
+
+function genTop123Price(goodsCode, goodsPriceModel){
+  let prdNameStr ='';
+  if(goodsPriceModel){
+    let sign = goodsPriceModel.basePrice.sign||'';
+    let goodsPrice = goodsPriceModel.basePrice.price||'';
+    let strPrice = goodsPriceModel.basePrice.strPrice||'';
+    let goodsStatus = goodsPriceModel.basePrice.goodsStatus||'';
+    prdNameStr += '<span class="prdPrice current-price">'+sign;
+    prdNameStr += '<b class="bt_9_002_01_L_1 redbp money GDS-'+goodsCode+'">'+goodsPrice+'</b>';
+    prdNameStr += '<span class="price-from">'+strPrice+'</span>';
+    prdNameStr += '<span class="afterSale after-sale">'+goodsStatus+'</span>';
+    prdNameStr += '</span>';
+  }
+  return prdNameStr;
+}
+
+function genTop123GoodsUrl(goodsCode, categoryCode,  action){
+
+  let goodsUrl='';
+  if (!goodsCode.startsWith("TP")){
+    goodsUrl = '/goods/GoodsDetail.jsp?i_code=' + goodsCode + '&str_category_code=' + categoryCode.split("##")[0] + '&ctype=B&Area=DgrpCategory';
+  }else if(goodsCode.startsWith("TP")){
+    goodsUrl = gen3pGoodsUrl(goodsCode, action);
+  }
+  let hrefUrl = '';
+  hrefUrl = '<a href="' + goodsUrl + '" gdscode="'+goodsCode+'">';
+  return hrefUrl;
+}
+
+function genTop123IconArea(g){
+
+  let iconArea='';
+  let isInStock = parseInt(g.goodsStock,10)>0;
+  let isDiscount = !!g.isDiscount;
+  let isCycle = !!(g.cycleYn == "1");
+  let canTipInfoObj = getSaleDescription(g.canTipStock ,g.onSaleDescription);
+  let bookDetails = getBookDetails(g.bookData);
+  iconArea = genIconArea(isInStock, isCycle, bookDetails.isComingSoon, isDiscount,"", canTipInfoObj);//top123的icon一律,由ajaxGoodsTool.js的fixGoodsPric產出e
+  return iconArea.prop('outerHTML');
+}  
+ 
+function genTop123GoodsRating(g){ 
+  let ratingInfo ={};//組出星等和評價還有銷售量
+  ratingInfo.rating = g.rating;
+  ratingInfo.ratingTimes = g.ratingTimes;
+  let ratingStarBox = goodsRating.showRatingInfo(ratingInfo);
+  return ratingStarBox;
+}
+
+function genGoodsTagList(goodsTag) {//預購和店家標籤
+  const goodsTagSpan = momoj('<span class="icon-group"></span>');
+  if (!goodsTag || !Array.isArray(goodsTag) || goodsTag.length === 0) {
+    return '';
+  }
+  goodsTag.forEach(function(tag) {
+    if (!tag) {
+      return;
+    }
+
+    const iconTypeMap = {
+      '店⁺': 'icon-store',
+      '&#24215;&#8314;': 'icon-store',
+      '預': 'icon-preorder',
+      '限時搶購': 'ec-tag ec-tag-sm ec-flash-sale'
+    };
+
+    const className = iconTypeMap[tag.content] || '';
+
+    if (className) {
+      const tagHtml = genGoodsTagHtml(className, tag);
+      goodsTagSpan.append(tagHtml);
+    }
+
+  });
+
+  return goodsTagSpan;
+}
+
+//組出tag的html
+function genGoodsTagHtml(className, tag) {
+  return `<span class="${className}" style="color:${tag.textColor}; background-color:${tag.bgColor};">
+            <img src="${tag.imgUrl}" alt="${tag.content}"/>
+          </span>`;
+}
+//(分享url用)已勾選的品牌
+function getSelectedBrandName(){
+  
+  var brands = new Array();
+  if(typeof params.checkedBrands != 'undefined' && params.checkedBrands.length>0){
+    momoj.each(params.checkedBrands, function(i, brand){
+      brands.push(momoj.str2Unicode(brand));
+    });
+  }
+  
+  return brands;
+}
+//(分享url用)已勾選的品牌編號
+function getSelectedBrandNo(){
+  
+  var brandsNo = new Array();
+  if(typeof params.checkedBrandsNo != 'undefined' && params.checkedBrandsNo.length>0){
+    momoj.each(params.checkedBrandsNo, function(i, brandNo){
+      brandsNo.push(momoj.str2Unicode(brandNo));
+    });
+  }
+  return brandsNo;
+}
+
+//(分享url用)已勾選的品牌系列
+function getSelectedBrandSeriesStr(){
+  
+  var brandSeries = new Array();
+  if(typeof params.checkedBrandSeries != 'undefined' && params.checkedBrandSeries.length>0){
+    momoj.each(params.checkedBrandSeries, function(i, brandseri){
+      brandSeries.push(momoj.str2Unicode(brandseri));
+    });
+  }
+  return brandSeries;
+}
+
+//取得網址中的參數
+function getUrlParamater(){
+  var brandNamesList = [];
+  var brandNosList = [];
+  var brandSeriesList = [];
+  params.cateCode = cateCode;
+  params.cateLevel = '3';
+  params.cp = strCpyn;
+  params.NAM = strAdvNam;
+  params.normal = 'N';
+  params.first = wh_code;
+  params.freeze = strAdvFreeze;
+  params.superstore = strAdvSuperstore;
+  params.tvshop = strAdvTvshop;
+  params.china = strAdvChina;
+  params.tomorrow = strAdvTomorrow;
+  params.stockYN = strAdvStock;
+  params.prefere = strAdvPrefere;
+  params.threeHours = strAdvThreeHours;
+  params.video = strAdvVideo;
+  params.cycle = strAdvCycle;
+  params.cod = strAdvCod;
+  params.superstorePay = strAdvSuperstorePay;
+  params.moCoinFeedback = strAdvMoCoinFeedback;
+  params.superstoreFree = strAdvSuperstoreFree;
+  params.commentRate = strAdvCommentRate;
+  params.curPage = '1';
+  params.priceS = strLowPrice;
+  params.priceE = strHighPrice;
+  params.brandName = brandNamesList;
+  params.brandSeries = brandSeriesList;
+  params.sortType = (typeof orderType == 'undefined'||orderType==null||orderType==''?'6':orderType);
+  try{
+    var paramsRaw = (document.location.href.split("?", 2)[1] || "").split("#")[0].split("&") || [];
+    for (var i = 0; i< paramsRaw.length; i++) {
+      var single = paramsRaw[i].split("=");
+      if(!single[0]){
+        continue;
+      }
+      if(single[0] == 'brand'){
+        params.checkedBrands = decodeURIComponent(single[1]).split(',');
+      }else if(single[0] == 'brandNo'){//品牌號碼
+        params.checkedBrandsNo = decodeURIComponent(single[1]).split(',');
+      }else if(single[0] == 'brandSeriesStr'){//品牌系列
+        params.checkedBrandSeries = decodeURIComponent(single[1]).split(',');
+      }else if(single[0] == 'attr'){
+        try{
+          params.checkedAttrs = momoj.parseJSON(decodeURIComponent(single[1]) ? decodeURIComponent(single[1]) : null);
+        }catch (e) {
+          console.log(e);
+        }
+      }else if(single[0] == 'attrNo'){//屬性號碼
+        try{
+          params.checkedAttrsNo = momoj.parseJSON(decodeURIComponent(single[1]) ? decodeURIComponent(single[1]) : null);
+        }catch (e) {
+          console.log(e);
+        }
+      }else if(single[0] == 'mAttL'){//屬性號碼
+        try{
+          params.checkedIndexName = momoj.parseJSON(decodeURIComponent(single[1]) ? decodeURIComponent(single[1]) : null);
+        }catch (e) {
+          console.log(e);
+        }
+      }else if(single[0] == 'p_pageNum'){//頁碼
+        try{
+          params.curPage = momoj.parseJSON(decodeURIComponent(single[1]) ? decodeURIComponent(single[1]) : null);
+        }catch (e) {
+          console.log(e);
+        }  
+      }else{
+        params[single[0]] = decodeURIComponent(single[1]);
+      }
+      
+    }
+    var attrInfoList = getSelectedAttr();
+    if(attrInfoList.length>0){
+      params.indexInfoList = attrInfoList;
+    }
+    brandNamesList = getSelectedBrandName();
+    if(brandNamesList.length>0){
+      params.brandName = brandNamesList;
+    }
+    brandNosList = getSelectedBrandNo();
+    if(brandNosList.length>0){
+      params.brandCode = brandNosList;
+    }
+    brandSeriesList = getSelectedBrandSeriesStr();
+    if(brandSeriesList.length>0){
+      params.brandSeries = brandSeriesList;
+    }
+    //品牌專區，不顯示商城，不顯示品牌勾選
+    //params.isBrandZone = (params.checkedBrands.length == 1 && params.keyword == params.checkedBrands[0]);
+    //把判斷jsp接回來的request中的參數,拿來判斷畫面,相當於params.cp
+    optionChecked();
+  } catch(e){
+    console.log(e);
+  }
+}
+
+function optionChecked(){
+  if (params.cp=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_01').prop('checked', true);  
+  }else{
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_01').prop('checked', false);  
+  }
+  if (params.NAM=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_02').prop('checked', true);  
+  }else{
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_02').prop('checked', false);  
+  }
+  if (params.first=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_04').prop('checked', true);  
+  }else{
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_04').prop('checked', false);  
+  }
+  if (params.freeze=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_11').prop('checked', true);  
+  }else{
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_11').prop('checked', false);
+  }
+  if (params.superstore=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_05').prop('checked', true);  
+  }else{
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_05').prop('checked', false);  
+  }
+  if (params.tvshop=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_06').prop('checked', true);  
+  }else{
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_06').prop('checked', false);  
+  }
+  if (params.china=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_07').prop('checked', true);  
+  }else{
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_07').prop('checked', false); 
+  }
+  if (params.tomorrow=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_08').prop('checked', true);  
+  }else{
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_08').prop('checked', false);
+  }
+  if (params.stockYN=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_03').prop('checked', true);  
+  }else{
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_03').prop('checked', false);
+  }
+  if (params.prefere=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_09').prop('checked', true);  
+  }else{
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_09').prop('checked', false);
+  }
+  if (params.threeHours=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_10').prop('checked', true);  
+  }else{
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_10').prop('checked', false); 
+  }
+  if (params.video=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_12').prop('checked', true);  
+  }else{
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_12').prop('checked', false); 
+  }
+  if (params.cycle=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_13').prop('checked', true);  
+  }else{
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_13').prop('checked', false); 
+  }
+  if (params.cod=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_14').prop('checked', true);  
+  }else{
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_14').prop('checked', false); 
+  }
+  if (params.superstorePay=='Y') {
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_15').prop('checked', true);  
+  }else{
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_15').prop('checked', false); 
+  }
+  if (params.moCoinFeedback=='Y') {//MO幣加碼
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_16').prop('checked', true);  
+  }else{
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_16').prop('checked', false); 
+  }
+  if (params.superstoreFree=='Y') {//超商免運卷
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_17').prop('checked', true);  
+  }else{
+    momoj('#goodsAttrRoot .optionsLi #optionsLi_17').prop('checked', false); 
+  }
+  if (params.commentRate!='') {//星評篩選
+    momoj('#goodsAttrRoot .menuArea .commentRate [type=checkbox]').prop('checked', false);
+    momoj("#goodsAttrRoot .optionsLi [name='commentrate_" + params.commentRate + "']").prop('checked', true);  
+      
+  }else{
+    momoj('#goodsAttrRoot .menuArea .commentRate [type=checkbox]').prop('checked', false);
+  }
+} 
+
+//取得是篩選中的哪一個星評評價被勾選
+//星評篩選條件("": 空字串無篩選, "1": 1星到5星, "2": 2星到5星, "3": 3星到5星, "4": 4星到5星, "5": 5星)
+function getCheckedCommenRate() {
+  let checkedCommenRate='';
+  const liElements = document.querySelectorAll('#goodsAttrRoot .commentRate');
+  
+  liElements.forEach(function(li) {
+    const checkbox = li.querySelector('input[type="checkbox"]');
+    if (checkbox.checked) {
+      //console.log("被勾選的是: " + checkbox.value);
+      checkedCommenRate = checkbox.value;
+    }
+  });
+  return checkedCommenRate;
+}
+
+//商品圖上,所有會出現的icon,tag或圖片
+function generateProductImageConfig(g, isAgeCheck, isAdultLimit) {
+  return {
+    imgTypeUrlArray: g.imgTypeUrlArray || [], 
+    imgTagUrl: g.imgTagUrl,
+    imgLongTagUrl: g.imgLongTagUrl,
+    imgBottomTagUrl: g.imgBottomTagUrl,
+    goodsName: g.goodsName,
+    isAdult: !(typeof isAgeCheck === 'boolean' && isAgeCheck) && isAdultLimit,
+    adgoodsicon: null, 
+    officialTagImgUrl: g.officialTagImgUrl,
+    activityTagArray: g.goodsActivityTag || [] 
+  };
+}
+
+
+//產生seo結構化資料
+function genSeoData() {
+    //seo ld+json
+    (function(){
+      var wrapSeoArr = new Array();
+      
+      var momoUrl = window.location.protocol + "//" + window.location.host;
+      var seoNavi = {"@context": "https://schema.org",
+                     "@type": "BreadcrumbList",
+                     "itemListElement": []};
+      
+      var homeItem = {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@id": momoUrl,
+            "name": "momo購物網"
+          }
+      }
+      
+      seoNavi.itemListElement.push(homeItem);//home
+      
+      var dgrpCrumbsCount = 0
+      //牙 大 中 
+      momoj('#bt_2_layout_NAV ul li').each(function(i, h){
+        if(dgrpCrumbsCount > 0){
+          var pos = i+1;
+
+          var listItem = {
+              "@type": "ListItem",
+              "position": pos,
+          }
+        
+          var _this = momoj(h);
+          if(_this.has('a').length){
+            var aTag = _this.find('a');
+            var url = momoUrl + aTag.attr('href');
+            var name = aTag.text();
+            var item = {
+                "@id": url,
+                "name": name,
+            }
+            listItem.item = item;
+          }else{
+            var item = {
+                "name": _this.text()
+            }
+            listItem.item = item;
+          }
+          
+          seoNavi.itemListElement.push(listItem);
+        }
+        dgrpCrumbsCount = dgrpCrumbsCount + 1;
+        if (dgrpCrumbsCount == 4) return false;
+      });
+      
+      //小
+      var dgrpItem = {
+          "@type": "ListItem",
+          "position": 5,
+          "item": {
+            "@id": window.location.href,
+            "name": momoj('#bt_2_layout_NAV ul li h2').text()
+          }
+      }
+      
+      seoNavi.itemListElement.push(dgrpItem);
+      
+      wrapSeoArr.push(seoNavi);
+      
+      //top10 goods
+      var top10Li = momoj('.prdListArea ul li');
+      
+      //取前十筆商品產生結構化資料
+      momoj.each(top10Li,function(k,v){
+          var offersPrice = momoj(v).find('.prdPrice b').text();
+          offersPrice = offersPrice.replace(/[,]/g,'');
+          var seoGoods = {
+              "@context": "https://schema.org",
+              "@type": "Product",
+              "name": momoj(v).find('.prdName').text(),
+              "description": momoj('meta[name="Description"]').attr('content'),
+              "image": momoj(v).find('img').attr('src'),
+              "url": momoUrl + momoj(v).find('.prdUrl').attr('href'),
+              "offers": {"@type":"Offer","price":offersPrice,"priceCurrency":"TWD"}
+          }
+          wrapSeoArr.push(seoGoods);
+
+          if(k == 9) return false;
+      })
+      var scriptTag = document.createElement('script');
+      scriptTag.type = 'application/ld+json';
+      scriptTag.text = JSON.stringify(wrapSeoArr);
+      momoj('head').append(scriptTag);
+
+    })();    
+}

@@ -1,0 +1,179 @@
+//規格圖
+(function () {
+  momoj(document).ready(function(){
+    //規格1
+    momoj(document).on("click",".prdnoteArea #spec1 > li, #dCodeFrm #spec1 > li",function(){
+      if(displaySpec != '' && displaySpec == '01'){
+        var container = momoj(this);
+        showMainPic(container);
+      }
+    });
+
+    //規格2
+    momoj(document).on("click",".prdnoteArea #spec2 > li, #dCodeFrm #spec2 > li",function(){
+      if(displaySpec != '' && displaySpec == '02'){
+        var container = momoj(this);
+        showMainPic(container);
+      }
+    });
+
+    //SET
+    momoj(document).on("change",".InSet",function(){
+      var container = momoj(this);
+      showSetPic(container);
+      showOrHideSetDelyMsg();
+    });
+  });
+
+  /**
+   * 顯示/隱藏SET品出貨文案
+   */
+  function showOrHideSetDelyMsg() {
+    var inSet = momoj(".InSet");
+    var goodsCodePreOrderDescriptionDefault = momoj("#goodsCodePreOrderDescriptionDefault").val();
+    var delyFlag;
+    if(typeof isFiveHour != "undefined" && isFiveHour) {
+      delyFlag = {
+        setDFlag : "10",
+        setDNo : "",
+        setDCount : "",
+        setDFrom : "",
+        setDEnd : ""
+      }
+      setShowGoodsDt(delyFlag.setDFlag, delyFlag.setDNo, delyFlag.setDCount, delyFlag.setDFrom, delyFlag.setDEnd);
+    }  else if(isNotEverySpecSelected(inSet) && goodsCodePreOrderDescriptionDefault) {
+        momoj('#ShowGoodsDt').html(goodsCodePreOrderDescriptionDefault);
+    }else{
+      delyFlag = getSetDelyFlag(inSet);
+      setShowGoodsDt(delyFlag.setDFlag, delyFlag.setDNo, delyFlag.setDCount, delyFlag.setDFrom, delyFlag.setDEnd);
+      delyFlag = {
+        setDFlag : "0",
+        setDNo : "",
+        setDCount : "",
+        setDFrom : "",
+        setDEnd : ""
+      }
+    }
+
+    if((onSaleInfo.isSwitch === "0" || onSaleInfo.isSwitch === "1") && location.pathname.indexOf("/GoodsDetail.jsp") > -1) {
+      momoj('#ShowGoodsDt').html(onSaleInfo.onSaleText);
+      momoj('#ShowGoodsDt').addClass("noticeTime");
+      if(location.pathname.indexOf("GoodsDetail.jsp") > -1){
+        momoj('#ShowGoodsDt').show();
+      }else{
+        momoj('#preOrderArea').show();
+      }
+    } else if(onSaleInfo.isSwitch === "0" || onSaleInfo.isSwitch === "1") {
+      if(location.pathname.indexOf("GoodsDetail.jsp") > -1){
+        momoj('#ShowGoodsDt').hide();
+      }else{
+        momoj('#preOrderArea').hide();
+      }
+    }
+  }
+
+  /**
+   * 取得SET品母品，出貨文案Flag
+   */
+  function getSetDelyFlag(inSets) {
+    var delyFlags = momoj.map(momoj(inSets).get(), getSubSetDelyFlag).sort(subSetDelyFlagSort);
+
+    return delyFlags[0] || {
+      setDFlag: "0",
+      setDNo : "",
+      setDCount : "",
+      setDFrom: "",
+      setDEnd: ""
+    };
+  }
+
+  /**
+   * 取得SET品子品，出貨文案Flag
+   */
+  function getSubSetDelyFlag(inSet) {
+    var opt = momoj(inSet).find('option:selected');
+
+    return {
+      setDFlag: momoj(opt).attr("setDFlag") || "0",
+      setDNo: momoj(opt).attr("setDNo") || "",
+      setDCount: momoj(opt).attr("setDCount") || "",
+      setDFrom: momoj(opt).attr("setDFrom") || "",
+      setDEnd: momoj(opt).attr("setDend") || ""
+    }
+  }
+
+  /**
+   * SET品母品，出貨文案Flag優先順序
+   * 出貨時間晚 -> 出貨時間早 -> 沒有出貨時間
+   */
+  function subSetDelyFlagSort(a, b) {
+    if (a.setDEnd === "" && b.setDend === "") {
+      return 0;
+    } else if (a.setDEnd === "") {
+      return 1;
+    } else if (b.setDEnd === "") {
+      return -1;
+    } else {
+      return new Date(a.setDEnd) < new Date(b.setDEnd) ? 1 :
+        new Date(a.setDEnd) > new Date(b.setDEnd) ? -1 : 0;
+    }
+  }
+
+  //顯示主圖
+  function showMainPic(container){
+    var index = 0;
+    var paramters = getSpecObj(container);
+    if(!paramters){
+      index = 0;
+      paramters = getSpecObjByIndex(0);
+      if(!paramters){
+        return;
+      }
+    }else{
+      index = paramters.index;
+    }
+
+    var imgUrl = paramters.imgUrl;
+    var large = imgUrl + paramters.large;
+    var middle = imgUrl + paramters.middle;
+    var isB = paramters.isB;
+    if(document.location.pathname.indexOf("GoodsDetail.jsp") > -1 ){
+      ZoomImage(middle,isB,large);
+    }else{
+      bindedSwiper.slideTo(index);
+    }
+  }
+
+  //顯示SET
+  function showSetPic(container){
+    var oImg = container.parents("li").find("img.prdImg");
+    var oSelect = container.find("option:selected");
+    var paramters = getSpecObj(oSelect);
+    if(!paramters){
+      var origSrc = oImg.attr("origSrc");
+      if(!origSrc){
+        return;
+      }else{
+        paramters = {};
+        paramters.imgUrl = origSrc;
+        paramters.L = "";
+      }
+    }
+
+    var imgUrl = paramters.imgUrl;
+    var L = imgUrl + paramters.L;
+
+    oImg.attr("src",L);
+  }
+
+  //取得規格物件 by target specKey
+  function getSpecObj(target){
+    var specKey = target.attr("specKey");
+    return imgSpecArray[imgSpecIndexHm[specKey]];
+  }
+
+  //取得規格物件 by index
+  function getSpecObjByIndex(index){
+    return imgSpecArray[index];
+  }
+})()

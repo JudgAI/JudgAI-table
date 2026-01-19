@@ -1,0 +1,157 @@
+var imgSwiper = {
+  init:function(){
+    //綁定swiper
+    var serchPrdSwiper = new Swiper('.prdListSwiper', {
+      observer:true,
+      observeParents:true,
+      navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+      },
+      pagination: {
+            el: '.pagination',
+            dynamicBullets: true,
+            dynamicMainBullets: 4
+      }
+    });
+    momoj.each(serchPrdSwiper, function(index, element){
+      if(element.$el != undefined &&　element.$el.hasClass('manyPics')){
+        element.slideTo(1);//套件要幫他動一下才正常。
+        element.slideTo(0);
+      }
+    });
+    return serchPrdSwiper;//把 swiper 實例 reutrn 出來給外部操操作(盡量不改變原本new Swiper的邏輯)
+  },
+  adicon:function(adgoodsicon){//廣告標籤
+    var adIconhtml;
+    if(adgoodsicon){
+        adIconhtml = momoj.map(adgoodsicon, function(icon) {
+        var iconContent = icon.iconContent;
+        return '<div class="products-ad-layer"><div class="ad-tag">'+iconContent+'</div></div>';
+      });
+      return adIconhtml;
+    }else{
+      return"";
+    }
+  },
+  combine:function(productImageConfig){
+    var {
+      imgTypeUrlArray, 
+      imgTagUrl, 
+      imgLongTagUrl, 
+      imgBottomTagUrl, 
+      goodsName, 
+      isAdult, 
+      adgoodsicon, 
+      officialTagImgUrl,//新增官方tag參數
+      activityTagArray //mo幣和免運卷tag
+    } = productImageConfig;
+
+    var swiphead = momoj('<div class="prdImgWrap"></div>');
+    var prdImg =momoj('<div class="swiper-wrapper"></div>');
+    var swiperPag;
+    var swiperButton;
+    if(imgTypeUrlArray){//多規格圖
+      if(imgTypeUrlArray.length >1 ){//超過一張
+        swiphead.addClass("prdListSwiper swiper-container manyPics");
+        swiperPag ='<div class="pagination swiper-pagination"></div><span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>';
+        swiperButton ='<div class="swiper-button-next"></div><div class="swiper-button-prev"></div>';//左右切換箭頭
+      }else{//只有一張
+        swiphead.addClass("prdListSwiper swiper-container swiper-no-swiping");
+        swiperPag ='<div class="pagination swiper-pagination" style="visibility:hidden;"></div><span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>';  
+        
+      }
+    }
+    
+    if(imgTypeUrlArray){//多規格圖
+      prdImg.after(swiperPag);
+      momoj.each(imgTypeUrlArray, function(i, imgTypeUrl){
+        var goodsImgUrl = getGoodsImgPathWebp(imgTypeUrl,navigator.userAgent);//webp流程
+        var swiperslide =momoj('<div class="swiper-slide"></div>');
+        var imghtml = '<img class="prdImg" loading="lazy" src="'+goodsImgUrl+'" alt="'+goodsName+'" title="'+goodsName+'"> ';
+        swiperslide.append(imghtml);
+        prdImg.append(swiperslide);
+      });
+    }
+    if(isAdult){
+      swiphead.append('<img class="mask" src= "' + momoj.getImgSrc({org:'/ecm/img/cmm/search/mask_18.png'}) + '" >');
+    }
+    //插入圓標圖
+    var insertStr = '';
+    if(imgTagUrl){
+      insertStr += '<div class="imgTag" ><img src='+ imgTagUrl + '></div>';
+    }
+    //插入上標圖
+    if(imgLongTagUrl){
+      insertStr += '<div class="imgTagRectangle" ><img src='+ imgLongTagUrl + '></div>';
+    }
+    //插入下標圖
+    if(imgBottomTagUrl){
+      insertStr += '<div class="imgTagBottom" ><img src='+ imgBottomTagUrl + '></div>';
+    }
+    //插入官方標圖
+    if(officialTagImgUrl){
+      insertStr += '<div class="ec-tag ec-tag-sm ec-tag-official" ><img src='+ officialTagImgUrl + '></div>';
+    }
+    var combineImgHtml='';
+    if(insertStr !=''){
+      combineImgHtml = swiphead.append(imgSwiper.adicon(adgoodsicon), insertStr, prdImg, swiperPag, swiperButton, imgSwiper.genActivityTags(activityTagArray));
+    }else{
+      combineImgHtml = swiphead.append(imgSwiper.adicon(adgoodsicon), prdImg, swiperPag, swiperButton, imgSwiper.genActivityTags(activityTagArray));
+    }
+    return combineImgHtml;
+  },
+  /**
+   * 移動到指定圖片位置
+   * @param {*} bindedSwiper 
+   * @param {*} targetSrc 
+   */
+  selectImg: function(bindedSwiper, targetSrc){
+    var targetIndex = -1;
+
+    momoj(bindedSwiper.slides).each(function(index,slide){
+      var $slide = momoj(slide);
+      var $img = $slide.find('img');
+      if($img.length > 0 && $img.attr('src') === targetSrc){
+        targetIndex = index;
+        return false;
+      }
+    });
+
+    if(targetIndex != -1){
+      bindedSwiper.slideTo(targetIndex,300);
+    }
+  },
+  //mo和免運卷tag
+  genActivityTags : function(goodsActivityTagArray) {
+    if (typeof goodsActivityTagArray == 'undefined' || goodsActivityTagArray.length==0 ) {
+      return '';
+    }
+    const tagClassMap = {
+      "mo幣": "ec-cashback",
+      "免運券": "ec-free-shipping"
+    };
+  
+    const $tagGroup = momoj('<div class="mo-plus-tag-group desktop-ver"></div>');
+  
+    goodsActivityTagArray.forEach(tag => {
+      const contentKey = Object.keys(tagClassMap).find(key => tag.content.includes(key)) || '';
+      const className = tagClassMap[contentKey] || ''; 
+  
+      const $span = momoj(`<span class="ec-tag ${className}">${tag.content}</span>`);
+      //$span.css({
+      //  color: tag.textColor,
+      //  backgroundColor: tag.bgColor,
+      //  borderColor: tag.frameLineColor
+      //});
+  
+      $tagGroup.append($span);
+    });
+  
+    return $tagGroup;
+  }
+
+};
+
+
+

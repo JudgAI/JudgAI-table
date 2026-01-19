@@ -1,0 +1,2898 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ShiFu 師父戰情室 - Marketing Data Science 驅動的漏斗與體驗分析平台，即時洞察轉化瓶頸與顧客體驗">
+    <title>ShiFu 師父 | Marketing Data Science 戰情室</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* CSS 變數定義：支援深淺模式切換 */
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #ffffff;
+            --text-sub: #e0e0e0;
+            --accent-gold: #D4AF37; /* 師父品牌金 */
+            --accent-red: #ff6b6b;
+            --accent-green: #51cf66;
+            --border-color: #333333;
+            --chart-grid: #333333;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f4f6f8;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+            --text-sub: #666666;
+            --accent-gold: #b8860b;
+            --accent-red: #d63031;
+            --accent-green: #00b894;
+            --border-color: #e0e0e0;
+            --chart-grid: #eeeeee;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Microsoft JhengHei', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--accent-gold);
+        }
+
+       .brand h1 {
+            margin: 0;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+        
+       .brand span {
+            color: var(--accent-gold);
+            font-weight: bold;
+        }
+
+       .controls button {
+            background: transparent;
+            border: 1px solid var(--text-sub);
+            color: var(--text-main);
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: 0.3s;
+        }
+
+       .controls button:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        /* KPI Cards */
+       .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+       .kpi-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent-gold);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+       .kpi-card.alert { border-left-color: var(--accent-red); }
+       .kpi-card.good { border-left-color: var(--accent-green); }
+
+       .kpi-title { font-size: 14px; color: var(--text-sub); margin-bottom: 5px; }
+       .kpi-value { font-size: 28px; font-weight: bold; margin-bottom: 5px; }
+       .kpi-trend { font-size: 12px; }
+       .trend-up { color: var(--accent-green); }
+       .trend-down { color: var(--accent-red); }
+
+        /* Dashboard Grid */
+       .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr; /* 左2右1 */
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+       .chart-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+       .chart-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+       .chart-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+       .badge {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: var(--border-color);
+            color: var(--text-sub);
+        }
+
+        /* Table Styles */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { text-align: left; color: var(--text-sub); font-size: 12px; padding: 10px; border-bottom: 1px solid var(--border-color); }
+        td { padding: 10px; font-size: 14px; border-bottom: 1px solid var(--border-color); }
+       .score-box {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #fff;
+        }
+       .score-pos { background-color: var(--accent-green); }
+       .score-neg { background-color: var(--accent-red); }
+       .score-neu { background-color: #7f8c8d; }
+
+        /* Insight Box */
+       .insight-box {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--accent-gold);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+       .insight-title { font-weight: bold; color: var(--accent-gold); margin-bottom: 5px; }
+
+        /* Tabs */
+       .tab-nav {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0 20px 0;
+        }
+       .tab-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+       .tab-btn.active {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+        }
+
+        /* Absolute Funnel Cards */
+       .summary-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+            color: var(--text-sub);
+            line-height: 1.6;
+        }
+       .abs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 16px;
+        }
+       .abs-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+        }
+       .abs-card h3 { margin: 0 0 6px 0; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+       .abs-badge { font-size: 12px; padding: 2px 8px; border-radius: 10px; background: rgba(212, 175, 55, 0.15); color: var(--accent-gold); }
+       .abs-insight {
+            margin-top: 10px;
+            background: rgba(212, 175, 55, 0.08);
+            border: 1px solid rgba(212, 175, 55, 0.45);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* Decision Tree Styles */
+       .decision-tree-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 1400px) {
+           .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+           .decision-tree-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 1600px) {
+           .dashboard-grid[style*="grid-template-columns: 1fr 1fr 1fr"] {
+                grid-template-columns: 1fr 1fr !important;
+            }
+        }
+
+        @media (max-width: 1200px) {
+           .dashboard-grid[style*="grid-template-columns: 1fr 1fr 1fr"] {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+        @media (max-width: 1024px) {
+           .kpi-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+           .abs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+           .controls {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+           .controls button {
+                margin-left: 0;
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+           .kpi-row {
+                grid-template-columns: 1fr;
+            }
+           .kpi-value {
+                font-size: 24px;
+            }
+           .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+           .chart-title {
+                font-size: 16px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+           .chart-container {
+                height: 280px !important;
+            }
+           .tab-nav {
+                flex-wrap: wrap;
+            }
+            table {
+                font-size: 12px;
+            }
+            th, td {
+                padding: 8px 5px;
+            }
+        }
+
+        @media (max-width: 480px) {
+           .brand h1 {
+                font-size: 18px;
+            }
+           .kpi-title {
+                font-size: 12px;
+            }
+           .kpi-value {
+                font-size: 20px;
+            }
+           .chart-card {
+                padding: 15px;
+            }
+           .insight-box {
+                font-size: 12px;
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            #tab-settings > div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+    /* 數據設定表單樣式 */
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .input-group label {
+        font-weight: 600;
+        color: var(--text-color);
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .input-group input {
+        padding: 12px 15px;
+        font-size: 1rem;
+        border: 2px solid var(--border-color);
+        border-radius: 6px;
+        background: var(--bg-secondary);
+        color: var(--text-color);
+        transition: all 0.3s;
+    }
+    
+    .input-group input:focus {
+        outline: none;
+        border-color: var(--accent-gold);
+        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+    }
+    
+    .input-group input:hover {
+        border-color: var(--accent-gold);
+    }
+
+    </style>
+</head>
+<body data-theme="light">
+
+
+
+<header>
+    <div class="brand">
+        <h1><span>ShiFu</span> 戰略數據戰情室</h1>
+        <div style="font-size: 12px; color: var(--text-sub);">Marketing Data Science：Funnel & Experience Analytics</div>
+    </div>
+    <div class="controls">
+        <span id="date-range" style="font-size:14px; margin-right:15px; color:var(--text-sub);">資料區間: 2026 Q1 (模擬)</span>
+        <button onclick="toggleTheme()"><i class="fas fa-adjust"></i> 切換模式</button>
+        <button id="export-report-btn"><i class="fas fa-download"></i> 匯出報告</button>
+    </div>
+</header>
+
+<div class="tab-nav">
+    <button class="tab-btn active" data-target="tab-overview">戰情室總覽</button>
+    <button class="tab-btn" data-target="tab-absolute">絕對漏斗</button>
+    <button class="tab-btn" data-target="tab-aisa">愛紗日文會話 2025</button>
+    <button class="tab-btn" data-target="tab-priority">可以建議先執行的分析</button>
+    <button class="tab-btn" data-target="tab-settings">數據設定</button>
+</div>
+
+<div id="tab-overview">
+
+<div class="kpi-row">
+    <div class="kpi-card">
+        <div class="kpi-title">總營收 (Total Revenue)</div>
+        <div class="kpi-value">NT$ 12.8M</div>
+        <div class="kpi-trend"><span class="trend-up">▲ 5.2%</span> MoM</div>
+    </div>
+    <div class="kpi-card alert">
+        <div class="kpi-title">結帳流失率 (Checkout Drop-off)</div>
+        <div class="kpi-value">68.4%</div>
+        <div class="kpi-trend"><span class="trend-down">▲ 3.0%</span> 高於平均 (需注意)</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-title">顧客經驗淨分 (NXS)</div>
+        <div class="kpi-value">+0.8</div>
+        <div class="kpi-trend" style="color:var(--text-sub);">區間: -2 ~ +2</div>
+    </div>
+    <div class="kpi-card alert">
+        <div class="kpi-title">退費申請金額 (Refunds)</div>
+        <div class="kpi-value">NT$ 420K</div>
+        <div class="kpi-trend"><span class="trend-down">▲ 12%</span> 主因: 內容與預期不符</div>
+    </div>
+</div>
+
+<div class="dashboard-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+    <div class="chart-card" onclick="toggleFunnelTitle('funnel-title-main')" style="cursor: pointer;">
+        <div class="chart-title">
+            <span id="funnel-title-main">行銷漏斗轉化分析 (Marketing Funnel)</span>
+            <span class="badge">資料來源: GA4 + Teachify</span>
+        </div>
+        <div style="height: 300px;">
+            <canvas id="funnelChart"></canvas>
+        </div>
+        <div class="insight-box">
+            <div class="insight-title"><i class="fas fa-lightbulb"></i> AI 洞察</div>
+            <strong><span class="problem-highlight">結帳頁面轉化率嚴重偏低 (7%)</span></strong> 為最關鍵瓶頸！11,025 人加入購物車，但僅 772 人進入結帳。建議：<strong>(1) 簡化結帳流程</strong>，減少必填欄位與步驟；<strong>(2) 優化優惠券自動帶入</strong>，避免手動輸入錯誤；<strong>(3) 增加信任標章</strong>（SSL、退款保證），降低結帳焦慮。前期階段表現良好：點擊率 35%、加購率 70%、購買率 55%。
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <div class="chart-title">
+            <i class="fas fa-funnel-dollar"></i> 絕對漏斗 (Absolute Funnel)
+            <span class="badge">資料來源: GA4 + Teachify</span>
+        </div>
+        <div style="height: 300px;">
+            <canvas id="absoluteFunnelMainChart"></canvas>
+        </div>
+        <div class="insight-box">
+            <div class="insight-title"><i class="fas fa-chart-line"></i> 絕對漏斗洞察</div>
+            各階段轉化率：曝光→<span class="click-highlight">點擊</span> <strong style="color: var(--accent-gold);">35.0%</strong> (15,750/45,000)、<span class="click-highlight">點擊</span>→加購 <strong style="color: var(--accent-green);">70.0%</strong> (11,025/15,750)、加購→<strong style="color: var(--accent-red);">結帳 7.0%</strong> (772/11,025)、結帳→購買 <strong style="color: var(--accent-green);">55.1%</strong> (425/772)。<strong style="color: var(--accent-red);">結帳轉化率 7% 遠低於業界平均 (30-40%)</strong>，為<strong>絕對優先改善項目</strong>。建議立即優化結帳頁 UI/UX，移除非必要欄位，並加入「需要協助？」即時客服按鈕。
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <div class="chart-title">
+            顧客經驗評分表 (Scorecard)
+            <span class="badge">Scale: -2 to +2</span>
+        </div>
+        <div class="chart-container" style="height: 300px;">
+            <canvas id="scoreChart"></canvas>
+        </div>
+        <div style="margin-top:10px; font-size:12px; color:var(--text-sub); text-align:center;">
+            *紅條代表體驗痛點 (Pain Points)，需優先處理
+        </div>
+        
+        <div class="insight-box">
+            <div class="insight-title"><i class="fas fa-lightbulb"></i> 體驗評分洞察</div>
+            <p style="margin: 8px 0;">
+                <strong>📊 關鍵發現：</strong><span style="color: var(--accent-red); font-weight: bold;">「結帳流程」評分 -1.6</span> 和<span style="color: var(--accent-red); font-weight: bold;">「客服回應」評分 -0.8</span> 為主要痛點，直接影響轉化率與退費率。
+            </p>
+            <p style="margin: 8px 0;">
+                <strong>💡 建議行動：</strong>
+            </p>
+            <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
+                <li>優化結帳頁 UI/UX，簡化填寫欄位，導入快速付款選項（如 Apple Pay / Google Pay）</li>
+                <li>強化客服即時性，加入 AI 聊天機器人處理常見問題，降低回應時間</li>
+                <li>針對高分項目（內容品質 +1.8、講師魅力 +1.9）加大行銷推廣力度</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-grid" style="grid-template-columns: 1fr 2fr;">
+    <div class="chart-card">
+        <div class="chart-title">
+            退費原因語意分析 (NLP)
+        </div>
+        <div style="height: 250px; position: relative;">
+            <canvas id="refundChart"></canvas>
+        </div>
+        <div style="margin-top:15px; font-size:13px;">
+            <span style="color:var(--accent-red); font-weight:bold;">42%</span> 為「忘記使用優惠券」，<span style="color:var(--accent-red); font-weight:bold;">25%</span> 為「內容與預期不符」，建議優化課程介紹與試看功能。
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <div class="chart-title">
+            課程資產健康度矩陣 (Dual-Track Matrix)
+            <span class="badge">結合 銷售數據 & 體驗評分</span>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>課程名稱</th>
+                    <th>漏斗轉化率 (CVR)</th>
+                    <th>體驗評分 (Avg Score)</th>
+                    <th>診斷結果</th>
+                    <th>建議行動</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="color:var(--accent-gold);">愛紗日文會話 2025</td>
+                    <td>High (4.8%)</td>
+                    <td><span class="score-box score-neg">-0.5</span></td>
+                    <td>隱形炸彈 (高買氣/低體驗)</td>
+                    <td>強化課程介紹與試看功能</td>
+                </tr>
+                <tr>
+                    <td>湯鎮瑋風水應用</td>
+                    <td>Low (1.2%)</td>
+                    <td><span class="score-box score-neu">+0.2</span></td>
+                    <td>價值傳遞不足</td>
+                    <td>加強分期付款標示，降低門檻</td>
+                </tr>
+                <tr>
+                    <td>Daisy 奶油蛋糕</td>
+                    <td>Medium (2.5%)</td>
+                    <td><span class="score-box score-pos">+1.8</span></td>
+                    <td>增長引擎 (口碑好)</td>
+                    <td>啟動 MGM (舊帶新) 活動</td>
+                </tr>
+                <tr>
+                    <td>AI 商業決策術</td>
+                    <td>Low (0.8%)</td>
+                    <td><span class="score-box score-neg">-1.2</span></td>
+                    <td>硬傷 (Critical)</td>
+                    <td>檢視課程難度與內容架構</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- 新增：決策樹歸因分析區塊 -->
+<div class="decision-tree-grid">
+    <!-- 決策樹 1：結帳流程歸因 -->
+    <div class="chart-card">
+        <div class="chart-title">
+            <i class="fas fa-project-diagram"></i> 決策樹 #1：結帳流程歸因
+            <span class="badge">找出流失關鍵決策路徑</span>
+        </div>
+        
+        <div id="decision-tree-container-1" style="background: var(--card-bg); padding: 20px; border-radius: 10px; margin-top: 15px; overflow-x: auto;">
+            <svg id="decisionTreeSvg1" width="1000" height="480" style="background: transparent;"></svg>
+        </div>
+
+        <div class="insight-box">
+            <div class="insight-title"><i class="fas fa-brain"></i> 決策樹歸因解讀</div>
+            <p style="margin: 8px 0;">
+                <strong>📊 關鍵發現：</strong>當使用者進入「結帳頁面」後，若<span style="color: var(--accent-red); font-weight: bold;">「優惠碼欄位」顯示錯誤或無法自動帶入</span>，流失率高達 <strong>85%</strong>。
+            </p>
+            <p style="margin: 8px 0;">
+                <strong>💡 建議行動：</strong>
+            </p>
+            <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
+                <li>優先修復優惠碼自動填入邏輯，減少手動輸入錯誤</li>
+                <li>針對「重複購買」老客戶自動偵測並跳出提醒彈窗</li>
+                <li>在結帳頁加入「需要協助？」即時客服按鈕</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 決策樹 2：課程體驗歸因 -->
+    <div class="chart-card">
+        <div class="chart-title">
+            <i class="fas fa-route"></i> 決策樹 #2：課程體驗歸因
+            <span class="badge">分析學習過程流失點</span>
+        </div>
+        
+        <div id="decision-tree-container-2" style="background: var(--card-bg); padding: 20px; border-radius: 10px; margin-top: 15px; overflow-x: auto;">
+            <svg id="decisionTreeSvg2" width="1000" height="480" style="background: transparent;"></svg>
+        </div>
+
+        <div class="insight-box">
+            <div class="insight-title"><i class="fas fa-graduation-cap"></i> 課程體驗歸因解讀</div>
+            <p style="margin: 8px 0;">
+                <strong>📊 關鍵發現：</strong>購買後若<span style="color: var(--accent-red); font-weight: bold;">「課程難度不符預期」</span>，72% 用戶會在第 3 堂課後流失，其中 65% 選擇申請退費。
+            </p>
+            <p style="margin: 8px 0;">
+                <strong>💡 建議行動：</strong>
+            </p>
+            <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
+                <li>在課程頁面明確標示「適合程度」與「學習前置要求」</li>
+                <li>提供前 2 堂免費試看，讓用戶在購買前確認難度</li>
+                <li>針對高流失課程加入「學習進度檢測」與「個人化建議」</li>
+                <li>建立「課程難度分級系統」並在行銷素材中強調</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- 顧客推薦清單 -->
+<div class="chart-card" style="margin-top: 20px;">
+    <div class="chart-title">
+        <i class="fas fa-star"></i> AI 推薦清單 (優先級排序)
+        <span class="badge">基於數據洞察</span>
+    </div>
+    
+    <div style="margin-top: 20px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 15px;">
+            
+            <!-- 推薦項目 1 -->
+            <div style="background: rgba(255, 107, 107, 0.1); border-left: 4px solid var(--accent-red); padding: 15px; border-radius: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span style="font-weight: bold; color: var(--accent-red); font-size: 16px;">
+                        <i class="fas fa-exclamation-circle"></i> 優先級：極高
+                    </span>
+                    <span style="background: var(--accent-red); color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">立即執行</span>
+                </div>
+                <h4 style="margin: 10px 0; color: var(--text-main);">優化優惠碼自動帶入功能</h4>
+                <p style="font-size: 13px; color: var(--text-sub); line-height: 1.6; margin: 8px 0;">
+                    <strong>數據依據：</strong>68.4% 用戶在結帳頁因優惠碼問題離開，導致 2,210 人流失
+                </p>
+                <p style="font-size: 13px; color: var(--text-sub); line-height: 1.6; margin: 8px 0;">
+                    <strong>預期影響：</strong>可挽回 40-60% 流失用戶，預估增加 NT$ 1.2M-1.8M 營收
+                </p>
+                <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-color);">
+                    <strong style="font-size: 12px; color: var(--text-main);">具體行動：</strong>
+                    <ul style="margin: 8px 0 0 20px; font-size: 12px; color: var(--text-sub); line-height: 1.8;">
+                        <li>檢查優惠碼 API 邏輯，確保自動驗證與帶入</li>
+                        <li>增加「已有優惠碼？點擊自動套用」按鈕</li>
+                        <li>結帳頁顯示可用優惠碼清單（已登入用戶）</li>
+                        <li>追蹤指標：結帳完成率從 31.6% 提升至 45%+</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 推薦項目 2 -->
+            <div style="background: rgba(255, 165, 2, 0.1); border-left: 4px solid #ffa502; padding: 15px; border-radius: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span style="font-weight: bold; color: #ffa502; font-size: 16px;">
+                        <i class="fas fa-flag"></i> 優先級：高
+                    </span>
+                    <span style="background: #ffa502; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">本週完成</span>
+                </div>
+                <h4 style="margin: 10px 0; color: var(--text-main);">提升廣告點擊率（CTR）</h4>
+                <p style="font-size: 13px; color: var(--text-sub); line-height: 1.6; margin: 8px 0;">
+                    <strong>數據依據：</strong>曝光→點擊僅 33.3% (15,000/45,000)，點擊率過低
+                </p>
+                <p style="font-size: 13px; color: var(--text-sub); line-height: 1.6; margin: 8px 0;">
+                    <strong>預期影響：</strong>提升至 45% 可增加 5,400 點擊，帶來約 4,320 加購
+                </p>
+                <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-color);">
+                    <strong style="font-size: 12px; color: var(--text-main);">具體行動：</strong>
+                    <ul style="margin: 8px 0 0 20px; font-size: 12px; color: var(--text-sub); line-height: 1.8;">
+                        <li>A/B 測試：痛點導向 vs 成果導向文案</li>
+                        <li>優化前 3 秒影片素材，加入字幕與鉤子</li>
+                        <li>重新定義受眾（排除低意願群體）</li>
+                        <li>追蹤指標：CTR 從 33.3% 提升至 45%+</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 推薦項目 3 -->
+            <div style="background: rgba(81, 207, 102, 0.1); border-left: 4px solid var(--accent-green); padding: 15px; border-radius: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span style="font-weight: bold; color: var(--accent-green); font-size: 16px;">
+                        <i class="fas fa-check-circle"></i> 優先級：中
+                    </span>
+                    <span style="background: var(--accent-green); color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">本月執行</span>
+                </div>
+                <h4 style="margin: 10px 0; color: var(--text-main);">強化課程試看與介紹</h4>
+                <p style="font-size: 13px; color: var(--text-sub); line-height: 1.6; margin: 8px 0;">
+                    <strong>數據依據：</strong>25% 退費因「內容與預期不符」，可避免損失
+                </p>
+                <p style="font-size: 13px; color: var(--text-sub); line-height: 1.6; margin: 8px 0;">
+                    <strong>預期影響：</strong>降低退費率 10-15%，節省 NT$ 42K-63K 退款處理成本
+                </p>
+                <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-color);">
+                    <strong style="font-size: 12px; color: var(--text-main);">具體行動：</strong>
+                    <ul style="margin: 8px 0 0 20px; font-size: 12px; color: var(--text-sub); line-height: 1.8;">
+                        <li>開放每門課程前 2 堂免費試看（15-20 分鐘）</li>
+                        <li>課程頁增加「詳細大綱」與「適合程度」標籤</li>
+                        <li>加入學員實際作品/成果展示</li>
+                        <li>追蹤指標：內容不符退費率從 25% 降至 15%</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 推薦項目 4 -->
+            <div style="background: rgba(212, 175, 55, 0.1); border-left: 4px solid var(--accent-gold); padding: 15px; border-radius: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span style="font-weight: bold; color: var(--accent-gold); font-size: 16px;">
+                        <i class="fas fa-lightbulb"></i> 優先級：中
+                    </span>
+                    <span style="background: var(--accent-gold); color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">持續優化</span>
+                </div>
+                <h4 style="margin: 10px 0; color: var(--text-main);">啟動 MGM（舊帶新）計畫</h4>
+                <p style="font-size: 13px; color: var(--text-sub); line-height: 1.6; margin: 8px 0;">
+                    <strong>數據依據：</strong>Daisy 蛋糕課程體驗評分 +1.8，口碑潛力高
+                </p>
+                <p style="font-size: 13px; color: var(--text-sub); line-height: 1.6; margin: 8px 0;">
+                    <strong>預期影響：</strong>透過舊生推薦可帶來 15-20% 新客，CAC 降低 40%
+                </p>
+                <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-color);">
+                    <strong style="font-size: 12px; color: var(--text-main);">具體行動：</strong>
+                    <ul style="margin: 8px 0 0 20px; font-size: 12px; color: var(--text-sub); line-height: 1.8;">
+                        <li>推薦人獲得 NT$ 200 課程金，被推薦人享 9 折</li>
+                        <li>完課學員自動收到「推薦好友」邀請郵件</li>
+                        <li>設計專屬推薦頁面與追蹤連結</li>
+                        <li>追蹤指標：MGM 貢獻新訂單佔比達 15%+</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- 目標顧客推薦清單 -->
+<div class="chart-card" style="margin-top: 20px;">
+    <div class="chart-title">
+        <i class="fas fa-users"></i> 目標顧客推薦清單
+        <span class="badge">基於行為與購買數據</span>
+    </div>
+    
+    <div style="margin-top: 20px; overflow-x: auto;">
+        <table id="target-reco-table" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background: var(--border-color);">
+                    <th style="padding: 12px; text-align: left; font-size: 13px; border-bottom: 2px solid var(--accent-gold);">顧客 ID</th>
+                    <th style="padding: 12px; text-align: left; font-size: 13px; border-bottom: 2px solid var(--accent-gold);">姓名</th>
+                    <th style="padding: 12px; text-align: left; font-size: 13px; border-bottom: 2px solid var(--accent-gold);">行為標籤</th>
+                    <th style="padding: 12px; text-align: left; font-size: 13px; border-bottom: 2px solid var(--accent-gold);">推薦課程</th>
+                    <th style="padding: 12px; text-align: left; font-size: 13px; border-bottom: 2px solid var(--accent-gold);">推薦理由</th>
+                    <th style="padding: 12px; text-align: center; font-size: 13px; border-bottom: 2px solid var(--accent-gold);">轉化機率</th>
+                    <th style="padding: 12px; text-align: center; font-size: 13px; border-bottom: 2px solid var(--accent-gold);">建議行動</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 10px; font-size: 12px; color: var(--accent-gold); font-weight: bold;">C0012845</td>
+                    <td style="padding: 10px; font-size: 12px;">張××</td>
+                    <td style="padding: 10px; font-size: 12px;">
+                        <span style="background: rgba(81, 207, 102, 0.2); color: var(--accent-green); padding: 3px 8px; border-radius: 4px; font-size: 11px; margin-right: 4px;">高互動</span>
+                        <span style="background: rgba(212, 175, 55, 0.2); color: var(--accent-gold); padding: 3px 8px; border-radius: 4px; font-size: 11px;">已完課 2 門</span>
+                    </td>
+                    <td style="padding: 10px; font-size: 12px; font-weight: bold;">Daisy 奶油蛋糕</td>
+                    <td style="padding: 10px; font-size: 12px; color: var(--text-sub);">3 次瀏覽此課程超過 5 分鐘，且已完成米索課程</td>
+                    <td style="padding: 10px; text-align: center;">
+                        <span class="conversion-prob" style="background: var(--accent-green); color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">78%</span>
+                    </td>
+                    <td style="padding: 10px; text-align: center; font-size: 11px;">
+                        <button style="background: var(--accent-gold); color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 11px;">發送 EDM</button>
+                    </td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 10px; font-size: 12px; color: var(--accent-gold); font-weight: bold;">C0008234</td>
+                    <td style="padding: 10px; font-size: 12px;">李××</td>
+                    <td style="padding: 10px; font-size: 12px;">
+                        <span style="background: rgba(81, 207, 102, 0.2); color: var(--accent-green); padding: 3px 8px; border-radius: 4px; font-size: 11px; margin-right: 4px;">高消費</span>
+                        <span style="background: rgba(30, 144, 255, 0.2); color: #1e90ff; padding: 3px 8px; border-radius: 4px; font-size: 11px;">日文學習者</span>
+                    </td>
+                    <td style="padding: 10px; font-size: 12px; font-weight: bold;">愛紗日文進階</td>
+                    <td style="padding: 10px; font-size: 12px; color: var(--text-sub);">30 天內購買愛紗基礎並已完課 85%，搜尋過進階課程</td>
+                    <td style="padding: 10px; text-align: center;">
+                        <span class="conversion-prob" style="background: var(--accent-green); color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">82%</span>
+                    </td>
+                    <td style="padding: 10px; text-align: center; font-size: 11px;">
+                        <button style="background: var(--accent-gold); color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 11px;">發送 EDM</button>
+                    </td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 10px; font-size: 12px; color: var(--accent-gold); font-weight: bold;">C0015672</td>
+                    <td style="padding: 10px; font-size: 12px;">王××</td>
+                    <td style="padding: 10px; font-size: 12px;">
+                        <span style="background: rgba(255, 165, 2, 0.2); color: #ffa502; padding: 3px 8px; border-radius: 4px; font-size: 11px; margin-right: 4px;">購物車未結</span>
+                        <span style="background: rgba(212, 175, 55, 0.2); color: var(--accent-gold); padding: 3px 8px; border-radius: 4px; font-size: 11px;">中高價值</span>
+                    </td>
+                    <td style="padding: 10px; font-size: 12px; font-weight: bold;">湯鎮瑪風水應用</td>
+                    <td style="padding: 10px; font-size: 12px; color: var(--text-sub);">72 小時內加入購物車但未結帳，曾瀏覽評價區</td>
+                    <td style="padding: 10px; text-align: center;">
+                        <span class="conversion-prob" style="background: #ffa502; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">65%</span>
+                    </td>
+                    <td style="padding: 10px; text-align: center; font-size: 11px;">
+                        <button style="background: var(--accent-red); color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 11px;">推播通知</button>
+                    </td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 10px; font-size: 12px; color: var(--accent-gold); font-weight: bold;">C0019234</td>
+                    <td style="padding: 10px; font-size: 12px;">陳××</td>
+                    <td style="padding: 10px; font-size: 12px;">
+                        <span style="background: rgba(81, 207, 102, 0.2); color: var(--accent-green); padding: 3px 8px; border-radius: 4px; font-size: 11px; margin-right: 4px;">忠誠客</span>
+                        <span style="background: rgba(212, 175, 55, 0.2); color: var(--accent-gold); padding: 3px 8px; border-radius: 4px; font-size: 11px;">已購 5 門</span>
+                    </td>
+                    <td style="padding: 10px; font-size: 12px; font-weight: bold;">AI 商業決策術</td>
+                    <td style="padding: 10px; font-size: 12px; color: var(--text-sub);">90 天內購買 5 門課程，每週登入 3+ 次，高忠誠度</td>
+                    <td style="padding: 10px; text-align: center;">
+                        <span class="conversion-prob" style="background: var(--accent-green); color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">72%</span>
+                    </td>
+                    <td style="padding: 10px; text-align: center; font-size: 11px;">
+                        <button style="background: var(--accent-gold); color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 11px;">發送 EDM</button>
+                    </td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 10px; font-size: 12px; color: var(--accent-gold); font-weight: bold;">C0007821</td>
+                    <td style="padding: 10px; font-size: 12px;">林××</td>
+                    <td style="padding: 10px; font-size: 12px;">
+                        <span style="background: rgba(255, 107, 107, 0.2); color: var(--accent-red); padding: 3px 8px; border-radius: 4px; font-size: 11px; margin-right: 4px;">低互動</span>
+                        <span style="background: rgba(255, 165, 2, 0.2); color: #ffa502; padding: 3px 8px; border-radius: 4px; font-size: 11px;">流失風險</span>
+                    </td>
+                    <td style="padding: 10px; font-size: 12px; font-weight: bold;">Daisy 奶油蛋糕</td>
+                    <td style="padding: 10px; font-size: 12px; color: var(--text-sub);">60 天未登入，但過去完課率達 90%，需再活化</td>
+                    <td style="padding: 10px; text-align: center;">
+                        <span class="conversion-prob" style="background: #ffa502; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">55%</span>
+                    </td>
+                    <td style="padding: 10px; text-align: center; font-size: 11px;">
+                        <button style="background: var(--accent-red); color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 11px;">再活化</button>
+                    </td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 10px; font-size: 12px; color: var(--accent-gold); font-weight: bold;">C0022458</td>
+                    <td style="padding: 10px; font-size: 12px;">黃××</td>
+                    <td style="padding: 10px; font-size: 12px;">
+                        <span style="background: rgba(81, 207, 102, 0.2); color: var(--accent-green); padding: 3px 8px; border-radius: 4px; font-size: 11px; margin-right: 4px;">高意願</span>
+                        <span style="background: rgba(30, 144, 255, 0.2); color: #1e90ff; padding: 3px 8px; border-radius: 4px; font-size: 11px;">新客</span>
+                    </td>
+                    <td style="padding: 10px; font-size: 12px; font-weight: bold;">愛紗日文會話</td>
+                    <td style="padding: 10px; font-size: 12px; color: var(--text-sub);">7 天內 5 次點擊廣告，瀏覽課程頁 3 次超過 8 分鐘</td>
+                    <td style="padding: 10px; text-align: center;">
+                        <span class="conversion-prob" style="background: var(--accent-green); color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">68%</span>
+                    </td>
+                    <td style="padding: 10px; text-align: center; font-size: 11px;">
+                        <button style="background: var(--accent-gold); color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 11px;">重定向</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="insight-box" style="margin-top: 20px;">
+        <div class="insight-title"><i class="fas fa-chart-bar"></i> 推薦清單統計</div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 10px;">
+            <div style="text-align: center;">
+                <div style="font-size: 24px; font-weight: bold; color: var(--accent-gold);">6</div>
+                <div style="font-size: 12px; color: var(--text-sub);">高潛力顧客</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 24px; font-weight: bold; color: var(--accent-green);">71%</div>
+                <div style="font-size: 12px; color: var(--text-sub);">平均轉化機率</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 24px; font-weight: bold; color: var(--accent-gold);">NT$ 42K</div>
+                <div style="font-size: 12px; color: var(--text-sub);">預估增加營收</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 24px; font-weight: bold; color: var(--text-main);">72h</div>
+                <div style="font-size: 12px; color: var(--text-sub);">建議執行時間</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div> <!-- tab-overview -->
+
+<div id="tab-absolute" style="display:none;">
+    <div class="summary-card">
+        依附檔 CSV「行銷漏斗-絕對漏斗」的百分比資料，為各流量來源直接繪製絕對漏斗。每張卡會自動找出轉化最低的階段並給出具體 AI 洞察，便於對症優化；其他既有漏斗資料保持不變。
+    </div>
+    <div class="abs-grid" id="absoluteFunnelGrid"></div>
+</div>
+
+<div id="tab-aisa" style="display:none;">
+
+<div class="kpi-row">
+    <div class="kpi-card">
+        <div class="kpi-title">總營收 (Total Revenue)</div>
+        <div class="kpi-value">NT$ 3.2M</div>
+        <div class="kpi-trend"><span class="trend-up">▲ 8.5%</span> MoM</div>
+    </div>
+    <div class="kpi-card good">
+        <div class="kpi-title">結帳流失率 (Checkout Drop-off)</div>
+        <div class="kpi-value">45.2%</div>
+        <div class="kpi-trend"><span class="trend-up">▼ 5.8%</span> 優於平均</div>
+    </div>
+    <div class="kpi-card alert">
+        <div class="kpi-title">顧客經驗淨分 (NXS)</div>
+        <div class="kpi-value">-0.5</div>
+        <div class="kpi-trend" style="color:var(--accent-red);">體驗痛點需改善</div>
+    </div>
+    <div class="kpi-card alert">
+        <div class="kpi-title">退費申請金額 (Refunds)</div>
+        <div class="kpi-value">NT$ 280K</div>
+        <div class="kpi-trend"><span class="trend-down">▲ 18%</span> 主因: 內容與預期不符</div>
+    </div>
+</div>
+
+<div class="dashboard-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+    <div class="chart-card" onclick="toggleFunnelTitle('funnel-title-aisa')" style="cursor: pointer;">
+        <div class="chart-title">
+            <span id="funnel-title-aisa">行銷漏斗轉化分析 (Marketing Funnel)</span>
+            <span class="badge">資料來源: GA4 + Teachify</span>
+        </div>
+        <div style="height: 300px;">
+            <canvas id="funnelChartAisa"></canvas>
+        </div>
+        <div class="insight-box">
+            <div class="insight-title"><i class="fas fa-lightbulb"></i> AI 洞察</div>
+            愛紗課程流量健康，<span class="click-highlight">點擊</span>率 58.7% 表現優異，但「<span class="click-highlight">點擊</span>→加購」轉化僅 35.1%。建議強化落地頁的課程大綱、學員見證與先導片內容。
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <div class="chart-title">
+            <i class="fas fa-funnel-dollar"></i> 絕對漏斗 (Absolute Funnel)
+            <span class="badge">資料來源: GA4 + Teachify</span>
+        </div>
+        <div style="height: 300px;">
+            <canvas id="absoluteFunnelAisaChart"></canvas>
+        </div>
+        <div class="insight-box">
+            <div class="insight-title"><i class="fas fa-chart-line"></i> 絕對漏斗洞察</div>
+            各階段轉化率：曝光→<span class="click-highlight">點擊</span> <strong>58.7%</strong> (23,000/39,200)、<span class="click-highlight">點擊</span>→加購 <strong style="color: var(--accent-red);">35.1%</strong> (8,080/23,000)、加購→結帳 68.4% (5,525/8,080)、結帳→購買 54.8% (3,028/5,525)。<strong>加購轉化率偏低</strong>，建議優化落地頁設計。
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <div class="chart-title">
+            顧客經驗評分表 (Scorecard)
+            <span class="badge">Scale: -2 to +2</span>
+        </div>
+        <div class="chart-container" style="height: 300px;">
+            <canvas id="scoreChartAisa"></canvas>
+        </div>
+        <div style="margin-top:10px; font-size:12px; color:var(--text-sub); text-align:center;">
+            *紅條代表體驗痛點 (Pain Points)，需優先處理
+        </div>
+        
+        <div class="insight-box">
+            <div class="insight-title"><i class="fas fa-lightbulb"></i> 愛紗課程體驗洞察</div>
+            <p style="margin: 8px 0;">
+                <strong>📊 關鍵發現：</strong><span style="color: var(--accent-red); font-weight: bold;">「作業批改速度」評分 -1.2</span> 和<span style="color: var(--accent-red); font-weight: bold;">「課程難度銜接」評分 -0.9</span> 為學員主要抱怨點，影響完課率。
+            </p>
+            <p style="margin: 8px 0;">
+                <strong>💡 建議行動：</strong>
+            </p>
+            <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
+                <li>縮短作業批改時間至 24 小時內，或導入 AI 輔助批改加速反饋</li>
+                <li>在課程間增設「銜接測驗」，協助學員判斷是否適合進階內容</li>
+                <li>發揮優勢：教學風格 +2.1、發音準確度 +1.9 可作為主推賣點</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-grid" style="grid-template-columns: 1fr 2fr;">
+    <div class="chart-card">
+        <div class="chart-title">
+            退費原因語意分析 (NLP)
+        </div>
+        <div style="height: 250px; position: relative;">
+            <canvas id="refundChartAisa"></canvas>
+        </div>
+        <div style="margin-top:15px; font-size:13px;">
+            <span style="color:var(--accent-red); font-weight:bold;">52%</span> 為「內容與預期不符」，需強化課程介紹的清晰度與試看功能。
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <div class="chart-title">
+            課程購買路徑分析
+            <span class="badge">愛紗課程專屬</span>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>購買渠道</th>
+                    <th>轉化率 (CVR)</th>
+                    <th>平均客單價</th>
+                    <th>退費率</th>
+                    <th>建議行動</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="color:var(--accent-gold);">自然搜尋 (SEO)</td>
+                    <td>High (6.2%)</td>
+                    <td>NT$ 1,280</td>
+                    <td><span class="score-box score-pos">8%</span></td>
+                    <td>持續優化 SEO 關鍵字</td>
+                </tr>
+                <tr>
+                    <td>Facebook Ads</td>
+                    <td>Medium (4.1%)</td>
+                    <td>NT$ 1,180</td>
+                    <td><span class="score-box score-neu">15%</span></td>
+                    <td>測試不同受眾組合</td>
+                </tr>
+                <tr>
+                    <td>KOL 合作</td>
+                    <td>High (7.8%)</td>
+                    <td>NT$ 1,050</td>
+                    <td><span class="score-box score-neg">28%</span></td>
+                    <td>加強課程適合度說明</td>
+                </tr>
+                <tr>
+                    <td>Email 行銷</td>
+                    <td>Low (2.3%)</td>
+                    <td>NT$ 1,280</td>
+                    <td><span class="score-box score-pos">6%</span></td>
+                    <td>優化郵件主旨與 CTA</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- 愛紗課程決策樹 -->
+<div class="decision-tree-grid">
+    <div class="chart-card">
+        <div class="chart-title">
+            <i class="fas fa-project-diagram"></i> 決策樹 #1：結帳流程歸因
+            <span class="badge">愛紗課程專屬</span>
+        </div>
+        
+        <div id="decision-tree-container-aisa-1" style="background: var(--card-bg); padding: 20px; border-radius: 10px; margin-top: 15px; overflow-x: auto;">
+            <svg id="decisionTreeSvgAisa1" width="1000" height="480" style="background: transparent;"></svg>
+        </div>
+
+        <div class="insight-box">
+            <div class="insight-title"><i class="fas fa-brain"></i> 決策樹歸因解讀</div>
+            <p style="margin: 8px 0;">
+                <strong>📊 關鍵發現：</strong>進入結帳後，若<span style="color: var(--accent-red); font-weight: bold;">「未事先預覽課程內容」</span>，學員購買後發現與預期不符，導致 58% 在 7 天內申請退費。
+            </p>
+            <p style="margin: 8px 0;">
+                <strong>💡 建議行動：</strong>
+            </p>
+            <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
+                <li><strong>強化免費試看</strong>：開放前 2 堂課免費預覽，讓學員確認內容與風格</li>
+                <li>課程頁加入「詳細大綱」與「適合對象」說明</li>
+                <li>增加學員見證影片，展示實際學習成果</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <div class="chart-title">
+            <i class="fas fa-route"></i> 決策樹 #2：課程體驗歸因
+            <span class="badge">學習成效分析</span>
+        </div>
+        
+        <div id="decision-tree-container-aisa-2" style="background: var(--card-bg); padding: 20px; border-radius: 10px; margin-top: 15px; overflow-x: auto;">
+            <svg id="decisionTreeSvgAisa2" width="1000" height="480" style="background: transparent;"></svg>
+        </div>
+
+        <div class="insight-box">
+            <div class="insight-title"><i class="fas fa-graduation-cap"></i> 課程體驗歸因解讀</div>
+            <p style="margin: 8px 0;">
+                <strong>📊 關鍵發現：</strong>學員若<span style="color: var(--accent-green); font-weight: bold;">「每週穩定上課 3+ 次」</span>，完課率高達 88%，且體驗評分 +1.8。
+            </p>
+            <p style="margin: 8px 0;">
+                <strong>💡 建議行動：</strong>
+            </p>
+            <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
+                <li>設計「連續打卡挑戰」活動，鼓勵學員每週 3 次學習</li>
+                <li>未上課學員第 4 天自動發送關懷郵件 + 推薦內容</li>
+                <li>建立「學習夥伴制度」，強化社群黏性</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- 愛紗課程專屬推薦清單 -->
+<div class="chart-card" style="margin-top: 20px;">
+    <div class="chart-title">
+        <i class="fas fa-star"></i> 愛紗課程 AI 推薦清單
+        <span class="badge">針對性優化方案</span>
+    </div>
+    
+    <div style="margin-top: 20px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 15px;">
+            
+            <!-- 愛紗推薦 1 -->
+            <div style="background: rgba(255, 107, 107, 0.1); border-left: 4px solid var(--accent-red); padding: 15px; border-radius: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span style="font-weight: bold; color: var(--accent-red); font-size: 16px;">
+                        <i class="fas fa-exclamation-circle"></i> 優先級：極高
+                    </span>
+                    <span style="background: var(--accent-red); color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">立即執行</span>
+                </div>
+                <h4 style="margin: 10px 0; color: var(--text-main);">建立課程試看機制</h4>
+                <p style="font-size: 13px; color: var(--text-sub); line-height: 1.6; margin: 8px 0;">
+                    <strong>數據依據：</strong>未預覽即購的用戶，58% 在 7 天內申請退費（972 人）
+                </p>
+                <p style="font-size: 13px; color: var(--text-sub); line-height: 1.6; margin: 8px 0;">
+                    <strong>預期影響：</strong>退費率從 52% 降至 25%，節省 NT$ 151K 退款損失
+                </p>
+                <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-color);">
+                    <strong style="font-size: 12px; color: var(--text-main);">具體行動：</strong>
+                    <ul style="margin: 8px 0 0 20px; font-size: 12px; color: var(--text-sub); line-height: 1.8;">
+                        <li>開放第 1、2 堂課完整免費試看（約 40 分鐘）</li>
+                        <li>試看頁面加入「適合程度檢測」互動問卷</li>
+                        <li>顯示完整課程大綱與學習路徑圖</li>
+                        <li>追蹤指標：試看後購買轉化率 > 65%</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 愛紗推薦 2 -->
+            <div style="background: rgba(255, 165, 2, 0.1); border-left: 4px solid #ffa502; padding: 15px; border-radius: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span style="font-weight: bold; color: #ffa502; font-size: 16px;">
+                        <i class="fas fa-flag"></i> 優先級：高
+                    </span>
+                    <span style="background: #ffa502; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">本週完成</span>
+                </div>
+                <h4 style="margin: 10px 0; color: var(--text-main);">優化落地頁加購轉化</h4>
+                <p style="font-size: 13px; color: var(--text-sub); line-height: 1.6; margin: 8px 0;">
+                    <strong>數據依據：</strong>點擊→加購僅 35.1% (8,080/23,000)，是主要瓶頸
+                </p>
+                <p style="font-size: 13px; color: var(--text-sub); line-height: 1.6; margin: 8px 0;">
+                    <strong>預期影響：</strong>提升至 50% 可增加 3,420 加購，帶來約 1,860 購買
+                </p>
+                <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-color);">
+                    <strong style="font-size: 12px; color: var(--text-main);">具體行動：</strong>
+                    <ul style="margin: 8px 0 0 20px; font-size: 12px; color: var(--text-sub); line-height: 1.8;">
+                        <li>首屏加入「60 秒課程精華影片」自動播放</li>
+                        <li>強化社會證明：置頂 10 則真實學員見證</li>
+                        <li>清晰標示「適合對象」與「學習目標」</li>
+                        <li>追蹤指標：加購率從 35.1% 提升至 50%+</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 愛紗推薦 3 -->
+            <div style="background: rgba(81, 207, 102, 0.1); border-left: 4px solid var(--accent-green); padding: 15px; border-radius: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span style="font-weight: bold; color: var(--accent-green); font-size: 16px;">
+                        <i class="fas fa-check-circle"></i> 優先級：高
+                    </span>
+                    <span style="background: var(--accent-green); color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">2 週完成</span>
+                </div>
+                <h4 style="margin: 10px 0; color: var(--text-main);">設計學習打卡挑戰</h4>
+                <p style="font-size: 13px; color: var(--text-sub); line-height: 1.6; margin: 8px 0;">
+                    <strong>數據依據：</strong>每週上課 3+ 次的完課率 88%，上課不穩定流失率 58%
+                </p>
+                <p style="font-size: 13px; color: var(--text-sub); line-height: 1.6; margin: 8px 0;">
+                    <strong>預期影響：</strong>提升穩定學習比例至 75%，完課率提升至 75%+
+                </p>
+                <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-color);">
+                    <strong style="font-size: 12px; color: var(--text-main);">具體行動：</strong>
+                    <ul style="margin: 8px 0 0 20px; font-size: 12px; color: var(--text-sub); line-height: 1.8;">
+                        <li>推出「21 天日文挑戰」：每週 3 次打卡送課程金</li>
+                        <li>Line 社群每日提醒 + 學習夥伴配對</li>
+                        <li>完成挑戰頒發「愛紗認證學員」數位徽章</li>
+                        <li>追蹤指標：穩定學習佔比從 60% 提升至 75%+</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 愛紗推薦 4 -->
+            <div style="background: rgba(212, 175, 55, 0.1); border-left: 4px solid var(--accent-gold); padding: 15px; border-radius: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span style="font-weight: bold; color: var(--accent-gold); font-size: 16px;">
+                        <i class="fas fa-lightbulb"></i> 優先級：中
+                    </span>
+                    <span style="background: var(--accent-gold); color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">本月執行</span>
+                </div>
+                <h4 style="margin: 10px 0; color: var(--text-main);">建立未上課關懷機制</h4>
+                <p style="font-size: 13px; color: var(--text-sub); line-height: 1.6; margin: 8px 0;">
+                    <strong>數據依據：</strong>40% 學員上課不穩定，其中 58% 最終放棄學習
+                </p>
+                <p style="font-size: 13px; color: var(--text-sub); line-height: 1.6; margin: 8px 0;">
+                    <strong>預期影響：</strong>挽回 30% 流失學員，提升課程完成率與口碑
+                </p>
+                <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-color);">
+                    <strong style="font-size: 12px; color: var(--text-main);">具體行動：</strong>
+                    <ul style="margin: 8px 0 0 20px; font-size: 12px; color: var(--text-sub); line-height: 1.8;">
+                        <li>連續 4 天未上課自動發送關懷郵件 + 推薦內容</li>
+                        <li>暫停學員每週收到「本週精選課程」摘要</li>
+                        <li>提供「學習進度診斷」與個人化建議</li>
+                        <li>追蹤指標：流失學員挽回率達 30%+</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- 愛紗課程目標顧客清單 -->
+<div class="chart-card" style="margin-top: 20px;">
+    <div class="chart-title">
+        <i class="fas fa-users"></i> 愛紗課程目標顧客清單
+        <span class="badge">基於學習行為與偏好</span>
+    </div>
+    
+    <div style="margin-top: 20px; overflow-x: auto;">
+        <table id="aisa-target-table" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background: var(--border-color);">
+                    <th style="padding: 12px; text-align: left; font-size: 13px; border-bottom: 2px solid var(--accent-gold);">顧客 ID</th>
+                    <th style="padding: 12px; text-align: left; font-size: 13px; border-bottom: 2px solid var(--accent-gold);">姓名</th>
+                    <th style="padding: 12px; text-align: left; font-size: 13px; border-bottom: 2px solid var(--accent-gold);">當前狀態</th>
+                    <th style="padding: 12px; text-align: left; font-size: 13px; border-bottom: 2px solid var(--accent-gold);">學習進度</th>
+                    <th style="padding: 12px; text-align: left; font-size: 13px; border-bottom: 2px solid var(--accent-gold);">推薦原因</th>
+                    <th style="padding: 12px; text-align: center; font-size: 13px; border-bottom: 2px solid var(--accent-gold);">推薦策略</th>
+                    <th style="padding: 12px; text-align: center; font-size: 13px; border-bottom: 2px solid var(--accent-gold);">推薦轉換率</th>
+                    <th style="padding: 12px; text-align: center; font-size: 13px; border-bottom: 2px solid var(--accent-gold);">建議行動</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 10px; font-size: 12px; color: var(--accent-gold); font-weight: bold;">C0025891</td>
+                    <td style="padding: 10px; font-size: 12px;">吳××</td>
+                    <td style="padding: 10px; font-size: 12px;">
+                        <span style="background: rgba(81, 207, 102, 0.2); color: var(--accent-green); padding: 3px 8px; border-radius: 4px; font-size: 11px;">高頻學習</span>
+                    </td>
+                    <td style="padding: 10px; font-size: 12px;">85% 完課 | 18/21 堂</td>
+                    <td style="padding: 10px; font-size: 12px; color: var(--text-sub);">14 天內連續打卡 12 天，每堂學習超過 30 分鐘</td>
+                    <td style="padding: 10px; text-align: center; font-size: 11px;">
+                        <span style="background: var(--accent-gold); color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px;">進階課程</span>
+                    </td>
+                    <td style="padding: 10px; text-align: center;">
+                        <span style="background: var(--accent-green); color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">86%</span>
+                    </td>
+                    <td style="padding: 10px; text-align: center; font-size: 11px;">
+                        <button style="background: var(--accent-green); color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 11px;">推送優惠</button>
+                    </td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 10px; font-size: 12px; color: var(--accent-gold); font-weight: bold;">C0018456</td>
+                    <td style="padding: 10px; font-size: 12px;">蔡××</td>
+                    <td style="padding: 10px; font-size: 12px;">
+                        <span style="background: rgba(255, 107, 107, 0.2); color: var(--accent-red); padding: 3px 8px; border-radius: 4px; font-size: 11px;">暫停學習</span>
+                    </td>
+                    <td style="padding: 10px; font-size: 12px;">42% 完課 | 9/21 堂</td>
+                    <td style="padding: 10px; font-size: 12px; color: var(--text-sub);">18 天未登入，之前每週上課 4 次，突然中斷</td>
+                    <td style="padding: 10px; text-align: center; font-size: 11px;">
+                        <span style="background: var(--accent-red); color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px;">再活化</span>
+                    </td>
+                    <td style="padding: 10px; text-align: center;">
+                        <span style="background: #ffa502; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">52%</span>
+                    </td>
+                    <td style="padding: 10px; text-align: center; font-size: 11px;">
+                        <button style="background: var(--accent-red); color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 11px;">發送關懷</button>
+                    </td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 10px; font-size: 12px; color: var(--accent-gold); font-weight: bold;">C0031204</td>
+                    <td style="padding: 10px; font-size: 12px;">鄭××</td>
+                    <td style="padding: 10px; font-size: 12px;">
+                        <span style="background: rgba(81, 207, 102, 0.2); color: var(--accent-green); padding: 3px 8px; border-radius: 4px; font-size: 11px;">穩定學習</span>
+                    </td>
+                    <td style="padding: 10px; font-size: 12px;">100% 完課 | 21/21 堂</td>
+                    <td style="padding: 10px; font-size: 12px; color: var(--text-sub);">35 天完成全部課程，留言55 則正面評價</td>
+                    <td style="padding: 10px; text-align: center; font-size: 11px;">
+                        <span style="background: var(--accent-green); color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px;">MGM 推薦</span>
+                    </td>
+                    <td style="padding: 10px; text-align: center;">
+                        <span style="background: var(--accent-green); color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">76%</span>
+                    </td>
+                    <td style="padding: 10px; text-align: center; font-size: 11px;">
+                        <button style="background: var(--accent-green); color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 11px;">邀請推薦</button>
+                    </td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 10px; font-size: 12px; color: var(--accent-gold); font-weight: bold;">C0028673</td>
+                    <td style="padding: 10px; font-size: 12px;">劉××</td>
+                    <td style="padding: 10px; font-size: 12px;">
+                        <span style="background: rgba(255, 165, 2, 0.2); color: #ffa502; padding: 3px 8px; border-radius: 4px; font-size: 11px;">不穩定</span>
+                    </td>
+                    <td style="padding: 10px; font-size: 12px;">33% 完課 | 7/21 堂</td>
+                    <td style="padding: 10px; font-size: 12px; color: var(--text-sub);">間歇性學習，每次間隔10-15 天，需提醒機制</td>
+                    <td style="padding: 10px; text-align: center; font-size: 11px;">
+                        <span style="background: #ffa502; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px;">打卡挑戰</span>
+                    </td>
+                    <td style="padding: 10px; text-align: center;">
+                        <span style="background: #ffa502; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">58%</span>
+                    </td>
+                    <td style="padding: 10px; text-align: center; font-size: 11px;">
+                        <button style="background: #ffa502; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 11px;">邀加入</button>
+                    </td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 10px; font-size: 12px; color: var(--accent-gold); font-weight: bold;">C0034512</td>
+                    <td style="padding: 10px; font-size: 12px;">陳××</td>
+                    <td style="padding: 10px; font-size: 12px;">
+                        <span style="background: rgba(30, 144, 255, 0.2); color: #1e90ff; padding: 3px 8px; border-radius: 4px; font-size: 11px;">新購買</span>
+                    </td>
+                    <td style="padding: 10px; font-size: 12px;">5% 完課 | 1/21 堂</td>
+                    <td style="padding: 10px; font-size: 12px; color: var(--text-sub);">3 天前購買，僅看第 1 堂，需引導開始學習</td>
+                    <td style="padding: 10px; text-align: center; font-size: 11px;">
+                        <span style="background: #1e90ff; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px;">入門引導</span>
+                    </td>
+                    <td style="padding: 10px; text-align: center;">
+                        <span style="background: #1e90ff; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">62%</span>
+                    </td>
+                    <td style="padding: 10px; text-align: center; font-size: 11px;">
+                        <button style="background: #1e90ff; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 11px;">歡迎郵件</button>
+                    </td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 10px; font-size: 12px; color: var(--accent-gold); font-weight: bold;">C0029847</td>
+                    <td style="padding: 10px; font-size: 12px;">許××</td>
+                    <td style="padding: 10px; font-size: 12px;">
+                        <span style="background: rgba(81, 207, 102, 0.2); color: var(--accent-green); padding: 3px 8px; border-radius: 4px; font-size: 11px;">高頻互動</span>
+                    </td>
+                    <td style="padding: 10px; font-size: 12px;">67% 完課 | 14/21 堂</td>
+                    <td style="padding: 10px; font-size: 12px; color: var(--text-sub);">留言 15 次、加入社群並分享筆記，高參與度</td>
+                    <td style="padding: 10px; text-align: center; font-size: 11px;">
+                        <span style="background: var(--accent-gold); color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px;">VIP 服務</span>
+                    </td>
+                    <td style="padding: 10px; text-align: center;">
+                        <span style="background: var(--accent-green); color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">83%</span>
+                    </td>
+                    <td style="padding: 10px; text-align: center; font-size: 11px;">
+                        <button style="background: var(--accent-gold); color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 11px;">邀加入</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="insight-box" style="margin-top: 20px;">
+        <div class="insight-title"><i class="fas fa-chart-bar"></i> 愛紗課程顧客分佈統計</div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-top: 10px;">
+            <div style="text-align: center;">
+                <div style="font-size: 24px; font-weight: bold; color: var(--accent-green);">2</div>
+                <div style="font-size: 12px; color: var(--text-sub);">高潛力客戶</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 24px; font-weight: bold; color: var(--accent-red);">1</div>
+                <div style="font-size: 12px; color: var(--text-sub);">流失風險客</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 24px; font-weight: bold; color: #ffa502;">1</div>
+                <div style="font-size: 12px; color: var(--text-sub);">需關懷客戶</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 24px; font-weight: bold; color: var(--accent-gold);">1</div>
+                <div style="font-size: 12px; color: var(--text-sub);">MGM 候選人</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 24px; font-weight: bold; color: #1e90ff;">1</div>
+                <div style="font-size: 12px; color: var(--text-sub);">新手引導</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div> <!-- tab-aisa -->
+
+<div id="tab-priority" style="display:none;">
+
+<div class="kpi-row">
+    <div class="kpi-card">
+        <div class="kpi-title">總營收 (Total Revenue)</div>
+        <div class="kpi-value">NT$ 12.8M</div>
+        <div class="kpi-trend"><span class="trend-up">▲ 5.2%</span> MoM</div>
+    </div>
+    <div class="kpi-card alert">
+        <div class="kpi-title">結帳流失率 (Checkout Drop-off)</div>
+        <div class="kpi-value">68.4%</div>
+        <div class="kpi-trend"><span class="trend-down">▲ 3.0%</span> 高於平均 (需注意)</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-title">顧客經驗淨分 (NXS)</div>
+        <div class="kpi-value">+0.8</div>
+        <div class="kpi-trend" style="color:var(--text-sub);">區間: -2 ~ +2</div>
+    </div>
+    <div class="kpi-card alert">
+        <div class="kpi-title">退費申請金額 (Refunds)</div>
+        <div class="kpi-value">NT$ 420K</div>
+        <div class="kpi-trend"><span class="trend-down">▲ 12%</span> 主因: 內容與預期不符</div>
+    </div>
+</div>
+
+<div class="dashboard-grid" style="grid-template-columns: 1fr 1fr;">
+    <div class="chart-card" onclick="toggleFunnelTitle('funnel-title-priority')" style="cursor: pointer;">
+        <div class="chart-title">
+            <span id="funnel-title-priority">行銷漏斗轉化分析 (Marketing Funnel)</span>
+            <span class="badge">資料來源: GA4 + Teachify</span>
+        </div>
+        <div style="height: 300px;">
+            <canvas id="funnelChartPriority"></canvas>
+        </div>
+        <div class="insight-box">
+            <div class="insight-title"><i class="fas fa-lightbulb"></i> AI 洞察</div>
+            <strong><span class="problem-highlight">結帳頁面轉化率嚴重偏低 (7%)</span></strong> 為最關鍵瓶頸！11,025 人加入購物車，但僅 772 人進入結帳。建議：<strong>(1) 簡化結帳流程</strong>，減少必填欄位與步驟；<strong>(2) 優化優惠券自動帶入</strong>，避免手動輸入錯誤；<strong>(3) 增加信任標章</strong>（SSL、退款保證），降低結帳焦慮。前期階段表現良好：點擊率 35%、加購率 70%、購買率 55%。
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <div class="chart-title">
+            <i class="fas fa-funnel-dollar"></i> 絕對漏斗 (Absolute Funnel)
+            <span class="badge">資料來源: GA4 + Teachify</span>
+        </div>
+        <div style="height: 300px;">
+            <canvas id="absoluteFunnelPriorityChart"></canvas>
+        </div>
+        <div class="insight-box">
+            <div class="insight-title"><i class="fas fa-chart-line"></i> 絕對漏斗洞察</div>
+            各階段轉化率：曝光→<span class="click-highlight">點擊</span> <strong style="color: var(--accent-gold);">35.0%</strong> (15,750/45,000)、<span class="click-highlight">點擊</span>→加購 <strong style="color: var(--accent-green);">70.0%</strong> (11,025/15,750)、加購→<strong style="color: var(--accent-red);">結帳 7.0%</strong> (772/11,025)、結帳→購買 <strong style="color: var(--accent-green);">55.1%</strong> (425/772)。<strong style="color: var(--accent-red);">結帳轉化率 7% 遠低於業界平均 (30-40%)</strong>，為<strong>絕對優先改善項目</strong>。建議立即優化結帳頁 UI/UX，移除非必要欄位，並加入「需要協助？」即時客服按鈕。
+        </div>
+    </div>
+</div>
+
+<div class="chart-card" style="margin-top: 20px;">
+    <div class="chart-title">退費原因語意分析 (NLP)</div>
+    <div style="height: 250px; position: relative;">
+        <canvas id="refundChartPriority"></canvas>
+    </div>
+    <div style="margin-top:15px; font-size:13px;">
+        <span style="color:var(--accent-red); font-weight:bold;">42%</span> 為「忘記使用優惠券」，<span style="color:var(--accent-red); font-weight:bold;">25%</span> 為「內容與預期不符」，建議優化課程介紹與試看功能。
+    </div>
+</div>
+
+<div class="decision-tree-grid" style="margin-top: 20px;">
+    <div class="chart-card">
+        <div class="chart-title">
+            <i class="fas fa-project-diagram"></i> 決策樹 #1：結帳流程歸因
+            <span class="badge">找出流失關鍵決策路徑</span>
+        </div>
+        <div style="background: var(--card-bg); padding: 20px; border-radius: 10px; margin-top: 15px; overflow-x: auto;">
+            <svg id="decisionTreeSvgPriority1" width="1000" height="480" style="background: transparent;"></svg>
+        </div>
+
+        <div class="insight-box">
+            <div class="insight-title"><i class="fas fa-brain"></i> 決策樹歸因解讀</div>
+            <p style="margin: 8px 0;">
+                <strong>📊 關鍵發現：</strong>當使用者進入「結帳頁面」後，若<span style="color: var(--accent-red); font-weight: bold;">「優惠碼欄位」顯示錯誤或無法自動帶入</span>，流失率高達 <strong>85%</strong>。
+            </p>
+            <p style="margin: 8px 0;"><strong>💡 建議行動：</strong></p>
+            <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
+                <li>優先修復優惠碼自動填入邏輯，減少手動輸入錯誤</li>
+                <li>針對「重複購買」老客戶自動偵測並跳出提醒彈窗</li>
+                <li>在結帳頁加入「需要協助？」即時客服按鈕</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <div class="chart-title">
+            <i class="fas fa-route"></i> 決策樹 #2：課程體驗歸因
+            <span class="badge">分析學習過程流失點</span>
+        </div>
+
+        <div style="background: var(--card-bg); padding: 20px; border-radius: 10px; margin-top: 15px; overflow-x: auto;">
+            <svg id="decisionTreeSvgPriority2" width="1000" height="480" style="background: transparent;"></svg>
+        </div>
+
+        <div class="insight-box">
+            <div class="insight-title"><i class="fas fa-graduation-cap"></i> 課程體驗歸因解讀</div>
+            <p style="margin: 8px 0;">
+                <strong>📊 關鍵發現：</strong>購買後若<span style="color: var(--accent-red); font-weight: bold;">「課程難度不符預期」</span>，72% 用戶會在第 3 堂課後流失，其中 65% 選擇申請退費。
+            </p>
+            <p style="margin: 8px 0;"><strong>💡 建議行動：</strong></p>
+            <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
+                <li>在課程頁面明確標示「適合程度」與「學習前置要求」</li>
+                <li>提供前 2 堂免費試看，讓用戶在購買前確認難度</li>
+                <li>針對高流失課程加入「學習進度檢測」與「個人化建議」</li>
+                <li>建立「課程難度分級系統」並在行銷素材中強調</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<!-- 數據設定分頁 -->
+<div id="tab-settings" style="display: none;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; padding: 40px 20px; max-width: 1600px; margin: 0 auto;">
+        <!-- 相對漏斗設定 -->
+        <div class="chart-card">
+        <div class="chart-title" style="font-size: 1.5rem; margin-bottom: 30px;">
+            <i class="fas fa-chart-bar"></i> 相對漏斗數據設定
+        </div>
+        <div style="margin-bottom: 20px; padding: 15px; background: rgba(212, 175, 55, 0.1); border-left: 4px solid var(--accent-gold); border-radius: 4px;">
+            <p style="margin: 0; color: var(--text-main); font-size: 0.95rem;">
+                <i class="fas fa-info-circle"></i> 輸入各階段的實際數字（人數/次數），系統會自動計算轉化率。
+            </p>
+        </div>
+        
+        <div style="display: grid; gap: 20px;">
+            <div class="input-group">
+                <label for="input-awareness">
+                    <i class="fas fa-eye"></i> 曝光 (Awareness)
+                </label>
+                <input type="number" id="input-awareness" value="45000" min="0" />
+            </div>
+            
+            <div class="input-group">
+                <label for="input-interest">
+                    <i class="fas fa-mouse-pointer"></i> 點擊 (Interest)
+                </label>
+                <input type="number" id="input-interest" value="15750" min="0" />
+            </div>
+            
+            <div class="input-group">
+                <label for="input-mofu">
+                    <i class="fas fa-shopping-cart"></i> 加入購物車 (MOFU)
+                </label>
+                <input type="number" id="input-mofu" value="11025" min="0" />
+            </div>
+            
+            <div class="input-group">
+                <label for="input-bofu">
+                    <i class="fas fa-credit-card"></i> 結帳頁面 (BOFU)
+                </label>
+                <input type="number" id="input-bofu" value="772" min="0" />
+            </div>
+            
+            <div class="input-group">
+                <label for="input-action">
+                    <i class="fas fa-check-circle"></i> 購買完成 (Action)
+                </label>
+                <input type="number" id="input-action" value="425" min="0" />
+            </div>
+            
+            <div style="margin-top: 30px; display: flex; gap: 15px; justify-content: center;">
+                <button onclick="updateFunnelData()" style="padding: 12px 30px; font-size: 1rem; background: var(--accent-gold); color: white; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s;" onmouseover="this.style.background='#b8860b'" onmouseout="this.style.background='var(--accent-gold)'">
+                    <i class="fas fa-sync-alt"></i> 更新相對漏斗
+                </button>
+                <button onclick="resetFunnelData()" style="padding: 12px 30px; font-size: 1rem; background: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s;" onmouseover="this.style.background='#5a6268'" onmouseout="this.style.background='#6c757d'">
+                    <i class="fas fa-undo"></i> 重置為預設值
+                </button>
+            </div>
+            
+            <div id="update-message" style="margin-top: 20px; padding: 15px; border-radius: 6px; text-align: center; display: none;"></div>
+        </div>
+    </div>
+
+        <!-- 絕對漏斗設定 -->
+        <div class="chart-card">
+        <div class="chart-title" style="font-size: 1.5rem; margin-bottom: 30px;">
+            <i class="fas fa-percentage"></i> 絕對漏斗轉化率設定
+        </div>
+        <div style="margin-bottom: 20px; padding: 15px; background: rgba(81, 207, 102, 0.1); border-left: 4px solid var(--accent-green); border-radius: 4px;">
+            <p style="margin: 0; color: var(--text-main); font-size: 0.95rem;">
+                <i class="fas fa-info-circle"></i> 輸入各階段的轉化率（%），用於絕對漏斗分頁的多渠道比較。
+            </p>
+        </div>
+        
+        <div style="display: grid; gap: 20px;">
+            <div class="input-group">
+                <label for="input-abs-awareness">
+                    <i class="fas fa-eye"></i> 曝光基準
+                </label>
+                <input type="number" id="input-abs-awareness" value="100" readonly style="background: var(--bg-color); opacity: 0.6;" />
+                <small style="color: var(--text-sub); font-size: 0.85rem;">固定為 100%</small>
+            </div>
+            
+            <div class="input-group">
+                <label for="input-abs-interest">
+                    <i class="fas fa-mouse-pointer"></i> 點擊率 (%)
+                </label>
+                <input type="number" id="input-abs-interest" value="35" min="0" max="100" step="0.1" />
+            </div>
+            
+            <div class="input-group">
+                <label for="input-abs-mofu">
+                    <i class="fas fa-shopping-cart"></i> 加購轉化率 (%)
+                </label>
+                <input type="number" id="input-abs-mofu" value="70" min="0" max="100" step="0.1" />
+            </div>
+            
+            <div class="input-group">
+                <label for="input-abs-bofu">
+                    <i class="fas fa-credit-card"></i> 結帳轉化率 (%)
+                </label>
+                <input type="number" id="input-abs-bofu" value="7" min="0" max="100" step="0.1" />
+            </div>
+            
+            <div class="input-group">
+                <label for="input-abs-action">
+                    <i class="fas fa-check-circle"></i> 購買轉化率 (%)
+                </label>
+                <input type="number" id="input-abs-action" value="55" min="0" max="100" step="0.1" />
+            </div>
+            
+            <div style="margin-top: 30px; display: flex; gap: 15px; justify-content: center;">
+                <button onclick="updateAbsoluteFunnelData()" style="padding: 12px 30px; font-size: 1rem; background: var(--accent-green); color: white; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s;" onmouseover="this.style.background='#00b894'" onmouseout="this.style.background='var(--accent-green)'">
+                    <i class="fas fa-sync-alt"></i> 更新絕對漏斗
+                </button>
+                <button onclick="resetAbsoluteFunnelData()" style="padding: 12px 30px; font-size: 1rem; background: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s;" onmouseover="this.style.background='#5a6268'" onmouseout="this.style.background='#6c757d'">
+                    <i class="fas fa-undo"></i> 重置為預設值
+                </button>
+            </div>
+            
+            <div id="update-absolute-message" style="margin-top: 20px; padding: 15px; border-radius: 6px; text-align: center; display: none;"></div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script>
+    // 「點擊」重點色（不使用新色，沿用品牌金）
+    (function ensureClickHighlightStyles() {
+        const style = document.createElement('style');
+        style.textContent = `
+            .click-highlight { color: var(--accent-gold); font-weight: 800; }
+            .problem-highlight { color: var(--accent-red); font-weight: 800; }
+        `;
+        document.head.appendChild(style);
+    })();
+
+    // 預設圖表全域設定
+    Chart.defaults.font.family = "'Microsoft JhengHei', 'Helvetica Neue', 'Arial', sans-serif";
+
+    function parsePercentText(text) {
+        if (!text) return NaN;
+        const cleaned = String(text).replace('%', '').trim();
+        const value = Number(cleaned);
+        return Number.isFinite(value) ? value : NaN;
+    }
+
+    function sortTargetRecoTableByConversionDesc() {
+        const table = document.getElementById('target-reco-table');
+        if (!table) return;
+        const tbody = table.querySelector('tbody');
+        if (!tbody) return;
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        rows.sort((a, b) => {
+            const aProbEl = a.querySelector('.conversion-prob');
+            const bProbEl = b.querySelector('.conversion-prob');
+            const aProb = parsePercentText(aProbEl?.textContent);
+            const bProb = parsePercentText(bProbEl?.textContent);
+            if (Number.isNaN(aProb) && Number.isNaN(bProb)) return 0;
+            if (Number.isNaN(aProb)) return 1;
+            if (Number.isNaN(bProb)) return -1;
+            return bProb - aProb;
+        });
+        rows.forEach(r => tbody.appendChild(r));
+    }
+
+    async function exportFullPagePdf() {
+        const btn = document.getElementById('export-report-btn');
+        if (!btn) return;
+
+        try {
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+            btn.style.cursor = 'not-allowed';
+
+            if (typeof html2pdf === 'undefined') {
+                alert('PDF 匯出元件載入失敗，請確認網路連線或稍後再試。');
+                return;
+            }
+
+            const filename = 'ShiFu_戰略數據戰情室_2025Q1_模擬.pdf';
+            const opt = {
+                margin: [10, 10, 10, 10],
+                filename,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: { mode: ['css', 'legacy'] }
+            };
+
+            await html2pdf().set(opt).from(document.body).save();
+        } finally {
+            btn.disabled = false;
+            btn.style.opacity = '';
+            btn.style.cursor = '';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        sortTargetRecoTableByConversionDesc();
+        const exportBtn = document.getElementById('export-report-btn');
+        if (exportBtn) exportBtn.addEventListener('click', exportFullPagePdf);
+    });
+
+    // 取得當前主題顏色的函數
+    function getThemeColors() {
+        const theme = document.body.getAttribute('data-theme');
+        return {
+            textColor: theme === 'light' ? '#2c3e50' : '#e0e0e0',
+            gridColor: theme === 'light' ? '#eeeeee' : '#333333'
+        };
+    }
+
+    const colors = getThemeColors();
+
+    // 絕對漏斗資料（取自附件 CSV 的百分比行）
+    const absoluteFunnelData = [
+        { channel: 'Facebook Ads', stages: [100, 35, 84, 22, 7, 30] },
+        { channel: 'Google Search', stages: [100, 40, 92, 22, 8, 36] },
+        { channel: 'Email Newsletter', stages: [100, 16, 94, 27, 55, 41] },
+        { channel: 'Organic Social', stages: [100, 5, 93, 14, 50, 25] },
+        { channel: 'KOL A Referral', stages: [100, 6, 83, 35, 51, 50] },
+    ];
+    const absoluteStageLabels = ['Impressions', 'Clicks', 'Landing Page Views', 'Add To Cart', 'Initiate Checkout', 'Purchases'];
+    const absoluteFunnelCharts = [];
+
+    function stageAdvice(stage, value) {
+        if (stage === 'Clicks') return `頂層流量瓶頸：只有 ${value}% 觸發點擊，強化首屏鉤子、前 3 秒素材對比測試，並替換 CTA 文案，目標將 CTR 拉升到 6~8%。`;
+        if (stage === 'Landing Page Views') return `點擊後流失：到達率 ${value}% 偏低，檢查跳轉延遲與標記，縮短落地頁載入到 2 秒內，並開啟預取 (prefetch)。`;
+        if (stage === 'Add To Cart') return `加入購物車不足：${value}% 表現薄弱，將主方案與價格 anchor 上移首屏，補 60 字痛點文案 + 社會證明，並啟用 2 組 A/B (價格/方案數)。`;
+        if (stage === 'Initiate Checkout') return `結帳意圖不足：僅 ${value}% 進入結帳，簡化表單欄位、提供快速付款選項，並在購物車頁加上「缺貨/優惠到期」輕量稀缺提示。`;
+        if (stage === 'Purchases') return `成交掉水：${value}% 轉單，檢查付款失敗率與 OTP 超時，增加付款失敗即時提醒 + 重試入口，並在結帳側欄加入安心保證 (退費/客服入口)。`;
+        return '強化此階段的體驗以提升轉化。';
+    }
+
+    function getCssVarValue(name) {
+        return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+
+    function colorToRgba(color, alpha) {
+        const c = String(color || '').trim();
+        if (!c) return `rgba(0,0,0,${alpha})`;
+        if (c.startsWith('rgba(')) return c;
+        if (c.startsWith('rgb(')) {
+            const nums = c.replace(/rgb\(|\)/g, '').split(',').map(v => Number(v.trim()));
+            if (nums.length >= 3 && nums.every(n => Number.isFinite(n))) return `rgba(${nums[0]}, ${nums[1]}, ${nums[2]}, ${alpha})`;
+            return `rgba(0,0,0,${alpha})`;
+        }
+        if (c.startsWith('#')) {
+            const hex = c.slice(1);
+            const full = hex.length === 3 ? hex.split('').map(ch => ch + ch).join('') : hex;
+            const r = parseInt(full.slice(0, 2), 16);
+            const g = parseInt(full.slice(2, 4), 16);
+            const b = parseInt(full.slice(4, 6), 16);
+            if ([r, g, b].every(n => Number.isFinite(n))) return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+        return `rgba(0,0,0,${alpha})`;
+    }
+
+    function renderAbsoluteFunnel() {
+        const grid = document.getElementById('absoluteFunnelGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        absoluteFunnelCharts.length = 0;
+        absoluteFunnelData.forEach((item, index) => {
+            const bottleneckIdx = item.stages.slice(1).reduce((minIdx, val, i, arr) => val < arr[minIdx] ? i : minIdx, 0) + 1;
+            const bottleneckLabel = absoluteStageLabels[bottleneckIdx];
+            const card = document.createElement('div');
+            card.className = 'abs-card';
+            card.innerHTML = `
+                <h3><i class="fa-solid fa-filter"></i> ${item.channel} <span class="abs-badge">絕對漏斗</span></h3>
+                <div style="height:220px;"><canvas id="abs-chart-${index}"></canvas></div>
+                <div class="abs-insight"><strong>AI 洞察｜${bottleneckLabel}</strong>：${stageAdvice(bottleneckLabel, item.stages[bottleneckIdx])}</div>
+            `;
+            grid.appendChild(card);
+
+            const ctx = card.querySelector('canvas').getContext('2d');
+            const theme = getThemeColors();
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: absoluteStageLabels,
+                    datasets: [{
+                        label: 'Stage % (絕對漏斗)',
+                        data: item.stages,
+                        backgroundColor: absoluteStageLabels.map((_, i) => i === bottleneckIdx ? 'rgba(255,107,107,0.65)' : 'rgba(212, 175, 55, 0.55)'),
+                        borderColor: absoluteStageLabels.map((_, i) => i === bottleneckIdx ? '#ff6b6b' : '#D4AF37'),
+                        borderWidth: 1,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: theme.gridColor },
+                            ticks: { color: theme.textColor, callback: (v) => v + '%' }
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: { color: theme.textColor }
+                        }
+                    },
+                    plugins: { legend: { display: false } },
+                    animation: { duration: 500 }
+                }
+            });
+            chart._bottleneckIdx = bottleneckIdx;
+            absoluteFunnelCharts.push(chart);
+        });
+    }
+
+    // 1. 行銷漏斗圖表 (Mixed Chart)
+    const ctxFunnel = document.getElementById('funnelChart').getContext('2d');
+    const funnelChart = new Chart(ctxFunnel, {
+        type: 'bar',
+        data: {
+            // [修正] 補上缺失的 labels
+            labels: ['曝光 (Awareness)', '點擊 (Interest)', '加入購物車 (MOFU)', '結帳頁面 (BOFU)', '購買完成 (Action)'],
+            datasets: [{
+                label: '人數/次數',
+                // [修正] 結帳頁面為瓶頸（7%），點擊率35%，其他階段轉化率更高（70%、55%）
+                data: [45000, 15750, 11025, 772, 425], 
+                backgroundColor: [
+                    'rgba(212, 175, 55, 0.2)',
+                    'rgba(212, 175, 55, 0.4)',
+                    'rgba(212, 175, 55, 0.6)',
+                    'rgba(212, 175, 55, 0.8)', // 結帳
+                    'rgba(81, 207, 102, 0.8)'  // 完課
+                ],
+                borderColor: '#D4AF37',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y', // 轉為橫向漏斗
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    ticks: { color: colors.textColor },
+                    grid: { color: colors.gridColor }
+                },
+                y: {
+                    ticks: { color: colors.textColor },
+                    grid: { color: colors.gridColor }
+                }
+            },
+            plugins: {
+                legend: { 
+                    display: false,
+                    labels: { color: colors.textColor }
+                }
+            }
+        }
+    });
+
+    // 2. 顧客經驗評分表 (Horizontal Bar with Negative Values)
+    const ctxScore = document.getElementById('scoreChart').getContext('2d');
+    const scoreChart = new Chart(ctxScore, {
+        type: 'bar',
+        data: {
+            labels: ['內容品質 (+2)', '講師魅力 (+2)', '影片流暢度 (0)', '客服回應 (-1)', '結帳流程 (-2)'],
+            datasets: [{
+                label: '體驗分數 (-2 ~ +2)',
+                data: [1.8, 1.9, 0.2, -0.8, -1.6], 
+                backgroundColor: (context) => {
+                    const value = context.raw;
+                    return value >= 0 ? 'rgba(81, 207, 102, 0.7)' : 'rgba(255, 107, 107, 0.7)';
+                },
+                borderRadius: 4
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    left: 0,
+                    right: 10,
+                    top: 5,
+                    bottom: 5
+                }
+            },
+            scales: {
+                x: {
+                    min: -2,
+                    max: 2,
+                    ticks: { 
+                        color: colors.textColor,
+                        stepSize: 1
+                    },
+                    grid: { 
+                        color: colors.gridColor,
+                        drawBorder: true
+                    }
+                },
+                y: {
+                    ticks: { 
+                        color: colors.textColor,
+                        font: { size: 11 },
+                        autoSkip: false
+                    },
+                    grid: { 
+                        display: false
+                    }
+                }
+            },
+            plugins: {
+                legend: { 
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: (context) => `評分: ${context.parsed.x}`
+                    }
+                }
+            }
+        }
+    });
+
+    // 3. 退費原因圖表 (Doughnut)
+    const ctxRefund = document.getElementById('refundChart').getContext('2d');
+    const refundChart = new Chart(ctxRefund, {
+        type: 'doughnut',
+        data: {
+            labels: ['忘記用優惠券 (42%)', '內容與預期不符 (25%)', '課程難度不適合 (15%)', '技術問題 (10%)', '其他 (8%)'],
+            datasets: [{
+                // [修正] 補上缺失的 data，對應 labels 百分比
+                data: [42, 25, 15, 10, 8],
+                backgroundColor: [
+                    '#ff6b6b', // 忘記優惠券 - 警示紅
+                    '#ffa502', // 重複購買 - 警示橘
+                    '#2ed573',
+                    '#1e90ff',
+                    '#747d8c'
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: { color: colors.textColor, font: { size: 11 } }
+                }
+            }
+        }
+    });
+
+    // 4. 主頁絕對漏斗圖表 (使用行銷漏斗數據)
+    const ctxAbsoluteMain = document.getElementById('absoluteFunnelMainChart').getContext('2d');
+    // 從行銷漏斗取得原始數據: [45000, 15750, 11025, 772, 425] - 結帳頁面為瓶頸（7%）
+    const funnelRawData = [45000, 15750, 11025, 772, 425];
+    // 絕對漏斗：每階段相對於前一階段的轉化率
+    // 曝光=100% (基準), 點擊=15750/45000=35%, 加購=11025/15750=70%, 結帳=772/11025=7%, 購買=425/772=55%
+    const absoluteMainData = [100]; // 第一階段固定 100%
+    for (let i = 1; i < funnelRawData.length; i++) {
+        absoluteMainData.push(parseFloat(((funnelRawData[i] / funnelRawData[i-1]) * 100).toFixed(1)));
+    }
+    const absoluteMainLabels = ['曝光 (Awareness)', '點擊 (Interest)', '加入購物車', '結帳頁面', '購買完成'];
+    // 找出轉化率最低的階段（排除第一個 100%）
+    const bottleneckMainIdx = absoluteMainData.slice(1).reduce((minIdx, val, i, arr) => 
+        val < arr[minIdx] ? i : minIdx, 0) + 1;
+
+    // 主頁絕對漏斗：結帳頁面為瓶頸（紅色），其他階段使用金色
+    const accentGold = getCssVarValue('--accent-gold') || '#D4AF37';
+    const accentRed = getCssVarValue('--accent-red') || '#ff6b6b';
+    
+    const absoluteFunnelMainChart = new Chart(ctxAbsoluteMain, {
+        type: 'bar',
+        data: {
+            labels: absoluteMainLabels,
+            datasets: [{
+                label: '階段百分比 (%)',
+                data: absoluteMainData,
+                backgroundColor: absoluteMainLabels.map((_, i) => {
+                    if (i === bottleneckMainIdx) return colorToRgba(accentRed, 0.7);
+                    return colorToRgba(accentGold, 0.6);
+                }),
+                borderColor: absoluteMainLabels.map((_, i) => {
+                    if (i === bottleneckMainIdx) return accentRed;
+                    return accentGold;
+                }),
+                borderWidth: 2,
+                borderRadius: 6
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: { 
+                        color: colors.textColor,
+                        callback: (v) => v + '%'
+                    },
+                    grid: { color: colors.gridColor }
+                },
+                y: {
+                    ticks: { color: colors.textColor, font: { size: 11 } },
+                    grid: { display: false }
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: (context) => `${context.parsed.x}% 通過此階段`
+                    }
+                }
+            },
+            animation: { duration: 800 }
+        }
+    });
+
+    // 分頁切換：支援總覽、絕對漏斗、愛紗課程、優先分析、數據設定
+    function switchTab(targetId) {
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.target === targetId);
+        });
+        ['tab-overview', 'tab-absolute', 'tab-aisa', 'tab-priority', 'tab-settings'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = id === targetId ? 'block' : 'none';
+        });
+        
+        if (targetId === 'tab-absolute') {
+            if (absoluteFunnelCharts.length === 0) renderAbsoluteFunnel();
+            absoluteFunnelCharts.forEach(chart => chart.resize());
+        } else if (targetId === 'tab-aisa') {
+            if (!funnelChartAisa) initAisaCharts();
+            [funnelChartAisa, scoreChartAisa, refundChartAisa, absoluteFunnelAisaChart].forEach(chart => {
+                if (chart) chart.resize();
+            });
+        } else if (targetId === 'tab-priority') {
+            initPriorityCharts();
+            [funnelChartPriority, refundChartPriority, absoluteFunnelPriorityChart].forEach(chart => {
+                if (chart) chart.resize();
+            });
+            if (document.getElementById('decisionTreeSvgPriority1')) drawDecisionTree('decisionTreeSvgPriority1', treeData1);
+            if (document.getElementById('decisionTreeSvgPriority2')) drawDecisionTree('decisionTreeSvgPriority2', treeData2);
+        } else {
+            [funnelChart, scoreChart, refundChart, absoluteFunnelMainChart].forEach(chart => chart.resize());
+        }
+    }
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.target));
+    });
+
+    // ========== 決策樹歸因視覺化 ==========
+    
+    // 決策樹資料 1：結帳流程歸因
+    const treeData1 = {
+        name: '進入結帳頁',
+        value: '3,800人',
+        x: 400,
+        y: 50,
+        children: [
+            {
+                name: '優惠碼正常',
+                value: '1,200人 (32%)',
+                x: 200,
+                y: 170,
+                rate: '轉化率 85%',
+                color: '#51cf66',
+                children: [
+                    { name: '完成購買', value: '1,020人', x: 100, y: 300, color: '#51cf66', isLeaf: true },
+                    { name: '付款失敗', value: '180人', x: 300, y: 300, color: '#ffa502', isLeaf: true }
+                ]
+            },
+            {
+                name: '優惠碼錯誤/未帶入',
+                value: '2,600人 (68%)',
+                x: 600,
+                y: 170,
+                rate: '流失率 85%',
+                color: '#ff6b6b',
+                isHighlight: true,
+                children: [
+                    { name: '離開頁面', value: '2,210人', x: 500, y: 300, color: '#ff6b6b', isLeaf: true, isHighlight: true },
+                    { name: '修正後購買', value: '210人', x: 650, y: 300, color: '#ffa502', isLeaf: true },
+                    { name: '聯繫客服', value: '180人', x: 800, y: 300, color: '#2ed573', isLeaf: true }
+                ]
+            }
+        ]
+    };
+
+    // 決策樹資料 2：課程體驗歸因
+    const treeData2 = {
+        name: '完成購買',
+        value: '1,200人',
+        x: 400,
+        y: 50,
+        children: [
+            {
+                name: '課程難度符合',
+                value: '680人 (57%)',
+                x: 200,
+                y: 170,
+                rate: '完課率 82%',
+                color: '#51cf66',
+                children: [
+                    { name: '完成課程', value: '558人', x: 100, y: 300, color: '#51cf66', isLeaf: true },
+                    { name: '中途暫停', value: '122人', x: 300, y: 300, color: '#ffa502', isLeaf: true }
+                ]
+            },
+            {
+                name: '課程難度不符',
+                value: '520人 (43%)',
+                x: 600,
+                y: 170,
+                rate: '流失率 72%',
+                color: '#ff6b6b',
+                isHighlight: true,
+                children: [
+                    { name: '申請退費', value: '338人', x: 500, y: 300, color: '#ff6b6b', isLeaf: true, isHighlight: true },
+                    { name: '繼續學習', value: '146人', x: 650, y: 300, color: '#2ed573', isLeaf: true },
+                    { name: '暫停觀望', value: '36人', x: 800, y: 300, color: '#7f8c8d', isLeaf: true }
+                ]
+            }
+        ]
+    };
+
+    function drawDecisionTree(svgId, treeData) {
+        const svg = document.getElementById(svgId);
+        if (!svg) return;
+        
+        const theme = document.body.getAttribute('data-theme');
+        const textColor = theme === 'light' ? '#2c3e50' : '#e0e0e0';
+        const lineColor = theme === 'light' ? '#999' : '#555';
+        const highlightColor = '#ff6b6b';
+
+        // 清空 SVG
+        svg.innerHTML = '';
+
+        // 繪製連線
+        function drawLine(x1, y1, x2, y2, isHighlight = false) {
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('x1', x1);
+            line.setAttribute('y1', y1);
+            line.setAttribute('x2', x2);
+            line.setAttribute('y2', y2);
+            line.setAttribute('stroke', isHighlight ? highlightColor : lineColor);
+            line.setAttribute('stroke-width', isHighlight ? 3 : 2);
+            line.setAttribute('stroke-dasharray', isHighlight ? '5,5' : '0');
+            svg.appendChild(line);
+        }
+
+        // 繪製節點
+        function drawNode(node, isRoot = false) {
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            
+            // 節點外框
+            const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            const width = node.isLeaf ? 110 : 150;
+            const height = node.isLeaf ? 60 : 80;
+            rect.setAttribute('x', node.x - width/2);
+            rect.setAttribute('y', node.y);
+            rect.setAttribute('width', width);
+            rect.setAttribute('height', height);
+            rect.setAttribute('rx', 8);
+            rect.setAttribute('fill', node.color || (isRoot ? '#D4AF37' : '#444'));
+            rect.setAttribute('fill-opacity', node.isHighlight ? 0.3 : 0.2);
+            rect.setAttribute('stroke', node.color || (isRoot ? '#D4AF37' : textColor));
+            rect.setAttribute('stroke-width', node.isHighlight ? 3 : 2);
+            g.appendChild(rect);
+
+            // 節點標題
+            const title = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            title.setAttribute('x', node.x);
+            title.setAttribute('y', node.y + 25);
+            title.setAttribute('text-anchor', 'middle');
+            title.setAttribute('fill', textColor);
+            title.setAttribute('font-size', node.isLeaf ? 12 : 14);
+            title.setAttribute('font-weight', 'bold');
+            title.textContent = node.name;
+            g.appendChild(title);
+
+            // 節點數值
+            const value = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            value.setAttribute('x', node.x);
+            value.setAttribute('y', node.y + 45);
+            value.setAttribute('text-anchor', 'middle');
+            value.setAttribute('fill', textColor);
+            value.setAttribute('font-size', 11);
+            value.textContent = node.value;
+            g.appendChild(value);
+
+            // 轉化率 / 流失率
+            if (node.rate) {
+                const rate = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                rate.setAttribute('x', node.x);
+                rate.setAttribute('y', node.y + 65);
+                rate.setAttribute('text-anchor', 'middle');
+                rate.setAttribute('fill', node.isHighlight ? highlightColor : '#51cf66');
+                rate.setAttribute('font-size', 10);
+                rate.setAttribute('font-weight', 'bold');
+                rate.textContent = node.rate;
+                g.appendChild(rate);
+            }
+
+            svg.appendChild(g);
+        }
+
+        // 遞迴繪製樹
+        function renderTree(node, parentX = null, parentY = null, isRoot = false) {
+            // 繪製連線
+            if (parentX !== null && parentY !== null) {
+                drawLine(parentX, parentY + 80, node.x, node.y, node.isHighlight);
+            }
+
+            // 繪製節點
+            drawNode(node, isRoot);
+
+            // 繪製子節點
+            if (node.children) {
+                node.children.forEach(child => {
+                    renderTree(child, node.x, node.y, false);
+                });
+            }
+        }
+
+        renderTree(treeData, null, null, true);
+    }
+
+    // 初始繪製兩個決策樹
+    drawDecisionTree('decisionTreeSvg1', treeData1);
+    drawDecisionTree('decisionTreeSvg2', treeData2);
+
+    // ========== 愛紗課程圖表 ==========
+    let funnelChartAisa, scoreChartAisa, refundChartAisa, absoluteFunnelAisaChart;
+
+    // ========== 可以建議先執行的分析（新分頁） ==========
+    let funnelChartPriority, refundChartPriority, absoluteFunnelPriorityChart;
+
+    function initPriorityCharts() {
+        if (funnelChartPriority || refundChartPriority || absoluteFunnelPriorityChart) return;
+
+        // 使用與主頁相同的漏斗數據
+        const raw = [45000, 15750, 11025, 772, 425];
+
+        // 1) 行銷漏斗
+        const ctxFunnelP = document.getElementById('funnelChartPriority')?.getContext('2d');
+        if (ctxFunnelP) {
+            funnelChartPriority = new Chart(ctxFunnelP, {
+                type: 'bar',
+                data: {
+                    labels: ['曝光 (Awareness)', '點擊 (Interest)', '加入購物車 (MOFU)', '結帳頁面 (BOFU)', '購買完成 (Action)'],
+                    datasets: [{
+                        label: '人數/次數',
+                        data: raw,
+                        backgroundColor: [
+                            'rgba(212, 175, 55, 0.2)',
+                            'rgba(212, 175, 55, 0.4)',
+                            'rgba(212, 175, 55, 0.6)',
+                            'rgba(212, 175, 55, 0.8)',
+                            'rgba(81, 207, 102, 0.8)'
+                        ],
+                        borderColor: '#D4AF37',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { ticks: { color: colors.textColor }, grid: { color: colors.gridColor } },
+                        y: { ticks: { color: colors.textColor }, grid: { color: colors.gridColor } }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false,
+                            labels: { color: colors.textColor }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 2) 退費原因 NLP
+        const ctxRefundP = document.getElementById('refundChartPriority')?.getContext('2d');
+        if (ctxRefundP) {
+            refundChartPriority = new Chart(ctxRefundP, {
+                type: 'doughnut',
+                data: {
+                    labels: ['忘記用優惠券 (42%)', '內容與預期不符 (25%)', '課程難度不適合 (15%)', '技術問題 (10%)', '其他 (8%)'],
+                    datasets: [{
+                        data: [42, 25, 15, 10, 8],
+                        backgroundColor: ['#ff6b6b', '#ffa502', '#2ed573', '#1e90ff', '#747d8c'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right', labels: { color: colors.textColor, font: { size: 11 } } }
+                    }
+                }
+            });
+        }
+
+        // 3) 絕對漏斗（以 raw 計算 stage-to-stage）
+        const abs = [100];
+        for (let i = 1; i < raw.length; i++) abs.push(parseFloat(((raw[i] / raw[i - 1]) * 100).toFixed(1)));
+        const labels = ['曝光 (Awareness)', '點擊 (Interest)', '加入購物車', '結帳頁面', '購買完成'];
+        const bottleneckIdx = abs.slice(1).reduce((minIdx, val, i, arr) => val < arr[minIdx] ? i : minIdx, 0) + 1;
+        const clickIdx = labels.findIndex(l => l.includes('點擊'));
+        const accentGold = getCssVarValue('--accent-gold') || '#D4AF37';
+        const accentRed = getCssVarValue('--accent-red') || '#ff6b6b';
+        const accentGreen = getCssVarValue('--accent-green') || '#51cf66';
+
+        const ctxAbsP = document.getElementById('absoluteFunnelPriorityChart')?.getContext('2d');
+        if (ctxAbsP) {
+            absoluteFunnelPriorityChart = new Chart(ctxAbsP, {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: '階段百分比 (%)',
+                        data: abs,
+                        backgroundColor: labels.map((_, i) => {
+                            if (i === bottleneckIdx) return colorToRgba(accentRed, 0.7);
+                            if (clickIdx !== -1 && i === clickIdx) return colorToRgba(accentGreen, 0.65);
+                            return colorToRgba(accentGold, 0.6);
+                        }),
+                        borderColor: labels.map((_, i) => {
+                            if (i === bottleneckIdx) return accentRed;
+                            if (clickIdx !== -1 && i === clickIdx) return accentGreen;
+                            return accentGold;
+                        }),
+                        borderWidth: 2,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { beginAtZero: true, max: 100, ticks: { color: colors.textColor, callback: (v) => v + '%' }, grid: { color: colors.gridColor } },
+                        y: { ticks: { color: colors.textColor, font: { size: 11 } }, grid: { display: false } }
+                    },
+                    plugins: { legend: { display: false } },
+                    animation: { duration: 800 }
+                }
+            });
+        }
+    }
+
+    function initAisaCharts() {
+        // 愛紗課程漏斗數據
+        const aisaFunnelData = [39200, 23000, 8080, 5525, 3028];
+        
+        // 1. 愛紗行銷漏斗
+        const ctxFunnelAisa = document.getElementById('funnelChartAisa').getContext('2d');
+        funnelChartAisa = new Chart(ctxFunnelAisa, {
+            type: 'bar',
+            data: {
+                labels: ['曝光 (Awareness)', '點擊 (Interest)', '加入購物車 (MOFU)', '結帳頁面 (BOFU)', '購買完成 (Action)'],
+                datasets: [{
+                    label: '人數/次數',
+                    data: aisaFunnelData,
+                    backgroundColor: [
+                        'rgba(212, 175, 55, 0.2)',
+                        'rgba(212, 175, 55, 0.4)',
+                        'rgba(212, 175, 55, 0.6)',
+                        'rgba(212, 175, 55, 0.8)',
+                        'rgba(81, 207, 102, 0.8)'
+                    ],
+                    borderColor: '#D4AF37',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        ticks: { color: colors.textColor },
+                        grid: { color: colors.gridColor }
+                    },
+                    y: {
+                        ticks: { color: colors.textColor },
+                        grid: { color: colors.gridColor }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false,
+                        labels: { color: colors.textColor }
+                    }
+                }
+            }
+        });
+
+        // 2. 愛紗絕對漏斗
+        const ctxAbsAisa = document.getElementById('absoluteFunnelAisaChart').getContext('2d');
+        const aisaAbsData = [100];
+        for (let i = 1; i < aisaFunnelData.length; i++) {
+            aisaAbsData.push(parseFloat(((aisaFunnelData[i] / aisaFunnelData[i-1]) * 100).toFixed(1)));
+        }
+        const aisaBottleneckIdx = aisaAbsData.slice(1).reduce((minIdx, val, i, arr) => 
+            val < arr[minIdx] ? i : minIdx, 0) + 1;
+        
+        const aisaAbsLabels = ['曝光', '點擊', '加購', '結帳', '購買'];
+        const aisaClickIdx = aisaAbsLabels.findIndex(l => l.includes('點擊'));
+        const accentGoldAisa = getCssVarValue('--accent-gold') || '#D4AF37';
+        const accentRedAisa = getCssVarValue('--accent-red') || '#ff6b6b';
+        const accentGreenAisa = getCssVarValue('--accent-green') || '#51cf66';
+        
+        absoluteFunnelAisaChart = new Chart(ctxAbsAisa, {
+            type: 'bar',
+            data: {
+                labels: aisaAbsLabels,
+                datasets: [{
+                    label: '轉化率 (%)',
+                    data: aisaAbsData,
+                    backgroundColor: aisaAbsLabels.map((_, i) => {
+                        if (i === aisaBottleneckIdx) return colorToRgba(accentRedAisa, 0.7);
+                        if (aisaClickIdx !== -1 && i === aisaClickIdx) return colorToRgba(accentGreenAisa, 0.65);
+                        return colorToRgba(accentGoldAisa, 0.6);
+                    }),
+                    borderColor: aisaAbsLabels.map((_, i) => {
+                        if (i === aisaBottleneckIdx) return accentRedAisa;
+                        if (aisaClickIdx !== -1 && i === aisaClickIdx) return accentGreenAisa;
+                        return accentGoldAisa;
+                    }),
+                    borderWidth: 2,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { color: colors.textColor, callback: (v) => v + '%' },
+                        grid: { color: colors.gridColor }
+                    },
+                    y: {
+                        ticks: { color: colors.textColor, font: { size: 11 } },
+                        grid: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                },
+                animation: { duration: 800 }
+            }
+        });
+
+        // 3. 愛紗體驗評分
+        const ctxScoreAisa = document.getElementById('scoreChartAisa').getContext('2d');
+        scoreChartAisa = new Chart(ctxScoreAisa, {
+            type: 'bar',
+            data: {
+                labels: ['課程內容 (+2)', '教學風格 (+1.5)', '平台流暢 (+0.5)', '試看功能不足 (-1.5)', '課程介紹模糊 (-1)'],
+                datasets: [{
+                    label: '體驗分數',
+                    data: [1.9, 1.5, 0.5, -1.5, -1.0],
+                    backgroundColor: (context) => {
+                        const value = context.raw;
+                        return value >= 0 ? 'rgba(81, 207, 102, 0.7)' : 'rgba(255, 107, 107, 0.7)';
+                    },
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: { left: 0, right: 10, top: 5, bottom: 5 }
+                },
+                scales: {
+                    x: {
+                        min: -2,
+                        max: 2,
+                        ticks: { color: colors.textColor, stepSize: 1 },
+                        grid: { color: colors.gridColor }
+                    },
+                    y: {
+                        ticks: { color: colors.textColor, font: { size: 11 }, autoSkip: false },
+                        grid: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        // 4. 愛紗退費原因
+        const ctxRefundAisa = document.getElementById('refundChartAisa').getContext('2d');
+        refundChartAisa = new Chart(ctxRefundAisa, {
+            type: 'doughnut',
+            data: {
+                labels: ['內容與預期不符 (52%)', '課程難度不適合 (22%)', '忘記用優惠券 (15%)', '技術問題 (8%)', '其他 (3%)'],
+                datasets: [{
+                    data: [52, 22, 15, 8, 3],
+                    backgroundColor: ['#ff6b6b', '#ffa502', '#ff6348', '#1e90ff', '#747d8c'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { color: colors.textColor, font: { size: 11 } }
+                    }
+                }
+            }
+        });
+
+        // 愛紗決策樹資料
+        const treeDataAisa1 = {
+            name: '進入結帳頁',
+            value: '5,525人',
+            x: 400, y: 50,
+            children: [
+                {
+                    name: '有預覽課程',
+                    value: '3,850人 (70%)',
+                    x: 200, y: 170,
+                    rate: '退費率 12%',
+                    color: '#51cf66',
+                    children: [
+                        { name: '完成購買', value: '2,695人', x: 100, y: 300, color: '#51cf66', isLeaf: true },
+                        { name: '離開頁面', value: '1,155人', x: 300, y: 300, color: '#ffa502', isLeaf: true }
+                    ]
+                },
+                {
+                    name: '未預覽即購',
+                    value: '1,675人 (30%)',
+                    x: 600, y: 170,
+                    rate: '退費率 58%',
+                    color: '#ff6b6b',
+                    isHighlight: true,
+                    children: [
+                        { name: '7天內退費', value: '972人', x: 500, y: 300, color: '#ff6b6b', isLeaf: true, isHighlight: true },
+                        { name: '繼續學習', value: '585人', x: 650, y: 300, color: '#2ed573', isLeaf: true },
+                        { name: '向客服詢問', value: '118人', x: 800, y: 300, color: '#ffa502', isLeaf: true }
+                    ]
+                }
+            ]
+        };
+
+        const treeDataAisa2 = {
+            name: '完成購買',
+            value: '3,028人',
+            x: 400, y: 50,
+            children: [
+                {
+                    name: '每週上課 3+ 次',
+                    value: '1,820人 (60%)',
+                    x: 200, y: 170,
+                    rate: '完課率 88%',
+                    color: '#51cf66',
+                    children: [
+                        { name: '完成課程', value: '1,602人', x: 100, y: 300, color: '#51cf66', isLeaf: true },
+                        { name: '中途暫停', value: '218人', x: 300, y: 300, color: '#ffa502', isLeaf: true }
+                    ]
+                },
+                {
+                    name: '上課不穩定',
+                    value: '1,208人 (40%)',
+                    x: 600, y: 170,
+                    rate: '流失率 58%',
+                    color: '#ffa502',
+                    children: [
+                        { name: '放棄學習', value: '701人', x: 500, y: 300, color: '#ff6b6b', isLeaf: true },
+                        { name: '緩慢學習', value: '410人', x: 650, y: 300, color: '#ffa502', isLeaf: true },
+                        { name: '後期加速', value: '97人', x: 800, y: 300, color: '#2ed573', isLeaf: true }
+                    ]
+                }
+            ]
+        };
+
+        drawDecisionTree('decisionTreeSvgAisa1', treeDataAisa1);
+        drawDecisionTree('decisionTreeSvgAisa2', treeDataAisa2);
+    }
+
+    // 深淺模式切換邏輯
+    function toggleTheme() {
+        const body = document.body;
+        const currentTheme = body.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        body.setAttribute('data-theme', newTheme);
+
+        // 更新圖表顏色配置
+        const textColor = newTheme === 'light' ? '#2c3e50' : '#e0e0e0';
+        const gridColor = newTheme === 'light' ? '#eeeeee' : '#333333';
+
+        // 更新全局 colors 物件
+        colors.textColor = textColor;
+        colors.gridColor = gridColor;
+
+        console.log('切換主題:', newTheme, '文字顏色:', textColor);
+
+        const chartsToUpdate = [funnelChart, scoreChart, refundChart, absoluteFunnelMainChart, ...absoluteFunnelCharts];
+        if (funnelChartAisa) chartsToUpdate.push(funnelChartAisa, scoreChartAisa, refundChartAisa, absoluteFunnelAisaChart);
+        if (funnelChartPriority) chartsToUpdate.push(funnelChartPriority);
+        if (refundChartPriority) chartsToUpdate.push(refundChartPriority);
+        if (absoluteFunnelPriorityChart) chartsToUpdate.push(absoluteFunnelPriorityChart);
+
+        chartsToUpdate.forEach(chart => {
+            // 更新 X/Y 軸顏色 (如果是 Doughnut 則沒有 scales)
+            if (chart.config.type !== 'doughnut') {
+                if (chart.options.scales.x) {
+                    chart.options.scales.x.ticks.color = textColor;
+                    chart.options.scales.x.grid.color = gridColor;
+                }
+                if (chart.options.scales.y) {
+                    chart.options.scales.y.ticks.color = textColor;
+                    chart.options.scales.y.grid.color = gridColor;
+                }
+            }
+            
+            // 更新 Legend 文字顏色
+            if (chart.options.plugins.legend && chart.options.plugins.legend.labels) {
+                chart.options.plugins.legend.labels.color = textColor;
+            }
+            
+            chart.update('none'); // 使用 'none' 模式強制立即更新
+        });
+
+        // 重新繪製所有決策樹以更新顏色
+        drawDecisionTree('decisionTreeSvg1', treeData1);
+        drawDecisionTree('decisionTreeSvg2', treeData2);
+
+        if (document.getElementById('decisionTreeSvgPriority1')) drawDecisionTree('decisionTreeSvgPriority1', treeData1);
+        if (document.getElementById('decisionTreeSvgPriority2')) drawDecisionTree('decisionTreeSvgPriority2', treeData2);
+        
+        // 重繪愛紗課程的決策樹（如果已經初始化過）
+        if (document.getElementById('decisionTreeSvgAisa1') && funnelChartAisa) {
+            const treeDataAisa1 = {
+                name: '進入結帳頁',
+                value: '5,525人',
+                x: 400, y: 50,
+                children: [
+                    {
+                        name: '有預覽課程',
+                        value: '3,850人 (70%)',
+                        x: 200, y: 170,
+                        rate: '退費率 12%',
+                        color: '#51cf66',
+                        children: [
+                            { name: '完成購買', value: '2,695人', x: 100, y: 300, color: '#51cf66', isLeaf: true },
+                            { name: '離開頁面', value: '1,155人', x: 300, y: 300, color: '#ffa502', isLeaf: true }
+                        ]
+                    },
+                    {
+                        name: '未預覽即購',
+                        value: '1,675人 (30%)',
+                        x: 600, y: 170,
+                        rate: '退費率 58%',
+                        color: '#ff6b6b',
+                        isHighlight: true,
+                        children: [
+                            { name: '7天內退費', value: '972人', x: 500, y: 300, color: '#ff6b6b', isLeaf: true, isHighlight: true },
+                            { name: '繼續學習', value: '585人', x: 650, y: 300, color: '#2ed573', isLeaf: true },
+                            { name: '向客服詢問', value: '118人', x: 800, y: 300, color: '#ffa502', isLeaf: true }
+                        ]
+                    }
+                ]
+            };
+
+            const treeDataAisa2 = {
+                name: '完成購買',
+                value: '3,028人',
+                x: 400, y: 50,
+                children: [
+                    {
+                        name: '每週上課 3+ 次',
+                        value: '1,820人 (60%)',
+                        x: 200, y: 170,
+                        rate: '完課率 88%',
+                        color: '#51cf66',
+                        children: [
+                            { name: '完成課程', value: '1,602人', x: 100, y: 300, color: '#51cf66', isLeaf: true },
+                            { name: '中途暫停', value: '218人', x: 300, y: 300, color: '#ffa502', isLeaf: true }
+                        ]
+                    },
+                    {
+                        name: '上課不穩定',
+                        value: '1,208人 (40%)',
+                        x: 600, y: 170,
+                        rate: '流失率 58%',
+                        color: '#ffa502',
+                        children: [
+                            { name: '放棄學習', value: '701人', x: 500, y: 300, color: '#ff6b6b', isLeaf: true },
+                            { name: '緩慢學習', value: '410人', x: 650, y: 300, color: '#ffa502', isLeaf: true },
+                            { name: '後期加速', value: '97人', x: 800, y: 300, color: '#2ed573', isLeaf: true }
+                        ]
+                    }
+                ]
+            };
+            
+            drawDecisionTree('decisionTreeSvgAisa1', treeDataAisa1);
+            drawDecisionTree('decisionTreeSvgAisa2', treeDataAisa2);
+        }
+    }
+
+    // 數據設定功能
+    function updateFunnelData() {
+        const awareness = parseInt(document.getElementById('input-awareness').value) || 0;
+        const interest = parseInt(document.getElementById('input-interest').value) || 0;
+        const mofu = parseInt(document.getElementById('input-mofu').value) || 0;
+        const bofu = parseInt(document.getElementById('input-bofu').value) || 0;
+        const action = parseInt(document.getElementById('input-action').value) || 0;
+
+        // 驗證數據合理性
+        if (awareness < interest || interest < mofu || mofu < bofu || bofu < action) {
+            showMessage('數據不合理：每個階段的數字應該要遞減（漏斗形狀）', 'error');
+            return;
+        }
+
+        if (awareness === 0) {
+            showMessage('曝光數不能為 0', 'error');
+            return;
+        }
+
+        // 更新主頁相對漏斗圖表數據
+        const newData = [awareness, interest, mofu, bofu, action];
+        funnelChart.data.datasets[0].data = newData;
+        funnelChart.update();
+
+        // 更新絕對漏斗圖表數據（計算轉化率）
+        const conversionRates = [
+            100, // 曝光基準
+            parseFloat((interest / awareness * 100).toFixed(1)),
+            parseFloat((mofu / interest * 100).toFixed(1)),
+            parseFloat((bofu / mofu * 100).toFixed(1)),
+            parseFloat((action / bofu * 100).toFixed(1))
+        ];
+
+        absoluteFunnelMainChart.data.datasets[0].data = conversionRates;
+        absoluteFunnelMainChart.update();
+
+        // 同步更新絕對漏斗的輸入框
+        document.getElementById('input-abs-interest').value = conversionRates[1];
+        document.getElementById('input-abs-mofu').value = conversionRates[2];
+        document.getElementById('input-abs-bofu').value = conversionRates[3];
+        document.getElementById('input-abs-action').value = conversionRates[4];
+
+        // 更新優先分析分頁的圖表（如果已初始化）
+        if (funnelChartPriority) {
+            funnelChartPriority.data.datasets[0].data = newData;
+            funnelChartPriority.update();
+        }
+
+        if (absoluteFunnelPriorityChart) {
+            absoluteFunnelPriorityChart.data.datasets[0].data = conversionRates;
+            absoluteFunnelPriorityChart.update();
+        }
+
+        showMessage('相對漏斗與絕對漏斗數據已同步更新！', 'success');
+    }
+
+    function resetFunnelData() {
+        // 重置為預設值
+        document.getElementById('input-awareness').value = 45000;
+        document.getElementById('input-interest').value = 15750;
+        document.getElementById('input-mofu').value = 11025;
+        document.getElementById('input-bofu').value = 772;
+        document.getElementById('input-action').value = 425;
+
+        // 更新圖表
+        updateFunnelData();
+        showMessage('已重置為預設值', 'success');
+    }
+
+    function showMessage(text, type) {
+        const messageDiv = document.getElementById('update-message');
+        messageDiv.style.display = 'block';
+        messageDiv.textContent = text;
+        
+        if (type === 'success') {
+            messageDiv.style.background = '#d4edda';
+            messageDiv.style.color = '#155724';
+            messageDiv.style.border = '1px solid #c3e6cb';
+        } else if (type === 'error') {
+            messageDiv.style.background = '#f8d7da';
+            messageDiv.style.color = '#721c24';
+            messageDiv.style.border = '1px solid #f5c6cb';
+        }
+
+        // 3秒後自動隱藏
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+        }, 3000);
+    }
+
+    // 絕對漏斗數據更新功能
+    function updateAbsoluteFunnelData() {
+        const awareness = 100; // 固定基準
+        const interest = parseFloat(document.getElementById('input-abs-interest').value) || 0;
+        const mofu = parseFloat(document.getElementById('input-abs-mofu').value) || 0;
+        const bofu = parseFloat(document.getElementById('input-abs-bofu').value) || 0;
+        const action = parseFloat(document.getElementById('input-abs-action').value) || 0;
+
+        // 驗證數據合理性
+        if (interest > 100 || mofu > 100 || bofu > 100 || action > 100) {
+            showAbsoluteMessage('轉化率不能超過 100%', 'error');
+            return;
+        }
+
+        if (interest < 0 || mofu < 0 || bofu < 0 || action < 0) {
+            showAbsoluteMessage('轉化率不能為負數', 'error');
+            return;
+        }
+
+        // 更新主頁絕對漏斗圖表
+        const newData = [awareness, interest, mofu, bofu, action];
+        absoluteFunnelMainChart.data.datasets[0].data = newData;
+        absoluteFunnelMainChart.update();
+
+        // 更新優先分析分頁的絕對漏斗圖表（如果已初始化）
+        if (absoluteFunnelPriorityChart) {
+            absoluteFunnelPriorityChart.data.datasets[0].data = newData;
+            absoluteFunnelPriorityChart.update();
+        }
+
+        // 根據絕對漏斗的轉化率，反向計算相對漏斗的實際數字
+        // 使用當前相對漏斗的曝光數作為基準
+        const baseAwareness = parseInt(document.getElementById('input-awareness').value) || 45000;
+        const calculatedInterest = Math.round(baseAwareness * (interest / 100));
+        const calculatedMofu = Math.round(calculatedInterest * (mofu / 100));
+        const calculatedBofu = Math.round(calculatedMofu * (bofu / 100));
+        const calculatedAction = Math.round(calculatedBofu * (action / 100));
+
+        // 更新相對漏斗的輸入框
+        document.getElementById('input-interest').value = calculatedInterest;
+        document.getElementById('input-mofu').value = calculatedMofu;
+        document.getElementById('input-bofu').value = calculatedBofu;
+        document.getElementById('input-action').value = calculatedAction;
+
+        // 更新相對漏斗圖表
+        const relativeFunnelData = [baseAwareness, calculatedInterest, calculatedMofu, calculatedBofu, calculatedAction];
+        funnelChart.data.datasets[0].data = relativeFunnelData;
+        funnelChart.update();
+
+        // 更新優先分析分頁的相對漏斗圖表（如果已初始化）
+        if (funnelChartPriority) {
+            funnelChartPriority.data.datasets[0].data = relativeFunnelData;
+            funnelChartPriority.update();
+        }
+
+        showAbsoluteMessage('絕對漏斗與相對漏斗數據已同步更新！', 'success');
+    }
+
+    function resetAbsoluteFunnelData() {
+        // 重置為預設值
+        document.getElementById('input-abs-interest').value = 35;
+        document.getElementById('input-abs-mofu').value = 70;
+        document.getElementById('input-abs-bofu').value = 7;
+        document.getElementById('input-abs-action').value = 55;
+
+        // 更新圖表
+        updateAbsoluteFunnelData();
+        showAbsoluteMessage('已重置為預設值', 'success');
+    }
+
+    function showAbsoluteMessage(text, type) {
+        const messageDiv = document.getElementById('update-absolute-message');
+        messageDiv.style.display = 'block';
+        messageDiv.textContent = text;
+        
+        if (type === 'success') {
+            messageDiv.style.background = '#d4edda';
+            messageDiv.style.color = '#155724';
+            messageDiv.style.border = '1px solid #c3e6cb';
+        } else if (type === 'error') {
+            messageDiv.style.background = '#f8d7da';
+            messageDiv.style.color = '#721c24';
+            messageDiv.style.border = '1px solid #f5c6cb';
+        }
+
+        // 3秒後自動隱藏
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+        }, 3000);
+    }
+
+    // 切換漏斗標題功能
+    function toggleFunnelTitle(elementId) {
+        const titleElement = document.getElementById(elementId);
+        if (!titleElement) return;
+
+        const currentText = titleElement.textContent.trim();
+        
+        if (currentText === '行銷漏斗轉化分析 (Marketing Funnel)') {
+            titleElement.textContent = '相對漏斗 (Relative Funnel)';
+        } else {
+            titleElement.textContent = '行銷漏斗轉化分析 (Marketing Funnel)';
+        }
+    }
+
+</script>
+
+</body>
+</html>

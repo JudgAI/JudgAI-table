@@ -1,0 +1,247 @@
+@charset "UTF-8";
+/** 20150624_整理new **/
+/** top_頁數 **/
+.toppageArea { display:block; height:25px; text-align:right; margin:10px 0px 10px 0px; }
+.toppageArea ul {float:right; margin:0px; padding:0px; list-style:outside none none; display:block }
+.toppageArea ul li {float:left; color:#666666; display:inline-block; font:13px/25px Helvetica; height:25px; margin-left:5px }
+.toppageArea ul li b {font:13px/25px Helvetica; color:#D62872; margin:0px 5px }
+.toppageArea ul li a {display:inline-block; width:auto; height:auto; padding:0px 10px; background-color:#4A9AE7; border:1px solid #CECECE; font:bold 13px/20px Verdana; color:#FFFFFF; text-align:center; cursor:pointer }
+.toppageArea ul li a:hover {background-color:#FFFFFF; color:#000000; }
+.toppageArea ul .pageval {margin-left: 10px;color: #666666;}
+.toppageArea ul .pageval span {font:bold 13px/13px Helvetica; color:#000000;margin: 0 5px}
+
+
+/** 篩選 **/
+#Dgrp_LCatRightPBase .optionsArea {background-color:#E7E7E7; height:40px}
+#Dgrp_LCatRightPBase .optionsArea dl,
+#Dgrp_LCatRightPBase .optionsArea dt,
+#Dgrp_LCatRightPBase .optionsArea dd {margin:0px; padding:0px}
+#Dgrp_LCatRightPBase .optionsArea dl {position:relative}
+#Dgrp_LCatRightPBase .optionsArea dt,
+#Dgrp_LCatRightPBase .optionsArea dd {float:left; height:40px}
+#Dgrp_LCatRightPBase .optionsArea dd {height:20px; font:13px/20px Helvetica; color:#333333; margin:10px 0px; padding:0px 15px; border-left:1px solid #A0A0A0}
+#Dgrp_LCatRightPBase .optionsArea dt ul,
+#Dgrp_LCatRightPBase .optionsArea dt ul li {margin:0px; padding:0px; list-style:none}
+#Dgrp_LCatRightPBase .optionsArea dt ul li {float:left; position:relative; width:80px; font:13px/40px Helvetica; color:#333333; text-align:center; cursor:pointer}
+#Dgrp_LCatRightPBase .optionsArea dt ul li:hover,
+#Dgrp_LCatRightPBase .optionsArea dt ul .selected {background-color:#E40480; color:#FFFFFF}
+#Dgrp_LCatRightPBase .optionsArea dt ul .priceHeight {background:transparent url(//image.momoshop.com.tw/ecm/img/cmm/search/priceHeightBk.png) no-repeat 60px center}
+#Dgrp_LCatRightPBase .optionsArea dt ul .priceHeight:hover,
+#Dgrp_LCatRightPBase .optionsArea dt ul .priceHeight.selected {background:#E40480 url(//image.momoshop.com.tw/ecm/img/cmm/search/priceHeightBk_h.png) no-repeat 60px center}
+#Dgrp_LCatRightPBase .optionsArea dd input[type=text] {width:60px; height:18px; font:13px/18px Helvetica; color:#333333; text-align:right; border:0px; margin:0px 10px 0px 0px; padding:1px 5px; vertical-align:middle; position:relative; top:-1px}
+#Dgrp_LCatRightPBase .optionsArea dd input[type=text]:first-child {margin:0px 0px 0px 10px}
+#Dgrp_LCatRightPBase .optionsArea dd #submit {background-color:#333333; height:20px; font:13px/20px Helvetica; color:#FFFFFF; padding:0px 10px; display:inline-block}
+#Dgrp_LCatRightPBase .optionsArea dt ul .priceHeight:hover { background-color:#E40480}
+#Dgrp_LCatRightPBase .optionsArea dt ul .priceHeight.selected { background-color:#E40480; background-image:none}
+#Dgrp_LCatRightPBase .optionsArea dt ul .up.selected::before { position:absolute; top:15px; right:17px; display:inline-block; width:5px; height:9px; background:url(//image.momoshop.com.tw/ecm/img/cmm/search/priceHeightBk_h.png) no-repeat 0 top; content:""}
+#Dgrp_LCatRightPBase .optionsArea dt ul .down.selected::before { position:absolute; top:15px; right:17px; display:inline-block; width:5px; height:9px; background:url(//image.momoshop.com.tw/ecm/img/cmm/search/priceHeightBk_h.png) no-repeat 0 bottom; content:""}
+#Dgrp_LCatRightPBase .optionsArea .optionsLi {position:absolute; top:0px; right:200px}
+#Dgrp_LCatRightPBase .optionsArea .optionsLi ul {margin:0px; padding:0px; list-style:none}
+#Dgrp_LCatRightPBase .optionsArea .optionsLi ul li {float:left; height:20px; margin:0px; padding:0px 5px}
+#Dgrp_LCatRightPBase .optionsArea .optionsLi ul li input[type=checkbox] {margin:0px 10px 0px 0px; vertical-align:middle}
+#Dgrp_LCatRightPBase .optionsArea .optionsLi ul li input[type=checkbox]:checked + label {color:#E40480}
+#Dgrp_LCatRightPBase .optionsArea .viewType {padding:0px 15px 0px 10px; border-left:1px solid #C1C1C1; position:absolute; top:0px; right:0px}
+#Dgrp_LCatRightPBase .optionsArea .viewType input[type=radio] {display:none}
+#Dgrp_LCatRightPBase .optionsArea .viewType input[type=radio]:checked + label {color:#E40480}
+#Dgrp_LCatRightPBase .optionsArea .viewType label {width:0px; height:20px; font:13px/20px Helvetica; color:#333333; margin:0px 0px 0px 5px; padding:0px 0px 0px 20px; display:inline-block; cursor:pointer;overflow:hidden}
+#Dgrp_LCatRightPBase .optionsArea .viewType .chessboardType {background:transparent url(//image.momoshop.com.tw/ecm/img/cmm/search/chessboardTypeBk.png) no-repeat 0px 4px}
+#Dgrp_LCatRightPBase .optionsArea .viewType input[type=radio]:checked + .chessboardType {background:transparent url(//image.momoshop.com.tw/ecm/img/cmm/search/chessboardTypeBk_checked.png) no-repeat 0px 4px}
+#Dgrp_LCatRightPBase .optionsArea .viewType .columnType {background:transparent url(//image.momoshop.com.tw/ecm/img/cmm/search/columnTypeBk.png) no-repeat 0px 4px}
+#Dgrp_LCatRightPBase .optionsArea .viewType input[type=radio]:checked + .columnType {background:transparent url(//image.momoshop.com.tw/ecm/img/cmm/search/columnTypeBk_checked.png) no-repeat 0px 4px}
+
+
+
+/** 20171115新增條列式呈現方式 **/
+.prdListArea ul li a .stage,
+.prdListArea ul li .publishInfo,
+.prdListArea ul li a .publish,
+.prdListArea ul li a .description {display:none}
+.prdListArea ul {width:1000px}
+.prdListArea#columnType ul li a {position:relative}
+.prdListArea#columnType ul li {width:100%; padding:0px}
+.prdListArea#columnType ul li .btnArea {background-color:transparent;background-image:none;width: 520px;display:block;text-align:right;top:inherit;left:inherit;bottom:20px;right:10px;}
+.prdListArea#columnType ul li .btnArea a {float:inherit; background:#E4E4E4 url(//www.momoshop.com.tw/goods/images/addtoTrackingListBtn.png) no-repeat 0px 0px; width:160px; height:40px; margin:0px 0px 0px 20px; padding:0px; display:inline-block}
+.prdListArea#columnType ul li .btnArea a:first-child {margin-left: 0px;}
+.prdListArea#columnType ul li .btnArea .addToCart {background:#1C6FBC url(//www.momoshop.com.tw/goods/images/add_to_cart_btn.png) no-repeat 0px 0px}
+.prdListArea#columnType ul li .btnArea .insertWishList { background:#E4E4E4 url(//image.momoshop.com.tw/ecm/img/cmm/wishList/addtoTrackingListBtn.png) no-repeat; }
+.prdListArea#columnType ul li .btnArea .insertWishList.checkedWishList { background: #E4E4E4 url("//image.momoshop.com.tw/ecm/img/cmm/wishList/addtoTrackingListBtn_done.png") no-repeat; }
+.prdListArea#columnType ul li .btnArea .buy_no {background:#B0B0B0 url(//www.momoshop.com.tw/goods/images/buy_no.png) no-repeat 0px 0px}
+.prdListArea#columnType ul li .btnArea .timeAlert {background: #B0B0B0;color: #fff;font: bold 16px/40px Microsoft JhengHei, sans-serif;text-align: center;margin: 0 0 0 20px;vertical-align: top;}
+.prdListArea#columnType ul li .btnArea .buyAlert {background:#ff9000 url(//www.momoshop.com.tw/goods/images/newmd_btn_ask.jpg) no-repeat;}
+.prdListArea#columnType ul li .btnArea .comingSoon {background:#b0b0b0 url(//image.momoshop.com.tw/ecm/img/cmm/buy_comingSoon.png) no-repeat; }
+.prdListArea#columnType ul li .publishInfo {max-width:730px;text-align:left; display:inline-block;margin:0px; padding:0px; overflow:hidden;z-index:1}
+.prdListArea#columnType ul li .publishInfo span{margin:0 15px 0 0; vertical-align: top;display: inline-block;color: #000000;}
+.prdListArea#columnType ul li .publishInfo a {height:20px; color: #3366ff; margin:0px 15px 0px 0px; padding:0px; display:inline-block}
+.prdListArea#columnType ul li .publishInfo a.writer {max-width: 400px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden}
+.prdListArea#columnType ul li .publishInfo a.publishing {max-width: 145px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden}
+.prdListArea#columnType ul li .publishInfo a.publishDate {max-width: 170px; margin: 0; color: #666666; margin: 0 10px 0 0; display: inline-block; overflow: hidden; white-space: nowrap}
+.prdListArea#columnType ul li a {width:auto;margin:10px 0px; padding:0px; display:block;text-align: left;}
+.prdListArea#columnType ul li .prdUrl {min-height: 160px;}
+.prdListArea#columnType ul li .prdUrl .prdInfo{display: inline-block;width: calc(100% - 120px);padding: 0 0 60px 10px;box-sizing: border-box;}
+.prdListArea#columnType ul li a .prdDescription {width:120px; height:120px; left:0px; top:0px}
+.prdListArea#columnType ul li a img {float:left; width:120px; height:120px}
+.prdListArea#columnType ul li a .specialTitle,
+.prdListArea#columnType ul li a .prdName {width:80%;height:20px;font:bold 15px/20px Helvetica;color:#666666;margin:0px;padding:0px;}
+.prdListArea#columnType ul li a .specialTitle {font:13px/20px Helvetica; color:#E54B4B; top:0px}
+.prdListArea#columnType ul li a .description {width:50%; min-height:20px; max-height:40px; font:15px/20px Helvetica; color:#666666; text-align:left; margin:0px; padding:0px; overflow:hidden; display:block;}
+.prdListArea#columnType ul li a .savePrice {display:none}
+.prdListArea#columnType ul li a .prdPrice {width:20%; position:absolute; bottom:55px; top:inherit; right:155px}
+.prdListArea#columnType ul li a .iconArea {background-color:transparent;text-align:left;margin:0px;position:absolute;bottom:0px;left:120px;}
+.prdListArea#columnType ul li a .iconArea b {display:none}
+.prdListArea#columnType ul li a .iconArea img {float:inherit; width:auto; height:auto; margin:2px 0px}
+.prdListArea#columnType ul li a .stage {display:inline-block}
+.prdListArea#columnType ul li a .stage {background-color:#FFFFFF; height:24px; border:1px solid #CCCCCC; margin:0px; padding:0px; display:inline-block; position:absolute; bottom:30px; left:130px}
+.prdListArea#columnType ul li a .stage span {height:24px; font:13px/24px Helvetica; color:#434343; padding:0px 10px; border-left:1px solid #CCCCCC; display:inline-block}
+.prdListArea#columnType ul li a .stage span b {font:bold 20px/16px Century Gothic; color:#D62672; margin:0px 5px; vertical-align:text-bottom}
+.prdListArea#columnType ul li a .stage span:first-child {border:0px}
+
+/** 下方商品列表 **/
+.prdListArea {display:block; margin:10px 0px 0px; overflow:hidden }
+.prdListArea ul {margin:0px; padding:0px; list-style:outside none none; display:inline-block}
+.prdListArea .list {width:780px; margin:0px; padding:0px; list-style:none; display:inline-block}
+.prdListArea ul li {float:left; margin:0px; padding:20px 15px; width:220px; height:auto; background:#FFFFFF; text-align:center; border-bottom:1px dashed #999999; position:relative; }
+.prdListArea ul li:hover {background:#FFFFE5}
+.prdListArea ul li a {display:block; text-align:center; border:0px; width:200px; height:auto; padding:0px 10px;color:#333; }
+.prdListArea ul li a img {display:inline-block; border:0px; vertical-align:top; width:200px; height:200px;}
+.prdListArea ul li a span { display:block; text-align:left; overflow:hidden; }
+.prdListArea ul li a .specialTitle {height:16px; margin:5px 0px; font:13px/16px Helvetica;color:#DD2726;} 
+.prdListArea ul li a .prdName {height:30px; font:14px/20px Helvetica; color:#333; margin:0 0 15px 0; overflow: hidden; text-align: left;}
+.prdListArea ul li a .eventredBox {height:0px;}
+.prdListArea ul li a span.totalSales { padding: 4px 0; margin: 0;display: block; min-height: 18px; font-size: 12px; font-family: var(--primary-font-family); color: #454545; text-align: left;}
+.prdListArea#columnType ul li a span.totalSales { position: absolute; bottom: 25px; padding: 4px 0px 10px 0px;}
+.prdListArea ul li a .iconArea img {position:relative; top:3px; border:0px; width:auto; height:auto}
+/** 加入購物車或追蹤 **/
+.prdListArea ul li .btnArea { margin:0px; padding:0px; width:200px; background:transparent url(//image.momoshop.com.tw/ecm/img/cmm/product/searchResultsHoverBk.png) repeat; position:absolute; top:180px; left:25px; z-index:3; display:none; font-size: 0px}
+.prdListArea ul li:hover .btnArea {display:inline-block}
+.prdListArea ul li .btnArea a {width:100px; height:40px; display:inline-block; padding:0px; margin:0px; background:transparent url(//image.momoshop.com.tw/ecm/img/cmm/product/shopBtn.png) no-repeat center center;}
+.prdListArea ul li .btnArea a:first-child {background:transparent url(//image.momoshop.com.tw/ecm/img/cmm/wishList/favBtn_h.png) no-repeat center center; background-size:25px 25px;}
+.prdListArea ul li .btnArea a.fullWidth {width: 100%}
+.prdListArea ul li .btnArea a.buyAlert {height: 0px}
+.prdListArea ul li .btnArea .timeAlert {display: none;}
+.prdListArea ul li .btnArea .buy_no {display: none;}
+/** 頁碼 **/
+.pageArea {display:inline-block; width:1000px; height:42px; line-height:42px; overflow:hidden; }
+.pageArea ul {margin:0px; padding:5px 0px 2px 0px; height:35px; list-style:none; display:inline-block;}
+.pageArea ul li {display:inline-block; height:24px; margin:4px 3px 4px 0px; }
+.pageArea ul li a { float:left; width:auto; border:1px solid #ABABAB; color:#434343; font:13px/18px Helvetica; padding:3px 5px 3px 5px; text-align:center; text-decoration:none; }
+.pageArea dl {float:right; margin:0px 10px 0px 0px; padding:0px; width:220px; text-align:right; }
+.pageArea dl dt {margin:0px 5px 0px 5px; padding:0px; display:inline-block; font:bold 13px/18px Helvetica; }
+.pageArea dl dt span {font:13px/18px Helvetica; }
+.pageArea dl dt span b {font:bold 13px/18px Helvetica; margin:0px 3px;}
+.pageArea dl dd {margin:0px; padding:0px; display:inline-block}
+.pageArea dl dd a {border:1px solid #ABABAB; font:bold 13px/18px Helvetica; color:#434343; padding:2px 5px 3px; text-decoration:none; }
+.pageArea ul li a:hover, 
+.pageArea .selected, 
+.pageArea dl dd a {background-color:#4A9AE7; color:#FFFFFF; cursor:pointer; }
+.pageArea dl dd a:hover {background-color:#FFFFFF; color:#000000; }
+
+/** 黑背景 **/
+.fancybox-overlay {background-color:#000000; position:fixed; top:0px; left:0px; display:none; z-index:1000}
+
+/** 點擊放入購物車時跳出的樣式 **/
+/*.prdTypeArea {background-color:#FFFFFF; position:absolute; display:none; z-index:1001}
+.prdTypeArea p {margin:0px; padding:0px;}
+.prdTypeArea p a {font:13px/24px Helvetica; color:#0061C2; cursor:pointer; margin:0px 5px 0px 0px}
+.prdTypeArea p a span {width:10px; height:10px; font:bold 11px/12px Helvetica; color:#0061C2; border:1px solid #0061C2; display:inline-block; text-align:center; margin:0px 3px 0px 0px}
+.prdTypeArea ul {margin:0px 0px 5px; padding:0px; list-style:none; display:inline-block}
+.prdTypeArea ul li {float:left; background-color:#FFFFFF; width:324px; height:auto; margin:5px 5px 0px; padding:10px 10px 0px; position:relative}
+.prdTypeArea ul li:hover {width:324px; height:auto; padding:9px 9px 0px; border:1px solid #D62672}
+.prdTypeArea ul li .prdName {height:36px; font:13px/18px Helvetica; color:#484848; text-align:left; margin:0px; padding:0px 5px; overflow:hidden}
+.prdTypeArea ul li .price {font:bold 15px/22px Century Gothic; color:#D62872; margin:5px 0px; padding:0px 5px}
+.prdTypeArea ul li .price b {font:bold 22px/22px Century Gothic}
+.prdTypeArea ul li .buyQuantity,
+.prdTypeArea ul li .style {text-align:left; height:28px; margin:0px 0px 10px; padding:0px 5px}
+.prdTypeArea ul li .style1 {height:auto; margin:0px 0px 10px; padding:0px 5px; text-align:left;}
+.prdTypeArea ul li .buyQuantity b,
+.prdTypeArea ul li .style b {font:13px/18px Helvetica; color:#7C7C7C}
+.prdTypeArea ul li .style1 b {font:13px/18px Helvetica; color:#7C7C7C}
+.prdTypeArea ul li .style1 {font:13px/18px Helvetica; color:#7C7C7C}
+.prdTypeArea ul li .buyQuantity span {height:28px; padding:0px 21px; display:inline-block; position:relative}
+.prdTypeArea ul li .buyQuantity span i {width:20px; height:26px; font:18px/26px Helvetica; color:#7C7C7C; text-align:center; border:1px solid #BEBEBE; cursor:pointer; display:inline-block; position:absolute; top:0px; right:0px}
+.prdTypeArea ul li .buyQuantity span i:hover {color:#FF6C00; border-color:#FF6C00}
+.prdTypeArea ul li .buyQuantity span i:first-child {left:0px; right:inherit}
+.prdTypeArea ul li .buyQuantity input {width:105px; font:13px/24px Helvetica; color:#000000; text-align:center; margin:0px; border:1px solid #BEBEBE}
+.prdTypeArea ul li .style span {border:1px solid #BEBEBE; padding:4px}
+.prdTypeArea ul li .style span select {background-color:#FFFFFF; width:139px; font:13px/24px Helvetica; color:#000000; border:0px; position:relative; top:3px}
+.prdTypeArea ul li .style1 span {padding:4px}
+.prdTypeArea ul li .style1 span select {background-color:#FFFFFF; width:139px; font:13px/24px Helvetica; color:#000000; border:0px; position:relative; top:3px}
+.prdTypeArea ul li .buyBtn {background-color:#DDDDDD; width:100%; height:30px; font:15px/30px Helvetica; color:#7C7C7C; text-align:center; cursor:pointer; display:block; position:absolute; bottom:0px; left:0px}
+.prdTypeArea ul li:hover .buyBtn {background-color:#D62672; height:29px; font:15px/29px Helvetica; color:#FFFFFF}
+*/
+
+/**小分類頁無資料**/
+.prdListArea ul .nodata {width: 1000px;}
+/**品牌館小分類頁_20150813**/
+#dvBrandBodyBase .prdListArea ul {width:772px }
+#dvBrandBodyBase .prdListArea ul  li {width:180px; height:300px; margin:0px 3px 0px 0px; padding:10px 5px; }
+#dvBrandBodyBase .prdListArea ul li .btnArea {width:160px; top:130px; left:15px;}
+#dvBrandBodyBase .prdListArea ul li .btnArea a {width:80px; height:40px;}
+#dvBrandBodyBase .prdListArea ul li a {width:180px; height:309px; padding:0px; }
+#dvBrandBodyBase .prdListArea ul li a img {width:160px; height:160px; }
+#dvBrandBodyBase .prdListArea ul li a .iconArea img {width:auto; height:auto;}
+#dvBrandBodyBase .optionsArea {width:750px; }
+#dvBrandBodyBase.prdListArea ul .nodata {width: 770px;}
+
+/** 20160125 新增現省價格 **/
+.prdListArea ul li a .savePrice { height: 24px; color:#999; font: 13px/24px Helvetica;}
+.prdListArea ul li a .savePrice b { margin-left:1px; font:14px/24px Century Gothic}
+
+
+/***************************** 20171218 中古車 by zhlin *****************************/
+.prdListArea ul li a .usedCarInfo { display:none}
+#columnType.prdListArea ul li a .usedCarInfo { position:absolute; top:45px; left: 130px; margin:0; padding:0; display:block; width:60%; min-height:20px; max-height:40px; color:#666; font:15px/20px Helvetica; text-align:left; overflow:hidden}
+#columnType.prdListArea ul li a .usedCarInfo span { display:inline-block; margin-right:20px}
+
+/***************************** 20180619 書店18禁 by jschen *****************************/
+.mask{position: absolute;z-index:4;}
+
+/**R18 mask **/
+.prdListArea#columnType ul li a img {float:left;width:120px;height:120px;left: 0px;top: 0px;}
+
+#dvBrandBodyBase #bt_9_002_01 {width:770px; height:403px}
+#dvBrandBodyBase #bt_9_002_01 ul {width:780px;}
+#dvBrandBodyBase #bt_9_002_01 ul li {width:248px; height:391px; margin:0px 10px 0px 0px; padding:0px 0px 10px 0px}
+#dvBrandBodyBase #bt_9_002_01 ul li a {width:248px; height:auto}
+#dvBrandBodyBase #bt_9_002_01 ul li a img {width:200px; height:200px; margin:15px 0px 0px 0px}
+#dvBrandBodyBase #bt_9_002_01 ul li a span {padding:0px 10px;}
+#dvBrandBodyBase #bt_9_002_01 ul li a .iconArea {padding:0px 5px; margin:0px 10px}
+#dvBrandBodyBase #bt_9_002_01 ul li a .iconArea img {width:auto; height:auto; margin:3px 0px}
+
+/* 20201218_EC大網_分類頁_商品列表左右切換調整 */
+.prdListArea ul li:hover .prdListSwiper .swiper-button-next,.prdListArea ul li:hover .prdListSwiper .swiper-button-prev{opacity:0.8;}
+.prdListArea ul li a .prdListSwiper{width: 200px;height: 215px;}
+.prdListArea ul li a .prdListSwiper .swiper-button-next{position: absolute;right: 0;width: 22px;height: 44px;border-top-left-radius: 5px;border-bottom-left-radius: 5px;background-color: rgba(0,0,0,0.4);z-index:3;opacity:0;top: 78px;margin: 0;}
+.prdListArea ul li a .prdListSwiper .swiper-button-prev{position: absolute;left: 0;width: 22px;height: 44px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;background-color: rgba(0,0,0,0.4);z-index:3;opacity:0;top: 78px;margin: 0;}
+#columnType ul li a .prdListSwiper .swiper-button-next{top: 40px;}
+#columnType ul li a .prdListSwiper .swiper-button-prev{top: 40px;}
+.prdListArea#columnType div.prdListSwiper{width:120px;height:136px;float:left;}
+.prdListArea ul li a .prdListSwiper .pagination{ bottom:2px;width:100%;}                                                                                       
+.prdListArea ul li a .prdListSwiper .pagination span{background: #888888;display:inline-block;}
+.prdListArea ul li a .prdListSwiper .pagination .swiper-pagination-bullet-active.swiper-pagination-bullet-active-main{background: #d62872;}
+
+/** 富昇旅行社 **/
+.mofunTxt {background-color:#FFFFFF;margin: 0px 0px 20px;display: inline-block;float: right;width: 1000px;}
+.mofunTxt span {background:#FFFFFF url(//img1.momoshop.com.tw/ecm/img/cmm/category/newbt_arrow.png) no-repeat 5px 8px; height:28px; font:bold 18px/28px Helvetica; color:#000000; margin:0px; padding:0px 0px 0px 25px; border-bottom:2px solid #3E7FF5;display: block;}
+.mofunTxt ul {width:100%; margin:15px 15px 0px; padding:0px 0px 15px; list-style:none; display:inline-block}
+.mofunTxt li {float:left; width:21%; font:13px/20px Helvetica; color:#696969; margin:0px; padding:0px; list-style:none}
+.mofunTxt .title {width:26%; font:bold 13px/20px Helvetica; color:#696969}
+.mofunTxt .type1 {width:14%}
+.mofunTxt .type2 {width:8%}
+.mofunTxt .type3 {width:18%}
+
+.prdListArea#columnType div.prdListSwiper { position: relative; }
+.prdListArea#columnType div.prdListSwiper .imgTag, .prdListArea#columnType div.prdListSwiper .imgTagBottom, .prdListArea#columnType div.prdListSwiper .imgTagRectangle{height: auto;display:block;position:absolute;left:0;margin:0;padding:0; z-index: 2; pointer-events: none;}
+.prdListArea#columnType div.prdListSwiper .imgTag {width:28%;top:0;}
+.prdListArea#columnType div.prdListSwiper .imgTagRectangle{width: 75%;top:0;}
+.prdListArea#columnType div.prdListSwiper .imgTagBottom{width: 100%;bottom: 16px;}
+.prdListArea#columnType div.prdListSwiper .imgTag img, .prdListArea#columnType div.prdListSwiper .imgTagBottom img, .prdListArea#columnType div.prdListSwiper .imgTagRectangle img {width:100% !important;height:auto;display:block;margin:0;padding:0;border-radius: 0px !important; max-width: none !important; min-width: auto; min-height: auto;}
+
+.prdListArea .mask{left:0;}
+.prdListArea .prdImgWrap.swiper-container .imgTagBottom{bottom: 15px;}
+#columnType .prdImgWrap .imgTagBottom{bottom:0;}
+
+.prdListArea .current-price{display:flex;align-items:flex-end;justify-content:flex-start;}
+.prdListArea .current-price>b{font-size:24px; line-height:1;}
+.prdListArea .current-price,.prdListArea .price-from{font-size:17px;padding:0;color:#D62672;}
+.prdListArea .current-price .after-sale{font-size:13px;line-height:18px;font-family:var(--primary-font-family);color:#999;margin-left:5px;padding:0;}
+.prdListArea .current-price > .ec-moPro-price > .badge-text {font-size: 11px;line-height: 16px;}

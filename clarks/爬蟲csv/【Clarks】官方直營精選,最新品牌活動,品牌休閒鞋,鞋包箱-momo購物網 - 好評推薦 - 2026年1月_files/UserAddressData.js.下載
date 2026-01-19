@@ -1,0 +1,148 @@
+var UserAddressData = {
+    isPromoDtListPage:location.pathname.indexOf("/promoDtList.jsp") > -1,
+    isSearchShopPage:location.pathname.indexOf("/searchShop.jsp") > -1,
+    //取得最近一筆訂單地址且符合超市快配
+    getUserAddressData:function(custNo){
+        var obj = new Object();
+        obj.custNo = custNo;
+        obj.flag = 2052;
+        var result = UserAddressData.post2AjaxTool(obj);
+        if(result.rtnCode=="200"){
+            return result.rtnData;
+        }else{
+            return null;
+        }
+    },
+    //取得最近一筆訂單地址且符合超市快配
+    getAddressSearchData:function(){
+        var fiveHourAddr = momoj().cookie('fiveHourAddressData');
+        var addressSearchData = {};
+        if(fiveHourAddr){
+            var jsonfiveHour = JSON.parse(fiveHourAddr);
+            addressSearchData = UserAddressData.setAddressSearchData(jsonfiveHour);
+        }else{
+            if(!isNotLogin()){//調用ajaxGoodsTool.js
+                var custNo = UserAddressData.getCustNo();
+                var addressData = UserAddressData.getUserAddressData(custNo);
+                if(addressData){
+                    addressSearchData = UserAddressData.setAddressSearchData(addressData);
+                    UserAddressData.fiveHourCookie("fiveHourAddressData", JSON.stringify(addressSearchData), {path : "/"});
+                }
+            }
+        }
+        return addressSearchData;
+    },
+    setAddressSearchData:function(fiveHoureData){
+        var addressSearchData = 
+            {
+                whCode: fiveHoureData.whCode,
+                postalCode: fiveHoureData.postalCode,
+                countryName: fiveHoureData.countryName,
+                areaName: fiveHoureData.areaName,
+                inputAddress: fiveHoureData.inputAddress,
+                receiverSeq: fiveHoureData.receiverSeq
+            };
+        return addressSearchData;
+    },
+    getCustNo:function(){
+        var ccmedia = momoj().cookie('ccmedia') || '';
+        return ccmedia.split('_/')[0].replace('"', '');
+    },
+    //包裝ajaxtool
+    post2AjaxTool:function(data){
+        var obj = new Object();
+        obj.data=data;
+        obj.async = data.async;
+        obj.ajaxSuccess = data.ajaxSuccess;
+        obj.ajaxCancel = data.ajaxCancel;
+        
+        delete data.async;
+        delete data.ajaxSuccess;
+        delete data.ajaxCancel;
+        
+        //如果是async 回傳值應該沒參考價值
+        return momoj.ajaxTool(obj);//注意被拋出的內容，momoj.ajaxTool有多做事
+    },
+    //取得快配地址和最近地址
+    getFiveHourAddressData:function(goodsCode) {
+    var fiveHourAddressData;
+    if(window.isFiveHour) {//因超市快配列表頁
+      try {
+        fiveHourAddressData = JSON.parse(momoj().cookie("fiveHourAddressData")) || {};
+      } catch (e) {
+        fiveHourAddressData = {};
+      }
+    }else if(UserAddressData.isPromoDtListPage){
+      if("five"==fiveHourYn){
+        try {
+          fiveHourAddressData = JSON.parse(momoj().cookie("fiveHourAddressData")) || {};
+        } catch (e) {
+          fiveHourAddressData = {};
+        }
+      }
+    }else if(UserAddressData.isSearchShopPage){
+      var actionType = momoj('li[gcode="'+goodsCode+'"]').attr("actionType")||'';
+      if(actionType =='63'){
+        fiveHourAddressData = JSON.parse(momoj().cookie("fiveHourAddressData")) || {};
+        if(Object.keys(fiveHourAddressData).length == 0){
+          if(typeof UserAddressData == 'object' && typeof UserAddressData.getAddressSearchData == 'function'){
+            var addressSearchData = UserAddressData.getAddressSearchData();
+            fiveHourAddressData = UserAddressData.setAddressSearchData(addressSearchData);
+            UserAddressData.fiveHourCookie("fiveHourAddressData", JSON.stringify(fiveHourAddressData), {path : "/"});
+          }
+        }
+      }
+    }
+    fiveHourAddressData = momoj.extend({
+      countryName  : "",
+      areaName     : "",
+      inputAddress : "",
+      postalCode   : "",
+      whCode       : "",
+      receiverSeq  : ""
+    }, fiveHourAddressData);
+    return fiveHourAddressData;
+  },
+  // 大網要多轉圓括弧
+  fiveHourCookie:function(name, value, settings) {
+    if (typeof value != 'undefined') { // name and value given, set cookie
+        settings = settings || {};
+        if (value === null) {
+            value = '';
+            settings.expires = -1;
+        }
+        var expires = '';
+        if (settings.expires && (typeof settings.expires == 'number' || settings.expires.toUTCString)) {
+            var date;
+            if (typeof settings.expires == 'number') {
+                date = new Date();
+                date.setTime(date.getTime() + (settings.expires * 24 * 60 * 60 * 1000));
+            } else {
+                date = settings.expires;
+            }
+            expires = '; expires=' + date.toUTCString(); // use expires attribute, max-age is not supported by IE
+        }
+        // CAUTION: Needed to parenthesize settings.path and settings.domain
+        // in the following expressions, otherwise they evaluate to undefined
+        // in the packed version for some reason...
+        var path = settings.path ? '; path=' + (settings.path) : '';
+        var domain = settings.domain ? '; domain=' + (settings.domain) : '';
+        var secure = settings.secure ? '; secure' : '';
+        document.cookie = [name, '=', encodeURIComponent(value).replace(/\(/, "%28").replace(/\)/, "%29"), expires, path, domain, secure].join('');
+    } else { // only name given, get cookie
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+  }
+}  

@@ -1,0 +1,305 @@
+(function ($) {
+  $.url = {};
+  $.extend($.url, {
+    _params: {},
+    init: function(){
+      var paramsRaw = "";
+      try{
+        paramsRaw = (document.location.href.split("?", 2)[1] || "").split("#")[0].split("&") || [];
+        for (var i = 0; i< paramsRaw.length; i++) {
+          var single = paramsRaw[i].split("=");
+          if (single[0]) this._params[single[0]] = unescape(single[1]);
+        }
+      } catch(e){
+        alert(e);
+      }
+    },
+    param: function(name) {
+      return this._params[name] || "";
+    },
+    paramAll: function(){
+      return this._params;
+    }
+  });
+  $.url.init();
+})(jQuery);
+
+jQuery(function($) {
+  var _curPage = parseInt($('#Dgrp_LCatRightPBase .pageArea b').text());
+  var _totPage = parseInt($('#Dgrp_LCatRightPBase li.pageval').text().split('/')[1]);
+  $('div.prdListArea li').on("mouseenter",function(){
+    $(this).css('background-color', '#FFFACD');
+  }).on("mouseleave",function(){
+    $(this).css('background-color', '#FFFFFF');
+  });
+
+  $('#Dgrp_LCatRightPBase .toppageArea, #Dgrp_LCatRightPBase .pageArea').find('a').click(function(){
+    var _pageNum = $(this).attr('page');
+    if(_curPage!=_pageNum){
+      _cateSubmit(_pageNum);
+    }
+  });
+
+  $('#Dgrp_LCatRightPBase .menuArea').delegate('#checkWhcode, #checkCpyn, #checkAdvNam, #checkAdvSuperstore, #checkAdvStock, #checkTomorrow, #checkPrefere, #checkTvshop, #checkChina, #checkThreeHours', 'click', function(){
+    _cateSubmit('1');
+  });
+
+  $('#Dgrp_LCatRightPBase .menuArea .orderType li').click(function(){
+    var _this = $(this);
+    
+    if(_this.is('.priceHeight')){
+      if(_this.is('.up')){
+        _this.removeClass('up').addClass('down');
+      }else{
+        _this.removeClass('down').addClass('up');
+      }
+    }else if(_this.is('.selected')){
+      return false;//no need submit
+    }
+    
+    $('#Dgrp_LCatRightPBase .menuArea .orderType li').removeClass('selected');
+    _this.addClass('selected');
+    
+    _cateSubmit('1');
+  });
+  
+  $('#Dgrp_LCatRightPBase .menuArea').delegate('[type=text]', 'focusin focusout', function(){
+    var _this = $(this);
+    if (isNaN(_this.val())) _this.val('');
+  });
+  
+  $('#Dgrp_LCatRightPBase .menuArea a.priceBtn').click(function(){
+    var numCase = /^[0-9]*[1-9][0-9]*$/;
+    var _highestPrice = $('#Dgrp_LCatRightPBase .menuArea [name=highestPrice]').val();
+    var _lowestPrice = $('#Dgrp_LCatRightPBase .menuArea [name=lowestPrice]').val();
+
+    if (!numCase.test(_lowestPrice) || !numCase.test(_highestPrice)) {
+      alert('查詢金額請輸入非零數字');
+      return;
+    }
+
+    if (parseInt(_lowestPrice) > parseInt(_highestPrice)) {
+      $('#Dgrp_LCatRightPBase .menuArea [name=highestPrice]').val(_lowestPrice);
+      $('#Dgrp_LCatRightPBase .menuArea [name=lowestPrice]').val(_highestPrice)
+    }
+    
+    $('#Dgrp_LCatRightPBase .menuArea .orderType li').removeClass('selected');
+    $('#Dgrp_LCatRightPBase .menuArea .orderType li.priceHeight').removeClass('down').addClass('selected up');
+    _cateSubmit('1');
+  });
+  
+  $('#Dgrp_LCatRightPBase .menuArea .viewType').delegate("input[name=showType]","click",function(){ 
+    $("#Dgrp_LCatRightPBase .prdListArea ul .nodata").css({'width':'100%','padding':'20px 15px'});
+    if (momoj(this).val() == "columnType") {       
+      $("#Dgrp_LCatRightPBase .prdListArea").attr("id","columnType");
+    } else {
+      $("#Dgrp_LCatRightPBase .prdListArea").removeAttr("id");
+    }
+
+    rebuildParams();
+
+  });
+  
+  //固定篩選的展開 滑鼠移入事件(#goodsAttrRoot & #Dgrp_LCatRightPBase)
+  momoj('#Dgrp_LCatRightPBase .menuArea .optionsLi').delegate('.optionBtn', 'mouseenter', function() {
+    momoj(this).html('').parent('div.optionsLi').addClass('openOption');
+    momoj(this).removeClass("optionBtn");
+  });
+  
+  //固定篩選被展開後 滑鼠移出事件(#goodsAttrRoot & #Dgrp_LCatRightPBase)
+  momoj('#Dgrp_LCatRightPBase .menuArea').delegate('.openOption ul','mouseleave', function() {
+    momoj(this).parents().find('.optionsLi a').addClass('optionBtn');
+    momoj(this).parents().find('div.openOption').removeClass("openOption").find('.optionBtn').html('展開');
+  });
+  
+  //固定篩選的title滑鼠移出事件(#goodsAttrRoot & #Dgrp_LCatRightPBase)
+  momoj('#Dgrp_LCatRightPBase .menuArea .optionsLi').delegate('.optionBtn', "mouseleave", function(e){
+    var _this = momoj(this);
+    var bottom = _this.offset().top;
+    if(bottom < e.pageY){
+      //leave via bottom edge, do nothing
+    }else{
+      momoj(this).parents().find('.openOption').removeClass("openOption").find('.optionBtn').html('展開');
+    }
+  });
+   
+  function _cateSubmit(_pageNum){
+    var _highestPrice = $('#Dgrp_LCatRightPBase .menuArea [name=highestPrice]').val();
+    var _lowestPrice = $('#Dgrp_LCatRightPBase .menuArea [name=lowestPrice]').val();
+    var _whCode = $('#checkWhcode:checked').val();
+    var _cpYn = $('#checkCpyn:checked').val();
+    var _showType = $('#Dgrp_LCatRightPBase .menuArea .viewType [name=showType]:checked').val();
+    var _advNam = $('#checkAdvNam:checked').val();
+    var _advSuperstore = $('#checkAdvSuperstore:checked').val();
+    var _advStock = $('#checkAdvStock:checked').val();
+    var _advTomorrow = $('#checkTomorrow:checked').val();
+    var _advPrefere = $('#checkPrefere:checked').val();
+    var _advTvshop = $('#checkTvshop:checked').val();
+    var _advChina = $('#checkChina:checked').val();
+    var _advThreeHours = $('#checkThreeHours:checked').val();
+    _lowestPrice = (isNaN(_lowestPrice)) ? '0' : _lowestPrice;
+    _highestPrice = (isNaN(_highestPrice)) ? '99999999' : _highestPrice;
+    _whCode = (_whCode == 'Y') ? _whCode : '';
+    _cpYn = (_cpYn == 'Y') ? _cpYn : '';
+    _advNam = (_advNam == 'Y') ? _advNam : '';
+    _advSuperstore = (_advSuperstore == 'Y') ? _advSuperstore : '';
+    _advStock = (_advStock == 'Y') ? _advStock : '';
+    _advTomorrow = (_advTomorrow == 'Y') ? _advTomorrow : '';
+    _advPrefere = (_advPrefere == 'Y') ? _advPrefere : '';
+    _advTvshop = (_advTvshop == 'Y') ? _advTvshop : '';
+    _advChina = (_advChina == 'Y') ? _advChina : '';
+    _advThreeHours = (_advThreeHours == 'Y') ? _advThreeHours : '';
+    
+    var orderType = "";
+    var selectedType = $('#Dgrp_LCatRightPBase .menuArea .orderType li.selected:first');
+    if(selectedType.is('.popularPrd')){
+      orderType = "4";
+    }else if(selectedType.is('.newPrd')){
+      orderType = "5";
+    }else if(selectedType.is('.priceHeight.up')){
+      orderType = "2";
+    }else if(selectedType.is('.priceHeight.down')){
+      orderType = "3";
+    }else if(selectedType.is('.recommend')){
+      orderType = "1";
+    }
+    
+    var _redirectUrl = '/category/DgrpCategory.jsp?d_code=' + $.url.param('d_code');
+    _redirectUrl += (/^\s*$/.test(_lowestPrice)?'':('&lowestPrice=' + _lowestPrice));
+    _redirectUrl += (/^\s*$/.test(_highestPrice)?'':('&highestPrice=' + _highestPrice));
+    _redirectUrl += (/^\s*$/.test(_whCode)?'':('&advFirst=' + _whCode));
+    _redirectUrl += (/^\s*$/.test(_cpYn)?'':('&advCp=' + _cpYn));
+    _redirectUrl += (/^\s*$/.test(_advNam)?'':('&advNam=' + _advNam));
+    _redirectUrl += (/^\s*$/.test(_advSuperstore)?'':('&advSuperstore=' + _advSuperstore));
+    _redirectUrl += (/^\s*$/.test(_advStock)?'':('&advStock=' + _advStock));
+    _redirectUrl += (/^\s*$/.test(_advTomorrow)?'':('&advTomorrow=' + _advTomorrow));
+    _redirectUrl += (/^\s*$/.test(_advPrefere)?'':('&advPrefere=' + _advPrefere));
+    _redirectUrl += (/^\s*$/.test(_advTvshop)?'':('&advTV=' + _advTvshop));
+    _redirectUrl += (/^\s*$/.test(_advChina)?'':('&advChina=' + _advChina));
+    _redirectUrl += (/^\s*$/.test(_advThreeHours)?'':('&advThreeHours=' + _advThreeHours));
+    _redirectUrl += '&p_orderType=' + orderType;
+    _redirectUrl += ((/^\s*$/.test(_showType) || /^chessboardType$/.test(_showType))?'':('&showType=' + _showType));
+    _redirectUrl += (parseInt(_pageNum) > 1?('&p_pageNum=' + _pageNum):'');
+    
+    location.href = _redirectUrl;
+  }
+  
+  function rebuildParams() {
+
+    //add history.
+    var nparams = [];
+    var _highestPrice = '';
+    var _lowestPrice = '';
+    var _whCode = '';
+    var _cpYn = '';
+    var _advNam = '';
+    var _advStock = '';
+    var _advSuperstore = '';
+    var _advTomorrow = '';
+    var _advPrefere = '';
+    var _advTvshop = '';
+    var _advChina = '';
+    var _advThreeHours = '';
+    var _lowestPrice = '';
+    var _highestPrice = '';
+    var p_orderType = '';
+    var pageNum = '';
+    var _showType = $("#Dgrp_LCatRightPBase .prdListArea").attr("id");
+    
+    if (location.search != '') {
+      var oparams = location.search.substr(1).split("&") || [];
+      for (var i = 0; i< oparams.length; i++) {
+        var singletone = oparams[i].split("=");
+        if (/^\s*$/.test(unescape(singletone[1]))) {
+          
+        } else if (/_code$/.test(singletone[0])) {
+          nparams.push(singletone[0] + '=' + singletone[1]);
+        } else if (singletone[0] == 'highestPrice') {
+          _highestPrice = unescape(singletone[1]);
+        } else if (singletone[0] == 'lowestPrice') {
+          _lowestPrice = unescape(singletone[1]);
+        } else if (singletone[0] == 'advFirst') {
+          _whCode = unescape(singletone[1]);
+        } else if (singletone[0] == 'advCp') {
+          _cpYn = unescape(singletone[1]);
+        } else if (singletone[0] == 'advNam') {
+          _advNam = unescape(singletone[1]);
+        } else if (singletone[0] == 'advSuperstore') {
+          _advSuperstore = unescape(singletone[1]);
+        } else if (singletone[0] == 'advStock') {
+          _advStock = unescape(singletone[1]);
+        } else if (singletone[0] == 'advTomorrow') {
+          _advTomorrow = unescape(singletone[1]);
+        } else if (singletone[0] == 'advPrefere') {
+          _advPrefere = unescape(singletone[1]);
+        } else if (singletone[0] == 'advTV') {
+          _advTvshop = unescape(singletone[1]);
+        } else if (singletone[0] == 'advChina') {
+          _advChina = unescape(singletone[1]);
+        } else if (singletone[0] == 'advThreeHours') {
+          _advThreeHours = unescape(singletone[1]);
+        } else if (singletone[0] == 'p_orderType') {
+          p_orderType = unescape(singletone[1]);
+        } else if (singletone[0] == 'showType') {
+
+        } else if (singletone[0] == 'p_pageNum') {
+          pageNum = unescape(singletone[1]);
+        } else {
+          nparams.push(oparams[i]);
+        }
+      }
+    }
+    
+    if (!/^\s*$/.test(_lowestPrice)) {
+      nparams.push('lowestPrice=' + _lowestPrice);
+    }
+    if (!/^\s*$/.test(_highestPrice)) {
+      nparams.push('highestPrice=' + _highestPrice);
+    }
+    if (_whCode == 'Y') {
+      nparams.push('advFirst=' + _whCode);
+    }
+    if (_cpYn == 'Y') {
+      nparams.push('advCp=' + _cpYn);
+    }
+    if (_advNam == 'Y') {
+      nparams.push('advNam=' + _advNam);
+    }
+    if (_advSuperstore == 'Y') {
+      nparams.push('advSuperstore=' + _advSuperstore);
+    }
+    if (_advStock == 'Y') {
+      nparams.push('advStock=' + _advStock);
+    }
+    if (_advTomorrow == 'Y') {
+      nparams.push('advTomorrow=' + _advTomorrow);
+    }
+    if (_advPrefere == 'Y') {
+      nparams.push('advPrefere=' + _advPrefere);
+    }
+    if (_advTvshop == 'Y') {
+      nparams.push('advTV=' + _advTvshop);
+    }
+    if (_advChina == 'Y') {
+      nparams.push('advChina=' + _advChina);
+    }
+    if (_advThreeHours == 'Y') {
+      nparams.push('advThreeHours=' + _advThreeHours);
+    }
+
+    if (p_orderType != '') {
+      nparams.push('p_orderType=' + p_orderType);
+    }
+    if (_showType != '' && _showType != 'chessboardType') {
+      nparams.push('showType=' + _showType);
+    }
+    if (parseInt(pageNum) > 1) {
+      nparams.push('p_pageNum=' + pageNum);    
+    }
+    
+    var _url = location.pathname + '?' + nparams.join('&') + (location.hash.length > 0?'#'+location.hash:'');
+    
+    try { history.pushState({"pageNum": 0, "qryStatus": {}}, "", _url); } catch(e){console.log(e);}
+  }
+  
+});

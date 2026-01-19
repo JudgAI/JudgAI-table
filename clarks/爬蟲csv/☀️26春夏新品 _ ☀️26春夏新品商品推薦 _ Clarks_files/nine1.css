@@ -1,0 +1,149 @@
+@font-face {
+    font-family: "nine1";
+    src: url('nine1.eot?t=1737704219316'); /* IE9*/
+    src: url('nine1.eot?t=1737704219316#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url("nine1.woff2?t=1737704219316") format("woff2"),
+    url("nine1.woff?t=1737704219316") format("woff"),
+    url('nine1.ttf?t=1737704219316') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+    url('nine1.svg?t=1737704219316#nine1') format('svg'); /* iOS 4.1- */
+
+    font-display: swap;
+  }
+
+  .ico {
+    font-family: "nine1" !important;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: normal !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1;
+  }
+
+.ico-add-circle:before { content: "\ea01"; }
+.ico-add:before { content: "\ea02"; }
+.ico-alert:before { content: "\ea03"; }
+.ico-apple:before { content: "\ea04"; }
+.ico-arrow-down:before { content: "\ea05"; }
+.ico-arrow-left:before { content: "\ea06"; }
+.ico-arrow-right:before { content: "\ea07"; }
+.ico-arrow-up:before { content: "\ea08"; }
+.ico-bank-card:before { content: "\ea09"; }
+.ico-barcode:before { content: "\ea0a"; }
+.ico-bidirectional:before { content: "\ea0b"; }
+.ico-bill:before { content: "\ea0c"; }
+.ico-calendar:before { content: "\ea0d"; }
+.ico-camera:before { content: "\ea0e"; }
+.ico-check:before { content: "\ea0f"; }
+.ico-checkbox-fill:before { content: "\ea10"; }
+.ico-checkbox:before { content: "\ea11"; }
+.ico-chevron-down:before { content: "\ea12"; }
+.ico-chevron-left:before { content: "\ea13"; }
+.ico-chevron-right:before { content: "\ea14"; }
+.ico-chevron-up:before { content: "\ea15"; }
+.ico-clear:before { content: "\ea16"; }
+.ico-close:before { content: "\ea17"; }
+.ico-copy:before { content: "\ea18"; }
+.ico-coupon-fill:before { content: "\ea19"; }
+.ico-coupon:before { content: "\ea1a"; }
+.ico-customer-service:before { content: "\ea1b"; }
+.ico-delete:before { content: "\ea1c"; }
+.ico-discount-percent-fill:before { content: "\ea1d"; }
+.ico-discount-percent:before { content: "\ea1e"; }
+.ico-e-bike:before { content: "\ea1f"; }
+.ico-e-ticket:before { content: "\ea20"; }
+.ico-earth:before { content: "\ea21"; }
+.ico-eco:before { content: "\ea22"; }
+.ico-edit:before { content: "\ea23"; }
+.ico-error:before { content: "\ea24"; }
+.ico-exchange-dollar:before { content: "\ea25"; }
+.ico-expand-up-down:before { content: "\ea26"; }
+.ico-expand:before { content: "\ea27"; }
+.ico-eye-close:before { content: "\ea28"; }
+.ico-eye:before { content: "\ea29"; }
+.ico-facebook:before { content: "\ea2a"; }
+.ico-feedback:before { content: "\ea2b"; }
+.ico-filter:before { content: "\ea2c"; }
+.ico-fire:before { content: "\ea2d"; }
+.ico-frame:before { content: "\ea2e"; }
+.ico-function:before { content: "\ea2f"; }
+.ico-gift:before { content: "\ea30"; }
+.ico-global:before { content: "\ea31"; }
+.ico-grid:before { content: "\ea32"; }
+.ico-heart-fill:before { content: "\ea33"; }
+.ico-heart:before { content: "\ea34"; }
+.ico-history-fill:before { content: "\ea35"; }
+.ico-history:before { content: "\ea36"; }
+.ico-home-fill:before { content: "\ea37"; }
+.ico-home:before { content: "\ea38"; }
+.ico-id-card:before { content: "\ea39"; }
+.ico-image:before { content: "\ea3a"; }
+.ico-information:before { content: "\ea3b"; }
+.ico-instagram:before { content: "\ea3c"; }
+.ico-line:before { content: "\ea3d"; }
+.ico-list:before { content: "\ea3e"; }
+.ico-location:before { content: "\ea3f"; }
+.ico-lock:before { content: "\ea40"; }
+.ico-mail:before { content: "\ea41"; }
+.ico-map-pin:before { content: "\ea42"; }
+.ico-megaphone-fill:before { content: "\ea43"; }
+.ico-megaphone:before { content: "\ea44"; }
+.ico-menu:before { content: "\ea45"; }
+.ico-message:before { content: "\ea46"; }
+.ico-messenger:before { content: "\ea47"; }
+.ico-mobile:before { content: "\ea48"; }
+.ico-money-dollar-circle:before { content: "\ea49"; }
+.ico-more:before { content: "\ea4a"; }
+.ico-movie:before { content: "\ea4b"; }
+.ico-navigation:before { content: "\ea4c"; }
+.ico-news:before { content: "\ea4d"; }
+.ico-nft:before { content: "\ea4e"; }
+.ico-notice:before { content: "\ea4f"; }
+.ico-notification-badge:before { content: "\ea50"; }
+.ico-notification:before { content: "\ea51"; }
+.ico-omnichat:before { content: "\ea52"; }
+.ico-pause:before { content: "\ea53"; }
+.ico-phone:before { content: "\ea54"; }
+.ico-play-circle:before { content: "\ea55"; }
+.ico-play:before { content: "\ea56"; }
+.ico-point:before { content: "\ea57"; }
+.ico-price-tag:before { content: "\ea58"; }
+.ico-prohibited:before { content: "\ea59"; }
+.ico-qr-code:before { content: "\ea5a"; }
+.ico-question-answer:before { content: "\ea5b"; }
+.ico-question:before { content: "\ea5c"; }
+.ico-radio-button-fill:before { content: "\ea5d"; }
+.ico-radio-button:before { content: "\ea5e"; }
+.ico-refresh:before { content: "\ea5f"; }
+.ico-refund:before { content: "\ea60"; }
+.ico-ruler:before { content: "\ea61"; }
+.ico-scan:before { content: "\ea62"; }
+.ico-search-fill:before { content: "\ea63"; }
+.ico-search:before { content: "\ea64"; }
+.ico-setting:before { content: "\ea65"; }
+.ico-share-2:before { content: "\ea66"; }
+.ico-share:before { content: "\ea67"; }
+.ico-shirt:before { content: "\ea68"; }
+.ico-shopping-fill:before { content: "\ea69"; }
+.ico-shopping:before { content: "\ea6a"; }
+.ico-shortcut:before { content: "\ea6b"; }
+.ico-skip-up:before { content: "\ea6c"; }
+.ico-sort-asc:before { content: "\ea6d"; }
+.ico-sort-desc:before { content: "\ea6e"; }
+.ico-sparkling:before { content: "\ea6f"; }
+.ico-star-fill:before { content: "\ea70"; }
+.ico-star:before { content: "\ea71"; }
+.ico-store:before { content: "\ea72"; }
+.ico-subtract:before { content: "\ea73"; }
+.ico-success:before { content: "\ea74"; }
+.ico-time:before { content: "\ea75"; }
+.ico-truck:before { content: "\ea76"; }
+.ico-user-fill:before { content: "\ea77"; }
+.ico-user:before { content: "\ea78"; }
+.ico-volume-mute:before { content: "\ea79"; }
+.ico-volume-up:before { content: "\ea7a"; }
+.ico-wallet:before { content: "\ea7b"; }
+.ico-warning:before { content: "\ea7c"; }
+.ico-whatsapp:before { content: "\ea7d"; }
+.ico-youtube:before { content: "\ea7e"; }
+.ico-zoom-in:before { content: "\ea7f"; }

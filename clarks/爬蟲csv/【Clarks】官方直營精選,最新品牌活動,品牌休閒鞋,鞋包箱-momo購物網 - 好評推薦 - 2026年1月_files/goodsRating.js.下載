@@ -1,0 +1,139 @@
+//大網評鑑分數
+var goodsRating = {
+  //取得商品評鑑星等
+  getGoodsRatingInfo:function(goodsCodeList ){
+      var obj = new Object();
+      obj.host = 'mobile';
+      obj.goodsCode = goodsCodeList;
+      var rtn = getGoodsSaleCountsV2(obj); //使用共用的commentApi.js
+      if (rtn.apiError || !rtn.apiSuccess) {
+        // 記錄錯誤log
+        momoj.ajaxTool({
+          data : {
+            flag : "recordAwsApiLog",
+            params : obj,
+            result : rtn
+          }
+        });
+        return null;
+      } else {
+        if(rtn.rtn.resultCode == 200 && rtn.rtn.success){
+          return rtn;
+        }else{
+          return null;
+        }
+      }
+  },
+  getGoodsCodeArray:function( ){
+    var allgoodsArr =[];
+    var objgoods = momoj(".goodsTotalSales");
+    momoj.each(objgoods,function(idx ,objGood){
+      var goodsCode = momoj(objGood).attr("totalSalesGD");
+      allgoodsArr.push(goodsCode);
+    });
+    return allgoodsArr;
+  },
+  setRatingInfo:function(response, goodsCodeList ){
+      var saleInfo = response.rtn.saleInfo;
+      var saleInfoArray = [];
+      for (const key in saleInfo) {
+        if (saleInfo.hasOwnProperty(key)) {
+          saleInfoArray.push({ goodsCode: key, ...saleInfo[key] })
+        }
+      }
+      let goodsInfoList = [];
+      goodsInfoList = goodsCodeList.map(function (goodsCode) {
+        const info = saleInfoArray.find(function (info) {
+          return info.goodsCode === goodsCode;
+        });
+        var good ={};
+        if (typeof info === 'undefined') {
+          good.goodsCode = goodsCode;
+          good.rating = '';
+          good.ratingTimes = '';
+          good.saleCount = '';
+          return good;
+        } else {
+          good.goodsCode = goodsCode;
+          good.rating = info.rating || '';
+          good.ratingTimes = info.ratingTimes || '';
+          good.saleCount = info.saleCount || '';
+          return good;
+        };
+      });
+      return goodsInfoList;
+  },
+  showRatingInfoList:function(goodsInfoList){
+    var highestScore = 5;
+    momoj.each(goodsInfoList, function (i, good) {
+      //商品評分
+      var ratingStarBox = '<span class="star-box"></span>';
+      var ratingScore = Number(good.rating) || 0;
+  
+      if (ratingScore && ratingScore >= 1) {
+        var ratingStars = '<div class="ratingStars"></div>';
+        var starFull = '<span class="star starFull"></span>';
+        var starHalf = '<span class="star startHalf"></span>';
+        var starOutline = '<span class="star starOutline"></span>';
+  
+        //滿顆星
+        for (let i = 1; i <= Math.floor(ratingScore); i++) {
+          ratingStars = momoj(ratingStars).append(starFull);
+        }
+        //半顆星
+        if (!Number.isInteger(ratingScore)) {
+          ratingStars = momoj(ratingStars).append(starHalf);
+        }
+        //空心星
+        for (let i = Math.ceil(ratingScore); i < highestScore; i++) {
+          ratingStars = momoj(ratingStars).append(starOutline);
+        }
+        ratingStarBox = momoj(ratingStarBox).append(ratingStars);
+      }
+      //商品評論次數
+      if (good.ratingTimes && good.ratingTimes !== '(0)') {
+        var ratingTimes = `<div class="ratingCounts">
+          <span class="number">${good.ratingTimes}</span>
+          </div>`;
+        ratingStarBox = momoj(ratingStarBox).append(ratingTimes);
+      }
+    });
+  },
+  showRatingInfo:function(ratingInfo){  
+    var highestScore = 5;
+    //商品評分
+    var ratingStarBox = '<span class="star-box"></span>';
+    if(ratingInfo){
+      var ratingScore = Number(ratingInfo.rating) || 0;
+  
+      if (ratingScore && ratingScore >= 1) {
+        var ratingStars = '<div class="ratingStars"></div>';
+        var starFull = '<span class="star starFull"></span>';
+        var starHalf = '<span class="star startHalf"></span>';
+        var starOutline = '<span class="star starOutline"></span>';
+  
+        //滿顆星
+        for (let i = 1; i <= Math.floor(ratingScore); i++) {
+          ratingStars = momoj(ratingStars).append(starFull);
+        }
+        //半顆星
+        if (!Number.isInteger(ratingScore)) {
+          ratingStars = momoj(ratingStars).append(starHalf);
+        }
+        //空心星
+        for (let i = Math.ceil(ratingScore); i < highestScore; i++) {
+          ratingStars = momoj(ratingStars).append(starOutline);
+        }
+        ratingStarBox = momoj(ratingStarBox).append(ratingStars);
+      }
+      //商品評論次數
+      if (ratingInfo.ratingTimes && ratingInfo.ratingTimes !== '(0)') {
+        var ratingTimes = `<div class="ratingCounts">
+          <span class="number">${ratingInfo.ratingTimes}</span>
+          </div>`;
+        ratingStarBox = momoj(ratingStarBox).append(ratingTimes);
+      }
+    }
+    return ratingStarBox;
+  }
+}

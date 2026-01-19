@@ -1,0 +1,20 @@
+/**
+ * 取得商品購買前需要顯示的提示文案
+ * @param {string} goodsCode - 商品編號
+ * @returns {object} 寵物食品通知相關資訊
+ */
+function getGoodsPrePurchaseNotice(goodsCode) {
+    // 判斷 goodsCode 是否為空
+  if (!goodsCode) {
+    return null;
+  }
+// 執行 AJAX 請求（同步）
+  let rtnObj = momoj.ajaxTool({
+    data: {
+      flag: 2101,
+      goodsCode: goodsCode
+    }
+  });
+  // 回傳結果
+  return rtnObj;
+}

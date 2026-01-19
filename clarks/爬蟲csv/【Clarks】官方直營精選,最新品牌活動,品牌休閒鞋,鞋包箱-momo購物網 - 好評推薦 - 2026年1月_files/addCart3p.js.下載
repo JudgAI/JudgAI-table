@@ -1,0 +1,1276 @@
+var addCart3pHtmlTmp = `
+    <p class="closebtn_new">
+      <a class="closeInner"><b>請選擇商品規格</b></a>
+    </p>
+    <div class="prdImgBlock prdImgWrap swiper-container swiper-container-initialized swiper-container-horizontal">
+    </div>
+    <div class="detailArea">
+      <div class="prdInfoBlock">
+        <p class="prdName" id="prdName"></p>
+        <div class="ec-prices-group">
+          <ul class="ec-current-prices-group"></ul>
+        </div>
+      </div>
+      <div class="prdScroll">
+        <dl id="convenience" class="shipping-method">
+          <dt>配送方式：<span class="alert-warning" id="selectMsg3" style="display: none;">請選擇配送方式</span></dt>
+        </dl>
+        <div class="formatBlock" name="spec1" id="colorSpecs">
+          <b id="spec1_name"><i></i></b>
+          <ul>
+          </ul>
+        </div>
+        <div class="formatBlock" name="spec2" id="sizeSpecs">
+          <b id="spec2_name"><i></i></b>
+          <ul>
+          </ul>
+        </div>
+        <div class="buyQuantity">
+          <div>
+            <b>數量</b>
+            <p class="stockTip"></p>
+          </div>
+          <div class="numberStyle">
+            <span class="minusBtn selected"></span>
+            <input type="text" class="numberArea" readonly="" value="1">
+            <span class="plusBtn"></span>
+          </div>
+        </div>
+        <div class="four-appliance-recycle" style="display:none">
+          <div class="head">回收廢四機服務<span class="alert-warning" id="selectMsg4" style="display:none">請選擇是否回收廢四機</span></div>
+          <div class="body">
+            <div class="btn-group">
+              <span class="btn-check" id="recoverY" value="1">回收廢四機</span>
+              <span class="btn-check" id="recoverN" value="0">不回收</span>
+            </div>
+            <div class="title"></div>
+            <div class="detail"></div>
+            <div class="note"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="preOrderArea">
+      <div class="innerArea">
+        <p id="ShowGoodsDt"></p>
+      </div>
+    </div>
+`;
+
+var addCartGlobalVal = null; //此頁常用到的變數可以放這 GlobalVal
+
+const AddCart3p = {
+  /** 全域變數 */
+  GlobalVal: class {
+    constructor() {
+      this.selectedA = null;       	 	 //選擇的規格一
+      this.selectedB = null;     		 	 //選擇的規格二
+      this.selectedObj = null;   		 	 //選擇的規格物件
+      this.selectedMaxStock = 1; 		 	 //最多可選擇的數量
+      this.buyNum = 1; 						   	 //購買的數量
+      this.rtnGoodsData = null; 		 	 //API Response
+      this.formType5 = null;         	 //商品規格
+      this.multipleTypeFlag = false; 	 //多規格flag
+      this.limitBuyQty = null;       	 //限購數量
+      this.useTwnTraCardYn = '0';    	 //使用國旅卡(0:無 1:國旅卡)
+      this.delivery = null; 				 	 //配送方式
+      this.limitBuy4MemberOnly = null; //會員專屬商品
+      this.canUseBuy1Get1FreeYn = '0'; //買一送一 （"1" 買一送一、"2" 開賣商品類型）
+      this.recoverYn = null; 				 	 //廢四機回收
+      this.actionType = null;
+      this.etickeyYn = '0'; 				   //電子票券 0:否 ; 1:是
+      this.cycleYn = '0';
+      this.cycleFrequency = '';
+      this.cycleTimes = '';
+      this.hasGoodsReceiveDiscount = false; //配送方式說明浮層
+      this.isMultiplePrice = false;    //一品多價
+      this.formType1 = null;           //價錢
+    }
+  },
+  init: function (rtnGoodsData) {
+    if (!rtnGoodsData) {
+      alert("資料有誤，系統忙碌中！");
+      return;
+    } else if (rtnGoodsData.rtnCode == '201') { //API 撈取不到資料
+      alert("資料有誤，系統忙碌中！");
+      return;
+    }
+    //set變數
+    this.resetGlobalVal();
+    rtnGoodsData = rtnGoodsData.rtnData;
+    addCartGlobalVal.rtnGoodsData = rtnGoodsData;
+    addCartGlobalVal.limitBuyQty = rtnGoodsData.purchaseNumber ? parseInt(rtnGoodsData.purchaseNumber) : null;
+    addCartGlobalVal.canUseBuy1Get1FreeYn = rtnGoodsData.marketType === '1' ? '1' : '0';
+    addCartGlobalVal.formType5 = rtnGoodsData.formData && rtnGoodsData.formData.find(function (obj) {
+      return obj.formType === "5";
+    });
+    //解除1p加入購物車的事件
+    this.off1pAddCartEvent();
+    //append浮層template
+    this.createHtml(rtnGoodsData);
+    //swiper設定
+    this.setSwiper();
+    //事件綁定
+    this.bindEvent();
+    //預選
+    this.selectDefault();
+    //開賣後10分鐘內的商品,要去使用Google ReCaptcha
+    var saleNoticeSwitchType = momoj("#saleNoticeSwitchType").val();
+    if (typeof saleNoticeSwitchType != 'undefined' && saleNoticeSwitchType == "2") {
+      momoj("#commonGtoken").setGtoken("add_cart");//google recaptcha
+    }
+    //調整浮層大小
+    this.updateTemplateSize();
+  },
+  createHtml: function (rtnGoodsData) {
+
+    //=========================================set value=========================================
+    let $template = momoj('<div>').html(addCart3pHtmlTmp);
+    let $clone = $template.clone();
+
+    //加入購物車用
+    $clone.append('<input type="hidden" name="srcType" id="srcType" value="' + (typeof srcType === "undefined" ? "" : srcType) + '">');
+    $clone.append('<input type="hidden" name="cateCode" id="cateCode" value="' + ((function (searchString) { var params = {}; momoj.each(searchString.substring(1).split("&"), function (i, s) { params[s.split("=")[0]] = decodeURI(s.split("=")[1]); }); return params; })(location.search)["d_code"] || "") + '">')
+    //多規格圖&&圓標圖
+    this.setFloatMainImg($clone, rtnGoodsData)
+    //品名.tag
+    $clone.find('.prdInfoBlock #prdName').append(this.setPrdNameTitle(rtnGoodsData));
+    //價錢
+    $clone.find('.ec-current-prices-group').append(this.setPriceItem(rtnGoodsData));
+    //配送方式
+    let goodsReceive = this.setGoodsReceive(rtnGoodsData);
+    goodsReceive == "" ? $clone.find('#convenience').hide() : $clone.find('#convenience').append(goodsReceive);
+    //規格
+    this.setGoodsType(addCartGlobalVal.formType5, $clone)
+    //出貨資訊.開賣資訊
+    this.updateShowGoodsDt(rtnGoodsData.goodsPaymentDescription, true, rtnGoodsData, $clone);
+    //購買按鈕
+    $clone.find('.preOrderArea').after(this.getFooterBtn(rtnGoodsData.canTipStock));
+    //限購提示訊息
+    this.setTextTip2($clone, rtnGoodsData);
+    //=========================================append=========================================
+    var prdTypeArea = momoj('#prdTypeArea');
+    if (prdTypeArea.length == 0) {
+      var form = momoj('<form id="dCodeFrm" name="dCodeFrm"><div id="prdTypeArea" class="prdTypeArea"></div></form>');
+      momoj('body').append(form);
+    }
+
+    momoj('#prdTypeArea').html($clone.contents());
+  },
+  /**
+   * 品名&tag
+   * @param {*} rtnGoodsData 
+   * @returns 
+   */
+  setPrdNameTitle: function (rtnGoodsData) {
+    const goodsTag = rtnGoodsData.goodsTag;
+
+    let tagHtml = '';
+    if (goodsTag) {
+      tagHtml += '<span class="icon-group">';
+      goodsTag.forEach((item, index) => {
+        if (item.content.includes('預')) {
+          tagHtml += `<span class="icon-preorder" style="color: ${item.textColor}; background-color: ${item.bgColor};"><img src="${item.imgUrl}" alt="${item.content}" /></span>`;
+        } else {
+          tagHtml += `<span class="icon-store" style="color: ${item.textColor}; background-color: ${item.bgColor};"><img src="${item.imgUrl}" alt="${item.content}" /></span>`;
+        }
+      })
+      tagHtml += '</span>';
+    }
+
+    return `${tagHtml}<span class="prd-name">${rtnGoodsData.goodsName}</span>`
+  },
+  /**
+   * 價錢
+   * @param {*} rtnGoodsData 
+   * @returns 
+   */
+  setPriceItem: function (rtnGoodsData) {
+    const formType1 = rtnGoodsData.formData && rtnGoodsData.formData.find(function (obj) {
+      return obj.formType === "1";
+    });
+
+    if (formType1.formPriceContent && 'rangePrice' in formType1.formPriceContent) { //一品多價
+      addCartGlobalVal.isMultiplePrice = true;
+      addCartGlobalVal.formType1 = formType1; //更新價格會用到
+      let rangePrice = formType1.formPriceContent.rangePrice;
+      return `
+        <li>
+            <div class="ec-current-prices">
+                <span class="ec-price-symbol">${rangePrice.minPriceSign}</span><span class="ec-current-price">${rangePrice.minPrice}</span>
+            </div>
+        </li>
+        <li>
+            <div class="ec-current-prices">
+                <span class="ec-price-symbol">${rangePrice.maxPriceSign}</span><span class="ec-current-price">${rangePrice.maxPrice}</span>
+            </div>
+        </li>
+      `;
+    } else {
+      let basePrice = formType1.formPriceContent.basePrice
+      let goodsStatus = basePrice.goodsStatus != 'undefined' && basePrice.goodsStatus ? basePrice.goodsStatus : "";
+      return `
+        <li>
+            <div class="ec-current-prices">
+                <span class="ec-price-symbol">${basePrice.sign}</span><span class="ec-current-price">${basePrice.price}</span>
+            </div>
+            <div class="ec-discount-text">${goodsStatus}</div>
+        </li>
+      `;
+    }
+  },
+  /**
+   * 配送方式
+   * @param {*} rtnGoodsData 
+   * @returns 
+   */
+  setGoodsReceive: function (rtnGoodsData) {
+    const formType4 = rtnGoodsData.formData && rtnGoodsData.formData.find(function (obj) {
+      return obj.formType === "4";
+    });
+
+    if (rtnGoodsData.goodsType == "6" || rtnGoodsData.goodsType == "7") { //中古車、紅利金不顯示配送
+      return "";
+    }
+
+    if (formType4 && formType4.goodsReceive) {
+      let deliveryListHtml = '';
+      formType4.goodsReceive.forEach((item, index) => {
+        let discount = '';
+        if (item.hasGoodsReceiveDiscount) {
+          discount = '<i class="fee-info"></i>';
+          addCartGlobalVal.hasGoodsReceiveDiscount = true;
+        }
+
+        deliveryListHtml +=
+          `
+          <dd>
+            <input type="radio" value="${item.goodsReceiveCode}" id="${item.goodsReceiveCode}">
+            <label for="${item.goodsReceiveCode}"><span class="method-text">${item.goodsReceiveType}</span></label>
+            <span class="shipping-info">${item.goodsReceiveContent}${discount}</span>
+          </dd>
+        `;
+      });
+      return deliveryListHtml;
+    } else {
+      return "";
+    }
+  },
+  /**
+   * 組合商品(目前3P應該是沒有,若有需要微調這部分)
+   * @param {*} rtnGoodsData 
+   * @returns 
+   */
+  setGoodsLayout: function (rtnGoodsData) {
+    let html = "";
+
+    if (rtnGoodsData.setGoodsLayout) {
+
+      let li = '';
+      let option = '';
+      rtnGoodsData.setGoodsLayout.forEach(goods => {
+        let setGoodsDetail = goods.setGoodsDetail;
+        let disabled = "";
+        if (setGoodsDetail.length <= 1) {
+          disabled = "disabled";
+        }
+        setGoodsDetail.forEach(goodsDetail => {
+          option += `
+            <option value="${goodsDetail.setGoodsTypeCode}" setdflag="${goodsDetail.setDFlag}" setdno="${goodsDetail.setDNo}" setdcount="" setdfrom="" setdend="${goodsDetail.setDEnd}" speckey="${goods.setGoodsCode}_${goodsDetail.setGoodsTypeCode}">${goodsDetail.setGoodsType}</option>
+          `
+        })
+        li += `
+        <li>
+          <div class="setprdImg"><img src="${goods.setGoodsIcon}" origsrc="${goods.setGoodsIcon}" width="100%" height="auto" alt="${goods.setGoodsTitle}" title="${goods.setGoodsTitle}"></div>
+          <p class="setprdName">${goods.setGoodsTitle}</p>
+          <p class="setprdMode prdMode">
+            <select ingoodscode="${goods.setGoodsCode}" inqty="3" class="CompareSel InSet" ${disabled}>
+              ${option}
+              <b>${goods.goodsCnt}件</b>
+            </select>
+          </p>
+        </li>`
+      });
+
+      html += `
+      <div class="setformatBlock setprd">
+        <b>選擇組合商品規格：</b>
+        <i>組合商品無法單一退換貨，詳情請參閱退換貨須知</i>
+        <ul id="setGoodsHtml">
+          ${li}
+        </ul>
+        <p class="prdPrecautions"></p>
+      </div>`;
+    }
+    return html;
+
+  },
+  /**
+   * 出貨資訊
+   * @param {string} text 文案
+   * @param {boolean} openYN 顯示Y/N
+   * @param {object} rtnGoodsData api's response
+   * @param {Element} $template 浮層元素
+   */
+  updateShowGoodsDt: function (text, openYN, rtnGoodsData, $template) {
+    if (rtnGoodsData.shop.shopStatus && rtnGoodsData.shop.shopStatus.status != 'open') {
+      $template.find('#ShowGoodsDt').html("").append(rtnGoodsData.shop.shopStatus.message);
+      $template.find('#preOrderArea').show();
+    } else {
+      if (text && openYN) {
+        $template.find('#ShowGoodsDt').html("").append(text);
+        $template.find('#preOrderArea').show();
+      } else {
+        $template.find('#ShowGoodsDt').html("");
+        $template.find('#preOrderArea').hide();
+      }
+    }
+  },
+  /**
+   * 按鈕
+   * @param {*} canTipStock 
+   * @returns 
+   */
+  getFooterBtn: function (canTipStock) {
+    let html = '';
+    switch (canTipStock) {
+      case '0':
+        //'售完補貨中'
+        html = `<span id="spnBuy" class="buyBtn buyBtn_out"><a class="soldout">售完補貨中</a></span>`;
+        break
+
+      case '1':
+        //'可訂購時通知我'
+        html = `<span id="spnBuy" class="buyBtn buyBtn_out"><a class="soldout">售完補貨中</a></span>`; //因3P商品目前不支援 暫改成售完補貨中
+        break
+
+      case '2':
+        //'即將上市'
+        html = `<span id="spnBuy" class="buyBtn buyBtn_out"><a class="soldout">即將上市</a></span>`;
+        break
+
+      case '3':
+        //'開賣通知我'
+        html = `<span id="saleNoticeBox" class="saleNoticeBox"><b></b>
+          <div class="innerBox">
+            <a id="saleNoticeBtn" class="saleNoticeBtn" onclick="setOnSaleNotice( '${addCartGlobalVal.rtnGoodsData.goodsCode}' ,'0'); return false;">開賣通知</a>
+          </div>
+        </span>`
+        break
+
+      case '4':
+        //'取消通知'
+        html = `<span id="saleNoticeBox" class="saleNoticeBox"><b></b>
+          <div class="innerBox">
+            <a id="saleNoticeBtn" class="saleNoticeBtn noticSelected" onclick="setOnSaleNotice( '${addCartGlobalVal.rtnGoodsData.goodsCode}' ,'1'); return false;">取消通知</a>
+          </div>
+        </span>`;
+        break
+
+      default:
+        //'加入購物車'
+        html = `<span id="enterBtn" class="buyBtn" ><a>加入購物車</a></span>`;
+        break
+    }
+
+    return html;
+  },
+  /**
+   * 更新按鈕
+   */
+  updateFooterBtn: function (canTipStock) {
+    //移除button
+    momoj('#prdTypeArea #spnBuy,#prdTypeArea #saleNoticeBox,#prdTypeArea #enterBtn').remove();
+    momoj('#prdTypeArea .preOrderArea').after(this.getFooterBtn(canTipStock));
+  },
+  /**
+   * 限購提示訊息
+   * @param {*} $template 
+   * @param {*} rtnGoodsData 
+   */
+  setTextTip2: function ($template, rtnGoodsData) {
+    let isVisitorBuy = rtnGoodsData.isVisitorBuy; //(0:不可訪客購買 1:可以訪客購買)
+    if (isVisitorBuy === '0') {
+      addCartGlobalVal.limitBuy4MemberOnly = '1';
+    } else {
+      addCartGlobalVal.limitBuy4MemberOnly = '0';
+    }
+
+    if (rtnGoodsData.purchaseText) {
+      $template.find(".stockTip").html(rtnGoodsData.purchaseText + "<span id='remainingText'></span>").show();
+    }
+  },
+  /**
+   * 庫存數量提示訊息
+   * @param {*} goodsNum 
+   */
+  updateTextTip: function (goodsNum) {
+    if (goodsNum) {
+      let num = parseInt(goodsNum);
+      let restrictionType = addCartGlobalVal.rtnGoodsData.restrictionType;
+      let restrictionQty = parseInt(addCartGlobalVal.rtnGoodsData.restrictionQty)
+      if (addCartGlobalVal.rtnGoodsData.purchaseText) { //限購
+        if (num === 0 || (restrictionQty === 0 && restrictionType !== '2')) {
+          momoj('#prdTypeArea').find('#remainingText').html("");
+        } else if (0 < num && num <= 5) {
+          if (restrictionType !== '2' && !isNaN(restrictionQty) && goodsNum > restrictionQty && restrictionQty > 0) {
+            momoj('#prdTypeArea').find('#remainingText').html("").append(`，僅剩<b class="momo-color">${restrictionQty}</b>組`);
+          } else {
+            momoj('#prdTypeArea').find('#remainingText').html("").append(`，僅剩<b class="momo-color">${goodsNum}</b>組`);
+          }
+        } else {
+          if ((num >= restrictionQty) && restrictionQty > 0) {
+            momoj('#prdTypeArea').find('#remainingText').html("").append(`，僅剩<b>${restrictionQty}</b>組`);
+          } else {
+            momoj('#prdTypeArea').find('#remainingText').html("");
+          }
+        }
+      } else {
+        if (0 < num && num <= 5) {
+          momoj('#prdTypeArea').find('.stockTip').html("").append(`僅剩<b class="momo-color">${goodsNum}</b>組`).show();
+        } else if (num == 0) {
+          momoj('#prdTypeArea').find('.stockTip').html("").hide();
+        } else {
+          if ((num >= restrictionQty) && restrictionQty > 0) {
+            momoj('#prdTypeArea').find('.stockTip').html("").append(`僅剩<b>${restrictionQty}</b>組`).show();
+          } else {
+            momoj('#prdTypeArea').find('.stockTip').html("").hide();
+          }
+        }
+      }
+    }
+  },
+  /**
+   * 圖片
+   * @param {*} $template 
+   * @param {*} rtnGoodsData 
+   */
+  setFloatMainImg: function ($template, rtnGoodsData) {
+
+    var insertStr = '';
+    let imgTagUrlHtml = '';
+    let imgLongTagUrlHtml = '';
+    let imgBottomTagUrlHtml = '';
+    //插入圓標圖
+    if (rtnGoodsData.imgTagUrl) {
+      imgTagUrlHtml = `<div class="imgTag" style="top: 0px; left:0px"><img src='${rtnGoodsData.imgTagUrl}'></div>`;
+    }
+    //插入上標圖
+    if (rtnGoodsData.imgLongTagUrl) {
+      imgLongTagUrlHtml = `<div class="imgTagRectangle" style="top: 0px; left:0px"><img src='${rtnGoodsData.imgLongTagUrl}'></div>`;
+    }
+    //插入下標圖
+    if (rtnGoodsData.imgBottomTagUrl) {
+      imgBottomTagUrlHtml = `<div class="imgTagBottom" style="padding: 0 0"><img src='${rtnGoodsData.imgBottomTagUrl}'></div>`;
+    }
+
+    //主圖
+    insertStr += `<div class="swiper-wrapper" style="transform: translate3d(0px, 0px, 0px);">`;
+    if (Array.isArray(rtnGoodsData.imgTypeUrlArray) && rtnGoodsData.imgTypeUrlArray.length > 0) {
+      rtnGoodsData.imgTypeUrlArray.forEach((imgTypeUrl, index) => {
+        let tags = "";
+        if (index === 0) {
+          tags = `${imgTagUrlHtml}${imgLongTagUrlHtml}${imgBottomTagUrlHtml}`;
+        }
+        insertStr += `<div class="swiper-slide swiper-slide-active" style="width: 400px; margin-right: 20px;">
+          ${tags}
+          <img class="prdImg" width="400" height="auto" src="${imgTypeUrl}" alt="${rtnGoodsData.goodsName}" title="${rtnGoodsData.goodsName}">
+        </div>`;
+      });
+    }
+    insertStr += '</div>';
+
+    //左右button
+    insertStr += `<div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-disabled="false"></div>
+                  <div class="swiper-button-prev swiper-button-disabled" tabindex="0" role="button" aria-label="Previous slide" aria-disabled="true"></div>
+                  <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>`;
+
+    $template.find('.prdImgBlock').append(insertStr)
+  },
+  /**
+   * 規格
+   */
+  setGoodsType: function (formType5, $template) {
+    const goodsMutipleType = formType5.goodsMutipleType;
+    const goodsMutipleTypeInfo = goodsMutipleType && goodsMutipleType.goodsMutipleTypeInfo;
+
+    if (!goodsMutipleType) { //單規格
+      //變更數量增加按鈕樣式
+      $template.find('.minusBtn').addClass('selected');
+      $template.find('.plusBtn').addClass('selected');
+      //規格二區況隱藏
+      $template.find('#sizeSpecs').hide();
+      //規格一
+      let colorSpecs = $template.find('#colorSpecs');
+      let spec1Name = formType5.totalGoodsTypeTitle ? formType5.totalGoodsTypeTitle : '商品規格';
+      colorSpecs.find('#spec1_name').text(spec1Name);
+      colorSpecs.find('#spec1_name').append(`<span id="selectMsg1" style="display: none">請選擇${spec1Name}</span>`);
+      let spec1Lt = colorSpecs.find('ul');
+      let liHtml = "";
+      if (formType5 && formType5.goodsTypeInfo) {
+        formType5.goodsTypeInfo.forEach(item => {
+          liHtml = `
+          <li name="cart_spec1" class="" alt="${item.goodsTypeAName}" value="${item.goodsTypeAName}" goodsTypeAImgUrl="${item.goodsTypeAImgUrl}">
+            <i>${item.goodsTypeAName}</i>
+          </li>`
+        })
+        spec1Lt.append(liHtml);
+      }
+
+    } else if (goodsMutipleType && goodsMutipleTypeInfo && goodsMutipleTypeInfo.length == 1 && goodsMutipleTypeInfo[0].goodsTypeAName == '單一規格') {
+
+      addCartGlobalVal.selectedA = '單一規格';
+      momoj('#prdTypeArea').find('#ShowGoodsDt').text(goodsMutipleTypeInfo[0].goodsPaymentDescription); //黃色區塊(出貨資訊)
+
+      //規格一
+      let colorSpecs = $template.find('#colorSpecs');
+      colorSpecs.find('#spec1_name').text(goodsMutipleType.goodsTypeATitle);
+      colorSpecs.find('#spec1_name').append(`<span id="selectMsg1" style="display: none">請選擇${goodsMutipleType.goodsTypeATitle}</span>`);
+      let spec1Lt = colorSpecs.find('ul');
+      let liHtml = "";
+      goodsMutipleTypeInfo.forEach(item => {
+        liHtml += `
+                <li name="cart_spec1" class="" alt="${item.goodsTypeAName}" value="${item.goodsTypeAName}" goodsTypeAImgUrl="${item.goodsTypeAImgUrl}">
+                  <i>${item.goodsTypeAName}</i>
+                </li>`
+      })
+      spec1Lt.append(liHtml);
+
+      //單一規格不顯示規格
+      $template.find('#colorSpecs').hide();
+      $template.find('#sizeSpecs').hide();
+
+    } else { //多規格
+      addCartGlobalVal.multipleTypeFlag = true;
+      //變更數量增加按鈕樣式
+      $template.find('.minusBtn').addClass('selected');
+      $template.find('.plusBtn').addClass('selected');
+      //規格一
+      let colorSpecs = $template.find('#colorSpecs');
+      colorSpecs.find('#spec1_name').text(goodsMutipleType.goodsTypeATitle);
+      colorSpecs.find('#spec1_name').append(`<span id="selectMsg1" style="display: none">請選擇${goodsMutipleType.goodsTypeATitle}</span>`);
+      let spec1Lt = colorSpecs.find('ul');
+      let liHtml = "";
+
+      const uniqueMutipleTypeInfoA = this.removeDuplicates(goodsMutipleTypeInfo, 'goodsTypeAName');
+      uniqueMutipleTypeInfoA.forEach(item => {
+        liHtml += `
+                  <li name="cart_spec1" class="" alt="${item.goodsTypeAName}" value="${item.goodsTypeAName}" goodsTypeAImgUrl="${item.goodsTypeAImgUrl}">
+                    <i>${item.goodsTypeAName}</i>
+                  </li>`
+      });
+      spec1Lt.append(liHtml);
+
+      //規格二
+      let sizeSpecs = $template.find('#sizeSpecs');
+      sizeSpecs.find('#spec2_name').text(goodsMutipleType.goodsTypeBTitle);
+      sizeSpecs.find('#spec2_name').append(`<span id="selectMsg2" style="display: none">請選擇${goodsMutipleType.goodsTypeBTitle}</span>`);
+      let spec2Lt = sizeSpecs.find('ul');
+      liHtml = "";
+      const uniqueMutipleTypeInfoB = this.removeDuplicates(goodsMutipleTypeInfo, 'goodsTypeBName');
+      uniqueMutipleTypeInfoB.forEach(item => {
+        liHtml += `
+                  <li name="cart_spec2" class="" alt="${item.goodsTypeBName}" value="${item.goodsTypeBName}">
+                    <i>${item.goodsTypeBName}</i>
+                  </li>`;
+      })
+      spec2Lt.append(liHtml);
+    }
+  },
+  /**
+   * 更新規格按鈕(不)可點選的
+   * @param {string} type A:規格一 ; B:規格二
+   */
+  updateGoodsTypeButtons: function (type) {
+    if (type === "A") {
+      AddCart3p.updateSelectTips(1, false);
+      if (addCartGlobalVal.multipleTypeFlag) {
+        momoj('#prdTypeArea').find('#sizeSpecs li[name="cart_spec2"]').each(function () {
+          const typeB = momoj(this).attr('value');
+          const matchingObjects = addCartGlobalVal.formType5.goodsMutipleType && addCartGlobalVal.formType5.goodsMutipleType.goodsMutipleTypeInfo &&
+            addCartGlobalVal.formType5.goodsMutipleType.goodsMutipleTypeInfo.find(obj => obj.goodsTypeAName === addCartGlobalVal.selectedA && obj.goodsTypeBName === typeB);
+          if (!matchingObjects || (matchingObjects && parseInt(matchingObjects.goodsNum) <= 0)) {
+            momoj(this).addClass('outOfStock disabled');
+          } else {
+            momoj(this).removeClass('outOfStock disabled');
+          }
+        });
+
+        if (addCartGlobalVal.selectedB) { //已選擇規格二
+
+          const matchingObjects = addCartGlobalVal.formType5.goodsMutipleType && addCartGlobalVal.formType5.goodsMutipleType.goodsMutipleTypeInfo &&
+            addCartGlobalVal.formType5.goodsMutipleType.goodsMutipleTypeInfo.find(obj => obj.goodsTypeAName === addCartGlobalVal.selectedA && obj.goodsTypeBName === addCartGlobalVal.selectedB);
+          if (!matchingObjects) {
+            alert(`${addCartGlobalVal.selectedA}與已選的規格無法組成，請重選`, false);
+            addCartGlobalVal.selectedB = null;
+            addCartGlobalVal.selectedObj = null;
+            momoj('#prdTypeArea').find('#sizeSpecs li[name="cart_spec2"]').removeClass('selected');
+            momoj('#prdTypeArea').find('#colorSpecs li').removeClass('outOfStock disabled');
+            AddCart3p.updateSelectTips(2, true);
+            AddCart3p.updateGoodsTypeButtons("A");
+            AddCart3p.updateGoodsPrice();
+          } else {
+            addCartGlobalVal.selectedObj = matchingObjects;
+            AddCart3p.updateShowGoodsDt(addCartGlobalVal.selectedObj.goodsPaymentDescription, true, addCartGlobalVal.rtnGoodsData, momoj('#prdTypeArea'));
+            AddCart3p.updateGoodsPrice(addCartGlobalVal.selectedObj.goodsTypePrice.basePrice);
+          }
+        }
+      } else {
+        if (addCartGlobalVal.selectedA === '單一規格') {
+          addCartGlobalVal.selectedObj = addCartGlobalVal.formType5.goodsMutipleType && addCartGlobalVal.formType5.goodsMutipleType.goodsMutipleTypeInfo &&
+            addCartGlobalVal.formType5.goodsMutipleType.goodsMutipleTypeInfo.find(obj => obj.goodsTypeAName === addCartGlobalVal.selectedA);
+        } else {
+          addCartGlobalVal.selectedObj = addCartGlobalVal.formType5.goodsTypeInfo.find(obj => obj.goodsType === addCartGlobalVal.selectedA);
+        }
+        if (addCartGlobalVal.selectedObj) {
+          AddCart3p.updateShowGoodsDt(addCartGlobalVal.selectedObj.goodsPaymentDescription, true, addCartGlobalVal.rtnGoodsData, momoj('#prdTypeArea'));
+        }
+      }
+    } else if (type === "B") {
+      this.updateSelectTips(2, false);
+      momoj('#prdTypeArea').find('#colorSpecs li[name="cart_spec1"]').each(function () {
+        const typeA = momoj(this).attr('value');
+        const matchingObjects = addCartGlobalVal.formType5.goodsMutipleType && addCartGlobalVal.formType5.goodsMutipleType.goodsMutipleTypeInfo &&
+          addCartGlobalVal.formType5.goodsMutipleType.goodsMutipleTypeInfo.find(obj => obj.goodsTypeAName === typeA && obj.goodsTypeBName === addCartGlobalVal.selectedB);
+        if (!matchingObjects || (matchingObjects && parseInt(matchingObjects.goodsNum) <= 0)) {
+          momoj(this).addClass('outOfStock disabled');
+        } else {
+          momoj(this).removeClass('outOfStock disabled');
+        }
+      });
+
+      if (addCartGlobalVal.selectedA) { //已選擇規格一  
+        const matchingObjects = addCartGlobalVal.formType5.goodsMutipleType && addCartGlobalVal.formType5.goodsMutipleType.goodsMutipleTypeInfo &&
+          addCartGlobalVal.formType5.goodsMutipleType.goodsMutipleTypeInfo.find(obj => obj.goodsTypeAName === addCartGlobalVal.selectedA && obj.goodsTypeBName === addCartGlobalVal.selectedB);
+        if (!matchingObjects) {
+          alert(`${addCartGlobalVal.selectedB}與已選的規格無法組成，請重選`, false);
+          addCartGlobalVal.selectedA = null;
+          addCartGlobalVal.selectedObj = null;
+          momoj('#prdTypeArea').find('#colorSpecs li[name="cart_spec1"]').removeClass('selected');
+          momoj('#prdTypeArea').find('#sizeSpecs li').removeClass('outOfStock disabled');
+          AddCart3p.updateSelectTips(1, true);
+          AddCart3p.updateGoodsTypeButtons("B");
+          AddCart3p.updateGoodsPrice();
+        } else {
+          addCartGlobalVal.selectedObj = matchingObjects;
+          AddCart3p.updateShowGoodsDt(addCartGlobalVal.selectedObj.goodsPaymentDescription, true, addCartGlobalVal.rtnGoodsData, momoj('#prdTypeArea'));
+          AddCart3p.updateGoodsPrice(addCartGlobalVal.selectedObj.goodsTypePrice.basePrice);
+        }
+      }
+    }
+  },
+  /**
+   * 選擇規格提示訊息
+   * @param {number} type 
+   * @param {boolean} openYN 
+   */
+  updateSelectTips: function (type, openYN) {
+    if (type === 1) { //規格一
+      if (openYN) {
+        momoj('#prdTypeArea').find('#selectMsg1').show();
+      } else {
+        momoj('#prdTypeArea').find('#selectMsg1').hide();
+      }
+    } else if (type === 2) { //規格二
+      if (openYN) {
+        momoj('#prdTypeArea').find('#selectMsg2').show();
+      } else {
+        momoj('#prdTypeArea').find('#selectMsg2').hide();
+      }
+    } else if (type === 3) { //配送方式
+      if (openYN) {
+        momoj('#prdTypeArea').find('#selectMsg3').show();
+      } else {
+        momoj('#prdTypeArea').find('#selectMsg3').hide();
+      }
+    } else if (type === 4) { //廢四機
+      if (openYN) {
+        momoj('#prdTypeArea').find('#selectMsg4').show();
+      } else {
+        momoj('#prdTypeArea').find('#selectMsg4').hide();
+      }
+    }
+  },
+  /**
+   * 設定廢四機文案
+   * @param {*} rtnGoodsData 
+   * @param {*} $template 
+   */
+  setRecycle: function (rtnGoodsData, $template) {
+    let goodsCode = rtnGoodsData.goodsCode;
+    let entpCode = rtnGoodsData.enterpriseNo;
+
+    if (rtnGoodsData.needRecycle === "1") {
+      let shopGoodsDetail = this.getShopGoodsDetail(goodsCode, entpCode);
+      let recycleInfo = shopGoodsDetail && shopGoodsDetail.recycleInfo;
+      if (recycleInfo) {
+        //標題
+        $template.find(".title").text(recycleInfo.title);
+        //說明內文
+        $template.find(".detail").text(recycleInfo.content);
+        //連絡電話
+        $template.find(".note").text(recycleInfo.contact);
+      }
+
+      $template.find('.four-appliance-recycle').show();
+    }
+  },
+  createDeliverAlert: function (rtnGoodsData) {
+    const formType12 = rtnGoodsData.formData && rtnGoodsData.formData.find(function (obj) {
+      return obj.formType === "12";
+    });
+
+    containerHtml = `<div class="shipping-method-container">`;
+    formType12.formContentInfo.forEach(info => {
+      let notes = '';
+      if(info.content){
+        let notesArray = info.content.split(/\n/);
+        momoj.each(notesArray, function(index, note){
+          if(note.length > 0){
+            notes += `<li>${note}</li>`;
+          }
+        })
+      }
+
+      let goodsReceiveDiscountContentHtml = '';
+      if(info.goodsReceiveDiscountContent){
+        info.goodsReceiveDiscountContent.forEach(discountContent => {
+          goodsReceiveDiscountContentHtml += `
+            <li>
+              <span class="title">${discountContent.tag.content}</span>
+              <span class="text">${discountContent.content}</span>
+            </li>
+          `;
+        });
+      }
+
+      containerHtml += `
+      <div class="shipping-method-item">
+          <div class="item-title">
+              <span class="name">${info.goodsReceiveTitle}</span>
+              <span class="fee">${info.goodsReceiveContent}</span>
+          </div>
+          <div class="item-content">
+              <ol class="notes">
+                  ${notes}
+              </ol>
+              <ul class="promotion-details">`;
+      containerHtml += goodsReceiveDiscountContentHtml;
+      containerHtml += `
+              </ul>
+          </div>
+      </div>`
+    });
+    containerHtml += `<div class="shopping-method-note">依符合最高門檻運費折抵，不累計，以購物車為準</div></div>`;
+
+    var _param = {
+      title: '配送方式',
+      innerHtml: containerHtml,
+      boxwidth: 700,
+      customBtnHtml: `<div class="modal-foot">
+                          <div class="btn-box">
+                              <button id="customButton" class="ec-btn ec-btn-gray btn-close-modal ec-btn-outlined">關閉</button>
+                          </div>
+                      </div>`,
+      z_index: 1002,
+      hideCloseBtn: true,
+    };
+    //浮層
+    floatingLayerBox(_param);
+    floatingLayerBoxAlignCenter();
+
+  },
+  /**
+   * 更換圖片
+   * @param {*} imgUrl 
+   */
+  updateFloatMainImg: function (imgUrl) {
+    if(imgUrl){
+      imgSwiper.selectImg(bindedSwiper,imgUrl);
+    } 
+  },
+  bindEvent: function () {
+
+    /**配送方式 */
+    momoj('body').off('click', '#prdTypeArea #convenience dd').on('click', '#prdTypeArea #convenience dd', function () {
+      momoj('#prdTypeArea #convenience dd input[type="radio"]').prop('checked', false);
+      momoj(this).find('input[type="radio"]').prop('checked', true);
+      AddCart3p.updateSelectTips(3, false);
+      addCartGlobalVal.delivery = momoj(this).find('input[type="radio"]').val();
+    })
+
+    /**規格一 */
+    momoj('body').off('click', '#prdTypeArea li[name="cart_spec1"]').on('click', '#prdTypeArea li[name="cart_spec1"]', function () {
+      momoj('#prdTypeArea li[name="cart_spec1"]').each(function () {
+        momoj(this).removeClass('selected');
+      })
+      momoj(this).addClass('selected');
+      addCartGlobalVal.selectedA = momoj(this).attr('value');
+      const typeAImgUrl = momoj(this).attr("goodsTypeAImgUrl");
+      AddCart3p.updateFloatMainImg(typeAImgUrl);
+      const index = addCartGlobalVal.rtnGoodsData.imgTypeUrlArray.findIndex(function (imgUrl) {
+        return imgUrl === typeAImgUrl;
+      })
+      if (index !== -1) {
+        momoj('.prdImgWrap .mainimg').attr('specindex', index);
+      }
+      AddCart3p.updateGoodsTypeButtons("A");
+      AddCart3p.showGoodsPaymentDescription();
+    })
+
+    /**規格二 */
+    momoj('body').off('click', '#prdTypeArea li[name="cart_spec2"]').on('click', '#prdTypeArea li[name="cart_spec2"]', function () {
+      momoj('#prdTypeArea li[name="cart_spec2"]').each(function () {
+        momoj(this).removeClass('selected');
+      })
+      momoj(this).addClass('selected');
+      addCartGlobalVal.selectedB = momoj(this).attr('value');
+      AddCart3p.updateGoodsTypeButtons("B");
+      AddCart3p.showGoodsPaymentDescription();
+    })
+
+    /**數量 */
+    momoj('body').off('click', '#prdTypeArea .minusBtn').on('click', '#prdTypeArea .minusBtn', function () {
+      let buyQuantityInput = momoj('#prdTypeArea .numberArea');
+      let currentVal = parseInt(buyQuantityInput.val(), 10);
+      if (currentVal > 1 && !momoj(this).hasClass('selected')) {
+        currentVal--;
+        momoj('#prdTypeArea').find('.numberArea').val(currentVal);
+        AddCart3p.updateQuantityButtons();
+      }
+    });
+    momoj('body').off('click', '#prdTypeArea .plusBtn').on('click', '#prdTypeArea .plusBtn', function () {
+      let buyQuantityInput = momoj('#prdTypeArea .numberArea');
+      let currentVal = parseInt(buyQuantityInput.val(), 10);
+      if (currentVal <= addCartGlobalVal.selectedMaxStock && !momoj(this).hasClass('selected')) {
+        currentVal++;
+        momoj('#prdTypeArea').find('.numberArea').val(currentVal);
+        AddCart3p.updateQuantityButtons();
+      }
+    });
+
+    /**廢四機 */
+    momoj('body').off('click', '#recoverY,#recoverN').on('click', '#recoverY,#recoverN', function () {
+      addCartGlobalVal.recoverYn = momoj(this).attr('value');
+      AddCart3p.updateSelectTips(4, false);
+    });
+
+    /**加入購物車 */
+    momoj('body').off('click', '#prdTypeArea #enterBtn').on('click', '#prdTypeArea #enterBtn', function () {
+      AddCart3p.checkAddToCart();
+    });
+
+    /**配送活動浮層 */
+    momoj('body').off('click', '#prdTypeArea .shipping-info').on('click', '#prdTypeArea .shipping-info', function () {
+      AddCart3p.createDeliverAlert(addCartGlobalVal.rtnGoodsData);
+    });
+  },
+  /**
+   * 依照欄位名移除重複的object
+   * @param {Array} array 
+   * @param {string} columnName 
+   * @returns 
+   */
+  removeDuplicates: function (array, columnName) {
+    const seen = new Set();
+    return array.filter(item => {
+      if (seen.has(item[columnName])) {
+        return false;
+      } else {
+        seen.add(item[columnName]);
+        return true;
+      }
+    })
+  },
+  /**
+   * 當選項只有一個設為預選
+   */
+  selectDefault: function () {
+    //規格一
+    let buttonsTypeA = momoj('#prdTypeArea #colorSpecs li');
+    if (buttonsTypeA.length === 1) {
+      buttonsTypeA.first().trigger('click');
+    }
+    //規格二
+    let buttonsTypeB = momoj('#prdTypeArea #sizeSpecs li');
+    if (buttonsTypeB.length === 1) {
+      buttonsTypeB.first().trigger('click');
+      this.updateSelectTips(1, false);
+      if (buttonsTypeB.attr('value') === '單一規格') {
+        momoj('#prdTypeArea').find('#sizeSpecs').hide();
+      }
+    }
+  },
+  /**
+   * 一品多價更新價格
+   * @param {object} basePrice 
+   */
+  updateGoodsPrice: function (basePrice) {
+    if (addCartGlobalVal.isMultiplePrice) {
+      let priceItem = momoj('#prdTypeArea .ec-current-prices-group');
+      priceItem.html('');
+      if (typeof basePrice === 'undefined' || !basePrice) {
+        let rangePrice = addCartGlobalVal.formType1.formPriceContent.rangePrice;
+        priceItem.append(`
+          <li>
+              <div class="ec-current-prices">
+                  <span class="ec-price-symbol">${rangePrice.minPriceSign}</span><span class="ec-current-price">${rangePrice.minPrice}</span>
+              </div>
+          </li>
+          <li>
+              <div class="ec-current-prices">
+                  <span class="ec-price-symbol">${rangePrice.maxPriceSign}</span><span class="ec-current-price">${rangePrice.maxPrice}</span>
+              </div>
+          </li>
+        `);
+      } else {
+        let goodsStatus = basePrice.goodsStatus != 'undefined' && basePrice.goodsStatus ? basePrice.goodsStatus : "";
+        priceItem.append(`
+          <li>
+              <div class="ec-current-prices">
+                  <span class="ec-price-symbol">$</span><span class="ec-current-price">${basePrice.price}</span>
+              </div>
+              <div class="ec-discount-text">${goodsStatus}</div>
+          </li>
+        `);
+      }
+    }
+  },
+  /**
+   * 選規格觸發
+   * 1.更新數量
+   * 2.庫存數量提示訊息
+   * 3.更換按鈕
+   */
+  showGoodsPaymentDescription: function () {
+    const canTipStock = addCartGlobalVal.selectedObj && addCartGlobalVal.selectedObj.canTipStock;
+    if (addCartGlobalVal.multipleTypeFlag && addCartGlobalVal.selectedA && addCartGlobalVal.selectedB) {
+      AddCart3p.updateQuantityButtons(addCartGlobalVal.selectedObj.goodsNum);
+      AddCart3p.updateTextTip(addCartGlobalVal.selectedObj.goodsNum);
+      AddCart3p.updateFooterBtn(canTipStock);
+    } else if (!addCartGlobalVal.multipleTypeFlag && addCartGlobalVal.selectedA) {
+      AddCart3p.updateQuantityButtons(addCartGlobalVal.selectedObj.goodsNum);
+      AddCart3p.updateTextTip(addCartGlobalVal.selectedObj.goodsNum);
+      AddCart3p.updateFooterBtn(canTipStock);
+    } else if ((!addCartGlobalVal.multipleTypeFlag && !addCartGlobalVal.selectedA) || (addCartGlobalVal.multipleTypeFlag && !addCartGlobalVal.selectedA) || (addCartGlobalVal.multipleTypeFlag && !addCartGlobalVal.selectedB)) {
+      addCartGlobalVal.selectedObj = null;
+      AddCart3p.updateFooterBtn();
+      AddCart3p.updateTextTip();
+      AddCart3p.updateQuantityButtons(1);
+    }
+  },
+  /**
+   * 更新可選數量 & btn樣式控制
+   * @param {*} goodsNum 
+   */
+  updateQuantityButtons: function (goodsNum) {
+    if (goodsNum) {
+      let purchaseNumber = parseInt(addCartGlobalVal.rtnGoodsData.purchaseNumber);
+      let goodsNumInt = parseInt(goodsNum);
+      let restrictionQty = parseInt(addCartGlobalVal.rtnGoodsData.restrictionQty);
+      let restrictionType = addCartGlobalVal.rtnGoodsData.restrictionType;
+      if (!isNaN(restrictionQty) && !isNaN(purchaseNumber) && (restrictionQty <= purchaseNumber && restrictionQty <= goodsNumInt && restrictionType !== '2')) {
+        addCartGlobalVal.selectedMaxStock = restrictionQty;
+      } else if ((!isNaN(purchaseNumber) && purchaseNumber <= goodsNumInt) ||
+        (!isNaN(restrictionQty) && !isNaN(purchaseNumber) && (restrictionQty >= purchaseNumber || (restrictionQty == 0 && restrictionType === '2')) && purchaseNumber <= goodsNumInt)) {
+        addCartGlobalVal.selectedMaxStock = purchaseNumber;
+      } else {
+        addCartGlobalVal.selectedMaxStock = goodsNumInt;
+      }
+      momoj('#prdTypeArea').find('.numberArea').val(1);
+    }
+    const currentVal = parseInt(momoj('#prdTypeArea').find('.numberArea').val());
+    momoj('#prdTypeArea').find('.minusBtn').toggleClass('selected', currentVal <= 1);
+    momoj('#prdTypeArea').find('.plusBtn').toggleClass('selected', currentVal >= addCartGlobalVal.selectedMaxStock);
+  },
+  /**
+   * 自動設定宅配配送方式並將商品資料加入購物車
+   */
+  handleAddShopcartToCart: function () {
+    addCartGlobalVal.delivery = 'shopcart';
+    this.checkAddToCart();
+  },
+  /**
+   * 關閉浮層
+   */
+  clickCancel: function () {
+    momoj('.closeBtn').click();
+  },
+  /**
+   * 店舖黑名單包含超商黑名單
+   */
+  checkStoreBlackList: function (entpCode) {
+    let storeBlackList = false;
+    momoj.ajaxTool({
+      async: false,
+      data: {
+        flag: 1034,
+        entpCode: entpCode
+      },
+      ajaxSuccess: function (response) {
+        if (response) {
+          const rtnData = response.rtnData;
+          if (rtnData && rtnData.data && rtnData.success && rtnData.data.alertType === "3") {
+            const data = rtnData.data;
+            let blacklistTipsHtml = `<span style="font-family: var(--primary-font-family);">${data.alertMessage}</span>`;
+            let title = data.alertTitle ? data.alertTitle : '說明';
+            var _param = {
+              title: title,
+              innerHtml: blacklistTipsHtml,
+              boxwidth: 700,
+              customBtnHtml: `<div class="modal-foot">
+                                  <div class="btn-box">
+                                      <button id="customButton" class="ec-btn ec-btn-primary btn-close-modal" style="background-color:#d62872;color:#ededed">確定</button>
+                                  </div>
+                              </div>`,
+              z_index: 1002,
+            };
+            //浮層
+            floatingLayerBox(_param);
+            floatingLayerBoxAlignCenter();
+            storeBlackList = true;
+          } else {
+            storeBlackList = false;
+          }
+        }
+      },
+      ajaxCancel: function () {
+        console.error('店舖黑名單檢查失敗');
+        storeBlackList = false;
+      }
+    });
+    return storeBlackList;
+  },
+  
+  /**
+   * 寵物處方商品alert
+   * @param {string} goodsCode 
+   */
+  showPetPrescriptionNotice: function (goodsCode) {
+    let prePurchaseNotice = getGoodsPrePurchaseNotice(goodsCode);
+    let prePurchaseNoticeData = prePurchaseNotice.rtnData || {};
+    if (prePurchaseNoticeData && prePurchaseNoticeData.isShowNotice) { // 為寵物處方商品
+      momoj(".fancybox-overlay, .prdTypeArea").hide();
+      var activity = prePurchaseNoticeData.title;
+      var shippingMethodContainer =
+        '<div class="content-text">' + prePurchaseNoticeData.content + '</div>' +
+        '<div class="modal-foot">' +
+        '  <div class="btn-box">' +
+        '    <button id="customButton" class="ec-btn ec-btn-primary btn-close-modal">確定</button>' +
+        '  </div>' +
+        '</div>';
+      openfloatingLayerBoxNoBackgroundClose(activity, shippingMethodContainer, 640);
+      momoj("#customButton").on("click", function () {
+        AddCart3p.addOrBuyFor3p();
+      });
+      return true;
+    }
+    return false;
+  },
+  /**
+   * 加入購物車前檢查
+   */
+  checkAddToCart: function () {
+    //檢查選取的規格 配送方式
+    if (!addCartGlobalVal.selectedA || (addCartGlobalVal.multipleTypeFlag && !addCartGlobalVal.selectedB) || !addCartGlobalVal.delivery) {
+      let errorMsg = [];
+      if (!addCartGlobalVal.selectedA) {
+        AddCart3p.updateSelectTips(1, true);
+        errorMsg.push(momoj('#prdTypeArea #spec1_name').text());
+      }
+      if (addCartGlobalVal.multipleTypeFlag && !addCartGlobalVal.selectedB) {
+        AddCart3p.updateSelectTips(2, true);
+        errorMsg.push(momoj('#prdTypeArea #spec2_name').text());
+      }
+      if (!addCartGlobalVal.delivery) {
+        AddCart3p.updateSelectTips(3, true);
+        errorMsg.push('配送方式');
+      }
+
+      alert(`請選擇${errorMsg.join('、')}`);
+      return;
+    }
+
+    //檢查數量
+    addCartGlobalVal.buyNum = momoj('#prdTypeArea').find('.numberArea').val();
+    if ((addCartGlobalVal.limitBuyQty && addCartGlobalVal.limitBuyQty < addCartGlobalVal.buyNum) ||
+      (addCartGlobalVal.selectedMaxStock < addCartGlobalVal.buyNum)
+    ) {
+      alert(goodsCntErr);
+      return;
+    }
+
+    if (addCartGlobalVal.rtnGoodsData.shop.shopStatus && addCartGlobalVal.rtnGoodsData.shop.shopStatus.status != 'open') {
+      alert('商店休假中，暫時無法購買商品');
+      return;
+    }
+
+    //廢四機
+    if (addCartGlobalVal.rtnGoodsData.needRecycle === "1" && !addCartGlobalVal.recoverYn) {
+      AddCart3p.updateSelectTips(4, true);
+      return;
+    } else {
+      addCartGlobalVal.recoverYn = '0';
+    }
+
+    //黑名單
+    if(!isNotLogin()){
+      let storeBlackList = AddCart3p.checkStoreBlackList(addCartGlobalVal.rtnGoodsData.enterpriseNo);
+      if(storeBlackList){
+        return;
+      }
+    }
+
+    // 寵物處方商品檢查
+    if(AddCart3p.showPetPrescriptionNotice(addCartGlobalVal.rtnGoodsData.goodsCode)){
+      return false;
+    }
+   
+    this.addOrBuyFor3p();
+  },
+  /**
+   * 加入購物車
+   */
+  addOrBuyFor3p() {
+    switchRtn = true;//是否轉跳新購物車
+    try {
+      good = {
+        work: addCartGlobalVal.delivery,
+        goodsCode: addCartGlobalVal.rtnGoodsData.goodsCode,
+        goodsCount: addCartGlobalVal.buyNum,
+        goodsdtCode: addCartGlobalVal.selectedObj.goodsTypeCode,
+        canUseBuy1Get1FreeYn: addCartGlobalVal.canUseBuy1Get1FreeYn,
+        largeMachineMounting: "0",
+        recoverYn: addCartGlobalVal.recoverYn
+      };
+      if(!isNotLogin()){
+        good.negativeProfit = addCartGlobalVal.limitBuyQty;
+      }
+
+      var oc = false; //是否同步未結帳購物車
+      var reduceQty = false; //開賣通知扣量
+      if (switchRtn) { // 可以前往新車，不執行加入舊車 
+        oc = true;
+        reduceQty = true;
+      }
+
+      var goodsJson = {
+        goShopCartYn: '1',
+        goods: [good],
+        webCategoryCode: momoj('#cateCode').val(),
+        srcType: momoj('#srcType').val(),
+        oc: oc,
+        reduceQty: reduceQty,
+        whCode: "",
+        postalCode: "",
+        inputAddress: "",
+        receiverSeq: "",
+        needInsurance: false
+      };
+      var rtn = momoj.addGoods(goodsJson);
+      if (!rtn.apiSuccess) {
+        var _postData = { flag: 9001, fun: "addCart3p.js_addOrBuyFor3p", msg: rtn.rtn.resultCode + "/" + rtn.rtn.resultMessage };
+        momoj.ajaxTool({ data: _postData });
+        if (typeof rtn.rtn.resultMessage == "undefined") {
+          // 用後端進行執行加入購物車
+          var _postData = { flag: 3100, data: goodsJson };
+          var _rtn = momoj.ajaxTool({ data: _postData });
+          if (_rtn.rtnData.resultCode == '1') {
+            alert("加入購物車成功!");
+            loadSPCart();
+            momoj(".fancybox-overlay, .prdTypeArea").hide();
+          } else if (_rtn.rtnData.resultMessage != '') {
+            alert(_rtn.rtnData.resultMessage + _rtn.rtnData.resultCode);
+          } else {
+            alert('網路異常，請稍後再試!' + _rtn.rtnData.resultCode);
+          }
+        } else {
+          if (rtn.rtn.resultCode == "SCS135") {
+            openfloatingLayerBox4shopcart({
+              title: '無法使用超商取貨',
+              boxwidth: 450,
+              innerHtml: '<div id="singlestoreType1" class="floatingLayerBox recent-address extra-large" style="display: block;"><div class="innerArea"><div class="storeAlertTip"><div class="single-store-content"><p id="singlestoreType1Text" class="text">您已累計兩次(含)以上未取貨，故無法使用超商取貨，請改用其他配送方式。</p></div><div class="btnArea"><a class="gotologin" onclick="AddCart3p.clickCancel()" >取消</a><a class="identidy" onclick="AddCart3p.handleAddShopcartToCart()">改用宅配</a></div></div></div></div>',
+              id: 'floatingLayerBox'
+            });
+            momoj(".closeBtn").hide();
+            momoj("#floatingLayerBox").css("height", "196px");
+            momoj("#floatingLayerBox").css("inset", "0 0px 0px");
+            momoj("#floatingLayerBox .title").css("padding", "0px 26px");
+          } else {
+            alert(rtn.rtn.resultMessage);
+          }
+          if (rtn.rtn.resultCode == "SCS012") {
+            location.href = "/main/Main.jsp";
+          }
+        }
+      } else {
+        alert("加入購物車成功!");
+        loadSPCart();
+        momoj(".fancybox-overlay, .prdTypeArea").hide();
+        momoj("#MoMoLM, .floatingLayerBox").remove();
+      }
+    } catch (e) {
+      var _postData = { flag: 9001, fun: "addCart3p.js_addOrBuyFor3p", msg: e.toString() };
+      momoj.ajaxTool({ data: _postData });
+      alert("加入購物車失敗!");
+      momoj("#MoMoLM, .floatingLayerBox").remove();
+    }
+
+    if (switchRtn) { // 可以前往新車，不執行加入舊車 
+      sendRemarketing(addCartGlobalVal.rtnGoodsData.goodsCode);//行銷 
+      return;
+    }
+  },
+  /** 刷新全域變數 */
+  resetGlobalVal: function () {
+    addCartGlobalVal = new AddCart3p.GlobalVal();
+  },
+  getShopGoodsDetail: function (goodsCode, entpCode) {
+    const result = momoj.ajaxTool({
+      async: true,
+      data: {
+        flag: 2053,
+        goodsCode: goodsCode,
+        entpCode: entpCode
+      }
+    });
+    return result;
+  },
+  /**
+   * 解除1p加入購物車的事件
+   */
+  off1pAddCartEvent: function () {
+    momoj(document).off("click", ".detailArea #spec1 li");
+    momoj(document).off("click", ".detailArea #spec2 li");
+  },
+  /**
+   * swiper設定
+   */
+  setSwiper: function () {
+    //bind swiper jrshu 20201126
+    var swiper = new Swiper('.prdTypeArea .prdImgBlock', {
+      observer: true,
+      observeParents: true,
+      spaceBetween: 20,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      }
+    })
+    bindedSwiper = swiper;
+  },
+  /**
+   * 調整浮層大小
+   */
+  updateTemplateSize: function () {
+    momoj(".fancybox-overlay").css({ "height": (momoj(document.body).height()), "width": (momoj(document.body).width()) }).fadeTo("slow", 0.5);
+    momoj(".prdTypeArea").css({ "left": (momoj("html")[0].clientWidth / 2) - (momoj(".prdTypeArea").width() / 2), "top": momoj(".prdTypeArea").offset().top + 20 }).show();
+    //momoj(".prdTypeArea ul li").css({"height":momoj(".prdTypeArea").innerHeight()-20 });
+    if (momoj("#saleNoticeBtn").length > 0) {//開賣通知最大高度為234px
+      momoj(".prdScroll").css({ "max-height": "234px" });
+    }
+    momoj(".prdTypeArea p").delegate("a", "click", function () {
+      momoj(".fancybox-overlay, .prdTypeArea").hide();
+    });
+  }
+}

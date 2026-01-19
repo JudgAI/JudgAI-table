@@ -1,0 +1,164 @@
+// 取得所選規格
+var getSelectedSpec = function(setGood) {
+  return momoj(setGood).find("option:selected");
+}
+
+//是否為多規格
+var isNotOnlySpecSelected = function(setGood) {
+  return getSelectedSpec(setGood).val() == "na";
+}
+//是否有選擇規格
+var isOnlySpecSelected = function(setGood) {
+  return momoj(setGood).find("option").length > 1;
+}
+
+
+// 是否有選規格
+var isSpecSelected = function(setGood) {
+  return getSelectedSpec(setGood).val() !== "na";
+}
+
+// 規格是否已售完
+var isSpecSoldOut = function(setGood) {
+  return getSelectedSpec(setGood).attr("so") !== "0";
+}
+
+// 規格是否可問貨
+var canSpecAskStock = function(setGood) {
+  var goodsSeqCode = momoj(setGood).attr("name");
+  var goodsDtCode = getSelectedSpec(setGood).val();
+
+  return setDtAsk[goodsSeqCode][goodsDtCode] == "1";
+}
+
+// SET品規格，是否都有選完
+var isEverySpecSelected = function(setGoods) {
+  return momoj(setGoods).length > 0 && momoj.grep(momoj(setGoods), isSpecSelected).length === momoj(setGoods).length;
+};
+
+// SET品規格，是否都沒選
+var isNotEverySpecSelected = function(setGoods) {
+ return momoj(setGoods).length > 0 && momoj.grep(momoj(setGoods), isNotOnlySpecSelected).length === momoj.grep(momoj(setGoods), isOnlySpecSelected).length;
+};
+// SET品規格，是否至少有一規格賣完
+var isSomeSpecSoldOut = function(setGoods) {
+  var isSoldOut = false;
+  var listSelect = momoj(setGoods);
+  if(!!listSelect && listSelect.length > 0){
+    var objHasUseStock = {};
+    momoj.each(listSelect,function(index,el){
+      var sel = momoj(el);
+      var inqty = sel.attr("inqty") - 0;
+      var ingoodscode = sel.attr("ingoodscode");
+      var goodsDtCode = getSelectedSpec(sel).val();
+
+      var key = "set_" + ingoodscode + "_" + goodsDtCode + "_amt";
+      if(key in objHasUseStock){
+        var stockTemp = objHasUseStock[key] - 0;
+        stockTemp += inqty;
+        objHasUseStock[key] = stockTemp;
+      }else{
+        objHasUseStock[key] = inqty;
+      }
+    });
+
+    for(key in objHasUseStock){
+      var hasUse = objHasUseStock[key];
+      var stock = momoj('[name="'+ key +'"]').val();
+      if(stock <= 0 || hasUse > stock){
+        isSoldOut = true;
+        break;
+      }
+    }
+  }
+  return isSoldOut;
+};
+
+// SET品規格，是否都可問貨
+var canEverySpecAskStock = function(setGoods) {
+  return momoj(setGoods).length > 0 && momoj.grep(momoj(setGoods), canSpecAskStock).length === momoj(setGoods).length;
+};
+
+var getSetGoodsDtLt = function(setGoods) {
+  return momoj.map(setGoods, function(setGood) {
+    return {
+      "inGoodsCode"   : momoj(setGood).attr("inGoodsCode"),
+      "inGoodsDtCode" : getSelectedSpec(setGood).val(),
+      "inQty"         : momoj(setGood).attr("inQty")
+    }
+  });
+}
+
+var isValidDate = function(d) {
+  return d instanceof Date && !isNaN(d);
+}
+
+var isThisYear = function(date) {
+  var d = new Date(date);
+  var now = new Date();
+
+  return isValidDate(d) && d.getFullYear() === now.getFullYear();
+}
+
+var isAfterYear = function(date) {
+  var d = new Date(date);
+  var now = new Date();
+
+  return isValidDate(d) && d.getFullYear() > now.getFullYear();
+}
+
+var isSameYear = function(date1, date2) {
+  var d1 = new Date(date1);
+  var d2 = new Date(date2);
+
+  return isValidDate(d1) && isValidDate(d2) && d1.getFullYear() === d2.getFullYear();
+}
+
+var getPreOrderDelyDate = function(delyFrom, delyEnd) {
+  if(!delyFrom && !delyEnd) {
+    return {
+      from : "",
+      end : ""
+    }
+  }
+
+  if(!delyFrom || !delyEnd) {
+    return {
+      from : isAfterYear(delyFrom) ? formatDateYear(delyFrom) : formatDate(delyFrom),
+      end : isAfterYear(delyEnd) ? formatDateYear(delyEnd) : formatDate(delyEnd)
+    }
+  }
+
+  if(isThisYear(delyFrom) && isThisYear(delyEnd)) {
+    return {
+      from : formatDate(delyFrom),
+      end : formatDate(delyEnd)
+    }
+  }
+
+  if(isThisYear(delyFrom) && isAfterYear(delyEnd)) {
+    return {
+      from : formatDate(delyFrom),
+      end : formatDateYear(delyEnd)
+    }
+  }
+
+  if(!isThisYear(delyFrom) && !isThisYear(delyEnd) && isSameYear(delyFrom, delyEnd)) {
+    return {
+      from : formatDateYear(delyFrom),
+      end : formatDate(delyEnd)
+    }
+  }
+
+  if(!isThisYear(delyFrom) && !isThisYear(delyEnd) && !isSameYear(delyFrom, delyEnd)) {
+    return {
+      from : formatDateYear(delyFrom),
+      end : formatDateYear(delyEnd)
+    }
+  }
+
+  return {
+    from : "",
+    end : ""
+  }
+}

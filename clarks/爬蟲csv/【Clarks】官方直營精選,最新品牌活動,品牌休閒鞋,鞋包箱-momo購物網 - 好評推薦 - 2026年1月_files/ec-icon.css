@@ -1,0 +1,13 @@
+/* 店＋/ 預購 icon */
+i.store-icon,i.icon-store{margin-top:2px;background-image:url(/ecm/img/cmm/goodsdetail/Shop_16px.png);background-size:22px;width:22px !important;background-color:#5E6999;height:16px !important;border-radius:2px;display:inline-block;margin-right:8px;vertical-align: top;}
+i.preorder-icon,i.icon-preorder{margin-top:2px;background-image:url(/ecm/img/cmm/goodsdetail/PreOrder_16px.png);background-size:16px;width:16px !important;background-color:#FF960A;height:16px !important;border-radius:2px;display:inline-block;margin-right:8px;vertical-align: top;}
+.bestseller .ec-flash-sale {margin-top: 2px;}
+.bestseller i.store-icon + i.preorder-icon,.bestseller i.store-icon + .ec-flash-sale,.bestseller i.preorder-icon + .ec-flash-sale{margin-left:-4px;}
+.tags i {margin: 0;}
+.bestseller i.store-icon,.bestseller i.preorder-icon,.prdName.bestseller .ec-flash-sale {float: none;vertical-align: text-top;}
+/* Ad icon */
+.sponsor-tag {display: block;-webkit-user-select: none;-moz-user-select: none;user-select: none;pointer-events: none;position: absolute;right: 5px;bottom: 13px;padding: 0 5px;border-radius: 4px;color: #fff;font-size: 11px;line-height: 16px;background-color: rgba(0, 0, 0, .2);z-index: 2;font-family:var(--primary-font-family);}
+.opacity-10 {background-color: rgba(0, 0, 0, .1);}
+/* 點點賺 */
+.icon-point-solid{color:#d62872;width:117px;padding:0px 0 0px 41px;background:transparent url("../../img/momoshop/goods/point-solid.png") no-repeat 20px center;background-size:15px 15px;border:1px solid #D62872;border-right:0;}
+.icon-like-solid{color:#999;width:151px;padding:0 0 0 52px;border:1px solid #707070;background:transparent url("../../img/momoshop/goods/like-pink-solid.png") no-repeat 30px center;background-size:16px 16px;border-left:0;}

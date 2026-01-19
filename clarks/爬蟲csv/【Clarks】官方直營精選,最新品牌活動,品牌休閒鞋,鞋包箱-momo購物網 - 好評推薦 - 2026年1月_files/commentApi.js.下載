@@ -1,0 +1,119 @@
+// 商品評價API 大小網共用
+var commentDomain = "//eccapi.momoshop.com.tw";
+var awsDomain = "//api2.momo.dm";
+var filePath = "comments";
+
+if (!/(www|m)\.momoshop\.com\.tw/.test(location.hostname)) {
+  commentDomain = "//eccapiuat.momoshop.com.tw";
+  awsDomain = "//api-uat.momo.dm";
+  filePath = "comments-test";
+}
+
+// 商品頁取得評分資訊
+function getGoodsComment(settings) {
+  var _settings = momoj.extend({
+    host : '',
+    goodsCode : ''
+  }, settings);
+  var url = commentDomain + '/user/getGoodsComment';
+  var json = JSON.stringify({
+    "host" : _settings.host,
+    "goodsCode" : _settings.goodsCode
+  });
+  return rtn = momoj.callAwsApi({'url':url, 'json':json});
+}
+
+// 取得商品總銷量
+function getGoodsSaleCounts(settings) {
+  var _settings = momoj.extend({
+    host : '',
+    goodsCode : ''
+  }, settings);
+  var url = commentDomain + '/user/getGoodsSaleCounts';
+  var json = JSON.stringify({
+    "host" : _settings.host,
+    "goodsCode" : _settings.goodsCode
+  });
+  return rtn = momoj.callAwsApi({'url':url, 'json':json});
+}
+// 取得商品評價資訊
+function getMyOrderComment(settings) {
+  var _settings = momoj.extend({
+    host : '',
+    custNo : '',
+    dataList : ''
+  }, settings);
+  var url = commentDomain + '/user/getMyOrderComment';
+  var json = JSON.stringify({
+    "host" : _settings.host,
+    "custNo" : _settings.custNo,
+    "dataList" : _settings.dataList
+  });
+  return rtn = momoj.callAwsApi({'url':url, 'json':json});
+}
+
+function getMyOrderCommentV2(settings) {
+  var _settings = momoj.extend({
+    host : '',
+    custNo : '',
+    dataList : '',
+    isReEdit : false,
+  }, settings);
+  var url = commentDomain + '/user/getMyOrderCommentV2';
+  var json = JSON.stringify({
+    "host" : _settings.host,
+    "custNo" : _settings.custNo,
+    "dataList" : _settings.dataList,
+    "isReEdit" : _settings.isReEdit
+  });
+  return rtn = momoj.callAwsApi({'url':url, 'json':json});
+}
+
+// 取得商品評價圖片影片的S3上傳連結
+function getSignedUrl(settings) {
+  var _settings = momoj.extend({
+    s3key : '',
+    token : ''
+  }, settings);
+  var url = awsDomain + '/MediaUpload/getSignedUrl';
+  var path = filePath + _settings.s3key;
+  var json = JSON.stringify({
+    "s3key" : path
+  });
+  var token = _settings.token
+  var encodedToken = window.btoa(token);
+  var headers = {"awsToken":encodedToken};
+  return rtn = momoj.callAwsApi({'url':url, 'json':json, 'headers':headers, 'withCookies':false}); 
+}
+
+// 送出評價
+function reviewGoods(settings) {
+  var _settings = momoj.extend({
+    host : '',
+    token : '',
+    commentData : ''
+  }, settings);
+  var url = awsDomain + '/comment/reviewGoods';
+  var json = JSON.stringify({
+    "host" : _settings.host,
+    "dataList" : _settings.commentData,
+  });
+  var token = _settings.token
+  var encodedToken = window.btoa(token);
+  var headers = {"awsToken":encodedToken};
+  return rtn = momoj.callAwsApi({'url':url, 'json':json, 'headers':headers, 'withCookies':false}); 
+}
+
+//商品總銷量和評價資訊V2
+function getGoodsSaleCountsV2 (settings) {
+  var _settings = momoj.extend({
+    host : '',
+    goodsCode : ''
+  }, settings);
+  var url = commentDomain + '/user/getGoodsSaleCountsV2';
+  var json = JSON.stringify({
+    "host" : _settings.host,
+    "goodsCode" : _settings.goodsCode
+  });
+  return rtn = momoj.callAwsApi({'url':url, 'json':json});
+}

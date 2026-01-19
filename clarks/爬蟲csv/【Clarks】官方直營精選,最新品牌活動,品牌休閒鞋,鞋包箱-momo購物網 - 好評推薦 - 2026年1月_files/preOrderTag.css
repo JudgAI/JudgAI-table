@@ -1,0 +1,34 @@
+/**20220816 lychang 產品列表新增預購標籤與UI調整 #165057*/
+.preOrderTag{margin-right: 8px; padding: 1px 4px 0 4px !important; display: inline-block !important; vertical-align: top; background-color: #FF960A; border-radius: 4px; color: #fff; font: 13px/18px var(--primary-font-family); letter-spacing: 0.1em;}
+.prdNameTitle{width: 100%; height: 42px; margin-bottom: 6px; padding: 0; box-sizing: border-box; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; text-align:left;color: #666;}
+.prdNameTitle .prdName{ margin: 0 !important; padding: 0;font-size: 14px;line-height: 15px; font-family: var(--primary-font-family); display: inline; color: #333; vertical-align: top;}
+.prdNameTitle .prdNameTop{font-size: 15px; line-height: 20px; font-weight: 700;}
+.prdNameTitle > .icon-group {vertical-align: baseline;overflow: initial;}
+.hotRankingArea .prdNameTitle{padding: 0 15px;margin-top: 10px;}
+.prdInfoBlock .prdNameTitle{height: auto; overflow:inherit; text-overflow: inherit; display:block; -webkit-line-clamp:inherit; -webkit-box-orient:inherit;}
+.prdInfoWrap .prdNameTitle{width: 180px;}
+#columnType .prdNameTitle{width: 100%;}
+.fprdTitle .preOrderTag{ margin-top: 1px; vertical-align: top; font-size: 15px; line-height: 20px;}
+.preOrderArea{padding: 10px 20px;box-sizing: border-box;background: linear-gradient(180deg,rgba(255,255,255,0),#FFF);width: 100%; transition:  all 0.3s ease-in-out;}
+.preOrderArea .innerArea{background: linear-gradient(45deg,#FFAA3B,#FF9203);border-radius: 8px;padding: 5px 15px;box-sizing: border-box; box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2),inset 0px 1px 0px rgba(255, 255, 255, 0.4);display: flex;justify-content: center;align-items: center;}
+.preOrderArea .innerArea{color: #fff; font: 14px/18px bold var(--primary-font-family); }
+.preOrderArea .innerArea p{margin: 0;}
+.customercenter .summary02 .inner .canbeordered dd .prddetails .tips .preOrderTag{line-height: 16px; font-size: 11px; vertical-align: text-top;}
+
+/* 預購文案 */
+.preOrderArea { padding: 8px 15px; box-sizing: border-box; background: linear-gradient(180deg,rgba(255,255,255,0),#FFF); width: 100%; position: relative; transition: all 0.3s ease-in-out; left: 0; }
+.preOrderArea .innerArea { background: linear-gradient(45deg,#FFAA3B,#FF9203); border-radius: 8px; padding: 4px 15px; box-sizing: border-box; box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2),inset 0px 1px 0px rgba(255, 255, 255, 0.4); display: flex; justify-content: center; align-items: center; }
+.preOrderArea .innerArea p { font: bold 14px/20px var(--primary-font-family); color: #fff; margin: 0; text-align: center; }
+.preOrderArea .innerArea img + p { margin: 0 0 0 25px; text-align: left; }
+
+.prdNameWrapper { position: relative; margin-top: 5px;}
+
+/** This is just a hack to make it work for now. **/
+.prdListArea ul li a .prdName{height:30px;font:normal 14px/20px var(--primary-font-family);color:#333;margin:0;overflow:hidden;text-align:left;}
+.prdListArea#columnType ul li a .specialTitle,.prdListArea#columnType ul li a .prdName{width:80%;height:20px;font:normal 15px / 20px var(--primary-font-family);color:#333;margin:0px;padding:0px;}
+.prdListArea#columnType ul li .btnArea .insertWishList{background:#E4E4E4 url('/ecm/img/ec-images/desktop/addtoTrackingListBtn.png') no-repeat 0px 0px;}
+.prdListArea#columnType ul li .btnArea .addToCart{background:#1169bb url('/ecm/img/ec-images/desktop/add_to_cart_btn.png') no-repeat 0px 0px;}
+.prdListArea ul li a .specialTitle{height:16px;margin:5px 0px;font:13px / 16px var(--primary-font-family);color:#DD2726;}
+.prdListArea#columnType ul li a .specialTitle{font:13px / 20px var(--primary-font-family);color:#E54B4B;top:0px;}
+.prdListArea .prdNameTitle > .icon-group {height: 18px !important;}
+.prdListArea .prdNameTitle > .icon-group > .ec-tag > img {vertical-align: baseline;}

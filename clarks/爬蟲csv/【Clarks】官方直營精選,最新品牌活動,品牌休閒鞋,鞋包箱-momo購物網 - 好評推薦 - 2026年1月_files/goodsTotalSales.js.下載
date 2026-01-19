@@ -1,0 +1,45 @@
+//大網總銷售數量
+var goodsTotalSales = {
+  //取得商品總銷量
+  getTotalSales:function(goodsCodeList ){
+      var obj = new Object();
+      obj.host = 'mobile';
+      obj.goodsCode = goodsCodeList;
+      var rtn = getGoodsSaleCounts(obj); //使用共用的commentApi.js
+      if (rtn.apiError || !rtn.apiSuccess) {
+        // 記錄錯誤log
+        momoj.ajaxTool({
+          data : {
+            flag : "recordAwsApiLog",
+            params : obj,
+            result : rtn
+          }
+        });
+        return null;
+      } else {
+        if(rtn.rtn.resultCode == 200 && rtn.rtn.success){
+          return rtn;
+        }else{
+          return null;
+        }
+      }
+  },
+  getGoodsCodeArray:function( ){
+    var allgoodsArr =[];
+    var objgoods = momoj(".goodsTotalSales");
+    momoj.each(objgoods,function(idx ,objGood){
+      var goodsCode = momoj(objGood).attr("totalSalesGD");
+      allgoodsArr.push(goodsCode);
+    });
+    return allgoodsArr;
+  },
+  showTotalSales:function(rtn, goodsCodeList ){
+    var saleCountArray  = rtn.rtn.saleCount;
+    if(typeof saleCountArray != 'undefined'  && saleCountArray){
+      momoj.each(goodsCodeList,function(idx ,goodsCode){
+        var totalSales = saleCountArray[goodsCode];
+        momoj("[totalSalesGD ='"+goodsCode+"']").html(totalSales);
+      });
+    }
+  }
+}
