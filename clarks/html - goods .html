@@ -843,16 +843,16 @@
                     <thead>
                         <tr>
                             <th onclick="sortTable('inventoryTable', 0)">商品名稱</th>
-                            <th style="width: 50px; text-align: center;"><input type="checkbox" id="selectAllCheckbox" onclick="toggleSelectAll(this)"> 出貨</th>
-                            <th onclick="sortTable('inventoryTable', 1)">本週庫存數量</th>
-                            <th onclick="sortTable('inventoryTable', 2)">下週需求數量</th>
-                            <th onclick="sortTable('inventoryTable', 3)">建議下單數量</th>
-                            <th onclick="sortTable('inventoryTable', 4)">價格</th>
-                            <th onclick="sortTable('inventoryTable', 5)">SKU</th>
-                            <th onclick="sortTable('inventoryTable', 6)">門店位置</th>
-                            <th onclick="sortTable('inventoryTable', 7)">倉庫</th>
-                            <th onclick="sortTable('inventoryTable', 8)">來源</th>
-                            <th onclick="sortTable('inventoryTable', 9)">狀態</th>
+                            <th style="width: 50px; text-align: center;"><input type="checkbox" id="selectAllCheckbox" onclick="toggleSelectAll(this); event.stopPropagation();"> 出貨</th>
+                            <th onclick="sortTable('inventoryTable', 2)">本週庫存數量</th>
+                            <th onclick="sortTable('inventoryTable', 3)">下週需求數量</th>
+                            <th onclick="sortTable('inventoryTable', 4)">建議下單數量</th>
+                            <th onclick="sortTable('inventoryTable', 5)">價格</th>
+                            <th onclick="sortTable('inventoryTable', 6)">SKU</th>
+                            <th onclick="sortTable('inventoryTable', 7)">門店位置</th>
+                            <th onclick="sortTable('inventoryTable', 8)">倉庫</th>
+                            <th onclick="sortTable('inventoryTable', 9)">來源</th>
+                            <th onclick="sortTable('inventoryTable', 10)">狀態</th>
                         </tr>
                     </thead>
                     <tbody id="inventoryBody">
@@ -1646,8 +1646,8 @@
         rows.forEach((row, index) => {
             const cells = row.querySelectorAll('td');
             const productName = cells[0].textContent.trim();
-            const inventory = cells[1].textContent.trim();
-            const sku = cells[5].textContent.trim();
+            const inventory = cells[2].textContent.trim();
+            const sku = cells[6].textContent.trim();
             productsList.push({
                 index,
                 name: productName,
@@ -1694,9 +1694,9 @@
             // 更新庫存
             const row = rows[idx];
             const cells = row.querySelectorAll('td');
-            const currentInventory = parseInt(cells[1].textContent.trim());
+            const currentInventory = parseInt(cells[2].textContent.trim());
             const newInventory = currentInventory - shipQty;
-            cells[1].textContent = newInventory;
+            cells[2].textContent = newInventory;
 
             // 更新狀態
             const demand = parseInt(cells[2].textContent.trim());
