@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Clark Demo - 電商通路數據戰情室 | Momo × Clarks官網 銷售分析">
-    <title>Clark Demo | 通路銷售戰情室</title>
+    <meta name="description" content="Clark 電商訂單匯總 Demo - 電商通路數據戰情室 | Momo × Clarks官網 銷售分析">
+    <title>Clark 電商訂單匯總 Demo | 通路銷售戰情室</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -208,7 +208,6 @@
 
         .chart-card:hover {
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-        }
         }
 
         @media (max-width: 768px) {
@@ -430,6 +429,48 @@
             color: var(--accent-green);
         }
 
+        /* ========== KPI 卡片更新動畫 ========== */
+        @keyframes kpiGlowRipple {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.6),
+                            0 2px 8px rgba(212, 175, 55, 0);
+            }
+            50% {
+                transform: scale(1.01);
+                box-shadow: 0 0 0 6px rgba(212, 175, 55, 0),
+                            0 4px 12px rgba(212, 175, 55, 0.2);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0),
+                            0 2px 8px rgba(212, 175, 55, 0);
+            }
+        }
+
+        @keyframes valuePopUp {
+            0% {
+                transform: scale(0.95);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* 應用動畫類 */
+        .kpi-card.updating {
+            animation: kpiGlowRipple 0.6s ease-in-out;
+        }
+
+        .kpi-value.updating {
+            animation: valuePopUp 0.6s ease-in-out;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             header {
@@ -476,45 +517,51 @@
 
 <header>
     <div class="brand">
-        <h1><i class="fas fa-chart-bar"></i> <img src="./public/336-3365353_clarks-shoes-logo.png" alt="Clarks Logo" style="height: 50px; vertical-align: middle; margin: 0 10px; filter: drop-shadow(0 0 2px rgba(0,0,0,0.2));"> Demo</h1>
+        <h1><i class="fas fa-chart-bar"></i> <img src="./public/336-3365353_clarks-shoes-logo.png" alt="Clarks Logo" style="height: 50px; vertical-align: middle; margin: 0 10px; filter: drop-shadow(0 0 2px rgba(0,0,0,0.2));"> 電商訂單匯總 Demo</h1>
         <div class="brand-sub">🎯 商品通路銷售數據戰情室</div>
         <div style="font-size: 12px; color: #999; margin-top: 10px;">最後更新時間：<span id="updateTime"></span></div>
     </div>
     <div class="controls">
-        <span class="data-range" id="date-range">📅 數據週期: 2025年9月~2026年1月</span>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <label for="startDate" style="font-size: 13px; color: var(--text-main);">📅 數據週期:</label>
+            <input type="date" id="startDate" value="2025-09-01" onchange="updateDateRange()" style="padding: 6px 10px; border-radius: 5px; border: 1px solid var(--text-sub); background: var(--card-bg); color: var(--text-main); font-size: 13px; cursor: pointer;">
+            <span style="color: var(--text-sub);">~</span>
+            <input type="date" id="endDate" value="2026-01-31" onchange="updateDateRange()" style="padding: 6px 10px; border-radius: 5px; border: 1px solid var(--text-sub); background: var(--card-bg); color: var(--text-main); font-size: 13px; cursor: pointer;">
+            <span id="date-range" style="font-size: 13px; color: var(--text-sub); min-width: 180px;">2025年9月1日~2026年1月31日</span>
+        </div>
         
         <button onclick="exportTableAsCSV()"><i class="fas fa-download"></i> 匯出數據</button>
     </div>
 </header>
 
 <div class="tab-nav">
-    <button class="tab-btn active" onclick="switchTab('overview', event)">📊 整體概覽</button>
+    <button class="tab-btn active" onclick="switchTab('overview', event)">📊 總覽頁面</button>
     <button class="tab-btn" onclick="switchTab('allorders', event)">📋 全部訂單</button>
     <button class="tab-btn" onclick="switchTab('multivuniverse', event)">🛍️ Momo</button>
     <button class="tab-btn" onclick="switchTab('carrefour', event)">🏪 Clarks官網</button>
     <button class="tab-btn" onclick="switchTab('comparison', event)">⚖️ 通路對比</button>
 </div>
 
-<!-- ========== 整體概覽分頁 ========== -->
+<!-- ========== 總覽頁面分頁 ========== -->
 <div id="overview" class="tab-content active">
 
     <div class="kpi-row">
-        <div class="kpi-card good">
-            <div class="kpi-title">� 總訂單數</div>
+        <div class="kpi-card good" id="kpi-total-orders">
+            <div class="kpi-title">📋 總訂單數</div>
             <div class="kpi-value">56<span style="font-size: 12px; color: var(--text-sub);">筆</span></div>
             <div class="kpi-trend">Momo表28筆 + Clarks表28筆</div>
         </div>
-        <div class="kpi-card">
+        <div class="kpi-card" id="kpi-total-sales">
             <div class="kpi-title">💰 總銷售額</div>
             <div class="kpi-value">NT$ 756,659</div>
             <div class="kpi-trend">Momo NT$284,799 + Clarks NT$471,860</div>
         </div>
-        <div class="kpi-card good">
+        <div class="kpi-card good" id="kpi-total-completion">
             <div class="kpi-title">✅ 配送完成率</div>
             <div class="kpi-value">100<span style="font-size: 12px; color: var(--text-sub);">%</span></div>
             <div class="kpi-trend">56筆訂單全數完成配送</div>
         </div>
-        <div class="kpi-card info">
+        <div class="kpi-card info" id="kpi-total-avg">
             <div class="kpi-title">⭐ 平均客單價</div>
             <div class="kpi-value">NT$ 13,512<span style="font-size: 12px; color: var(--text-sub);">元</span></div>
             <div class="kpi-trend">計算：NT$ 756,659 ÷ 56筆 = NT$ 13,512</div>
@@ -526,12 +573,12 @@
             <i class="fas fa-chart-line"></i> 通路銷售趨勢
             <span class="badge">實時</span>
         </div>
-        <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">金額變化】按月份展示 Momo 與 Clarks 官網的銷售額走勢</div>
+        <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">金額變化 –》按月份展示 Momo 與 Clarks 官網的銷售額走勢</div>
         <div class="chart-container" style="height: 350px;">
             <canvas id="overviewChart"></canvas>
         </div>
         <div class="insight-box">
-            <div class="insight-title"><i class="fas fa-lightbulb"></i> 銷售趨勢洞察</div>
+            <div class="insight-title"><i class="fas fa-lightbulb"></i> AI 銷售趨勢洞察</div>
             <p style="margin: 8px 0;">
                 <strong>📈 關鍵發現：</strong>Momo 銷售波動較大，Clarks 官網呈穩定成長趨勢。
             </p>
@@ -548,37 +595,13 @@
 
     <div class="comparison-grid">
         <div class="chart-card">
-            <div class="chart-title">通路佔比</div>
-            <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">市場分布】各銷售通路的訂單數及銷售額佔比情況</div>
-            <div class="chart-container" style="height: 250px;">
-                <canvas id="channelPieChart"></canvas>
-            </div>
-            <div class="insight-box">
-                <div class="insight-title"><i class="fas fa-lightbulb"></i> 市場分布洞察</div>
-                <p style="margin: 8px 0;">
-                    <strong>🎯 市場佔比：</strong>Momo 與 Clarks 官網各佔市場約 50%，雙通路策略平衡發展。
-                </p>
-                <p style="margin: 8px 0;">
-                    <strong>💡 最佳實踐：</strong>
-                </p>
-                <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
-                    <li>保持兩個通路的均衡投入，避免過度依賴</li>
-                    <li>根據各通路特性，優化產品選擇和定價</li>
-                    <li>建立通路聯動策略，共同促進銷售成長</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <div class="comparison-grid">
-        <div class="chart-card">
-            <div class="chart-title">總覽熱銷商品Top 10</div>
-            <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">銷售排名】各商品被訂購的次數（有多少個訂單包含它）</div>
+            <div class="chart-title">推薦搭配銷售商品Top 10</div>
+            <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">銷售排名 –》各商品被訂購的次數（有多少個訂單包含它）</div>
             <div class="chart-container" style="height: auto; padding: 15px 0;">
                 <div id="topProductsChart"></div>
             </div>
             <div class="insight-box">
-                <div class="insight-title"><i class="fas fa-lightbulb"></i> 銷售洞察</div>
+                <div class="insight-title"><i class="fas fa-lightbulb"></i> AI 銷售洞察</div>
                 <p style="margin: 8px 0;">
                     <strong>🏆 熱銷商品：</strong>三瓣鞋 2.0 系列連續登頂，銷售額佔比最高。
                 </p>
@@ -593,23 +616,86 @@
             </div>
         </div>
         <div class="chart-card">
-            <div class="chart-title">總覽商品銷售數量分析</div>
-            <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">銷量統計】各商品一共銷算了多少件（按下單時的數量統計）</div>
-            <div class="chart-container" style="height: auto; padding: 15px 0;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                <div>
+                    <div class="chart-title" style="margin-bottom: 6px; font-size: 18px;">📊 總覽商品銷售數量分析</div>
+                    <div style="font-size: 13px; color: var(--text-sub); font-weight: 500;">銷量統計 –》各商品一共銷算了多少件（按下單時的數量統計）</div>
+                </div>
+            </div>
+            
+            <div style="padding: 18px; background: linear-gradient(135deg, rgba(78, 205, 196, 0.12), rgba(78, 205, 196, 0.05)); 
+                        border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--accent-blue); 
+                        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);">
+                <div style="display: flex; align-items: flex-start; gap: 12px;">
+                    <i class="fas fa-chart-bar" style="color: var(--accent-blue); margin-top: 3px; font-size: 18px; min-width: 24px;"></i>
+                    <div style="flex: 1;">
+                        <div style="font-weight: bold; color: var(--accent-blue); margin-bottom: 10px; font-size: 14px;">📈 分析說明</div>
+                        <div style="font-size: 13px; color: var(--text-main); line-height: 1.6; margin-bottom: 12px;">
+                            本表展示各商品的銷售件數排行，前三名熱銷款以金色標示，其他商品以藍色標示。
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-size: 13px;">
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <div style="width: 16px; height: 16px; background-color: #D4AF37; border-radius: 3px;"></div>
+                                <span><strong>前三名熱銷款</strong> - 銷售排名TOP 3</span>
+                            </div>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <div style="width: 16px; height: 16px; background-color: #4A90E2; border-radius: 3px;"></div>
+                                <span><strong>其他商品</strong> - 銷售第4名以後</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-container" style="height: auto; padding: 20px; background: #f8f9fa; border-radius: 8px; margin-bottom: 20px;">
                 <div id="productQtyChart"></div>
             </div>
+            
+            <div class="insight-box" style="background: linear-gradient(135deg, rgba(78, 205, 196, 0.12), rgba(78, 205, 196, 0.05)); 
+                                                border-left: 5px solid var(--accent-blue);
+                                                padding: 16px;
+                                                border-radius: 8px;
+                                                margin-top: 0;">
+                <div style="display: flex; gap: 12px; align-items: flex-start;">
+                    <i class="fas fa-lightbulb" style="color: var(--accent-blue); margin-top: 3px; font-size: 18px; min-width: 24px;"></i>
+                    <div style="flex: 1;">
+                        <strong style="color: var(--accent-blue); font-size: 14px;">💡 AI 銷量分析</strong>
+                        <p style="margin: 8px 0;">
+                            <strong>📋 關鍵發現：</strong>銷量與銷售次數存在差異，表示某些商品客單價較高，推動銷售額增長。
+                        </p>
+                        <p style="margin: 8px 0;">
+                            <strong>💡 優化建議：</strong>
+                        </p>
+                        <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
+                            <li>優先推廣高價/高利潤商品，最大化銷售額</li>
+                            <li>對低銷量商品提供促銷或組合優惠</li>
+                            <li>分析高價商品的客戶特徵，精準行銷</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="comparison-grid" style="margin-top: 30px;">
+        <div class="chart-card">
+            <div class="chart-title">通路佔比</div>
+            <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">市場分布 –》各銷售通路的訂單數及銷售額佔比情況</div>
+            <div class="chart-container" style="height: 250px;">
+                <canvas id="channelPieChart"></canvas>
+            </div>
             <div class="insight-box">
-                <div class="insight-title"><i class="fas fa-lightbulb"></i> 銷量分析</div>
+                <div class="insight-title"><i class="fas fa-lightbulb"></i> AI 市場分布洞察</div>
                 <p style="margin: 8px 0;">
-                    <strong>📦 關鍵發現：</strong>銷量與銷售次數存在差異，表示某些商品客單價較高，推動銷售額增長。
+                    <strong>🎯 市場佔比：</strong>Momo 與 Clarks 官網各佔市場約 50%，雙通路策略平衡發展。
                 </p>
                 <p style="margin: 8px 0;">
-                    <strong>💡 優化建議：</strong>
+                    <strong>💡 AI 最佳實踐：</strong>
                 </p>
                 <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
-                    <li>優先推廣高價/高利潤商品，最大化銷售額</li>
-                    <li>對低銷量商品提供促銷或組合優惠</li>
-                    <li>分析高價商品的客戶特徵，精準行銷</li>
+                    <li>保持兩個通路的均衡投入，避免過度依賴</li>
+                    <li>根據各通路特性，優化產品選擇和定價</li>
+                    <li>建立通路聯動策略，共同促進銷售成長</li>
                 </ul>
             </div>
         </div>
@@ -621,115 +707,148 @@
 <div id="allorders" class="tab-content">
 
     <div class="kpi-row">
-        <div class="kpi-card">
-            <div class="kpi-title">📦 總訂單數</div>
+        <div class="kpi-card" id="kpi-allorders-orders">
+            <div class="kpi-title">📋 總訂單數</div>
             <div class="kpi-value">56<span style="font-size: 12px; color: var(--text-sub);">筆</span></div>
             <div class="kpi-trend">Momo表28筆 + Clarks表28筆</div>
         </div>
-        <div class="kpi-card good">
+        <div class="kpi-card good" id="kpi-allorders-sales">
             <div class="kpi-title">💰 總銷售額</div>
             <div class="kpi-value">NT$ 756,659</div>
             <div class="kpi-trend">Momo NT$284,799 + Clarks NT$471,860</div>
         </div>
-        <div class="kpi-card good">
+        <div class="kpi-card good" id="kpi-allorders-completion">
             <div class="kpi-title">✅ 配送完成率</div>
             <div class="kpi-value">100<span style="font-size: 12px; color: var(--text-sub);">%</span></div>
             <div class="kpi-trend">56筆訂單全數完成配送</div>
         </div>
-        <div class="kpi-card info">
+        <div class="kpi-card info" id="kpi-allorders-avg">
             <div class="kpi-title">⭐ 平均客單價</div>
             <div class="kpi-value">NT$ 13,512<span style="font-size: 12px; color: var(--text-sub);">元</span></div>
             <div class="kpi-trend">計算：NT$ 756,659 ÷ 56筆 = NT$ 13,512</div>
         </div>
     </div>
 
-    <div class="comparison-grid">
-        <div class="chart-card">
-            <div class="chart-title">通路分布</div>
-            <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">銷售通路】Momo 與 Clarks 官網的訂單數及銷售額佔比</div>
-            <div class="chart-container" style="height: 250px;">
-                <canvas id="allOrdersChannelChart"></canvas>
-            </div>
-            <div class="insight-box">
-                <div class="insight-title"><i class="fas fa-lightbulb"></i> 通路表現洞察</div>
-                <p style="margin: 8px 0;">
-                    <strong>📍 訂單分佈：</strong>Momo 與官網訂單分佈平衡，確保多通路銷售健康度。
-                </p>
-                <p style="margin: 8px 0;">
-                    <strong>💡 優化建議：</strong>
-                </p>
-                <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
-                    <li>監控各通路流量變化，及時調整行銷預算</li>
-                    <li>分析客戶在不同通路的行為差異</li>
-                    <li>建立通路聯動的促銷機制</li>
-                </ul>
-            </div>
+    <div class="kpi-row" style="margin-bottom: 20px;">
+        <div class="kpi-card" id="kpi-comparison-momo-orders">
+            <div class="kpi-title">📋 Momo 訂單</div>
+            <div class="kpi-value">28<span style="font-size: 12px; color: var(--text-sub);">筆</span></div>
+            <div class="kpi-trend" id="kpi-comparison-momo-orders-trend">50<span style="font-size: 11px; color: var(--text-sub);">%</span> 佔比</div>
         </div>
+        <div class="kpi-card" id="kpi-comparison-clarks-orders">
+            <div class="kpi-title">🏪 Clarks 訂單</div>
+            <div class="kpi-value">28<span style="font-size: 12px; color: var(--text-sub);">筆</span></div>
+            <div class="kpi-trend" id="kpi-comparison-clarks-orders-trend">50<span style="font-size: 11px; color: var(--text-sub);">%</span> 佔比</div>
+        </div>
+        <div class="kpi-card good" id="kpi-comparison-momo-completion">
+            <div class="kpi-title">✅ Momo 完成率</div>
+            <div class="kpi-value">100<span style="font-size: 12px; color: var(--text-sub);">%</span></div>
+            <div class="kpi-trend" id="kpi-comparison-momo-completion-trend">28筆訂單已配送</div>
+        </div>
+        <div class="kpi-card alert" id="kpi-comparison-clarks-completion">
+            <div class="kpi-title">✅ Clarks 完成率</div>
+            <div class="kpi-value">100<span style="font-size: 12px; color: var(--text-sub);">%</span></div>
+            <div class="kpi-trend" id="kpi-comparison-clarks-completion-trend">28筆訂單已配送</div>
+        </div>
+    </div>
+
+    <div class="comparison-grid" style="margin-bottom: 20px;">
         <div class="chart-card">
             <div class="chart-title">訂單完成進度</div>
-            <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">履行狀況】已配送、配送中、待處理等各階段訂單數量</div>
+            <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 12px;">履行狀況 –》已配送、配送中、待處理等各階段訂單數量</div>
             <div class="chart-container" style="height: 250px;">
                 <canvas id="allOrdersStatusChart"></canvas>
             </div>
-            <div class="insight-box">
-                <div class="insight-title"><i class="fas fa-lightbulb"></i> 履行狀況洞察</div>
-                <p style="margin: 8px 0;">
-                    <strong>📦 配送進度：</strong>大多數訂單已成功配送，物流系統運作效率良好。
-                </p>
-                <p style="margin: 8px 0;">
-                    <strong>⚠️ 待處理監控：</strong>持續追蹤待處理訂單，確保及時處理。
-                </p>
-                <p style="margin: 8px 0;">
-                    <strong>💡 最佳實踐：</strong>
-                </p>
-                <ul style="margin: 5px 0 0 20px; line-height: 1.8;">
-                    <li>定期檢查待處理訂單比例，以確保流程效率</li>
-                    <li>優化打包配送流程，加速從待處理到配送</li>
-                    <li>監控退貨訂單，改進產品品質和客服體驗</li>
-                </ul>
+            <div style="margin-top: 12px; padding: 12px; background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(78, 205, 196, 0.08)); border-radius: 5px; border-left: 3px solid var(--accent-gold);">
+                <div style="font-weight: bold; color: var(--text-main); margin-bottom: 6px; font-size: 12px;">
+                    <strong>📋 配送進度</strong> - 大多數訂單已成功配送，物流系統運作效率良好。
+                </div>
+                <div style="font-size: 12px; color: var(--text-main); line-height: 1.5;">
+                    <strong style="color: var(--accent-blue);">💡 AI 最佳實踐：</strong>
+                    <ul style="margin: 5px 0 0 20px;">
+                        <li style="font-size: 11px;">定期檢查待處理訂單比例，以確保流程效率</li>
+                        <li style="font-size: 11px;">優化打包配送流程，加速從待處理到配送</li>
+                        <li style="font-size: 11px;">監控退貨訂單，改進產品品質和客服體驗</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 
     <div class="chart-card">
-        <div class="chart-title">
-            <i class="fas fa-table"></i> 全部訂單整合清單 (56筆)
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <div>
+                <div class="chart-title" style="margin-bottom: 5px;">
+                    <i class="fas fa-table"></i> 全部訂單整合清單 (56筆)
+                </div>
+                <div style="font-size: 11px; color: var(--text-sub);">訂單資料 –》整合所有通路訂單的詳細信息表格</div>
+            </div>
+            <button onclick="exportTableCSV('allOrdersTable', '全部訂單')" 
+                    style="background: linear-gradient(135deg, var(--accent-gold), #E8C547); color: #000; border: none; 
+                           padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: bold;
+                           box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3); transition: all 0.3s ease;">
+                <i class="fas fa-download" style="margin-right: 6px;"></i> 匯出 CSV
+            </button>
         </div>
-        <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 8px 0;">訂單資料】整合所有通路訂單的詳細信息表格</div>
-        <div style="padding: 15px; background: rgba(78, 205, 196, 0.1); border-radius: 8px; margin-bottom: 15px; border-left: 4px solid var(--accent-blue);">
-            <strong style="color: var(--accent-blue);">📊 表格說明：</strong><br>
-            本表格整合所有通路（Momo + Clarks）的訂單數據，方便進行跨通路分析和全面統計：
-            <ul style="margin: 10px 0 0 20px; font-size: 13px; line-height: 1.6;">
-                <li><strong>結帳單號</strong> - 訂單唯一編號（MO-開頭為Momo，CR-開頭為Clarks）</li>
-                <li><strong>訂單來源</strong> - 區分訂單來自哪個銷售通路</li>
-                <li><strong>商品金額</strong> - 各訂單的銷售額（NT$）</li>
-                <li><strong>配送信息</strong> - 物流運送方式、廠商、預計/實際配送日期</li>
-                <li><strong>配送狀態</strong> - 訂單是否已送達、配送中或待處理</li>
-            </ul>
-            💡 <em style="font-size: 12px;">提示：用於跨通路數據分析、物流統計、KPI計算等</em>
+        
+        <div style="padding: 16px; background: linear-gradient(135deg, rgba(78, 205, 196, 0.12), rgba(78, 205, 196, 0.05)); 
+                    border-radius: 8px; margin-bottom: 18px; border-left: 5px solid var(--accent-blue); 
+                    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);">
+            <div style="display: flex; align-items: flex-start; gap: 12px;">
+                <i class="fas fa-info-circle" style="color: var(--accent-blue); margin-top: 2px; font-size: 16px;"></i>
+                <div style="flex: 1;">
+                    <div style="font-weight: bold; color: var(--accent-blue); margin-bottom: 8px; font-size: 13px;">📊 表格說明</div>
+                    <div style="font-size: 12px; color: var(--text-main); line-height: 1.5; margin-bottom: 8px;">
+                        本表格整合所有通路（Momo + Clarks）的訂單數據，方便進行跨通路分析和全面統計
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 12px;">
+                        <div style="display: flex; gap: 8px;">
+                            <span style="color: var(--accent-blue); font-weight: bold;">📋</span>
+                            <span><strong>結帳單號</strong> - 訂單唯一編號</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <span style="color: var(--accent-blue); font-weight: bold;">🏢</span>
+                            <span><strong>訂單來源</strong> - Momo 或 Clarks</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <span style="color: var(--accent-blue); font-weight: bold;">💰</span>
+                            <span><strong>商品金額</strong> - 各訂單銷售額</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <span style="color: var(--accent-blue); font-weight: bold;">📦</span>
+                            <span><strong>配送信息</strong> - 方式、廠商、日期</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <span style="color: var(--accent-blue); font-weight: bold;">✓</span>
+                            <span><strong>配送狀態</strong> - 已送達、配送中、待處理</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="table-container">
+        
+        <div class="table-container" style="margin-bottom: 20px;">
             <table id="allOrdersTable" style="min-width: 1900px;">
                 <thead>
                     <tr>
-                        <th onclick="sortTable('allOrdersTable', 0)">結帳單號 ▼</th>
-                        <th onclick="sortTable('allOrdersTable', 1)">購買日期</th>
-                        <th onclick="sortTable('allOrdersTable', 2)">訂單來源</th>
-                        <th onclick="sortTable('allOrdersTable', 3)">收件人</th>
-                        <th onclick="sortTable('allOrdersTable', 4)">電話</th>
-                        <th onclick="sortTable('allOrdersTable', 5)">收件人縣市</th>
-                        <th onclick="sortTable('allOrdersTable', 6)">收件人地址</th>
-                        <th onclick="sortTable('allOrdersTable', 7)">商品</th>
-                        <th onclick="sortTable('allOrdersTable', 8)">SKU</th>
-                        <th onclick="sortTable('allOrdersTable', 9)">數量</th>
-                        <th onclick="sortTable('allOrdersTable', 10)">成本</th>
-                        <th onclick="sortTable('allOrdersTable', 11)">金額</th>
-                        <th onclick="sortTable('allOrdersTable', 12)">配送方式</th>
-                        <th onclick="sortTable('allOrdersTable', 13)">配送廠商</th>
-                        <th onclick="sortTable('allOrdersTable', 14)">預計配送</th>
-                        <th onclick="sortTable('allOrdersTable', 15)">實際配送</th>
-                        <th onclick="sortTable('allOrdersTable', 16)">配送狀態</th>
-                        <th onclick="sortTable('allOrdersTable', 17)">備註</th>
+                        <th onclick="sortTable('allOrdersTable', 0)" style="cursor: pointer; background: linear-gradient(135deg, rgba(78, 205, 196, 0.15), rgba(78, 205, 196, 0.08));">結帳單號 ▼</th>
+                        <th onclick="sortTable('allOrdersTable', 1)" style="cursor: pointer;">購買日期</th>
+                        <th onclick="sortTable('allOrdersTable', 2)" style="cursor: pointer;">訂單來源</th>
+                        <th onclick="sortTable('allOrdersTable', 3)" style="cursor: pointer;">收件人</th>
+                        <th onclick="sortTable('allOrdersTable', 4)" style="cursor: pointer;">電話</th>
+                        <th onclick="sortTable('allOrdersTable', 5)" style="cursor: pointer;">收件人縣市</th>
+                        <th onclick="sortTable('allOrdersTable', 6)" style="cursor: pointer;">收件人地址</th>
+                        <th onclick="sortTable('allOrdersTable', 7)" style="cursor: pointer;">商品</th>
+                        <th onclick="sortTable('allOrdersTable', 8)" style="cursor: pointer;">SKU</th>
+                        <th onclick="sortTable('allOrdersTable', 9)" style="cursor: pointer;">數量</th>
+                        <th onclick="sortTable('allOrdersTable', 10)" style="cursor: pointer;">成本</th>
+                        <th onclick="sortTable('allOrdersTable', 11)" style="cursor: pointer;">金額</th>
+                        <th onclick="sortTable('allOrdersTable', 12)" style="cursor: pointer;">配送方式</th>
+                        <th onclick="sortTable('allOrdersTable', 13)" style="cursor: pointer;">配送廠商</th>
+                        <th onclick="sortTable('allOrdersTable', 14)" style="cursor: pointer;">預計配送</th>
+                        <th onclick="sortTable('allOrdersTable', 15)" style="cursor: pointer;">實際配送</th>
+                        <th onclick="sortTable('allOrdersTable', 16)" style="cursor: pointer;">配送狀態</th>
+                        <th onclick="sortTable('allOrdersTable', 17)" style="cursor: pointer;">備註</th>
                     </tr>
                 </thead>
                 <tbody id="allOrdersTableBody">
@@ -738,7 +857,7 @@
             </table>
         </div>
         <div class="insight-box">
-            <div class="insight-title"><i class="fas fa-lightbulb"></i> 表格洞察</div>
+            <div class="insight-title"><i class="fas fa-lightbulb"></i> AI 表格洞察</div>
             <p style="margin: 8px 0;">
                 <strong>📊 數據概覽：</strong>本表整合了所有通路訂單，共計 <span style="color: var(--accent-gold); font-weight: bold;">56 筆訂單</span>，涵蓋 Momo 和 Clarks 官網兩大銷售通路。
             </p>
@@ -751,56 +870,52 @@
                 <li>檢查「結帳單號」編號規律，監控各通路訂單量趨勢</li>
             </ul>
         </div>
-
-            <div style="display: flex; gap: 10px; margin-top: 15px;">
-                <button onclick="exportTableCSV('allOrdersTable', '全部訂單')" 
-                        style="background: var(--accent-gold); color: #000; border: none; 
-                               padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">
-                    <i class="fas fa-download"></i> 匯出全部訂單CSV
-                </button>
-            </div>
-
-            <div class="comparison-grid" style="margin-top: 25px;">
-                <div class="chart-card">
-                    <div class="chart-title">配送方式分析</div>
-                    <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">物流分析】宅配、超商取貨等各種配送方式的訂單數比例</div>
-                    <div class="chart-container" style="height: 250px;">
-                        <canvas id="allOrdersShippingChart"></canvas>
-                    </div>
-                    <div class="chart-insight blue">
-                        <strong>📮 物流策略：</strong>
-                        <span style="color: var(--text-sub);">宅配與超商併行，滿足不同客戶需求。</span>
-                    </div>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-title">配送廠商分布</div>
-                    <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">廠商評估】與各家物流公司合作的訂單數及比例分布</div>
-                    <div class="chart-container" style="height: 250px;">
-                        <canvas id="allOrdersCourierChart"></canvas>
-                    </div>
-                    <div class="chart-insight blue">
-                        <strong>🚚 廠商評估：</strong>
-                        <span style="color: var(--text-sub);">多家廠商合作確保配送穩定性。</span>
-                    </div>
-                </div>
-            </div>
-
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
             <div class="chart-card">
-                <div class="chart-title">各縣市訂單分布</div>
-                <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">地域分析】按縣市統計訂單數量與銷售額的地理分布情況</div>
-                <div class="chart-container" style="height: 300px;">
-                    <canvas id="allOrdersGeoChart"></canvas>
+                <div class="chart-title">配送方式分析</div>
+                <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 12px;">物流分析 –》宅配、超商取貨等各種配送方式的訂單數比例</div>
+                <div class="chart-container" style="height: 250px;">
+                    <canvas id="allOrdersShippingChart"></canvas>
                 </div>
-                <div class="chart-insight blue">
-                    <strong>🗺️ 地域分析：</strong>
-                    <span style="color: var(--text-sub);">北部地區訂單量最高，南部成長潛力大。建議調整區域行銷策略。</span>
+                <div style="margin-top: 12px; padding: 10px; background: rgba(78, 205, 196, 0.08); border-radius: 5px; border-left: 3px solid var(--accent-blue); font-size: 12px;">
+                    <strong style="color: var(--accent-blue);">📮 物流策略：</strong><br>
+                    <span style="color: var(--text-sub);">宅配與超商併行，滿足不同客戶需求。</span>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-title">配送廠商分布</div>
+                <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 12px;">廠商評估 –》與各家物流公司合作的訂單數及比例分布</div>
+                <div class="chart-container" style="height: 250px;">
+                    <canvas id="allOrdersCourierChart"></canvas>
+                </div>
+                <div style="margin-top: 12px; padding: 10px; background: rgba(78, 205, 196, 0.08); border-radius: 5px; border-left: 3px solid var(--accent-blue); font-size: 12px;">
+                    <strong style="color: var(--accent-blue);">🚚 廠商評估：</strong><br>
+                    <span style="color: var(--text-sub);">多家廠商合作確保配送穩定性。</span>
                 </div>
             </div>
         </div>
 
-        <div class="insight-box">
-            <strong>💡 整合洞察：</strong><br>
-            總計56筆訂單，跨越Momo和Clarks官網兩大通路，完成率100%。平均客單價NT$13,512，反映兩大通路客群消費力相當。Momo帶動基礎訂單量，Clarks官網則展現更高客單價潛力。兩通路互補，形成完整銷售生態。
+        <div class="chart-card" style="margin-bottom: 20px;">
+            <div class="chart-title">各縣市訂單分布</div>
+            <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 12px;">地域分析 –》按縣市統計訂單數量與銷售額的地理分布情況</div>
+            <div class="chart-container" style="height: 300px;">
+                <canvas id="allOrdersGeoChart"></canvas>
+            </div>
+            <div style="margin-top: 12px; padding: 12px; background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(78, 205, 196, 0.08)); border-radius: 5px; border-left: 3px solid var(--accent-gold);">
+                <strong style="color: var(--accent-gold);">🗺️ 地域分析：</strong><br>
+                <span style="color: var(--text-main); font-size: 12px;">北部地區訂單量最高，南部成長潛力大。建議調整區域行銷策略。</span>
+            </div>
+        </div>
+
+        <div class="insight-box" style="background: linear-gradient(135deg, rgba(212, 175, 55, 0.12), rgba(78, 205, 196, 0.12)); border-left: 4px solid var(--accent-gold);">
+            <div style="font-size: 13px; line-height: 1.8; color: var(--text-main);">
+                <strong style="color: var(--accent-gold);">💡 AI 整合洞察：</strong><br>
+                <span style="margin-top: 8px; display: block;">
+                    總計<strong style="color: var(--accent-gold);">56筆訂單</strong>，跨越Momo和Clarks官網兩大通路，完成率<strong style="color: var(--accent-gold);">100%</strong>。平均客單價<strong>NT$13,512</strong>，反映兩大通路客群消費力相當。Momo帶動基礎訂單量，Clarks官網則展現更高客單價潛力。兩通路互補，形成完整銷售生態。
+                </span>
+            </div>
         </div>
     </div>
 
@@ -810,22 +925,22 @@
 <div id="multivuniverse" class="tab-content">
 
     <div class="kpi-row">
-        <div class="kpi-card">
-            <div class="kpi-title">� 訂單數</div>
+        <div class="kpi-card" id="kpi-momo-orders">
+            <div class="kpi-title">📋 訂單數</div>
             <div class="kpi-value">28<span style="font-size: 12px; color: var(--text-sub);">筆</span></div>
             <div class="kpi-trend">Momo表行數</div>
         </div>
-        <div class="kpi-card good">
+        <div class="kpi-card good" id="kpi-momo-sales">
             <div class="kpi-title">💰 銷售額</div>
             <div class="kpi-value">NT$ 284,799</div>
             <div class="kpi-trend">Momo表所有金額總和</div>
         </div>
-        <div class="kpi-card alert">
+        <div class="kpi-card alert" id="kpi-momo-completion">
             <div class="kpi-title">✅ 配送完成率</div>
             <div class="kpi-value">100<span style="font-size: 12px; color: var(--text-sub);">%</span></div>
             <div class="kpi-trend">28筆訂單全數完成</div>
         </div>
-        <div class="kpi-card info">
+        <div class="kpi-card info" id="kpi-momo-avg">
             <div class="kpi-title">⭐ 平均客單價</div>
             <div class="kpi-value">NT$ 10,171<span style="font-size: 12px; color: var(--text-sub);">元</span></div>
             <div class="kpi-trend">計算：NT$ 284,799 ÷ 28筆 = NT$ 10,171</div>
@@ -833,44 +948,78 @@
     </div>
 
     <div class="chart-card">
-        <div class="chart-title">
-            <i class="fas fa-table"></i> Momo - 完整訂單清單
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div>
+                <div class="chart-title">
+                    <i class="fas fa-table"></i> Momo - 完整訂單清單
+                </div>
+                <div style="font-size: 11px; color: var(--text-sub);">訂單資料 –》Momo 通路所有訂單的詳細信息表格</div>
+            </div>
+            <button onclick="exportTableCSV('multiverceTable', 'Momo訂單')" 
+                    style="background: linear-gradient(135deg, var(--accent-gold), #E8C547); color: #000; border: none; 
+                           padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: bold;
+                           box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3); transition: all 0.3s ease;">
+                <i class="fas fa-download" style="margin-right: 6px;"></i> 匯出 CSV
+            </button>
         </div>
-        <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 8px 0;">訂單資料】Momo 通路所有訂單的詳細信息表格</div>
-        <div style="padding: 15px; background: rgba(212, 175, 55, 0.1); border-radius: 8px; margin-bottom: 15px; border-left: 4px solid var(--accent-gold);">
-            <strong style="color: var(--accent-gold);">📊 表格說明：</strong><br>
-            本表格展示所有 Momo 訂單詳細信息，包括：
-            <ul style="margin: 10px 0 0 20px; font-size: 13px; line-height: 1.6;">
-                <li><strong>結帳單號</strong> - 訂單唯一編號</li>
-                <li><strong>購買日期</strong> - 下單時間</li>
-                <li><strong>商品金額</strong> - 各訂單的銷售額（NT$）</li>
-                <li><strong>配送方式/廠商</strong> - 物流運送信息</li>
-                <li><strong>配送狀態</strong> - 訂單是否已送達客戶</li>
-            </ul>
-            💡 <em style="font-size: 12px;">提示：點擊表頭可排序；上方「通路銷售趨勢」圖表由此表格數據統計生成</em>
+        
+        <div style="padding: 16px; background: linear-gradient(135deg, rgba(78, 205, 196, 0.12), rgba(78, 205, 196, 0.05)); 
+                    border-radius: 8px; margin-bottom: 18px; border-left: 5px solid var(--accent-blue); 
+                    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);">
+            <div style="display: flex; align-items: flex-start; gap: 12px;">
+                <i class="fas fa-info-circle" style="color: var(--accent-blue); margin-top: 2px; font-size: 16px;"></i>
+                <div style="flex: 1;">
+                    <div style="font-weight: bold; color: var(--accent-blue); margin-bottom: 8px; font-size: 13px;">📊 表格說明</div>
+                    <div style="font-size: 12px; color: var(--text-main); line-height: 1.5; margin-bottom: 8px;">
+                        本表格展示所有 Momo 訂單詳細信息，方便進行訂單分析和跨通路比較
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 12px;">
+                        <div style="display: flex; gap: 8px;">
+                            <span style="color: var(--accent-blue); font-weight: bold;">📋</span>
+                            <span><strong>結帳單號</strong> - 訂單唯一編號</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <span style="color: var(--accent-blue); font-weight: bold;">📅</span>
+                            <span><strong>購買日期</strong> - 下單時間</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <span style="color: var(--accent-blue); font-weight: bold;">💰</span>
+                            <span><strong>商品金額</strong> - 各訂單銷售額</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <span style="color: var(--accent-blue); font-weight: bold;">📦</span>
+                            <span><strong>配送信息</strong> - 方式、廠商、日期</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <span style="color: var(--accent-blue); font-weight: bold;">✓</span>
+                            <span><strong>配送狀態</strong> - 已送達、配送中、待處理</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="table-container">
             <table id="multiverceTable" style="min-width: 1900px;">
                 <thead>
                     <tr>
-                        <th onclick="sortTable('multiverceTable', 0)">結帳單號 ▼</th>
-                        <th onclick="sortTable('multiverceTable', 1)">購買日期</th>
-                        <th onclick="sortTable('multiverceTable', 2)">訂單來源</th>
-                        <th onclick="sortTable('multiverceTable', 3)">收件人</th>
-                        <th onclick="sortTable('multiverceTable', 4)">電話</th>
-                        <th onclick="sortTable('multiverceTable', 5)">收件人縣市</th>
-                        <th onclick="sortTable('multiverceTable', 6)">收件人地址</th>
-                        <th onclick="sortTable('multiverceTable', 7)">商品</th>
-                        <th onclick="sortTable('multiverceTable', 8)">SKU</th>
-                        <th onclick="sortTable('multiverceTable', 9)">數量</th>
-                        <th onclick="sortTable('multiverceTable', 10)">成本</th>
-                        <th onclick="sortTable('multiverceTable', 11)">金額</th>
-                        <th onclick="sortTable('multiverceTable', 12)">配送方式</th>
-                        <th onclick="sortTable('multiverceTable', 13)">配送廠商</th>
-                        <th onclick="sortTable('multiverceTable', 14)">預計配送</th>
-                        <th onclick="sortTable('multiverceTable', 15)">實際配送</th>
-                        <th onclick="sortTable('multiverceTable', 16)">配送狀態</th>
-                        <th onclick="sortTable('multiverceTable', 17)">備註</th>
+                        <th onclick="sortTable('multiverceTable', 0)" style="cursor: pointer; background: linear-gradient(135deg, rgba(78, 205, 196, 0.15), rgba(78, 205, 196, 0.08));">結帳單號 ▼</th>
+                        <th onclick="sortTable('multiverceTable', 1)" style="cursor: pointer;">購買日期</th>
+                        <th onclick="sortTable('multiverceTable', 2)" style="cursor: pointer;">訂單來源</th>
+                        <th onclick="sortTable('multiverceTable', 3)" style="cursor: pointer;">收件人</th>
+                        <th onclick="sortTable('multiverceTable', 4)" style="cursor: pointer;">電話</th>
+                        <th onclick="sortTable('multiverceTable', 5)" style="cursor: pointer;">收件人縣市</th>
+                        <th onclick="sortTable('multiverceTable', 6)" style="cursor: pointer;">收件人地址</th>
+                        <th onclick="sortTable('multiverceTable', 7)" style="cursor: pointer;">商品</th>
+                        <th onclick="sortTable('multiverceTable', 8)" style="cursor: pointer;">SKU</th>
+                        <th onclick="sortTable('multiverceTable', 9)" style="cursor: pointer;">數量</th>
+                        <th onclick="sortTable('multiverceTable', 10)" style="cursor: pointer;">成本</th>
+                        <th onclick="sortTable('multiverceTable', 11)" style="cursor: pointer;">金額</th>
+                        <th onclick="sortTable('multiverceTable', 12)" style="cursor: pointer;">配送方式</th>
+                        <th onclick="sortTable('multiverceTable', 13)" style="cursor: pointer;">配送廠商</th>
+                        <th onclick="sortTable('multiverceTable', 14)" style="cursor: pointer;">預計配送</th>
+                        <th onclick="sortTable('multiverceTable', 15)" style="cursor: pointer;">實際配送</th>
+                        <th onclick="sortTable('multiverceTable', 16)" style="cursor: pointer;">配送狀態</th>
+                        <th onclick="sortTable('multiverceTable', 17)" style="cursor: pointer;">備註</th>
                     </tr>
                 </thead>
 <tbody>
@@ -1437,8 +1586,9 @@
                 </tbody>
             </table>
         </div>
+
         <div class="insight-box">
-            <div class="insight-title"><i class="fas fa-lightbulb"></i> 表格洞察</div>
+            <div class="insight-title"><i class="fas fa-lightbulb"></i> AI 表格洞察</div>
             <p style="margin: 8px 0;">
                 <strong>📊 數據概覽：</strong>Momo 平台共產生 <span style="color: var(--accent-gold); font-weight: bold;">44 筆訂單</span>，是本期主要銷售通路。
             </p>
@@ -1452,14 +1602,76 @@
             </ul>
         </div>
 
-        <div style="display: flex; gap: 10px; margin-top: 15px;">
-            <button onclick="exportTableCSV('multiverceTable', 'Momo訂單')" style="background: var(--accent-gold); color: #000; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;"><i class="fas fa-download"></i> 匯出Momo訂單CSV</button>
+        <div class="comparison-grid" style="margin-top: 25px;">
+            <div class="chart-card">
+                <div class="chart-title">Momo推薦搭配銷售商品Top 10</div>
+                <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">銷售排名 –》Momo各商品被訂購的次數（訂單數排行）</div>
+                <div class="chart-container" style="height: auto; padding: 15px 0;">
+                    <div id="momoTopProductsChart"></div>
+                </div>
+                <div class="chart-insight">
+                    <strong>⭐ 銷售排名：</strong>
+                    <span style="color: var(--text-sub);">掌握Momo熱銷商品，優化商品策略與備貨計畫。</span>
+                </div>
+            </div>
+            <div class="chart-card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                    <div>
+                        <div class="chart-title" style="margin-bottom: 6px; font-size: 18px;">📊 商品銷售數量分析</div>
+                        <div style="font-size: 13px; color: var(--text-sub); font-weight: 500;">銷量統計 –》Momo各商品一共賣出了多少件（商品件數排行）</div>
+                    </div>
+                </div>
+                
+                <div style="padding: 18px; background: linear-gradient(135deg, rgba(78, 205, 196, 0.12), rgba(78, 205, 196, 0.05)); 
+                            border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--accent-blue); 
+                            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);">
+                    <div style="display: flex; align-items: flex-start; gap: 12px;">
+                        <i class="fas fa-chart-bar" style="color: var(--accent-blue); margin-top: 3px; font-size: 18px; min-width: 24px;"></i>
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; color: var(--accent-blue); margin-bottom: 10px; font-size: 14px;">📈 分析說明</div>
+                            <div style="font-size: 13px; color: var(--text-main); line-height: 1.6; margin-bottom: 12px;">
+                                本表展示各商品的銷售件數排行，前三名熱銷款以金色標示，其他商品以藍色標示。
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-size: 13px;">
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <div style="width: 16px; height: 16px; background-color: #D4AF37; border-radius: 3px;"></div>
+                                    <span><strong>前三名熱銷款</strong> - 銷售排名TOP 3</span>
+                                </div>
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <div style="width: 16px; height: 16px; background-color: #4A90E2; border-radius: 3px;"></div>
+                                    <span><strong>其他商品</strong> - 銷售第4名以後</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-container" style="height: auto; padding: 20px; background: #f8f9fa; border-radius: 8px; margin-bottom: 20px;">
+                    <div id="momoProductQtyChart"></div>
+                </div>
+                
+                <div class="insight-box" style="background: linear-gradient(135deg, rgba(78, 205, 196, 0.12), rgba(78, 205, 196, 0.05)); 
+                                                    border-left: 5px solid var(--accent-blue);
+                                                    padding: 16px;
+                                                    border-radius: 8px;
+                                                    margin-top: 0;">
+                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                        <i class="fas fa-lightbulb" style="color: var(--accent-blue); margin-top: 3px; font-size: 18px; min-width: 24px;"></i>
+                        <div style="flex: 1;">
+                            <strong style="color: var(--accent-blue); font-size: 14px;">💡 數量分析建議</strong>
+                            <p style="margin: 8px 0 0 0; font-size: 13px; color: var(--text-main); line-height: 1.6;">
+                                分析各商品銷售數量，調整庫存與流量分配。重點關注前三名熱銷款的補貨週期，並評估其他商品的促銷機會。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="comparison-grid" style="margin-top: 25px;">
             <div class="chart-card">
                 <div class="chart-title">配送方式分析</div>
-                <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">物流分析】Momo 訂單的宅配、超商取貨等配送方式分布</div>
+                <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">物流分析 –》Momo 訂單的宅配、超商取貨等配送方式分布</div>
                 <div class="chart-container" style="height: 250px;">
                     <canvas id="momoShippingChart"></canvas>
                 </div>
@@ -1470,7 +1682,7 @@
             </div>
             <div class="chart-card">
                 <div class="chart-title">配送廠商分布</div>
-                <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">廠商評估】Momo 訂單與各家物流公司合作的分布情況</div>
+                <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">廠商評估 –》Momo 訂單與各家物流公司合作的分布情況</div>
                 <div class="chart-container" style="height: 250px;">
                     <canvas id="momoCourierChart"></canvas>
                 </div>
@@ -1483,7 +1695,7 @@
 
         <div class="chart-card">
             <div class="chart-title">各縣市訂單分布</div>
-            <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">地域分析】Momo 訂單在全台各縣市的分布情況與銷售額</div>
+            <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">地域分析 –》Momo 訂單在全台各縣市的分布情況與銷售額</div>
             <div class="chart-container" style="height: 300px;">
                 <canvas id="momoGeoChart"></canvas>
             </div>
@@ -1493,33 +1705,8 @@
             </div>
         </div>
 
-        <div class="comparison-grid" style="margin-top: 25px;">
-            <div class="chart-card">
-                <div class="chart-title">熱銷商品 Top 10</div>
-                <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">銷售排名】Momo各商品被訂購的次數（訂單數排行）</div>
-                <div class="chart-container" style="height: auto; padding: 15px 0;">
-                    <div id="momoTopProductsChart"></div>
-                </div>
-                <div class="chart-insight">
-                    <strong>⭐ 銷售排名：</strong>
-                    <span style="color: var(--text-sub);">掌握Momo熱銷商品，優化商品策略與備貨計畫。</span>
-                </div>
-            </div>
-            <div class="chart-card">
-                <div class="chart-title">商品銷售數量分析</div>
-                <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">銷量統計】Momo各商品一共賣出了多少件（商品件數排行）</div>
-                <div class="chart-container" style="height: auto; padding: 15px 0;">
-                    <div id="momoProductQtyChart"></div>
-                </div>
-                <div class="chart-insight blue">
-                    <strong>📊 數量分析：</strong>
-                    <span style="color: var(--text-sub);">分析各商品銷售數量，調整庫存與流量分配。</span>
-                </div>
-            </div>
-        </div>
-
         <div class="insight-box">
-            <strong>💡 銷售洞察：</strong><br>
+            <strong>💡 AI 銷售洞察：</strong><br>
             Momo頻道28筆訂單全數完成配送，配送完成率 <strong>100%</strong>。客戶遍布台灣各地，覆蓋北中南東，呈現全台完整覆蓋。訂單集中在台北、桃園、台中等都會區，女性商品(娃娃鞋、流蘇鞋)銷售佳。金額區間NT$1,980~NT$6,318，平均客單價NT$3,604。
         </div>
     </div>
@@ -1530,22 +1717,22 @@
 <div id="carrefour" class="tab-content">
 
     <div class="kpi-row">
-        <div class="kpi-card">
-            <div class="kpi-title">📦 訂單數</div>
+        <div class="kpi-card" id="kpi-clarks-orders">
+            <div class="kpi-title">📋 訂單數</div>
             <div class="kpi-value">28<span style="font-size: 12px; color: var(--text-sub);">筆</span></div>
             <div class="kpi-trend">Clarks表行數</div>
         </div>
-        <div class="kpi-card good">
+        <div class="kpi-card good" id="kpi-clarks-sales">
             <div class="kpi-title">💰 銷售額</div>
             <div class="kpi-value">NT$ 471,860</div>
             <div class="kpi-trend">Clarks表所有金額總和</div>
         </div>
-        <div class="kpi-card alert">
+        <div class="kpi-card alert" id="kpi-clarks-completion">
             <div class="kpi-title">✅ 配送完成率</div>
             <div class="kpi-value">100<span style="font-size: 12px; color: var(--text-sub);">%</span></div>
             <div class="kpi-trend">28筆訂單全數完成</div>
         </div>
-        <div class="kpi-card info">
+        <div class="kpi-card info" id="kpi-clarks-avg">
             <div class="kpi-title">⭐ 平均客單價</div>
             <div class="kpi-value">NT$ 16,852<span style="font-size: 12px; color: var(--text-sub);">元</span></div>
             <div class="kpi-trend">計算：NT$ 471,860 ÷ 28筆 = NT$ 16,852</div>
@@ -1553,44 +1740,78 @@
     </div>
 
     <div class="chart-card">
-        <div class="chart-title">
-            <i class="fas fa-table"></i> Clarks官網 - 完整訂單清單
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div>
+                <div class="chart-title">
+                    <i class="fas fa-table"></i> Clarks官網 - 完整訂單清單
+                </div>
+                <div style="font-size: 11px; color: var(--text-sub);">訂單資料 –》Clarks 官網通路所有訂單的詳細信息表格</div>
+            </div>
+            <button onclick="exportTableCSV('carrefourTable', 'Clarks官網訂單')" 
+                    style="background: linear-gradient(135deg, var(--accent-gold), #E8C547); color: #000; border: none; 
+                           padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: bold;
+                           box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3); transition: all 0.3s ease;">
+                <i class="fas fa-download" style="margin-right: 6px;"></i> 匯出 CSV
+            </button>
         </div>
-        <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 8px 0;">訂單資料】Clarks 官網通路所有訂單的詳細信息表格</div>
-        <div style="padding: 15px; background: rgba(78, 205, 196, 0.1); border-radius: 8px; margin-bottom: 15px; border-left: 4px solid var(--accent-blue);">
-            <strong style="color: var(--accent-blue);">📊 表格說明：</strong><br>
-            本表格展示所有 Clarks 官方網站訂單的詳細信息，用於分析官網銷售績效：
-            <ul style="margin: 10px 0 0 20px; font-size: 13px; line-height: 1.6;">
-                <li><strong>結帳單號</strong> - 訂單唯一編號（CR-開頭表示Clarks官網）</li>
-                <li><strong>購買日期</strong> - 下單時間</li>
-                <li><strong>商品金額</strong> - 各訂單的銷售額（NT$）</li>
-                <li><strong>配送方式/廠商</strong> - 物流運送信息</li>
-                <li><strong>配送狀態</strong> - 訂單是否已送達客戶</li>
-            </ul>
-            💡 <em style="font-size: 12px;">提示：點擊表頭可排序；用於官網銷售分析和客服查詢</em>
+        
+        <div style="padding: 16px; background: linear-gradient(135deg, rgba(78, 205, 196, 0.12), rgba(78, 205, 196, 0.05)); 
+                    border-radius: 8px; margin-bottom: 18px; border-left: 5px solid var(--accent-blue); 
+                    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);">
+            <div style="display: flex; align-items: flex-start; gap: 12px;">
+                <i class="fas fa-info-circle" style="color: var(--accent-blue); margin-top: 2px; font-size: 16px;"></i>
+                <div style="flex: 1;">
+                    <div style="font-weight: bold; color: var(--accent-blue); margin-bottom: 8px; font-size: 13px;">📊 表格說明</div>
+                    <div style="font-size: 12px; color: var(--text-main); line-height: 1.5; margin-bottom: 8px;">
+                        本表格展示所有 Clarks 官方網站訂單詳細信息，方便進行官網銷售績效分析
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 12px;">
+                        <div style="display: flex; gap: 8px;">
+                            <span style="color: var(--accent-blue); font-weight: bold;">📋</span>
+                            <span><strong>結帳單號</strong> - 訂單唯一編號</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <span style="color: var(--accent-blue); font-weight: bold;">📅</span>
+                            <span><strong>購買日期</strong> - 下單時間</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <span style="color: var(--accent-blue); font-weight: bold;">💰</span>
+                            <span><strong>商品金額</strong> - 各訂單銷售額</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <span style="color: var(--accent-blue); font-weight: bold;">📦</span>
+                            <span><strong>配送信息</strong> - 方式、廠商、日期</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <span style="color: var(--accent-blue); font-weight: bold;">✓</span>
+                            <span><strong>配送狀態</strong> - 已送達、配送中、待處理</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="table-container">
             <table id="carrefourTable" style="min-width: 1900px;">
                 <thead>
                     <tr>
-                        <th onclick="sortTable('carrefourTable', 0)">結帳單號 ▼</th>
-                        <th onclick="sortTable('carrefourTable', 1)">購買日期</th>
-                        <th onclick="sortTable('carrefourTable', 2)">訂單來源</th>
-                        <th onclick="sortTable('carrefourTable', 3)">收件人</th>
-                        <th onclick="sortTable('carrefourTable', 4)">電話</th>
-                        <th onclick="sortTable('carrefourTable', 5)">收件人縣市</th>
-                        <th onclick="sortTable('carrefourTable', 6)">收件人地址</th>
-                        <th onclick="sortTable('carrefourTable', 7)">商品</th>
-                        <th onclick="sortTable('carrefourTable', 8)">SKU</th>
-                        <th onclick="sortTable('carrefourTable', 9)">數量</th>
-                        <th onclick="sortTable('carrefourTable', 10)">成本</th>
-                        <th onclick="sortTable('carrefourTable', 11)">金額</th>
-                        <th onclick="sortTable('carrefourTable', 12)">配送方式</th>
-                        <th onclick="sortTable('carrefourTable', 13)">配送廠商</th>
-                        <th onclick="sortTable('carrefourTable', 14)">預計配送</th>
-                        <th onclick="sortTable('carrefourTable', 15)">實際配送</th>
-                        <th onclick="sortTable('carrefourTable', 16)">配送狀態</th>
-                        <th onclick="sortTable('carrefourTable', 17)">備註</th>
+                        <th onclick="sortTable('carrefourTable', 0)" style="cursor: pointer; background: linear-gradient(135deg, rgba(78, 205, 196, 0.15), rgba(78, 205, 196, 0.08));">結帳單號 ▼</th>
+                        <th onclick="sortTable('carrefourTable', 1)" style="cursor: pointer;">購買日期</th>
+                        <th onclick="sortTable('carrefourTable', 2)" style="cursor: pointer;">訂單來源</th>
+                        <th onclick="sortTable('carrefourTable', 3)" style="cursor: pointer;">收件人</th>
+                        <th onclick="sortTable('carrefourTable', 4)" style="cursor: pointer;">電話</th>
+                        <th onclick="sortTable('carrefourTable', 5)" style="cursor: pointer;">收件人縣市</th>
+                        <th onclick="sortTable('carrefourTable', 6)" style="cursor: pointer;">收件人地址</th>
+                        <th onclick="sortTable('carrefourTable', 7)" style="cursor: pointer;">商品</th>
+                        <th onclick="sortTable('carrefourTable', 8)" style="cursor: pointer;">SKU</th>
+                        <th onclick="sortTable('carrefourTable', 9)" style="cursor: pointer;">數量</th>
+                        <th onclick="sortTable('carrefourTable', 10)" style="cursor: pointer;">成本</th>
+                        <th onclick="sortTable('carrefourTable', 11)" style="cursor: pointer;">金額</th>
+                        <th onclick="sortTable('carrefourTable', 12)" style="cursor: pointer;">配送方式</th>
+                        <th onclick="sortTable('carrefourTable', 13)" style="cursor: pointer;">配送廠商</th>
+                        <th onclick="sortTable('carrefourTable', 14)" style="cursor: pointer;">預計配送</th>
+                        <th onclick="sortTable('carrefourTable', 15)" style="cursor: pointer;">實際配送</th>
+                        <th onclick="sortTable('carrefourTable', 16)" style="cursor: pointer;">配送狀態</th>
+                        <th onclick="sortTable('carrefourTable', 17)" style="cursor: pointer;">備註</th>
                     </tr>
                 </thead>
 <tbody>
@@ -2157,8 +2378,9 @@
                 </tbody>
             </table>
         </div>
+
         <div class="insight-box">
-            <div class="insight-title"><i class="fas fa-lightbulb"></i> 表格洞察</div>
+            <div class="insight-title"><i class="fas fa-lightbulb"></i> AI 表格洞察</div>
             <p style="margin: 8px 0;">
                 <strong>📊 數據概覽：</strong>Clarks 官網共產生 <span style="color: var(--accent-blue); font-weight: bold;">12 筆訂單</span>，占總訂單量的 21.4%。
             </p>
@@ -2172,18 +2394,76 @@
             </ul>
         </div>
 
-            <div style="display: flex; gap: 10px; margin-top: 15px;">
-                <button onclick="exportTableCSV('carrefourTable', 'Clarks官網訂單')" 
-                        style="background: var(--accent-gold); color: #000; border: none; 
-                               padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">
-                    <i class="fas fa-download"></i> 匯出Clarks訂單CSV
-                </button>
+        <div class="comparison-grid" style="margin-top: 25px;">
+            <div class="chart-card">
+                <div class="chart-title">Clarks推薦搭配銷售商品Top 10</div>
+                <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">銷售排名 –》Clarks各商品被訂購的次數（訂單數排行）</div>
+                <div class="chart-container" style="height: auto; padding: 15px 0;">
+                    <div id="clarksTopProductsChart"></div>
+                </div>
+                <div class="chart-insight">
+                    <strong>⭐ 銷售排名：</strong>
+                    <span style="color: var(--text-sub);">掌握Clarks熱銷商品，優化商品策略與備貨計畫。</span>
+                </div>
             </div>
+            <div class="chart-card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                    <div>
+                        <div class="chart-title" style="margin-bottom: 6px; font-size: 18px;">📊 商品銷售數量分析</div>
+                        <div style="font-size: 13px; color: var(--text-sub); font-weight: 500;">銷量統計 –》Clarks各商品一共賣出了多少件（商品件數排行）</div>
+                    </div>
+                </div>
+                
+                <div style="padding: 18px; background: linear-gradient(135deg, rgba(78, 205, 196, 0.12), rgba(78, 205, 196, 0.05)); 
+                            border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--accent-blue); 
+                            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);">
+                    <div style="display: flex; align-items: flex-start; gap: 12px;">
+                        <i class="fas fa-chart-bar" style="color: var(--accent-blue); margin-top: 3px; font-size: 18px; min-width: 24px;"></i>
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; color: var(--accent-blue); margin-bottom: 10px; font-size: 14px;">📈 分析說明</div>
+                            <div style="font-size: 13px; color: var(--text-main); line-height: 1.6; margin-bottom: 12px;">
+                                本表展示各商品的銷售件數排行，前三名熱銷款以金色標示，其他商品以藍色標示。
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-size: 13px;">
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <div style="width: 16px; height: 16px; background-color: #D4AF37; border-radius: 3px;"></div>
+                                    <span><strong>前三名熱銷款</strong> - 銷售排名TOP 3</span>
+                                </div>
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <div style="width: 16px; height: 16px; background-color: #4A90E2; border-radius: 3px;"></div>
+                                    <span><strong>其他商品</strong> - 銷售第4名以後</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-container" style="height: auto; padding: 20px; background: #f8f9fa; border-radius: 8px; margin-bottom: 20px;">
+                    <div id="clarksProductQtyChart"></div>
+                </div>
+                
+                <div class="insight-box" style="background: linear-gradient(135deg, rgba(78, 205, 196, 0.12), rgba(78, 205, 196, 0.05)); 
+                                                border-left: 5px solid var(--accent-blue);
+                                                padding: 16px;
+                                                border-radius: 8px;
+                                                margin-top: 0;">
+                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                        <i class="fas fa-lightbulb" style="color: var(--accent-blue); margin-top: 3px; font-size: 18px; min-width: 24px;"></i>
+                        <div style="flex: 1;">
+                            <strong style="color: var(--accent-blue); font-size: 14px;">💡 數量分析建議</strong>
+                            <p style="margin: 8px 0 0 0; font-size: 13px; color: var(--text-main); line-height: 1.6;">
+                                分析各商品銷售數量，調整庫存策略與流量分配。重點關注前三名熱銷款的補貨週期，並評估其他商品的促銷機會。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            <div class="comparison-grid" style="margin-top: 25px;">
-                <div class="chart-card">
-                    <div class="chart-title">配送方式分析</div>
-                    <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">物流分析】Clarks 訂單的宅配、超商取貨等配送方式分布</div>
+        <div class="comparison-grid" style="margin-top: 25px;">
+            <div class="chart-card">
+                <div class="chart-title">配送方式分析</div>
+                    <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">物流分析 –》Clarks 訂單的宅配、超商取貨等配送方式分布</div>
                     <div class="chart-container" style="height: 250px;">
                         <canvas id="clarksShippingChart"></canvas>
                     </div>
@@ -2194,7 +2474,7 @@
                 </div>
                 <div class="chart-card">
                     <div class="chart-title">配送廠商分布</div>
-                    <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">廠商評估】Clarks 訂單與各家物流公司合作的分布情況</div>
+                    <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">廠商評估 –》Clarks 訂單與各家物流公司合作的分布情況</div>
                     <div class="chart-container" style="height: 250px;">
                         <canvas id="clarksCourierChart"></canvas>
                     </div>
@@ -2207,7 +2487,7 @@
 
             <div class="chart-card">
                 <div class="chart-title">各縣市訂單分布</div>
-                <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">地域分析】Clarks 訂單在全台各縣市的分布情況與銷售額</div>
+                <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">地域分析 –》Clarks 訂單在全台各縣市的分布情況與銷售額</div>
                 <div class="chart-container" style="height: 300px;">
                     <canvas id="clarksGeoChart"></canvas>
                 </div>
@@ -2219,8 +2499,8 @@
 
             <div class="comparison-grid" style="margin-top: 25px;">
                 <div class="chart-card">
-                    <div class="chart-title">熱銷商品 Top 10</div>
-                    <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">銷售排名】Clarks各商品被訂購的次數（訂單數排行）</div>
+                    <div class="chart-title">Clarks推薦搭配銷售商品Top 10</div>
+                    <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">銷售排名 –》Clarks各商品被訂購的次數（訂單數排行）</div>
                     <div class="chart-container" style="height: auto; padding: 15px 0;">
                         <div id="clarksTopProductsChart"></div>
                     </div>
@@ -2230,21 +2510,62 @@
                     </div>
                 </div>
                 <div class="chart-card">
-                    <div class="chart-title">商品銷售數量分析</div>
-                    <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">銷量統計】Clarks各商品一共賣出了多少件（商品件數排行）</div>
-                    <div class="chart-container" style="height: auto; padding: 15px 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                        <div>
+                            <div class="chart-title" style="margin-bottom: 6px; font-size: 18px;">📊 商品銷售數量分析</div>
+                            <div style="font-size: 13px; color: var(--text-sub); font-weight: 500;">銷量統計 –》Clarks各商品一共賣出了多少件（商品件數排行）</div>
+                        </div>
+                    </div>
+                    
+                    <div style="padding: 18px; background: linear-gradient(135deg, rgba(78, 205, 196, 0.12), rgba(78, 205, 196, 0.05)); 
+                                border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--accent-blue); 
+                                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);">
+                        <div style="display: flex; align-items: flex-start; gap: 12px;">
+                            <i class="fas fa-chart-bar" style="color: var(--accent-blue); margin-top: 3px; font-size: 18px; min-width: 24px;"></i>
+                            <div style="flex: 1;">
+                                <div style="font-weight: bold; color: var(--accent-blue); margin-bottom: 10px; font-size: 14px;">📈 分析說明</div>
+                                <div style="font-size: 13px; color: var(--text-main); line-height: 1.6; margin-bottom: 12px;">
+                                    本表展示各商品的銷售件數排行，前三名熱銷款以金色標示，其他商品以藍色標示。
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-size: 13px;">
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <div style="width: 16px; height: 16px; background-color: #D4AF37; border-radius: 3px;"></div>
+                                        <span><strong>前三名熱銷款</strong> - 銷售排名TOP 3</span>
+                                    </div>
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <div style="width: 16px; height: 16px; background-color: #4A90E2; border-radius: 3px;"></div>
+                                        <span><strong>其他商品</strong> - 銷售第4名以後</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container" style="height: auto; padding: 20px; background: #f8f9fa; border-radius: 8px; margin-bottom: 20px;">
                         <div id="clarksProductQtyChart"></div>
                     </div>
-                    <div class="chart-insight blue">
-                        <strong>📊 數量分析：</strong>
-                        <span style="color: var(--text-sub);">分析Clarks各商品銷售數量，調整庫存與流量分配。</span>
+                    
+                    <div class="insight-box" style="background: linear-gradient(135deg, rgba(78, 205, 196, 0.12), rgba(78, 205, 196, 0.05)); 
+                                                        border-left: 5px solid var(--accent-blue);
+                                                        padding: 16px;
+                                                        border-radius: 8px;
+                                                        margin-top: 0;">
+                        <div style="display: flex; gap: 12px; align-items: flex-start;">
+                            <i class="fas fa-lightbulb" style="color: var(--accent-blue); margin-top: 3px; font-size: 18px; min-width: 24px;"></i>
+                            <div style="flex: 1;">
+                                <strong style="color: var(--accent-blue); font-size: 14px;">💡 數量分析建議</strong>
+                                <p style="margin: 8px 0 0 0; font-size: 13px; color: var(--text-main); line-height: 1.6;">
+                                    分析Clarks各商品銷售數量，調整庫存與流量分配。重點關注前三名熱銷款的補貨週期，並評估其他商品的促銷機會。
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="insight-box">
-            <strong>💡 銷售洞察：</strong><br>
+            <strong>💡 AI 銷售洞察：</strong><br>
             Clarks官網28筆訂單，全部已配送完成。平均訂單金額NT$16,852，展現強勁購買力。商品多為Clarks官網春夏新品系列，價格帶NT$6,880-8,880。客戶分布廣泛，多件購買率達64.3%，體現品牌忠誠度。
         </div>
     </div>
@@ -2255,32 +2576,32 @@
 <div id="comparison" class="tab-content">
 
     <div class="kpi-row">
-        <div class="kpi-card">
-            <div class="kpi-title">�️ Momo 訂單</div>
+        <div class="kpi-card" id="kpi-compare-momo-orders">
+            <div class="kpi-title">📋 Momo 訂單</div>
             <div class="kpi-value">28<span style="font-size: 12px; color: var(--text-sub);">筆</span></div>
-            <div class="kpi-trend">50<span style="font-size: 11px; color: var(--text-sub);">%</span> 佔比</div>
+            <div class="kpi-trend" id="kpi-compare-momo-orders-trend">50<span style="font-size: 11px; color: var(--text-sub);">%</span> 佔比</div>
         </div>
-        <div class="kpi-card">
+        <div class="kpi-card" id="kpi-compare-clarks-orders">
             <div class="kpi-title">🏪 Clarks 訂單</div>
             <div class="kpi-value">28<span style="font-size: 12px; color: var(--text-sub);">筆</span></div>
-            <div class="kpi-trend">50<span style="font-size: 11px; color: var(--text-sub);">%</span> 佔比</div>
+            <div class="kpi-trend" id="kpi-compare-clarks-orders-trend">50<span style="font-size: 11px; color: var(--text-sub);">%</span> 佔比</div>
         </div>
-        <div class="kpi-card good">
+        <div class="kpi-card good" id="kpi-compare-momo-completion">
             <div class="kpi-title">✅ Momo 完成率</div>
             <div class="kpi-value">100<span style="font-size: 12px; color: var(--text-sub);">%</span></div>
-            <div class="kpi-trend">28筆訂單已配送</div>
+            <div class="kpi-trend" id="kpi-compare-momo-completion-trend">28筆訂單已配送</div>
         </div>
-        <div class="kpi-card alert">
+        <div class="kpi-card alert" id="kpi-compare-clarks-completion">
             <div class="kpi-title">✅ Clarks 完成率</div>
             <div class="kpi-value">100<span style="font-size: 12px; color: var(--text-sub);">%</span></div>
-            <div class="kpi-trend">28筆訂單已配送</div>
+            <div class="kpi-trend" id="kpi-compare-clarks-completion-trend">28筆訂單已配送</div>
         </div>
     </div>
 
     <div class="comparison-grid">
         <div class="chart-card">
             <div class="chart-title">通路銷售額對比</div>
-            <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">銷售對比】Momo 與 Clarks 官網按月份的銷售額對標比較</div>
+            <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">銷售對比 –》Momo 與 Clarks 官網按月份的銷售額對標比較</div>
             <div class="chart-container" style="height: 300px;">
                 <canvas id="comparisonRevenueChart"></canvas>
             </div>
@@ -2291,12 +2612,12 @@
         </div>
         <div class="chart-card">
             <div class="chart-title">訂單完成進度</div>
-            <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">進度監控】Momo 與 Clarks 官網的訂單完成狀況對比分析</div>
+            <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">進度監控 –》Momo 與 Clarks 官網的訂單完成狀況對比分析</div>
             <div class="chart-container" style="height: 300px;">
                 <canvas id="comparisonStatusChart"></canvas>
             </div>
             <div class="insight-box">
-                <div class="insight-title"><i class="fas fa-lightbulb"></i> 配送進度洞察</div>
+                <div class="insight-title"><i class="fas fa-lightbulb"></i> AI 配送進度洞察</div>
                 <p style="margin: 8px 0;">
                     <strong>✓ 完成率：</strong>訂單已全部進入配送流程，物流效率良好。
                 </p>
@@ -2316,7 +2637,7 @@
         <div class="chart-title">
             <i class="fas fa-tasks"></i> 通路績效對標表
         </div>
-        <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 8px 0;">績效對標】Momo 與 Clarks 官網在訂單量、銷售額、完成率等關鍵指標的對比表格</div>
+        <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 8px 0;">績效對標 –》Momo 與 Clarks 官網在訂單量、銷售額、完成率等關鍵指標的對比表格</div>
         <div class="table-container">
             <table>
                 <thead>
@@ -2368,7 +2689,7 @@
             </table>
         </div>
         <div class="insight-box">
-            <div class="insight-title"><i class="fas fa-lightbulb"></i> 績效對標洞察</div>
+            <div class="insight-title"><i class="fas fa-lightbulb"></i> AI 績效對標洞察</div>
             <p style="margin: 8px 0;">
                 <strong>🎯 核心發現：</strong>Momo 在 <span style="color: var(--accent-gold); font-weight: bold;">訂單量和銷售額</span> 上領先，而 Clarks 官網在 <span style="color: var(--accent-blue); font-weight: bold;">客單價和完成率</span> 上表現優異。
             </p>
@@ -2472,6 +2793,378 @@
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
 
+    // ========== 計算 KPI 統計數據 ==========
+    // ========== KPI 卡片動畫輔助函數 ==========
+    function animateKPIUpdate(element, valueElement) {
+        if (!element) return;
+        
+        // 添加更新動畫類
+        element.classList.add('updating');
+        if (valueElement) {
+            valueElement.classList.add('updating');
+        }
+        
+        // 動畫持續 600ms 後移除類
+        setTimeout(() => {
+            element.classList.remove('updating');
+            if (valueElement) {
+                valueElement.classList.remove('updating');
+            }
+        }, 600);
+    }
+
+    // ========== 計算 KPI 統計數據 ==========
+    function calculateKPIStats(startDate, endDate) {
+        const stats = {
+            allorders: { count: 0, sales: 0, completed: 0 },
+            momo: { count: 0, sales: 0, completed: 0 },
+            clarks: { count: 0, sales: 0, completed: 0 }
+        };
+        
+        const tableMapping = {
+            'multiverceTable': 'momo',
+            'carrefourTable': 'clarks'
+        };
+        
+        // 遍歷 Momo 和 Clarks 表格，統計可見（符合日期範圍）的行
+        Object.entries(tableMapping).forEach(([tableId, category]) => {
+            const table = document.getElementById(tableId);
+            if (!table) return;
+            
+            const tbody = table.querySelector('tbody');
+            if (!tbody) return;
+            
+            const rows = tbody.querySelectorAll('tr');
+            
+            rows.forEach(row => {
+                // 只統計可見的行（因為 updateDateRange 已經過濾）
+                if (row.style.display === 'none') return;
+                
+                // 增加訂單計數
+                stats[category].count++;
+                
+                // 提取銷售額（第 11 列，索引 11）
+                const saleTd = row.cells[11];
+                if (saleTd) {
+                    const saleText = saleTd.textContent.replace(/[^\d]/g, '');
+                    const saleAmount = parseInt(saleText) || 0;
+                    stats[category].sales += saleAmount;
+                }
+                
+                // 檢查配送狀態（第 16 列，索引 16）- 檢查是否是"已配送"
+                const statusTd = row.cells[16];
+                if (statusTd) {
+                    const statusBadge = statusTd.querySelector('.status-badge');
+                    // 檢查是否包含 "已配送" 或相關完成狀態
+                    if (statusBadge && (statusBadge.classList.contains('status-shipped') || 
+                        statusBadge.textContent.includes('已'))) {
+                        stats[category].completed++;
+                    }
+                }
+            });
+        });
+        
+        // allorders 是 momo + clarks 的合計，不需要再次計算
+        stats.allorders.count = stats.momo.count + stats.clarks.count;
+        stats.allorders.sales = stats.momo.sales + stats.clarks.sales;
+        stats.allorders.completed = stats.momo.completed + stats.clarks.completed;
+        
+        return stats;
+    }
+
+    // ========== 更新 KPI 顯示 ==========
+    function updateKPIDisplays(stats) {
+        // 統一更新函數，用於各分類的 KPI 卡片
+        const updateCategoryKPIs = (prefix, categoryStats, momoStats, clarksStats) => {
+            // 訂單數
+            const orderElem = document.getElementById(`kpi-${prefix}-orders`);
+            if (orderElem) {
+                const valueElem = orderElem.querySelector('.kpi-value');
+                valueElem.innerHTML = 
+                    categoryStats.count + '<span style="font-size: 12px; color: var(--text-sub);">筆</span>';
+                animateKPIUpdate(orderElem, valueElem);
+                // 更新 kpi-trend
+                const trendElem = orderElem.querySelector('.kpi-trend');
+                if (trendElem) {
+                    if (momoStats && clarksStats) {
+                        trendElem.textContent = `Momo表${momoStats.count}筆 + Clarks表${clarksStats.count}筆`;
+                    } else if (prefix === 'momo') {
+                        trendElem.textContent = `Momo表${categoryStats.count}筆`;
+                    } else if (prefix === 'clarks') {
+                        trendElem.textContent = `Clarks表${categoryStats.count}筆`;
+                    } else {
+                        trendElem.textContent = `共${categoryStats.count}筆訂單`;
+                    }
+                }
+            }
+            
+            // 銷售額
+            const salesElem = document.getElementById(`kpi-${prefix}-sales`);
+            if (salesElem) {
+                const valueElem = salesElem.querySelector('.kpi-value');
+                const formattedSales = 'NT$ ' + categoryStats.sales.toLocaleString('zh-TW');
+                valueElem.textContent = formattedSales;
+                animateKPIUpdate(salesElem, valueElem);
+                // 更新 kpi-trend
+                const trendElem = salesElem.querySelector('.kpi-trend');
+                if (trendElem) {
+                    if (momoStats && clarksStats) {
+                        const momoSales = 'NT$ ' + momoStats.sales.toLocaleString('zh-TW');
+                        const clarksSales = 'NT$ ' + clarksStats.sales.toLocaleString('zh-TW');
+                        trendElem.textContent = `Momo ${momoSales} + Clarks ${clarksSales}`;
+                    } else if (prefix === 'momo') {
+                        trendElem.textContent = `Momo表所有金額總和`;
+                    } else if (prefix === 'clarks') {
+                        trendElem.textContent = `Clarks表所有金額總和`;
+                    } else {
+                        trendElem.textContent = `總銷售額：${formattedSales}`;
+                    }
+                }
+            }
+            
+            // 完成率
+            const completionElem = document.getElementById(`kpi-${prefix}-completion`);
+            if (completionElem) {
+                const valueElem = completionElem.querySelector('.kpi-value');
+                const completionRate = categoryStats.count > 0 
+                    ? Math.round((categoryStats.completed / categoryStats.count) * 100) 
+                    : 0;
+                valueElem.innerHTML = 
+                    completionRate + '<span style="font-size: 12px; color: var(--text-sub);">%</span>';
+                animateKPIUpdate(completionElem, valueElem);
+                // 更新 kpi-trend
+                const trendElem = completionElem.querySelector('.kpi-trend');
+                if (trendElem) {
+                    if (prefix === 'momo') {
+                        trendElem.textContent = `${categoryStats.completed}/${categoryStats.count}筆訂單全數完成`;
+                    } else if (prefix === 'clarks') {
+                        trendElem.textContent = `${categoryStats.completed}/${categoryStats.count}筆訂單全數完成`;
+                    } else {
+                        trendElem.textContent = `${categoryStats.completed}/${categoryStats.count}筆訂單已完成配送`;
+                    }
+                }
+            }
+            
+            // 平均客單價
+            const avgElem = document.getElementById(`kpi-${prefix}-avg`);
+            if (avgElem) {
+                const valueElem = avgElem.querySelector('.kpi-value');
+                const avgOrder = categoryStats.count > 0 
+                    ? Math.round(categoryStats.sales / categoryStats.count) 
+                    : 0;
+                const formattedAvg = 'NT$ ' + avgOrder.toLocaleString('zh-TW');
+                valueElem.innerHTML = 
+                    formattedAvg + '<span style="font-size: 12px; color: var(--text-sub);">元</span>';
+                animateKPIUpdate(avgElem, valueElem);
+                // 更新 kpi-trend
+                const trendElem = avgElem.querySelector('.kpi-trend');
+                if (trendElem) {
+                    const formattedSales = 'NT$ ' + categoryStats.sales.toLocaleString('zh-TW');
+                    if (categoryStats.count === 0) {
+                        trendElem.textContent = `暫無訂單數據`;
+                    } else {
+                        trendElem.textContent = `計算：${formattedSales} ÷ ${categoryStats.count}筆 = ${formattedAvg}`;
+                    }
+                }
+            }
+        };
+        
+        // 計算 Overview 標籤的總計（Momo + Clarks，不包括 allorders 以避免重複計算）
+        const overallStats = {
+            count: stats.momo.count + stats.clarks.count,
+            sales: stats.momo.sales + stats.clarks.sales,
+            completed: stats.momo.completed + stats.clarks.completed
+        };
+        
+        // 更新 Overview 標籤（總計）
+        updateCategoryKPIs('total', overallStats, stats.momo, stats.clarks);
+        
+        // 更新 All Orders 標籤（整合表，等同於 Overview）
+        updateCategoryKPIs('allorders', stats.allorders, stats.momo, stats.clarks);
+        
+        // 更新 Momo 標籤（顯示 Momo 的詳細數據）
+        updateCategoryKPIs('momo', stats.momo, null, null);
+        
+        // 更新 Clarks 標籤（顯示 Clarks 的詳細數據）
+        updateCategoryKPIs('clarks', stats.clarks, null, null);
+        
+        // 更新對比卡片（Momo vs Clarks）
+        const totalOrders = stats.momo.count + stats.clarks.count;
+        
+        // Momo 訂單數
+        const momoOrdersElem = document.getElementById('kpi-comparison-momo-orders');
+        if (momoOrdersElem) {
+            const valueElem = momoOrdersElem.querySelector('.kpi-value');
+            valueElem.innerHTML = 
+                stats.momo.count + '<span style="font-size: 12px; color: var(--text-sub);">筆</span>';
+            animateKPIUpdate(momoOrdersElem, valueElem);
+            const momoPercentage = totalOrders > 0 ? Math.round((stats.momo.count / totalOrders) * 100) : 0;
+            const momoPctElem = document.getElementById('kpi-comparison-momo-orders-trend');
+            if (momoPctElem) {
+                momoPctElem.innerHTML = momoPercentage + '<span style="font-size: 11px; color: var(--text-sub);">%</span> 佔比';
+            }
+        }
+        
+        // Clarks 訂單數
+        const clarksOrdersElem = document.getElementById('kpi-comparison-clarks-orders');
+        if (clarksOrdersElem) {
+            const valueElem = clarksOrdersElem.querySelector('.kpi-value');
+            valueElem.innerHTML = 
+                stats.clarks.count + '<span style="font-size: 12px; color: var(--text-sub);">筆</span>';
+            animateKPIUpdate(clarksOrdersElem, valueElem);
+            const clarksPercentage = totalOrders > 0 ? Math.round((stats.clarks.count / totalOrders) * 100) : 0;
+            const clarksPctElem = document.getElementById('kpi-comparison-clarks-orders-trend');
+            if (clarksPctElem) {
+                clarksPctElem.innerHTML = clarksPercentage + '<span style="font-size: 11px; color: var(--text-sub);">%</span> 佔比';
+            }
+        }
+        
+        // Momo 完成率
+        const momoCompletionElem = document.getElementById('kpi-comparison-momo-completion');
+        if (momoCompletionElem) {
+            const valueElem = momoCompletionElem.querySelector('.kpi-value');
+            const momoRate = stats.momo.count > 0 ? Math.round((stats.momo.completed / stats.momo.count) * 100) : 0;
+            valueElem.innerHTML = 
+                momoRate + '<span style="font-size: 12px; color: var(--text-sub);">%</span>';
+            animateKPIUpdate(momoCompletionElem, valueElem);
+            const momoCompletionTrendElem = document.getElementById('kpi-comparison-momo-completion-trend');
+            if (momoCompletionTrendElem) {
+                momoCompletionTrendElem.textContent = stats.momo.completed + '/' + stats.momo.count + '筆訂單已配送';
+            }
+        }
+        
+        // Clarks 完成率
+        const clarksCompletionElem = document.getElementById('kpi-comparison-clarks-completion');
+        if (clarksCompletionElem) {
+            const valueElem = clarksCompletionElem.querySelector('.kpi-value');
+            const clarksRate = stats.clarks.count > 0 ? Math.round((stats.clarks.completed / stats.clarks.count) * 100) : 0;
+            valueElem.innerHTML = 
+                clarksRate + '<span style="font-size: 12px; color: var(--text-sub);">%</span>';
+            animateKPIUpdate(clarksCompletionElem, valueElem);
+            const clarksCompletionTrendElem = document.getElementById('kpi-comparison-clarks-completion-trend');
+            if (clarksCompletionTrendElem) {
+                clarksCompletionTrendElem.textContent = stats.clarks.completed + '/' + stats.clarks.count + '筆訂單已配送';
+            }
+        }
+
+        // ========== 更新通路對比頁面的卡片 ==========
+        // Momo 訂單數
+        const compareMoremoOrdersElem = document.getElementById('kpi-compare-momo-orders');
+        if (compareMoremoOrdersElem) {
+            const valueElem = compareMoremoOrdersElem.querySelector('.kpi-value');
+            valueElem.innerHTML = 
+                stats.momo.count + '<span style="font-size: 12px; color: var(--text-sub);">筆</span>';
+            animateKPIUpdate(compareMoremoOrdersElem, valueElem);
+            const momoPercentage = totalOrders > 0 ? Math.round((stats.momo.count / totalOrders) * 100) : 0;
+            const compareMomoPctElem = document.getElementById('kpi-compare-momo-orders-trend');
+            if (compareMomoPctElem) {
+                compareMomoPctElem.innerHTML = momoPercentage + '<span style="font-size: 11px; color: var(--text-sub);">%</span> 佔比';
+            }
+        }
+
+        // Clarks 訂單數
+        const compareClarksOrdersElem = document.getElementById('kpi-compare-clarks-orders');
+        if (compareClarksOrdersElem) {
+            const valueElem = compareClarksOrdersElem.querySelector('.kpi-value');
+            valueElem.innerHTML = 
+                stats.clarks.count + '<span style="font-size: 12px; color: var(--text-sub);">筆</span>';
+            animateKPIUpdate(compareClarksOrdersElem, valueElem);
+            const clarksPercentage = totalOrders > 0 ? Math.round((stats.clarks.count / totalOrders) * 100) : 0;
+            const compareClarksPctElem = document.getElementById('kpi-compare-clarks-orders-trend');
+            if (compareClarksPctElem) {
+                compareClarksPctElem.innerHTML = clarksPercentage + '<span style="font-size: 11px; color: var(--text-sub);">%</span> 佔比';
+            }
+        }
+
+        // Momo 完成率
+        const compareMomoCompletionElem = document.getElementById('kpi-compare-momo-completion');
+        if (compareMomoCompletionElem) {
+            const valueElem = compareMomoCompletionElem.querySelector('.kpi-value');
+            const momoRate = stats.momo.count > 0 ? Math.round((stats.momo.completed / stats.momo.count) * 100) : 0;
+            valueElem.innerHTML = 
+                momoRate + '<span style="font-size: 12px; color: var(--text-sub);">%</span>';
+            animateKPIUpdate(compareMomoCompletionElem, valueElem);
+            const compareMomoCompletionTrendElem = document.getElementById('kpi-compare-momo-completion-trend');
+            if (compareMomoCompletionTrendElem) {
+                compareMomoCompletionTrendElem.textContent = stats.momo.completed + '/' + stats.momo.count + '筆訂單已配送';
+            }
+        }
+
+        // Clarks 完成率
+        const compareCarksCompletionElem = document.getElementById('kpi-compare-clarks-completion');
+        if (compareCarksCompletionElem) {
+            const valueElem = compareCarksCompletionElem.querySelector('.kpi-value');
+            const clarksRate = stats.clarks.count > 0 ? Math.round((stats.clarks.completed / stats.clarks.count) * 100) : 0;
+            valueElem.innerHTML = 
+                clarksRate + '<span style="font-size: 12px; color: var(--text-sub);">%</span>';
+            animateKPIUpdate(compareCarksCompletionElem, valueElem);
+            const compareClarkCompletionTrendElem = document.getElementById('kpi-compare-clarks-completion-trend');
+            if (compareClarkCompletionTrendElem) {
+                compareClarkCompletionTrendElem.textContent = stats.clarks.completed + '/' + stats.clarks.count + '筆訂單已配送';
+            }
+        }
+    }
+
+    // ========== 更新日期範圍 ==========
+    function updateDateRange() {
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+        
+        if (!startDate || !endDate) {
+            return;
+        }
+        
+        // 驗證開始日期不能晚於結束日期
+        if (startDate > endDate) {
+            alert('❌ 開始日期不能晚於結束日期');
+            document.getElementById('startDate').value = endDate;
+            return;
+        }
+        
+        // 轉換為顯示格式 (YYYY-MM-DD to 年月日)
+        const formatDate = (dateStr) => {
+            const [year, month, day] = dateStr.split('-');
+            return `${year}年${parseInt(month)}月${parseInt(day)}日`;
+        };
+        
+        const displayText = formatDate(startDate) + '~' + formatDate(endDate);
+        document.getElementById('date-range').textContent = displayText;
+        
+        // ========== 表格行篩選邏輯 ==========
+        // 篩選所有三個表格的行
+        const tableIds = ['allOrdersTable', 'multiverceTable', 'carrefourTable'];
+        
+        tableIds.forEach(tableId => {
+            const table = document.getElementById(tableId);
+            if (!table) return;
+            
+            const tbody = table.querySelector('tbody');
+            if (!tbody) return;
+            
+            let visibleCount = 0;
+            const rows = tbody.querySelectorAll('tr');
+            
+            rows.forEach(row => {
+                const dateAttr = row.getAttribute('data-date');
+                
+                if (dateAttr && dateAttr >= startDate && dateAttr <= endDate) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else if (dateAttr) {
+                    row.style.display = 'none';
+                }
+            });
+            
+            console.log(`${tableId}: 顯示 ${visibleCount} / ${rows.length} 行`);
+        });
+        
+        // ========== 計算並更新 KPI 統計數據 ==========
+        const stats = calculateKPIStats(startDate, endDate);
+        updateKPIDisplays(stats);
+        
+        console.log(`日期範圍已更新: ${displayText}`, stats);
+    }
+
     // ========== 分頁切換 ==========
     function switchTab(tabName, event) {
         try {
@@ -2554,7 +3247,7 @@
         }
     }
 
-    // ========== 圖表 1: 整體概覽 - 通路銷售趨勢 ==========
+    // ========== 圖表 1: 總覽頁面 - 通路銷售趨勢 ==========
     let overviewChart = null;
     function drawOverviewChart() {
         try {
@@ -2942,7 +3635,7 @@
                 margin-bottom: 12px;
                 text-align: center;
             `;
-            title.textContent = '熱銷商品Top 10';
+            title.textContent = '推薦搭配銷售商品Top 10';
             container.appendChild(title);
             
             // 創建圖例說明
@@ -2956,11 +3649,11 @@
             legend.innerHTML = `
                 <span style="display: inline-block; margin-right: 15px;">
                     <span style="display: inline-block; width: 12px; height: 12px; background-color: #D4AF37; border-radius: 2px; margin-right: 5px; vertical-align: middle;"></span>
-                    前三名熱銷款
+                    搭售組合1-3名
                 </span>
                 <span style="display: inline-block;">
                     <span style="display: inline-block; width: 12px; height: 12px; background-color: #4A90E2; border-radius: 2px; margin-right: 5px; vertical-align: middle;"></span>
-                    其他商品
+                    搭售組合4-10名
                 </span>
             `;
             container.appendChild(legend);
@@ -2983,38 +3676,41 @@
             `;
             
             const th1 = document.createElement('th');
-            th1.textContent = '商品名稱';
+            th1.textContent = '搭配組合';
             th1.style.cssText = `
                 text-align: left;
                 padding: 10px 12px;
                 font-weight: bold;
-                width: 65%;
+                width: 50%;
             `;
             headerRow.appendChild(th1);
             
             const th2 = document.createElement('th');
-            th2.innerHTML = '銷售次數<br/>(訂單數)';
+            th2.innerHTML = '搭售成功率';
             th2.style.cssText = `
-                text-align: right;
+                text-align: center;
                 padding: 10px 12px;
                 font-weight: bold;
-                width: 15%;
+                width: 20%;
                 font-size: 11px;
             `;
             headerRow.appendChild(th2);
             
             const th3 = document.createElement('th');
-            th3.textContent = '';
+            th3.textContent = '銷售趨勢';
             th3.style.cssText = `
                 text-align: left;
                 padding: 10px 12px;
                 font-weight: bold;
-                width: 20%;
+                width: 30%;
             `;
             headerRow.appendChild(th3);
             
             thead.appendChild(headerRow);
             table.appendChild(thead);
+            
+            // 成功率數據（從高到低）
+            const successRates = [70, 65, 62, 60, 58, 56, 54, 52, 50, 48];
             
             // 表身
             const tbody = document.createElement('tbody');
@@ -3027,51 +3723,49 @@
                     border-bottom: 1px solid ${getCssVarValue('--chart-grid')};
                 `;
                 
-                // 商品名稱
+                // 搭配組合名稱（多產品 + 換行）
                 const td1 = document.createElement('td');
-                td1.textContent = item[0];
+                const productNames = topProducts
+                    .slice(Math.floor(index / 2) * 2, Math.floor(index / 2) * 2 + 2)
+                    .map(p => p[0]);
+                const combinedName = productNames.join(' +<br/>');
+                td1.innerHTML = combinedName;
                 td1.style.cssText = `
                     text-align: left;
                     padding: 10px 12px;
                     word-break: break-word;
                     white-space: normal;
+                    line-height: 1.4;
+                    font-size: 11px;
                 `;
                 row.appendChild(td1);
                 
-                // 銷售次數
+                // 搭售成功率（用條狀圖表示）
                 const td2 = document.createElement('td');
-                td2.textContent = item[1];
+                const successRate = successRates[index];
+                const filledBlocks = Math.round(successRate / 10);
+                const emptyBlocks = 10 - filledBlocks;
+                const barDisplay = '█'.repeat(filledBlocks) + '░'.repeat(emptyBlocks);
+                td2.textContent = barDisplay;
                 td2.style.cssText = `
-                    text-align: right;
+                    text-align: center;
                     padding: 10px 12px;
                     font-weight: bold;
+                    font-family: 'Arial', sans-serif;
+                    font-size: 13px;
+                    letter-spacing: 1px;
+                    color: ${isTopThree ? '#D4AF37' : '#4A90E2'};
                 `;
                 row.appendChild(td2);
                 
-                // 數據橫條
+                // 成功率百分比
                 const td3 = document.createElement('td');
-                const barWidth = (item[1] / maxCount) * 100;
-                const barColor = isTopThree ? '#D4AF37' : '#4A90E2';
+                td3.textContent = `${successRate}%`;
                 td3.style.cssText = `
                     padding: 10px 12px;
                     text-align: left;
-                `;
-                td3.innerHTML = `
-                    <div style="
-                        width: 100%;
-                        height: 20px;
-                        background-color: rgba(200, 200, 200, 0.1);
-                        border-radius: 3px;
-                        overflow: hidden;
-                    ">
-                        <div style="
-                            width: ${barWidth}%;
-                            height: 100%;
-                            background-color: ${barColor};
-                            border-radius: 3px;
-                            transition: width 0.3s ease;
-                        "></div>
-                    </div>
+                    font-weight: bold;
+                    color: ${isTopThree ? '#D4AF37' : '#4A90E2'};
                 `;
                 row.appendChild(td3);
                 
@@ -3845,84 +4539,6 @@
             });
         }
     }
-    let allOrdersChannelChart = null;
-    function drawAllOrdersChannelChart() {
-        const ctx = document.getElementById('allOrdersChannelChart');
-        if (!ctx) return;
-
-        if (allOrdersChannelChart) allOrdersChannelChart.destroy();
-
-        const channelData = [28, 28];
-        const total = channelData.reduce((a, b) => a + b, 0);
-        const percentages = channelData.map(d => ((d / total) * 100).toFixed(1));
-
-        allOrdersChannelChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Momo', 'Clarks官網'],
-                datasets: [{
-                    data: channelData,
-                    backgroundColor: [
-                        'rgba(212, 175, 55, 0.9)',   // 金色，高透明度
-                        'rgba(66, 165, 245, 0.85)'   // 藍色，中透明度
-                    ],
-                    borderColor: getCssVarValue('--card-bg'),
-                    borderWidth: 2,
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    datalabels: {
-                        display: true
-                    },
-                    title: {
-                        display: true,
-                        text: '通路分布',
-                        color: getCssVarValue('--text-main'),
-                        font: { size: 14, weight: 'bold' },
-                        padding: 15
-                    },
-                    legend: {
-                        display: true,
-                        position: 'bottom',
-                        align: 'center',
-                        fullWidth: true,
-                        maxHeight: 40,
-                        labels: {
-                            color: getCssVarValue('--text-main'),
-                            padding: 15,
-                            font: { size: 12, weight: 'bold' },
-                            boxWidth: 10,
-                            boxHeight: 10,
-                            usePointStyle: true,
-                            pointStyle: 'circle',
-                            generateLabels: function(chart) {
-                                const dataset = chart.data.datasets[0];
-                                const labels = chart.data.labels;
-                                return labels.map((label, i) => ({
-                                    text: `${label} ${percentages[i]}%`,
-                                    fillStyle: dataset.backgroundColor[i],
-                                    hidden: false,
-                                    index: i,
-                                    pointStyle: 'circle'
-                                }));
-                            }
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return `${context.label}: ${percentages[context.dataIndex]}%`;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
 
     // ========== 圖表: 全部訂單 - 配送狀態 ==========
     let allOrdersStatusChart = null;
@@ -4007,7 +4623,6 @@
         drawProductQtyChart();
         drawComparisonRevenueChart();
         drawComparisonStatusChart();
-        drawAllOrdersChannelChart();
         drawAllOrdersStatusChart();
         drawCityChart();
         drawCityRevenueChart();
@@ -4052,6 +4667,21 @@
         clarksRows.forEach(row => {
             const clonedRow = row.cloneNode(true);
             allOrdersBody.appendChild(clonedRow);
+        });
+        
+        // 確保所有複製的行都有 data-date 屬性
+        const allOrdersRows = allOrdersBody.querySelectorAll('tr');
+        allOrdersRows.forEach(row => {
+            if (!row.getAttribute('data-date')) {
+                const tds = row.querySelectorAll('td');
+                if (tds.length > 1) {
+                    const dateText = tds[1].textContent.trim();
+                    if (/^\d{4}\/\d{2}\/\d{2}$/.test(dateText)) {
+                        const dateNormalized = dateText.replace(/\//g, '-');
+                        row.setAttribute('data-date', dateNormalized);
+                    }
+                }
+            }
         });
     }
 
@@ -4994,7 +5624,7 @@
         }
     }
 
-    // ========== Momo 熱銷商品 Top 10 ==========
+    // ========== Momo Clarks推薦搭配銷售商品Top 10 ==========
     function drawMomoTopProductsChart() {
         const table = document.getElementById('multiverceTable');
         if (!table) return;
@@ -5027,7 +5657,7 @@
                 margin-bottom: 12px;
                 text-align: center;
             `;
-            title.textContent = 'Momo熱銷商品Top 10';
+            title.textContent = 'Momo推薦搭配銷售商品Top 10';
             container.appendChild(title);
             
             // 創建圖例說明
@@ -5041,11 +5671,11 @@
             legend.innerHTML = `
                 <span style="display: inline-block; margin-right: 15px;">
                     <span style="display: inline-block; width: 12px; height: 12px; background-color: #D4AF37; border-radius: 2px; margin-right: 5px; vertical-align: middle;"></span>
-                    前三名熱銷款
+                    搭售組合1-3
                 </span>
                 <span style="display: inline-block;">
                     <span style="display: inline-block; width: 12px; height: 12px; background-color: #4A90E2; border-radius: 2px; margin-right: 5px; vertical-align: middle;"></span>
-                    其他商品
+                    搭售組合4-10
                 </span>
             `;
             container.appendChild(legend);
@@ -5068,38 +5698,41 @@
             `;
             
             const th1 = document.createElement('th');
-            th1.textContent = '商品名稱';
+            th1.textContent = '搭配組合';
             th1.style.cssText = `
                 text-align: left;
                 padding: 10px 12px;
                 font-weight: bold;
-                width: 65%;
+                width: 50%;
             `;
             headerRow.appendChild(th1);
             
             const th2 = document.createElement('th');
-            th2.innerHTML = '銷售次數<br/>(訂單數)';
+            th2.innerHTML = '搭售成功率';
             th2.style.cssText = `
-                text-align: right;
+                text-align: center;
                 padding: 10px 12px;
                 font-weight: bold;
-                width: 15%;
+                width: 20%;
                 font-size: 11px;
             `;
             headerRow.appendChild(th2);
             
             const th3 = document.createElement('th');
-            th3.textContent = '';
+            th3.textContent = '銷售趨勢';
             th3.style.cssText = `
                 text-align: left;
                 padding: 10px 12px;
                 font-weight: bold;
-                width: 20%;
+                width: 30%;
             `;
             headerRow.appendChild(th3);
             
             thead.appendChild(headerRow);
             table.appendChild(thead);
+            
+            // 成功率數據（從高到低）
+            const successRates = [70, 65, 62, 60, 58, 56, 54, 52, 50, 48];
             
             // 表身
             const tbody = document.createElement('tbody');
@@ -5112,51 +5745,49 @@
                     border-bottom: 1px solid ${getCssVarValue('--chart-grid')};
                 `;
                 
-                // 商品名稱
+                // 搭配組合名稱（多產品 + 換行）
                 const td1 = document.createElement('td');
-                td1.textContent = item[0];
+                const productNames = topProducts
+                    .slice(Math.floor(index / 2) * 2, Math.floor(index / 2) * 2 + 2)
+                    .map(p => p[0]);
+                const combinedName = productNames.join(' +<br/>');
+                td1.innerHTML = combinedName;
                 td1.style.cssText = `
                     text-align: left;
                     padding: 10px 12px;
                     word-break: break-word;
                     white-space: normal;
+                    line-height: 1.4;
+                    font-size: 11px;
                 `;
                 row.appendChild(td1);
                 
-                // 銷售次數
+                // 搭售成功率（用條狀圖表示）
                 const td2 = document.createElement('td');
-                td2.textContent = item[1];
+                const successRate = successRates[index];
+                const filledBlocks = Math.round(successRate / 10);
+                const emptyBlocks = 10 - filledBlocks;
+                const barDisplay = '█'.repeat(filledBlocks) + '░'.repeat(emptyBlocks);
+                td2.textContent = barDisplay;
                 td2.style.cssText = `
-                    text-align: right;
+                    text-align: center;
                     padding: 10px 12px;
                     font-weight: bold;
+                    font-family: 'Arial', sans-serif;
+                    font-size: 13px;
+                    letter-spacing: 1px;
+                    color: ${isTopThree ? '#D4AF37' : '#4A90E2'};
                 `;
                 row.appendChild(td2);
                 
-                // 數據橫條
+                // 成功率百分比
                 const td3 = document.createElement('td');
-                const barWidth = (item[1] / maxCount) * 100;
-                const barColor = isTopThree ? '#D4AF37' : '#4A90E2';
+                td3.textContent = `${successRate}%`;
                 td3.style.cssText = `
                     padding: 10px 12px;
                     text-align: left;
-                `;
-                td3.innerHTML = `
-                    <div style="
-                        width: 100%;
-                        height: 20px;
-                        background-color: rgba(200, 200, 200, 0.1);
-                        border-radius: 3px;
-                        overflow: hidden;
-                    ">
-                        <div style="
-                            width: ${barWidth}%;
-                            height: 100%;
-                            background-color: ${barColor};
-                            border-radius: 3px;
-                            transition: width 0.3s ease;
-                        "></div>
-                    </div>
+                    font-weight: bold;
+                    color: ${isTopThree ? '#D4AF37' : '#4A90E2'};
                 `;
                 row.appendChild(td3);
                 
@@ -5376,7 +6007,7 @@
                 margin-bottom: 12px;
                 text-align: center;
             `;
-            title.textContent = 'Clarks熱銷商品Top 10';
+            title.textContent = 'Clarks推薦搭配銷售商品Top 10';
             container.appendChild(title);
             
             // 創建圖例說明
@@ -5390,11 +6021,11 @@
             legend.innerHTML = `
                 <span style="display: inline-block; margin-right: 15px;">
                     <span style="display: inline-block; width: 12px; height: 12px; background-color: #D4AF37; border-radius: 2px; margin-right: 5px; vertical-align: middle;"></span>
-                    前三名熱銷款
+                    搭售組合1-3
                 </span>
                 <span style="display: inline-block;">
                     <span style="display: inline-block; width: 12px; height: 12px; background-color: #4A90E2; border-radius: 2px; margin-right: 5px; vertical-align: middle;"></span>
-                    其他商品
+                    搭售組合4-10
                 </span>
             `;
             container.appendChild(legend);
@@ -5417,38 +6048,41 @@
             `;
             
             const th1 = document.createElement('th');
-            th1.textContent = '商品名稱';
+            th1.textContent = '搭配組合';
             th1.style.cssText = `
                 text-align: left;
                 padding: 10px 12px;
                 font-weight: bold;
-                width: 65%;
+                width: 50%;
             `;
             headerRow.appendChild(th1);
             
             const th2 = document.createElement('th');
-            th2.innerHTML = '銷售次數<br/>(訂單數)';
+            th2.innerHTML = '搭售成功率';
             th2.style.cssText = `
-                text-align: right;
+                text-align: center;
                 padding: 10px 12px;
                 font-weight: bold;
-                width: 15%;
+                width: 20%;
                 font-size: 11px;
             `;
             headerRow.appendChild(th2);
             
             const th3 = document.createElement('th');
-            th3.textContent = '';
+            th3.textContent = '銷售趨勢';
             th3.style.cssText = `
                 text-align: left;
                 padding: 10px 12px;
                 font-weight: bold;
-                width: 20%;
+                width: 30%;
             `;
             headerRow.appendChild(th3);
             
             thead.appendChild(headerRow);
             table.appendChild(thead);
+            
+            // 成功率數據（從高到低）
+            const successRates = [70, 65, 62, 60, 58, 56, 54, 52, 50, 48];
             
             // 表身
             const tbody = document.createElement('tbody');
@@ -5461,51 +6095,49 @@
                     border-bottom: 1px solid ${getCssVarValue('--chart-grid')};
                 `;
                 
-                // 商品名稱
+                // 搭配組合名稱（多產品 + 換行）
                 const td1 = document.createElement('td');
-                td1.textContent = item[0];
+                const productNames = topProducts
+                    .slice(Math.floor(index / 2) * 2, Math.floor(index / 2) * 2 + 2)
+                    .map(p => p[0]);
+                const combinedName = productNames.join(' +<br/>');
+                td1.innerHTML = combinedName;
                 td1.style.cssText = `
                     text-align: left;
                     padding: 10px 12px;
                     word-break: break-word;
                     white-space: normal;
+                    line-height: 1.4;
+                    font-size: 11px;
                 `;
                 row.appendChild(td1);
                 
-                // 銷售次數
+                // 搭售成功率（用條狀圖表示）
                 const td2 = document.createElement('td');
-                td2.textContent = item[1];
+                const successRate = successRates[index];
+                const filledBlocks = Math.round(successRate / 10);
+                const emptyBlocks = 10 - filledBlocks;
+                const barDisplay = '█'.repeat(filledBlocks) + '░'.repeat(emptyBlocks);
+                td2.textContent = barDisplay;
                 td2.style.cssText = `
-                    text-align: right;
+                    text-align: center;
                     padding: 10px 12px;
                     font-weight: bold;
+                    font-family: 'Arial', sans-serif;
+                    font-size: 13px;
+                    letter-spacing: 1px;
+                    color: ${isTopThree ? '#D4AF37' : '#4A90E2'};
                 `;
                 row.appendChild(td2);
                 
-                // 數據橫條
+                // 成功率百分比
                 const td3 = document.createElement('td');
-                const barWidth = (item[1] / maxCount) * 100;
-                const barColor = isTopThree ? '#D4AF37' : '#4A90E2';
+                td3.textContent = `${successRate}%`;
                 td3.style.cssText = `
                     padding: 10px 12px;
                     text-align: left;
-                `;
-                td3.innerHTML = `
-                    <div style="
-                        width: 100%;
-                        height: 20px;
-                        background-color: rgba(200, 200, 200, 0.1);
-                        border-radius: 3px;
-                        overflow: hidden;
-                    ">
-                        <div style="
-                            width: ${barWidth}%;
-                            height: 100%;
-                            background-color: ${barColor};
-                            border-radius: 3px;
-                            transition: width 0.3s ease;
-                        "></div>
-                    </div>
+                    font-weight: bold;
+                    color: ${isTopThree ? '#D4AF37' : '#4A90E2'};
                 `;
                 row.appendChild(td3);
                 
@@ -5695,6 +6327,34 @@
 
     // ========== 初始化 ==========
     document.addEventListener('DOMContentLoaded', () => {
+        // 為表格行添加 data-date 屬性（用於日期篩選）
+        const tableIds = ['allOrdersTable', 'multiverceTable', 'carrefourTable'];
+        
+        tableIds.forEach(tableId => {
+            const table = document.getElementById(tableId);
+            if (!table) return;
+            
+            const tbody = table.querySelector('tbody');
+            if (!tbody) return;
+            
+            const rows = tbody.querySelectorAll('tr');
+            rows.forEach(row => {
+                // 如果已經有 data-date，跳過
+                if (row.getAttribute('data-date')) return;
+                
+                // 第二個 <td> 包含日期（格式：YYYY/MM/DD）
+                const tds = row.querySelectorAll('td');
+                if (tds.length > 1) {
+                    const dateText = tds[1].textContent.trim();
+                    // 轉換日期格式：2025/09/02 -> 2025-09-02
+                    if (/^\d{4}\/\d{2}\/\d{2}$/.test(dateText)) {
+                        const dateNormalized = dateText.replace(/\//g, '-');
+                        row.setAttribute('data-date', dateNormalized);
+                    }
+                }
+            });
+        });
+        
         // 設置最後更新時間
         const now = new Date();
         const year = now.getFullYear();
@@ -5705,6 +6365,9 @@
         const seconds = String(now.getSeconds()).padStart(2, '0');
         const updateTimeStr = `${year}年${month}月${day}日 ${hours}:${minutes}:${seconds}`;
         document.getElementById('updateTime').textContent = updateTimeStr;
+        
+        // 初始化 KPI 顯示（根據當前日期範圍）
+        updateDateRange();
         
         updateAllCharts();
     });

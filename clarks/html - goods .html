@@ -844,21 +844,24 @@
                         <tr>
                             <th onclick="sortTable('inventoryTable', 0)">商品名稱</th>
                             <th style="width: 50px; text-align: center;"><input type="checkbox" id="selectAllCheckbox" onclick="toggleSelectAll(this); event.stopPropagation();"> 出貨</th>
-                            <th onclick="sortTable('inventoryTable', 2)">本週庫存數量</th>
-                            <th onclick="sortTable('inventoryTable', 3)">下週需求數量</th>
-                            <th onclick="sortTable('inventoryTable', 4)">建議下單數量</th>
-                            <th onclick="sortTable('inventoryTable', 5)">價格</th>
-                            <th onclick="sortTable('inventoryTable', 6)">SKU</th>
-                            <th onclick="sortTable('inventoryTable', 7)">門店位置</th>
-                            <th onclick="sortTable('inventoryTable', 8)">倉庫</th>
-                            <th onclick="sortTable('inventoryTable', 9)">來源</th>
-                            <th onclick="sortTable('inventoryTable', 10)">狀態</th>
+                            <th onclick="sortTable('inventoryTable', 2)">目前需求量</th>
+                            <th onclick="sortTable('inventoryTable', 3)">本週庫存數量</th>
+                            <th onclick="sortTable('inventoryTable', 4)">下週需求數量</th>
+                            <th onclick="sortTable('inventoryTable', 5)">建議下單數量</th>
+                            <th onclick="sortTable('inventoryTable', 6)">價格</th>
+                            <th onclick="sortTable('inventoryTable', 7)">SKU</th>
+                            <th onclick="sortTable('inventoryTable', 8)">門店位置</th>
+                            <th onclick="sortTable('inventoryTable', 9)">倉庫</th>
+                            <th onclick="sortTable('inventoryTable', 10)">來源</th>
+                            <th onclick="sortTable('inventoryTable', 11)">狀態</th>
+                            <th style="width: 100px;">出貨狀態</th>
                         </tr>
                     </thead>
                     <tbody id="inventoryBody">
                         <tr>
                             <td>Clarks	 空氣鞋- Craftravel Go全皮面輕盈休閒鞋(白色)</td>
                             <td style="text-align: center;"><input type="checkbox" class="shipment-checkbox"></td>
+                            <td>8</td>
                             <td>10</td>
                             <td>25</td>
                             <td><strong style="color: var(--warning-color);">15</strong></td>
@@ -868,10 +871,12 @@
                             <td><strong>桃園倉</strong></td>
                             <td>Clarks	</td>
                             <td><span class="status-badge status-low">補貨</span></td>
+                            <td><span class="shipment-status">未出貨</span></td>
                         </tr>
                         <tr>
                             <td>Clarks	 女鞋 Havisham Oak 絕對經典布洛克雕花牛津鞋</td>
                             <td style="text-align: center;"><input type="checkbox" class="shipment-checkbox"></td>
+                            <td>6</td>
                             <td>5</td>
                             <td>15</td>
                             <td><strong style="color: var(--warning-color);">10</strong></td>
@@ -881,10 +886,12 @@
                             <td><strong>林口倉</strong></td>
                             <td>Momo</td>
                             <td><span class="status-badge status-low">補貨</span></td>
+                            <td><span class="shipment-status">未出貨</span></td>
                         </tr>
                         <tr>
                             <td>Clarks	 三瓣鞋2.0- Trigenic2 Tact手工縫線工藝設計輕盈寬楦休閒鞋 (黑色)</td>
                             <td style="text-align: center;"><input type="checkbox" class="shipment-checkbox"></td>
+                            <td>12</td>
                             <td>8</td>
                             <td>20</td>
                             <td><strong style="color: var(--success-color);">12</strong></td>
@@ -894,10 +901,12 @@
                             <td><strong>桃園倉</strong></td>
                             <td>Clarks	</td>
                             <td><span class="status-badge status-stock">充足</span></td>
+                            <td><span class="shipment-status">未出貨</span></td>
                         </tr>
                         <tr>
                             <td>Clarks	 男鞋 Clarkbay Go 愜意穿搭兩眼孔麂皮帆船休閒鞋</td>
                             <td style="text-align: center;"><input type="checkbox" class="shipment-checkbox"></td>
+                            <td>5</td>
                             <td>3</td>
                             <td>12</td>
                             <td><strong style="color: var(--danger-color);">9</strong></td>
@@ -907,10 +916,12 @@
                             <td><strong>林口倉</strong></td>
                             <td>Momo</td>
                             <td><span class="status-badge status-critical">缺貨</span></td>
+                            <td><span class="shipment-status">未出貨</span></td>
                         </tr>
                         <tr>
                             <td>Clarks	 女鞋 Quilto Step 柔軟舒適真皮流蘇莫卡辛鞋</td>
                             <td style="text-align: center;"><input type="checkbox" class="shipment-checkbox"></td>
+                            <td>9</td>
                             <td>12</td>
                             <td>18</td>
                             <td><strong style="color: var(--success-color);">6</strong></td>
@@ -920,10 +931,12 @@
                             <td><strong>桃園倉</strong></td>
                             <td>Momo</td>
                             <td><span class="status-badge status-stock">充足</span></td>
+                            <td><span class="shipment-status">未出貨</span></td>
                         </tr>
                         <tr>
                             <td>Clarks	 男鞋 Un Aldric On 全新升級寬楦優質便士樂福鞋</td>
                             <td style="text-align: center;"><input type="checkbox" class="shipment-checkbox"></td>
+                            <td>7</td>
                             <td>6</td>
                             <td>16</td>
                             <td><strong style="color: var(--warning-color);">10</strong></td>
@@ -933,10 +946,12 @@
                             <td><strong>林口倉</strong></td>
                             <td>Momo</td>
                             <td><span class="status-badge status-low">補貨</span></td>
+                            <td><span class="shipment-status">未出貨</span></td>
                         </tr>
                         <tr>
                             <td>Clarks	 空氣鞋-Craftravel Izy 潮流撞色可後踩兩穿德訓鞋 (海軍藍)</td>
                             <td style="text-align: center;"><input type="checkbox" class="shipment-checkbox"></td>
+                            <td>10</td>
                             <td>4</td>
                             <td>14</td>
                             <td><strong style="color: var(--danger-color);">10</strong></td>
@@ -946,10 +961,12 @@
                             <td><strong>桃園倉</strong></td>
                             <td>Clarks	</td>
                             <td><span class="status-badge status-critical">缺貨</span></td>
+                            <td><span class="shipment-status">未出貨</span></td>
                         </tr>
                         <tr>
                             <td>Clarks	 女鞋 Craftravel Lit 簡約拚接年輕時尚潮流板鞋</td>
                             <td style="text-align: center;"><input type="checkbox" class="shipment-checkbox"></td>
+                            <td>11</td>
                             <td>7</td>
                             <td>17</td>
                             <td><strong style="color: var(--warning-color);">10</strong></td>
@@ -959,10 +976,12 @@
                             <td><strong>林口倉</strong></td>
                             <td>Momo</td>
                             <td><span class="status-badge status-low">補貨</span></td>
+                            <td><span class="shipment-status">未出貨</span></td>
                         </tr>
                         <tr>
                             <td>Clarks	 三瓣鞋2.0- Trigenic2 See. 三瓣鞋2.0 全皮面輕量涼鞋</td>
                             <td style="text-align: center;"><input type="checkbox" class="shipment-checkbox"></td>
+                            <td>13</td>
                             <td>9</td>
                             <td>19</td>
                             <td><strong style="color: var(--success-color);">10</strong></td>
@@ -972,10 +991,12 @@
                             <td><strong>桃園倉</strong></td>
                             <td>Momo</td>
                             <td><span class="status-badge status-stock">充足</span></td>
+                            <td><span class="shipment-status">未出貨</span></td>
                         </tr>
                         <tr>
                             <td>Clarks	 微風跑- Zeph Run Joy全皮面厚底運動休閒鞋(黑色)</td>
                             <td style="text-align: center;"><input type="checkbox" class="shipment-checkbox"></td>
+                            <td>14</td>
                             <td>11</td>
                             <td>22</td>
                             <td><strong style="color: var(--success-color);">11</strong></td>
@@ -985,6 +1006,7 @@
                             <td><strong>林口倉</strong></td>
                             <td>Clarks	</td>
                             <td><span class="status-badge status-stock">充足</span></td>
+                            <td><span class="shipment-status">未出貨</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -1113,6 +1135,7 @@
                             <th>位置</th>
                             <th>類型</th>
                             <th>主要功能</th>
+                            <th>聯絡資訊</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1121,48 +1144,56 @@
                             <td>桃園市中壢區</td>
                             <td>🏭 倉庫</td>
                             <td>總部配送中心</td>
+                            <td>📞 03-4625000<br>📧 warehouse.ty@clarks.com.tw</td>
                         </tr>
                         <tr>
                             <td><strong>林口保稅倉庫</strong></td>
                             <td>新北市林口區</td>
                             <td>🏭 倉庫</td>
                             <td>北區備貨中心</td>
+                            <td>📞 02-2601-8888<br>📧 warehouse.lg@clarks.com.tw</td>
                         </tr>
                         <tr>
                             <td><strong>【品牌直營】遠東SOGO台北忠孝館</strong></td>
                             <td>台北市大安區</td>
                             <td>🏪 直營門市</td>
                             <td>門市庫存</td>
+                            <td>📞 02-8772-8888 #2451<br>📧 sogo.store@clarks.com.tw</td>
                         </tr>
                         <tr>
                             <td><strong>【經銷】昂路名鞋館-明曜店</strong></td>
                             <td>台北市大安區</td>
                             <td>🏪 經銷門市</td>
                             <td>門市庫存</td>
+                            <td>📞 02-2758-8899<br>📧 mingyo.store@clarks.com.tw</td>
                         </tr>
                         <tr>
                             <td><strong>【品牌直營】新光三越南西一館</strong></td>
                             <td>台北市中山區</td>
                             <td>🏪 直營門市</td>
                             <td>門市庫存</td>
+                            <td>📞 02-2561-4500 #8032<br>📧 nw.store@clarks.com.tw</td>
                         </tr>
                         <tr>
                             <td><strong>【品牌直營】新竹遠東巨城</strong></td>
                             <td>新竹市東區</td>
                             <td>🏪 直營門市</td>
                             <td>門市庫存</td>
+                            <td>📞 03-5616-6888 #5201<br>📧 hsinchu.store@clarks.com.tw</td>
                         </tr>
                         <tr>
                             <td><strong>【品牌直營】台中新光三越中港店</strong></td>
                             <td>台中市西屯區</td>
                             <td>🏪 直營門市</td>
                             <td>門市庫存</td>
+                            <td>📞 04-2258-8833 #7621<br>📧 taichung.store@clarks.com.tw</td>
                         </tr>
                         <tr>
                             <td><strong>【品牌直營】高雄大遠百</strong></td>
                             <td>高雄市前鎮區</td>
                             <td>🏪 直營門市</td>
                             <td>門市庫存</td>
+                            <td>📞 07-9700-8888 #3156<br>📧 kaohsiung.store@clarks.com.tw</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1493,31 +1524,35 @@
         const productName = prompt('請輸入商品名稱：');
         if (!productName) return;
 
+        const demandIncrease = prompt('目前需求量：');
         const inventory = prompt('本週庫存數量：');
         const demand = prompt('下週需求數量：');
         const recommended = prompt('建議下單數量：');
         const price = prompt('價格 (如: NT$1,980)：');
         const sku = prompt('SKU 碼：');
-        const supplier = prompt('廠商名稱：');
-        const location = prompt('倉庫位置 (台灣桃園倉/台灣林口倉/架上)：');
-        const source = prompt('來源 (Momo/Clarks	)：');
+        const location = prompt('門店位置：');
+        const warehouse = prompt('倉庫位置 (桃園倉/林口倉)：');
+        const source = prompt('來源 (Momo/Clarks)：');
 
-        if (productName && inventory && demand && recommended && price && sku && supplier && location && source) {
+        if (productName && demandIncrease && inventory && demand && recommended && price && sku && location && warehouse && source) {
             const table = document.getElementById('inventoryTable');
             const tbody = table.querySelector('tbody');
             
             const newRow = document.createElement('tr');
             newRow.innerHTML = `
                 <td>${productName}</td>
+                <td style="text-align: center;"><input type="checkbox" class="shipment-checkbox"></td>
+                <td><input type="number" value="${demandIncrease}" min="0" class="demand-increase" style="width: 70px;"></td>
                 <td>${inventory}</td>
                 <td>${demand}</td>
                 <td><strong style="color: var(--warning-color);">${recommended}</strong></td>
                 <td>${price}</td>
                 <td>${sku}</td>
-                <td><strong>${supplier}</strong></td>
                 <td>${location}</td>
+                <td><strong>${warehouse}</strong></td>
                 <td>${source}</td>
                 <td><span class="status-badge status-low">補貨</span></td>
+                <td><span class="shipment-status">未出貨</span></td>
             `;
             
             tbody.appendChild(newRow);
@@ -1578,8 +1613,8 @@
         let count = 0;
         rows.forEach(row => {
             const cells = row.querySelectorAll('td');
-            const inventory = cells[1].textContent.trim();
-            const demand = cells[2].textContent.trim();
+            const inventory = cells[3].textContent.trim();
+            const demand = cells[4].textContent.trim();
             
             // 計算狀態
             let status = '充足';
@@ -1593,7 +1628,7 @@
                 statusClass = 'status-low';
             }
             
-            const statusCell = cells[9];
+            const statusCell = cells[11];
             statusCell.innerHTML = `<span class="status-badge ${statusClass}">${status}</span>`;
             count++;
         });
@@ -1612,20 +1647,27 @@
 
         rows.forEach(row => {
             const cells = row.querySelectorAll('td');
-            const inventory = parseInt(cells[1].textContent.trim());
-            const demand = parseInt(cells[2].textContent.trim());
+            const inventory = parseInt(cells[3].textContent.trim());
+            const demand = parseInt(cells[4].textContent.trim());
             const threshold = demand * percentage;
             
-            const statusCell = cells[9];
+            const statusCell = cells[11];
+            let status = '充足';
+            let statusClass = 'status-stock';
             
-            if (inventory < threshold) {
-                if (inventory === 0) {
-                    statusCell.innerHTML = '<span class="status-badge status-critical">缺貨</span>';
-                } else {
-                    statusCell.innerHTML = '<span class="status-badge status-low">預警</span>';
-                }
+            // 完整的狀態判斷邏輯（可逆）
+            if (inventory === 0) {
+                status = '缺貨';
+                statusClass = 'status-critical';
+                warningCount++;
+            } else if (inventory < threshold) {
+                status = '預警';
+                statusClass = 'status-low';
                 warningCount++;
             }
+            
+            // 總是更新狀態，確保可逆
+            statusCell.innerHTML = `<span class="status-badge ${statusClass}">${status}</span>`;
         });
 
         alert(`⚠️ 預警設定完成！\n檢測到 ${warningCount} 項需要關注的商品`);
@@ -1634,94 +1676,80 @@
     // ========== 出貨處理 ==========
     function shipmentProcess() {
         const rows = document.querySelectorAll('#inventoryTable tbody tr');
-        if (rows.length === 0) {
-            alert('❌ 表格中沒有商品！');
+        const checkedCheckboxes = document.querySelectorAll('#inventoryTable .shipment-checkbox:checked');
+        
+        if (checkedCheckboxes.length === 0) {
+            alert('❌ 請先選擇要出貨的商品！');
             return;
         }
 
-        // 建立出貨列表
-        let shipmentList = '📦 選擇要出貨的商品：\n\n';
-        let productsList = [];
-        
-        rows.forEach((row, index) => {
-            const cells = row.querySelectorAll('td');
-            const productName = cells[0].textContent.trim();
-            const inventory = cells[2].textContent.trim();
-            const sku = cells[6].textContent.trim();
-            productsList.push({
-                index,
-                name: productName,
-                sku,
-                inventory: parseInt(inventory)
-            });
-            shipmentList += `${index + 1}. ${productName} (庫存: ${inventory}件, SKU: ${sku})\n`;
-        });
-
-        shipmentList += `\n請輸入商品編號 (1-${rows.length}) 或用逗號分隔多個編號`;
-        
-        const userInput = prompt(shipmentList);
-        if (userInput === null) {
-            return; // 用戶按取消
-        }
-        
-        if (userInput.trim() === '') {
-            alert('❌ 請輸入商品編號');
-            return;
-        }
-
-        // 解析用戶輸入
-        const selectedIndices = userInput.split(',').map(x => parseInt(x.trim()) - 1).filter(x => x >= 0 && x < rows.length);
-        
-        if (selectedIndices.length === 0) {
-            alert('❌ 請輸入有效的商品編號');
-            return;
-        }
-
-        // 收集出貨數量
         let totalShipment = 0;
         let shipmentDetails = '出貨明細：\n';
-        
-        for (let idx of selectedIndices) {
-            const product = productsList[idx];
-            const quantity = prompt(`${product.name}\n目前庫存: ${product.inventory}件\n請輸入出貨數量:`, product.inventory);
+        let successCount = 0;
+
+        // 逐個處理選中的checkbox
+        checkedCheckboxes.forEach(checkbox => {
+            const row = checkbox.closest('tr');
+            const cells = row.querySelectorAll('td');
+            
+            const productName = cells[0].textContent.trim();
+            const currentInventory = parseInt(cells[3].textContent.trim());
+            const sku = cells[7].textContent.trim();
+            
+            // 獲取出貨數量
+            const quantity = prompt(`${productName}\n目前庫存: ${currentInventory}件\n請輸入出貨數量:`, currentInventory);
             
             if (quantity === null) {
-                continue; // 用戶按取消，跳過此商品
+                return; // 用戶按取消，跳過此商品
             }
             
             if (quantity.trim() === '') {
-                continue; // 空輸入，跳過此商品
+                return; // 空輸入，跳過此商品
             }
             
             const shipQty = parseInt(quantity);
             if (isNaN(shipQty) || shipQty <= 0) {
-                alert(`❌ ${product.name} 的出貨數量無效`);
-                continue;
+                alert(`❌ ${productName} 的出貨數量無效`);
+                return;
             }
 
-            if (shipQty > product.inventory) {
-                alert(`❌ ${product.name} 出貨數量不能超過庫存 (庫存: ${product.inventory}件)`);
-                continue;
+            if (shipQty > currentInventory) {
+                alert(`❌ ${productName} 出貨數量不能超過庫存 (庫存: ${currentInventory}件)`);
+                return;
             }
 
-            // 更新庫存
-            const row = rows[idx];
-            const cells = row.querySelectorAll('td');
-            const currentInventory = parseInt(cells[2].textContent.trim());
+            // 更新庫存 (第3列)
             const newInventory = currentInventory - shipQty;
-            cells[2].textContent = newInventory;
+            cells[3].textContent = newInventory;
 
-            // 更新狀態
-            const demand = parseInt(cells[3].textContent.trim());
+            // 更新狀態 (第11列)
+            const demand = parseInt(cells[4].textContent.trim());
             let status = '充足';
             if (newInventory <= demand * 0.3) {
                 status = newInventory === 0 ? '缺貨' : '補貨';
             }
-            cells[10].innerHTML = `<span class="status-badge ${status === '充足' ? 'status-stock' : status === '補貨' ? 'status-low' : 'status-critical'}">${status}</span>`;
+            cells[11].innerHTML = `<span class="status-badge ${status === '充足' ? 'status-stock' : status === '補貨' ? 'status-low' : 'status-critical'}">${status}</span>`;
 
-            shipmentDetails += `✓ ${product.name} (SKU: ${product.sku}): ${shipQty}件\n`;
+            // 更新出貨狀態 (第12列) 並鎖定該行
+            const shipmentStatusSpan = cells[12].querySelector('.shipment-status');
+            shipmentStatusSpan.textContent = '✅ 已出貨';
+            shipmentStatusSpan.style.color = 'var(--success-color)';
+            shipmentStatusSpan.style.fontWeight = 'bold';
+            
+            // 禁用該行的目前需求量輸入框
+            const demandIncreaseInput = cells[2].querySelector('.demand-increase');
+            if (demandIncreaseInput) {
+                demandIncreaseInput.disabled = true;
+                demandIncreaseInput.style.opacity = '0.5';
+            }
+            
+            // 禁用該行的checkbox
+            checkbox.disabled = true;
+            
+            shipmentDetails += `✓ ${productName} (SKU: ${sku}): ${shipQty}件\n`;
             totalShipment += shipQty;
-        }
+            successCount++;
+        });
 
         // 顯示出貨確認
         if (totalShipment === 0) {
@@ -1730,13 +1758,13 @@
         }
 
         const timestamp = new Date().toLocaleString('zh-TW');
-        alert(`✅ 出貨成功！\n\n${shipmentDetails}\n總計: ${totalShipment}件\n\n出貨時間: ${timestamp}`);
+        alert(`✅ 出貨成功！\n\n${shipmentDetails}\n總計: ${totalShipment}件\n已完成: ${successCount}項\n\n出貨時間: ${timestamp}`);
 
         // 更新表頭資訊中的需補貨項目數
         const rows_data = document.querySelectorAll('#inventoryTable tbody tr');
         let needRestockCount = 0;
         rows_data.forEach(row => {
-            const statusText = row.querySelectorAll('td')[10].textContent.trim();
+            const statusText = row.querySelectorAll('td')[11].textContent.trim();
             if (statusText.includes('補貨') || statusText.includes('缺貨')) {
                 needRestockCount++;
             }
@@ -1985,6 +2013,13 @@
                 data: {
                     labels: ['桃園倉', '林口倉'],
                     datasets: [
+                        {
+                            label: '目前需求量',
+                            data: [30, 23],
+                            backgroundColor: '#A8E6CF',
+                            borderRadius: 5,
+                            borderSkipped: false
+                        },
                         {
                             label: '本週庫存',
                             data: [43, 32],
