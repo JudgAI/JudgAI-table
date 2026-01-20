@@ -531,6 +531,7 @@
         </div>
         
         <button onclick="exportTableAsCSV()"><i class="fas fa-download"></i> 匯出數據</button>
+        <button onclick="manualRefreshCharts()" style="background: #ff6b6b; color: white; padding: 8px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-left: 10px;"><i class="fas fa-sync"></i> 🔄 手動刷新圖表</button>
     </div>
 </header>
 
@@ -3126,8 +3127,9 @@
                 event.target.classList.add('active');
             }
 
-            // 重新繪製圖表
+            // 延遲後重新繪製圖表（給DOM足夠時間渲染）
             setTimeout(() => {
+                console.log(`📊 切換到分頁: ${tabName} → 刷新對應圖表`);
                 updateAllCharts();
             }, 100);
         } catch (error) {
@@ -3373,9 +3375,15 @@
 
             if (window.channelPieChartInstance) window.channelPieChartInstance.destroy();
 
-            const channelData = [28, 28];
-        const total = channelData.reduce((a, b) => a + b, 0);
-        const percentages = channelData.map(d => ((d / total) * 100).toFixed(1));
+            // 动态计算通路订单数
+            const momoTable = document.getElementById('multiverceTable');
+            const clarksTable = document.getElementById('carrefourTable');
+            
+            const momoCount = momoTable?.querySelectorAll('tbody tr').length || 0;
+            const clarksCount = clarksTable?.querySelectorAll('tbody tr').length || 0;
+            const channelData = [momoCount, clarksCount];
+            const total = channelData.reduce((a, b) => a + b, 0);
+            const percentages = total > 0 ? channelData.map(d => ((d / total) * 100).toFixed(1)) : [0, 0];
 
             window.channelPieChartInstance = new Chart(ctx, {
             type: 'doughnut',
@@ -3456,23 +3464,40 @@
 
         if (sizesChart) sizesChart.destroy();
 
+        // 动态统计商品价格销售排名
+        const momoTable = document.getElementById('multiverceTable');
+        const clarksTable = document.getElementById('carrefourTable');
+        const productCount = {};
+        
+        const processProducts = (table) => {
+            if (!table) return;
+            table.querySelectorAll('tbody tr').forEach(row => {
+                const productCell = row.cells[7]?.textContent.trim();
+                if (productCell) {
+                    productCount[productCell] = (productCount[productCell] || 0) + 1;
+                }
+            });
+        };
+        
+        processProducts(momoTable);
+        processProducts(clarksTable);
+        
+        // 按数量排序，取前 15
+        const sortedProducts = Object.entries(productCount)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 15);
+        
+        const labels = sortedProducts.map(p => p[0]);
+        const data = sortedProducts.map(p => p[1]);
+
         sizesChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['3600元', '4300元', '2860元', '1980元', '4690元', '5600元', '6318元', '4555元'],
+                labels: labels,
                 datasets: [{
                     label: '訂單數',
-                    data: [10, 4, 5, 1, 1, 1, 1, 1],
-                    backgroundColor: [
-                        chartColors.gold,
-                        colorToRgba(chartColors.gold, 0.8),
-                        colorToRgba(chartColors.gold, 0.8),
-                        colorToRgba(chartColors.gold, 0.6),
-                        colorToRgba(chartColors.gold, 0.6),
-                        colorToRgba(chartColors.gold, 0.5),
-                        colorToRgba(chartColors.gold, 0.5),
-                        colorToRgba(chartColors.gold, 0.5)
-                    ],
+                    data: data,
+                    backgroundColor: labels.map((_, i) => colorToRgba(chartColors.gold, Math.max(0.3, 1 - (i * 0.05)))),
                     borderColor: chartColors.gold,
                     borderWidth: 1
                 }]
@@ -3910,13 +3935,38 @@
 
         if (comparisonRevenueChart) comparisonRevenueChart.destroy();
 
+        // 动态计算总销售额
+        const momoTable = document.getElementById('multiverceTable');
+        const clarksTable = document.getElementById('carrefourTable');
+        
+        let momoTotal = 0;
+        let clarksTotal = 0;
+        
+        if (momoTable) {
+            momoTable.querySelectorAll('tbody tr').forEach(row => {
+                const amountCell = row.cells[11]?.textContent.trim();
+                if (amountCell) {
+                    momoTotal += parseInt(amountCell.replace(/[^\d]/g, '')) || 0;
+                }
+            });
+        }
+        
+        if (clarksTable) {
+            clarksTable.querySelectorAll('tbody tr').forEach(row => {
+                const amountCell = row.cells[11]?.textContent.trim();
+                if (amountCell) {
+                    clarksTotal += parseInt(amountCell.replace(/[^\d]/g, '')) || 0;
+                }
+            });
+        }
+
         comparisonRevenueChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: ['Momo', 'Clarks官網'],
                 datasets: [{
                     label: '銷售額 (NT$)',
-                    data: [284799, 471856],
+                    data: [momoTotal, clarksTotal],
                     backgroundColor: [chartColors.gold, chartColors.blue],
                     borderColor: [chartColors.gold, chartColors.blue],
                     borderWidth: 2
@@ -3977,6 +4027,31 @@
 
         if (comparisonStatusChart) comparisonStatusChart.destroy();
 
+        // 动态计算已完成订单
+        const momoTable = document.getElementById('multiverceTable');
+        const clarksTable = document.getElementById('carrefourTable');
+        
+        let momoCompleted = 0;
+        let clarksCompleted = 0;
+        
+        if (momoTable) {
+            momoTable.querySelectorAll('tbody tr').forEach(row => {
+                const statusCell = row.cells[16]?.textContent.trim();
+                if (statusCell === '已配送') {
+                    momoCompleted++;
+                }
+            });
+        }
+        
+        if (clarksTable) {
+            clarksTable.querySelectorAll('tbody tr').forEach(row => {
+                const statusCell = row.cells[16]?.textContent.trim();
+                if (statusCell === '已配送') {
+                    clarksCompleted++;
+                }
+            });
+        }
+
         comparisonStatusChart = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -3984,12 +4059,12 @@
                 datasets: [
                     {
                         label: 'Momo',
-                        data: [28],
+                        data: [momoCompleted],
                         backgroundColor: chartColors.gold,
                     },
                     {
                         label: 'Clarks官網',
-                        data: [28],
+                        data: [clarksCompleted],
                         backgroundColor: chartColors.blue,
                     }
                 ]
@@ -4053,21 +4128,40 @@
 
         if (cityChart) cityChart.destroy();
 
+        // 动态计算城市订单分布
+        const momoTable = document.getElementById('multiverceTable');
+        const clarksTable = document.getElementById('carrefourTable');
+        const cityCount = {};
+        
+        const processCityData = (table) => {
+            if (!table) return;
+            table.querySelectorAll('tbody tr').forEach(row => {
+                const cityCell = row.cells[5]?.textContent.trim();
+                if (cityCell) {
+                    cityCount[cityCell] = (cityCount[cityCell] || 0) + 1;
+                }
+            });
+        };
+        
+        processCityData(momoTable);
+        processCityData(clarksTable);
+        
+        // 排序并获取前 10 个城市
+        const sortedCities = Object.entries(cityCount)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 10);
+        
+        const labels = sortedCities.map(c => c[0]);
+        const data = sortedCities.map(c => c[1]);
+
         cityChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['台北', '新北', '桃園', '基隆', '彰化', '屏東'],
+                labels: labels,
                 datasets: [{
                     label: '訂單數',
-                    data: [3, 2, 1, 1, 1, 1],
-                    backgroundColor: [
-                        chartColors.gold,
-                        colorToRgba(chartColors.gold, 0.8),
-                        colorToRgba(chartColors.gold, 0.6),
-                        colorToRgba(chartColors.gold, 0.5),
-                        colorToRgba(chartColors.gold, 0.4),
-                        colorToRgba(chartColors.gold, 0.3)
-                    ],
+                    data: data,
+                    backgroundColor: labels.map((_, i) => colorToRgba(chartColors.gold, 1 - (i * 0.08))),
                     borderColor: chartColors.gold,
                     borderWidth: 1
                 }]
@@ -4114,14 +4208,41 @@
 
         if (cityRevenueChart) cityRevenueChart.destroy();
 
-        const revenueData = [5960, 3980, 1990, 1990, 1990, 1990];
+        // 动态计算城市销售额
+        const momoTable = document.getElementById('multiverceTable');
+        const clarksTable = document.getElementById('carrefourTable');
+        const cityRevenue = {};
+        
+        const processCityRevenue = (table) => {
+            if (!table) return;
+            table.querySelectorAll('tbody tr').forEach(row => {
+                const cityCell = row.cells[5]?.textContent.trim();
+                const amountCell = row.cells[11]?.textContent.trim();
+                if (cityCell && amountCell) {
+                    const amount = parseInt(amountCell.replace(/[^\d]/g, '')) || 0;
+                    cityRevenue[cityCell] = (cityRevenue[cityCell] || 0) + amount;
+                }
+            });
+        };
+        
+        processCityRevenue(momoTable);
+        processCityRevenue(clarksTable);
+        
+        // 排序获取前 10 个城市
+        const sortedCities = Object.entries(cityRevenue)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 10);
+        
+        const labels = sortedCities.map(c => c[0]);
+        const revenueData = sortedCities.map(c => c[1]);
+        
         const total = revenueData.reduce((a, b) => a + b, 0);
-        const percentages = revenueData.map(d => ((d / total) * 100).toFixed(1));
+        const percentages = total > 0 ? revenueData.map(d => ((d / total) * 100).toFixed(1)) : [];
 
         cityRevenueChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ['台北', '新北', '桃園', '基隆', '彰化', '屏東'],
+                labels: labels,
                 datasets: [{
                     data: revenueData,
                     backgroundColor: [
@@ -4130,7 +4251,11 @@
                         'rgba(212, 175, 55, 0.7)',
                         'rgba(66, 165, 245, 0.7)',
                         'rgba(212, 175, 55, 0.5)',
-                        'rgba(66, 165, 245, 0.5)'
+                        'rgba(66, 165, 245, 0.5)',
+                        'rgba(212, 175, 55, 0.4)',
+                        'rgba(66, 165, 245, 0.4)',
+                        'rgba(212, 175, 55, 0.3)',
+                        'rgba(66, 165, 245, 0.3)'
                     ],
                     borderColor: getCssVarValue('--card-bg'),
                     borderWidth: 2,
@@ -4158,8 +4283,8 @@
                             pointStyle: 'circle',
                             generateLabels: function(chart) {
                                 const dataset = chart.data.datasets[0];
-                                const labels = chart.data.labels;
-                                return labels.map((label, i) => ({
+                                const chartLabels = chart.data.labels;
+                                return chartLabels.map((label, i) => ({
                                     text: `${label} ${percentages[i]}%`,
                                     fillStyle: dataset.backgroundColor[i],
                                     hidden: false,
@@ -4690,6 +4815,7 @@
     function exportTableAsCSV() {
         const csv = [];
         const tables = document.querySelectorAll('table');
+        let totalFilteredRows = 0;
 
         tables.forEach((table, tableIdx) => {
             csv.push('\n');
@@ -4697,8 +4823,21 @@
             
             const rows = table.querySelectorAll('tr');
             rows.forEach(row => {
+                // 跳過被隱藏的行（筛选后）
+                if (row.style.display === 'none') {
+                    return;
+                }
+                
+                totalFilteredRows++;
                 const cols = row.querySelectorAll('td, th');
-                const rowData = Array.from(cols).map(col => col.textContent.trim()).join(',');
+                const rowData = Array.from(cols).map(col => {
+                    let text = col.textContent.trim();
+                    // 處理包含逗號的欄位
+                    if (text.includes(',') || text.includes('"')) {
+                        text = '"' + text.replace(/"/g, '""') + '"';
+                    }
+                    return text;
+                }).join(',');
                 csv.push(rowData);
             });
         });
@@ -4707,6 +4846,8 @@
         link.href = 'data:text/csv;charset=utf-8,%EF%BB%BF' + encodeURIComponent(csv.join('\n'));
         link.download = `Clark_Demo_通路數據_${new Date().toISOString().slice(0, 10)}.csv`;
         link.click();
+        
+        console.log(`✅ 批量 CSV 導出成功：共 ${totalFilteredRows} 行`);
     }
 
     // ========== 導出特定表格的 CSV ==========
@@ -4716,8 +4857,15 @@
 
         const csv = [];
         const rows = table.querySelectorAll('tr');
+        let filteredCount = 0;
 
         rows.forEach(row => {
+            // 跳過被隱藏的行（筛选后）
+            if (row.style.display === 'none') {
+                return;
+            }
+            
+            filteredCount++;
             const cols = row.querySelectorAll('td, th');
             const rowData = Array.from(cols)
                 .map(col => {
@@ -4737,8 +4885,14 @@
         const csvContent = '\uFEFF' + csv.join('\n');
         const link = document.createElement('a');
         link.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
-        link.download = `Clark_Demo_${tableName}_${new Date().toISOString().slice(0, 10)}.csv`;
+        
+        // 如果有筛选，在文件名中标记
+        const hasFilter = filteredCount < (rows.length - 1);
+        const filterTag = hasFilter ? '_已筛选' : '';
+        link.download = `Clark_Demo_${tableName}${filterTag}_${new Date().toISOString().slice(0, 10)}.csv`;
         link.click();
+        
+        console.log(`✅ CSV 導出成功：${filteredCount} / ${rows.length - 1} 行${hasFilter ? '（已筛选）' : ''}`);
     }
 
     // ========== 圖表變數存儲 ==========
@@ -6262,6 +6416,28 @@
         }
     }
 
+    // ========== 方案D: Mutation Observer 自動圖表更新 ==========
+    let chartRefreshTimeout = null;
+    let mutationObserver = null;
+    
+    // 防抖函數：避免频繁触发
+    function scheduleChartRefresh() {
+        // 已禁用，防止無限循環
+        // 改為通過 switchTab 或手動按鈕觸發刷新
+        return;
+    }
+    
+    // 暴露全局刷新函數用於手動測試
+    window.manualRefreshCharts = function() {
+        console.log('🎯 手動觸發 - 刷新所有圖表');
+        try {
+            updateAllCharts();
+            console.log('✅ 所有圖表刷新完成！');
+        } catch (e) {
+            console.error('❌ 圖表刷新發生錯誤:', e);
+        }
+    };
+
     // ========== 初始化 ==========
     document.addEventListener('DOMContentLoaded', () => {
         // 為表格行添加 data-date 屬性（用於日期篩選）
@@ -6291,6 +6467,10 @@
                 }
             });
         });
+        
+        // ========== 設置 Mutation Observer 監聽表格變化 ==========
+        // 已禁用：會造成無限循環（圖表重繪觸發DOM變化，再次觸發刷新）
+        // 如果需要，在將來可以重新啟用，但需要防止無限遞迴
         
         // 設置最後更新時間
         const now = new Date();
