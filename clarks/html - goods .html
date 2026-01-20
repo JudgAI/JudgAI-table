@@ -1660,7 +1660,14 @@
         shipmentList += `\n請輸入商品編號 (1-${rows.length}) 或用逗號分隔多個編號`;
         
         const userInput = prompt(shipmentList);
-        if (!userInput) return;
+        if (userInput === null) {
+            return; // 用戶按取消
+        }
+        
+        if (userInput.trim() === '') {
+            alert('❌ 請輸入商品編號');
+            return;
+        }
 
         // 解析用戶輸入
         const selectedIndices = userInput.split(',').map(x => parseInt(x.trim()) - 1).filter(x => x >= 0 && x < rows.length);
@@ -1678,7 +1685,13 @@
             const product = productsList[idx];
             const quantity = prompt(`${product.name}\n目前庫存: ${product.inventory}件\n請輸入出貨數量:`, product.inventory);
             
-            if (!quantity) continue;
+            if (quantity === null) {
+                continue; // 用戶按取消，跳過此商品
+            }
+            
+            if (quantity.trim() === '') {
+                continue; // 空輸入，跳過此商品
+            }
             
             const shipQty = parseInt(quantity);
             if (isNaN(shipQty) || shipQty <= 0) {
@@ -1699,18 +1712,23 @@
             cells[2].textContent = newInventory;
 
             // 更新狀態
-            const demand = parseInt(cells[2].textContent.trim());
+            const demand = parseInt(cells[3].textContent.trim());
             let status = '充足';
-            if (newInventory < demand * 0.3) {
+            if (newInventory <= demand * 0.3) {
                 status = newInventory === 0 ? '缺貨' : '補貨';
             }
-            cells[9].innerHTML = `<span class="status-badge ${status === '充足' ? 'status-stock' : status === '補貨' ? 'status-low' : 'status-critical'}">${status}</span>`;
+            cells[10].innerHTML = `<span class="status-badge ${status === '充足' ? 'status-stock' : status === '補貨' ? 'status-low' : 'status-critical'}">${status}</span>`;
 
             shipmentDetails += `✓ ${product.name} (SKU: ${product.sku}): ${shipQty}件\n`;
             totalShipment += shipQty;
         }
 
         // 顯示出貨確認
+        if (totalShipment === 0) {
+            alert('❌ 沒有出貨任何商品');
+            return;
+        }
+
         const timestamp = new Date().toLocaleString('zh-TW');
         alert(`✅ 出貨成功！\n\n${shipmentDetails}\n總計: ${totalShipment}件\n\n出貨時間: ${timestamp}`);
 
@@ -1718,7 +1736,7 @@
         const rows_data = document.querySelectorAll('#inventoryTable tbody tr');
         let needRestockCount = 0;
         rows_data.forEach(row => {
-            const statusText = row.querySelectorAll('td')[9].textContent.trim();
+            const statusText = row.querySelectorAll('td')[10].textContent.trim();
             if (statusText.includes('補貨') || statusText.includes('缺貨')) {
                 needRestockCount++;
             }
