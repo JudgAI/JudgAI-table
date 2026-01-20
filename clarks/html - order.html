@@ -596,7 +596,7 @@
     <div class="comparison-grid">
         <div class="chart-card">
             <div class="chart-title">推薦搭配銷售商品Top 10</div>
-            <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">銷售排名 –》各商品被訂購的次數（有多少個訂單包含它）</div>
+            <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">銷售排名 –》根據銷售數據推薦最受歡迎的商品組合</div>
             <div class="chart-container" style="height: auto; padding: 15px 0;">
                 <div id="topProductsChart"></div>
             </div>
@@ -1605,7 +1605,7 @@
         <div class="comparison-grid" style="margin-top: 25px;">
             <div class="chart-card">
                 <div class="chart-title">Momo推薦搭配銷售商品Top 10</div>
-                <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">銷售排名 –》Momo各商品被訂購的次數（訂單數排行）</div>
+                <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">銷售排名 –》Momo根據銷售數據推薦最受歡迎的商品組合</div>
                 <div class="chart-container" style="height: auto; padding: 15px 0;">
                     <div id="momoTopProductsChart"></div>
                 </div>
@@ -2397,7 +2397,7 @@
         <div class="comparison-grid" style="margin-top: 25px;">
             <div class="chart-card">
                 <div class="chart-title">Clarks推薦搭配銷售商品Top 10</div>
-                <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">銷售排名 –》Clarks各商品被訂購的次數（訂單數排行）</div>
+                <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">熱銷搭配 –》根據銷售數據推薦最受歡迎的商品組合</div>
                 <div class="chart-container" style="height: auto; padding: 15px 0;">
                     <div id="clarksTopProductsChart"></div>
                 </div>
@@ -2443,16 +2443,16 @@
                 </div>
                 
                 <div class="insight-box" style="background: linear-gradient(135deg, rgba(78, 205, 196, 0.12), rgba(78, 205, 196, 0.05)); 
-                                                border-left: 5px solid var(--accent-blue);
-                                                padding: 16px;
-                                                border-radius: 8px;
-                                                margin-top: 0;">
+                                                    border-left: 5px solid var(--accent-blue);
+                                                    padding: 16px;
+                                                    border-radius: 8px;
+                                                    margin-top: 0;">
                     <div style="display: flex; gap: 12px; align-items: flex-start;">
                         <i class="fas fa-lightbulb" style="color: var(--accent-blue); margin-top: 3px; font-size: 18px; min-width: 24px;"></i>
                         <div style="flex: 1;">
                             <strong style="color: var(--accent-blue); font-size: 14px;">💡 數量分析建議</strong>
                             <p style="margin: 8px 0 0 0; font-size: 13px; color: var(--text-main); line-height: 1.6;">
-                                分析各商品銷售數量，調整庫存策略與流量分配。重點關注前三名熱銷款的補貨週期，並評估其他商品的促銷機會。
+                                分析Clarks各商品銷售數量，調整庫存與流量分配。重點關注前三名熱銷款的補貨週期，並評估其他商品的促銷機會。
                             </p>
                         </div>
                     </div>
@@ -2497,71 +2497,7 @@
                 </div>
             </div>
 
-            <div class="comparison-grid" style="margin-top: 25px;">
-                <div class="chart-card">
-                    <div class="chart-title">Clarks推薦搭配銷售商品Top 10</div>
-                    <div style="font-size: 11px; color: var(--text-sub); padding: 0 0 10px 0; margin-bottom: 8px;">銷售排名 –》Clarks各商品被訂購的次數（訂單數排行）</div>
-                    <div class="chart-container" style="height: auto; padding: 15px 0;">
-                        <div id="clarksTopProductsChart"></div>
-                    </div>
-                    <div class="chart-insight">
-                        <strong>⭐ 銷售排名：</strong>
-                        <span style="color: var(--text-sub);">掌握Clarks熱銷商品，優化商品策略與備貨計畫。</span>
-                    </div>
-                </div>
-                <div class="chart-card">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
-                        <div>
-                            <div class="chart-title" style="margin-bottom: 6px; font-size: 18px;">📊 商品銷售數量分析</div>
-                            <div style="font-size: 13px; color: var(--text-sub); font-weight: 500;">銷量統計 –》Clarks各商品一共賣出了多少件（商品件數排行）</div>
-                        </div>
-                    </div>
-                    
-                    <div style="padding: 18px; background: linear-gradient(135deg, rgba(78, 205, 196, 0.12), rgba(78, 205, 196, 0.05)); 
-                                border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--accent-blue); 
-                                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);">
-                        <div style="display: flex; align-items: flex-start; gap: 12px;">
-                            <i class="fas fa-chart-bar" style="color: var(--accent-blue); margin-top: 3px; font-size: 18px; min-width: 24px;"></i>
-                            <div style="flex: 1;">
-                                <div style="font-weight: bold; color: var(--accent-blue); margin-bottom: 10px; font-size: 14px;">📈 分析說明</div>
-                                <div style="font-size: 13px; color: var(--text-main); line-height: 1.6; margin-bottom: 12px;">
-                                    本表展示各商品的銷售件數排行，前三名熱銷款以金色標示，其他商品以藍色標示。
-                                </div>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-size: 13px;">
-                                    <div style="display: flex; gap: 10px; align-items: center;">
-                                        <div style="width: 16px; height: 16px; background-color: #D4AF37; border-radius: 3px;"></div>
-                                        <span><strong>前三名熱銷款</strong> - 銷售排名TOP 3</span>
-                                    </div>
-                                    <div style="display: flex; gap: 10px; align-items: center;">
-                                        <div style="width: 16px; height: 16px; background-color: #4A90E2; border-radius: 3px;"></div>
-                                        <span><strong>其他商品</strong> - 銷售第4名以後</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="chart-container" style="height: auto; padding: 20px; background: #f8f9fa; border-radius: 8px; margin-bottom: 20px;">
-                        <div id="clarksProductQtyChart"></div>
-                    </div>
-                    
-                    <div class="insight-box" style="background: linear-gradient(135deg, rgba(78, 205, 196, 0.12), rgba(78, 205, 196, 0.05)); 
-                                                        border-left: 5px solid var(--accent-blue);
-                                                        padding: 16px;
-                                                        border-radius: 8px;
-                                                        margin-top: 0;">
-                        <div style="display: flex; gap: 12px; align-items: flex-start;">
-                            <i class="fas fa-lightbulb" style="color: var(--accent-blue); margin-top: 3px; font-size: 18px; min-width: 24px;"></i>
-                            <div style="flex: 1;">
-                                <strong style="color: var(--accent-blue); font-size: 14px;">💡 數量分析建議</strong>
-                                <p style="margin: 8px 0 0 0; font-size: 13px; color: var(--text-main); line-height: 1.6;">
-                                    分析Clarks各商品銷售數量，調整庫存與流量分配。重點關注前三名熱銷款的補貨週期，並評估其他商品的促銷機會。
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
 
         <div class="insight-box">
@@ -5624,7 +5560,8 @@
         }
     }
 
-    // ========== Momo Clarks推薦搭配銷售商品Top 10 ==========
+    // ========== Momo 熱銷搭配 ==========
+    // 根據銷售數據推薦最受歡迎的商品組合
     function drawMomoTopProductsChart() {
         const table = document.getElementById('multiverceTable');
         if (!table) return;
@@ -6007,7 +5944,7 @@
                 margin-bottom: 12px;
                 text-align: center;
             `;
-            title.textContent = 'Clarks推薦搭配銷售商品Top 10';
+            title.textContent = 'Clarks推薦搭配銷售商品Top 10 - 熱銷搭配';
             container.appendChild(title);
             
             // 創建圖例說明
