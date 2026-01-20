@@ -843,6 +843,7 @@
                     <thead>
                         <tr>
                             <th onclick="sortTable('inventoryTable', 0)">商品名稱</th>
+                            <th style="width: 50px; text-align: center;"><input type="checkbox" id="selectAllCheckbox" onclick="toggleSelectAll(this)"> 出貨</th>
                             <th onclick="sortTable('inventoryTable', 1)">本週庫存數量</th>
                             <th onclick="sortTable('inventoryTable', 2)">下週需求數量</th>
                             <th onclick="sortTable('inventoryTable', 3)">建議下單數量</th>
@@ -857,6 +858,7 @@
                     <tbody id="inventoryBody">
                         <tr>
                             <td>Clarks	 空氣鞋- Craftravel Go全皮面輕盈休閒鞋(白色)</td>
+                            <td style="text-align: center;"><input type="checkbox" class="shipment-checkbox"></td>
                             <td>10</td>
                             <td>25</td>
                             <td><strong style="color: var(--warning-color);">15</strong></td>
@@ -869,6 +871,7 @@
                         </tr>
                         <tr>
                             <td>Clarks	 女鞋 Havisham Oak 絕對經典布洛克雕花牛津鞋</td>
+                            <td style="text-align: center;"><input type="checkbox" class="shipment-checkbox"></td>
                             <td>5</td>
                             <td>15</td>
                             <td><strong style="color: var(--warning-color);">10</strong></td>
@@ -881,6 +884,7 @@
                         </tr>
                         <tr>
                             <td>Clarks	 三瓣鞋2.0- Trigenic2 Tact手工縫線工藝設計輕盈寬楦休閒鞋 (黑色)</td>
+                            <td style="text-align: center;"><input type="checkbox" class="shipment-checkbox"></td>
                             <td>8</td>
                             <td>20</td>
                             <td><strong style="color: var(--success-color);">12</strong></td>
@@ -893,6 +897,7 @@
                         </tr>
                         <tr>
                             <td>Clarks	 男鞋 Clarkbay Go 愜意穿搭兩眼孔麂皮帆船休閒鞋</td>
+                            <td style="text-align: center;"><input type="checkbox" class="shipment-checkbox"></td>
                             <td>3</td>
                             <td>12</td>
                             <td><strong style="color: var(--danger-color);">9</strong></td>
@@ -905,6 +910,7 @@
                         </tr>
                         <tr>
                             <td>Clarks	 女鞋 Quilto Step 柔軟舒適真皮流蘇莫卡辛鞋</td>
+                            <td style="text-align: center;"><input type="checkbox" class="shipment-checkbox"></td>
                             <td>12</td>
                             <td>18</td>
                             <td><strong style="color: var(--success-color);">6</strong></td>
@@ -917,6 +923,7 @@
                         </tr>
                         <tr>
                             <td>Clarks	 男鞋 Un Aldric On 全新升級寬楦優質便士樂福鞋</td>
+                            <td style="text-align: center;"><input type="checkbox" class="shipment-checkbox"></td>
                             <td>6</td>
                             <td>16</td>
                             <td><strong style="color: var(--warning-color);">10</strong></td>
@@ -929,6 +936,7 @@
                         </tr>
                         <tr>
                             <td>Clarks	 空氣鞋-Craftravel Izy 潮流撞色可後踩兩穿德訓鞋 (海軍藍)</td>
+                            <td style="text-align: center;"><input type="checkbox" class="shipment-checkbox"></td>
                             <td>4</td>
                             <td>14</td>
                             <td><strong style="color: var(--danger-color);">10</strong></td>
@@ -941,6 +949,7 @@
                         </tr>
                         <tr>
                             <td>Clarks	 女鞋 Craftravel Lit 簡約拚接年輕時尚潮流板鞋</td>
+                            <td style="text-align: center;"><input type="checkbox" class="shipment-checkbox"></td>
                             <td>7</td>
                             <td>17</td>
                             <td><strong style="color: var(--warning-color);">10</strong></td>
@@ -953,6 +962,7 @@
                         </tr>
                         <tr>
                             <td>Clarks	 三瓣鞋2.0- Trigenic2 See. 三瓣鞋2.0 全皮面輕量涼鞋</td>
+                            <td style="text-align: center;"><input type="checkbox" class="shipment-checkbox"></td>
                             <td>9</td>
                             <td>19</td>
                             <td><strong style="color: var(--success-color);">10</strong></td>
@@ -965,6 +975,7 @@
                         </tr>
                         <tr>
                             <td>Clarks	 微風跑- Zeph Run Joy全皮面厚底運動休閒鞋(黑色)</td>
+                            <td style="text-align: center;"><input type="checkbox" class="shipment-checkbox"></td>
                             <td>11</td>
                             <td>22</td>
                             <td><strong style="color: var(--success-color);">11</strong></td>
@@ -1272,6 +1283,12 @@
         } catch (error) {
             console.error('Error switching store:', error);
         }
+    }
+
+    // ========== 全選/取消全選出貨 ==========
+    function toggleSelectAll(checkbox) {
+        const checkboxes = document.querySelectorAll('.shipment-checkbox');
+        checkboxes.forEach(cb => cb.checked = checkbox.checked);
     }
 
     // ========== 表格排序 ==========
