@@ -2388,7 +2388,18 @@
                             padding: 15,
                             font: { size: 13, weight: 'bold' },
                             boxWidth: 15,
-                            boxHeight: 15
+                            boxHeight: 15,
+                            generateLabels: function(chart) {
+                                const data = chart.data;
+                                const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                return data.labels.map((label, i) => ({
+                                    text: label + ' (' + ((data.datasets[0].data[i] / total * 100).toFixed(1)) + '%)',
+                                    fillStyle: data.datasets[0].backgroundColor[i],
+                                    hidden: false,
+                                    index: i,
+                                    pointStyle: 'circle'
+                                }));
+                            }
                         }
                     }
                 }
@@ -2837,7 +2848,18 @@
                         labels: {
                             color: getCssVarValue('--text-main'),
                             padding: 15,
-                            font: { size: 13, weight: 'bold' }
+                            font: { size: 13, weight: 'bold' },
+                            generateLabels: function(chart) {
+                                const data = chart.data;
+                                const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                return data.labels.map((label, i) => ({
+                                    text: label + ' (' + ((data.datasets[0].data[i] / total * 100).toFixed(1)) + '%)',
+                                    fillStyle: data.datasets[0].backgroundColor[i],
+                                    hidden: false,
+                                    index: i,
+                                    pointStyle: 'circle'
+                                }));
+                            }
                         }
                     }
                 }
@@ -2913,7 +2935,18 @@
                                 padding: 15,
                                 font: { size: 12, weight: 'bold' },
                                 boxWidth: 15,
-                                boxHeight: 15
+                                boxHeight: 15,
+                                generateLabels: function(chart) {
+                                    const data = chart.data;
+                                    const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                    return data.labels.map((label, i) => ({
+                                        text: label + ' (' + ((data.datasets[0].data[i] / total * 100).toFixed(1)) + '%)',
+                                        fillStyle: data.datasets[0].backgroundColor[i],
+                                        hidden: false,
+                                        index: i,
+                                        pointStyle: 'circle'
+                                    }));
+                                }
                             }
                         }
                     }

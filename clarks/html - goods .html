@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="庫存盤點儀表板 - Clarks 商品庫存管理系統">
-    <title>庫存盤點儀表板 | Clarks</title>
+    <meta name="description" content="庫存盤點儀表板 - Clarks	 商品庫存管理系統">
+    <title>庫存盤點儀表板 | Clarks	</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -32,35 +32,48 @@
             font-family: 'Microsoft JhengHei', 'Helvetica Neue', Arial, sans-serif;
             background-color: var(--bg-light);
             color: var(--text-dark);
-            line-height: 1.6;
+            line-height: 1.8;
+            letter-spacing: 0.2px;
         }
 
         /* Header */
         .header {
             background: var(--bg-white);
-            padding: 30px 40px;
-            border-bottom: 2px solid var(--primary-color);
+            padding: 25px 40px;
+            border-bottom: 3px solid var(--primary-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .header h1 {
-            font-size: 28px;
+            font-size: 36px;
+            font-weight: 600;
             color: var(--primary-color);
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            line-height: 1.4;
+        }
+
+        .header h1 img {
+            height: 50px;
+            vertical-align: middle;
+            mix-blend-mode: multiply;
+            background: transparent;
         }
 
         .header-desc {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--text-gray);
+            font-weight: 500;
+            margin-bottom: 6px;
         }
 
         /* Main Container */
         .container {
             display: flex;
-            gap: 0;
-            margin: 20px 40px;
+            gap: 20px;
+            margin: 30px 40px;
         }
 
         /* Sidebar */
@@ -70,6 +83,7 @@
             border: 1px solid var(--border-color);
             border-radius: 8px;
             overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
         }
 
         .sidebar-section {
@@ -269,22 +283,25 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 13px;
+            line-height: 1.6;
         }
 
         thead {
-            background: var(--bg-light);
+            background: linear-gradient(135deg, #f5f1ed 0%, #f8f5f1 100%);
             border-top: 2px solid var(--border-color);
             border-bottom: 2px solid var(--border-color);
         }
 
         th {
-            padding: 12px;
+            padding: 14px 12px;
             text-align: left;
-            font-weight: bold;
+            font-weight: 600;
             color: var(--text-dark);
             border-right: 1px solid var(--border-color);
             cursor: pointer;
             user-select: none;
+            white-space: nowrap;
+            transition: background 0.2s;
         }
 
         th:last-child {
@@ -296,17 +313,22 @@
         }
 
         td {
-            padding: 12px;
+            padding: 14px 12px;
             border-bottom: 1px solid var(--border-color);
             border-right: 1px solid var(--border-color);
+            line-height: 1.5;
         }
 
         td:last-child {
             border-right: none;
         }
 
+        tbody tr {
+            transition: background 0.15s;
+        }
+
         tbody tr:hover {
-            background: #faf8f5;
+            background: #fffaf6;
         }
 
         tbody tr:nth-child(even) {
@@ -343,34 +365,45 @@
         .kpi-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 20px;
+            margin-bottom: 30px;
         }
 
         .kpi-card {
-            background: var(--bg-light);
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid var(--primary-color);
+            background: linear-gradient(135deg, #fafaf8 0%, #f5f1ed 100%);
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 5px solid var(--primary-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
         }
 
         .kpi-card h4 {
             font-size: 12px;
             color: var(--text-gray);
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.6px;
         }
 
         .kpi-card .value {
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 32px;
+            font-weight: 700;
             color: var(--primary-color);
+            line-height: 1.2;
+            margin-bottom: 6px;
         }
 
         .kpi-card .desc {
-            font-size: 12px;
+            font-size: 13px;
             color: var(--text-gray);
-            margin-top: 5px;
+            font-weight: 500;
         }
 
         /* Supplier Cards */
@@ -479,17 +512,19 @@
 
         /* Supply Chain Flow */
         .supply-flow {
-            background: var(--bg-light);
-            padding: 25px;
-            border-radius: 8px;
-            margin-bottom: 25px;
+            background: linear-gradient(135deg, #f5f1ed 0%, #f9f7f4 100%);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 35px;
+            border-left: 4px solid var(--primary-color);
         }
 
         .flow-title {
-            font-size: 14px;
-            font-weight: bold;
+            font-size: 16px;
+            font-weight: 600;
             color: var(--text-dark);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            line-height: 1.4;
         }
 
         .flow-container {
@@ -537,41 +572,75 @@
         /* Chart Container */
         .chart-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 20px;
-            margin-bottom: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .chart-row:first-of-type {
+            margin-top: 0;
         }
 
         .chart-card {
-            background: var(--bg-light);
-            padding: 20px;
-            border-radius: 8px;
+            background: var(--bg-white);
+            padding: 24px;
+            border-radius: 10px;
             border: 1px solid var(--border-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            min-height: 420px;
+        }
+
+        .chart-card:hover {
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
         }
 
         .chart-title {
-            font-size: 14px;
-            font-weight: bold;
+            font-size: 16px;
+            font-weight: 600;
             color: var(--text-dark);
-            margin-bottom: 15px;
+            margin-bottom: 24px;
+            line-height: 1.4;
+            flex-shrink: 0;
+            min-height: 32px;
+            display: flex;
+            align-items: center;
         }
 
         .chart-container {
             position: relative;
-            height: 280px;
+            height: 340px;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* Responsive */
+        @media (max-width: 1400px) {
+            .container {
+                margin: 25px 30px;
+            }
+            
+            .header {
+                padding: 22px 30px;
+            }
+        }
+
         @media (max-width: 1200px) {
             .container {
                 flex-direction: column;
+                margin: 20px 25px;
             }
 
             .sidebar {
                 width: 100%;
-                margin-bottom: 20px;
+                margin-bottom: 0;
                 display: grid;
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             }
 
             .content {
@@ -588,28 +657,44 @@
             }
 
             .chart-row {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             }
         }
 
         @media (max-width: 768px) {
             .header {
-                padding: 20px;
+                padding: 18px 20px;
+            }
+            
+            .header h1 {
+                font-size: 28px;
+                margin-bottom: 8px;
+            }
+            
+            .header-desc {
+                font-size: 14px;
             }
 
             .store-selector,
             .container {
-                margin: 20px;
+                margin: 15px 20px;
             }
 
             .sidebar {
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
                 width: 100%;
+                margin-bottom: 20px;
             }
 
             .tab-nav {
                 flex-wrap: wrap;
+                gap: 2px;
+            }
+            
+            .tab-btn {
+                padding: 12px 15px;
+                font-size: 12px;
             }
 
             .supplier-grid {
@@ -621,7 +706,93 @@
             }
 
             th, td {
-                padding: 8px;
+                padding: 10px 8px;
+            }
+            
+            .chart-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .chart-card {
+                min-height: auto;
+            }
+            
+            .chart-container {
+                height: 250px;
+            }
+            
+            .kpi-row {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            
+            .kpi-card {
+                padding: 15px;
+            }
+            
+            .kpi-card .value {
+                font-size: 24px;
+            }
+            
+            .action-buttons {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            
+            .btn {
+                padding: 9px 15px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 15px 15px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+                gap: 8px;
+            }
+            
+            .header h1 img {
+                height: 40px;
+            }
+
+            .container {
+                margin: 12px 15px;
+            }
+
+            .sidebar {
+                grid-template-columns: 1fr;
+            }
+            
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            table {
+                font-size: 11px;
+                min-width: 500px;
+            }
+            
+            th, td {
+                padding: 8px 6px;
+            }
+            
+            .kpi-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-container {
+                height: 220px;
+            }
+            
+            .btn {
+                padding: 8px 12px;
+                font-size: 11px;
             }
         }
     </style>
@@ -630,7 +801,7 @@
 
 <!-- Header -->
 <div class="header">
-    <h1><i class="fas fa-boxes"></i> 庫存盤點儀表板</h1>
+    <h1> <img src="./public/336-3365353_Clarks	-shoes-logo.png" alt="Clarks	 Logo"> 庫存盤點儀表板</h1>
     <div class="header-desc">管理各區域庫存，預估下週需求，並快速生成用具詳單。</div>
     <div style="font-size: 12px; color: #999; margin-top: 10px;">最後更新時間：<span id="updateTime"></span></div>
 </div>
@@ -643,8 +814,8 @@
     <div class="content">
         <!-- Tabs Navigation -->
         <div class="tab-nav">
-            <button class="tab-btn active" onclick="switchTab('inventory')">🔍 庫存位置</button>
-            <button class="tab-btn" onclick="switchTab('supply-chain')">🔗 供應鏈追蹤</button>
+            <button class="tab-btn active" onclick="switchTab('inventory', event)">🔍 庫存位置</button>
+            <button class="tab-btn" onclick="switchTab('supply-chain', event)">🔗 供應鏈追蹤</button>
         </div>
 
         <!-- Tab 1: Inventory -->
@@ -652,7 +823,7 @@
             <div class="info-header">
                 <div>
                     <div class="info-title">商品庫存簡覽</div>
-                    <div class="info-count">共 10 款商品 (Momo + 官網混合)</div>
+                    <div class="info-count">共 10 款商品 (Momo + Clarks	混合)</div>
                 </div>
                 <div style="display: flex; gap: 10px;">
                     <span class="shortage-badge">⚠️ 需補貨項目：5</span>
@@ -677,131 +848,131 @@
                             <th onclick="sortTable('inventoryTable', 3)">建議下單數量</th>
                             <th onclick="sortTable('inventoryTable', 4)">價格</th>
                             <th onclick="sortTable('inventoryTable', 5)">SKU</th>
-                            <th onclick="sortTable('inventoryTable', 6)">廠商</th>
-                            <th onclick="sortTable('inventoryTable', 7)">倉庫位置</th>
+                            <th onclick="sortTable('inventoryTable', 6)">門店位置</th>
+                            <th onclick="sortTable('inventoryTable', 7)">倉庫</th>
                             <th onclick="sortTable('inventoryTable', 8)">來源</th>
                             <th onclick="sortTable('inventoryTable', 9)">狀態</th>
                         </tr>
                     </thead>
                     <tbody id="inventoryBody">
                         <tr>
-                            <td>Clarks 空氣鞋- Craftravel Go全皮面輕盈休閒鞋(白色)</td>
+                            <td>Clarks	 空氣鞋- Craftravel Go全皮面輕盈休閒鞋(白色)</td>
                             <td>10</td>
                             <td>25</td>
                             <td><strong style="color: var(--warning-color);">15</strong></td>
                             <td>NT$7,880</td>
                             <td>CLM87320C</td>
-                            <td><strong>Golden Star Co.</strong></td>
                             <td>遠東SOGO台北忠孝館</td>
-                            <td>官網</td>
+                            <td><strong>桃園倉</strong></td>
+                            <td>Clarks	</td>
                             <td><span class="status-badge status-low">補貨</span></td>
                         </tr>
                         <tr>
-                            <td>Clarks 女鞋 Havisham Oak 絕對經典布洛克雕花牛津鞋</td>
+                            <td>Clarks	 女鞋 Havisham Oak 絕對經典布洛克雕花牛津鞋</td>
                             <td>5</td>
                             <td>15</td>
                             <td><strong style="color: var(--warning-color);">10</strong></td>
                             <td>NT$3,600</td>
                             <td>CLF78709C</td>
-                            <td><strong>Good Leather Shoes</strong></td>
                             <td>新光三越南西一館</td>
+                            <td><strong>林口倉</strong></td>
                             <td>Momo</td>
                             <td><span class="status-badge status-low">補貨</span></td>
                         </tr>
                         <tr>
-                            <td>Clarks 三瓣鞋2.0- Trigenic2 Tact手工縫線工藝設計輕盈寬楦休閒鞋 (黑色)</td>
+                            <td>Clarks	 三瓣鞋2.0- Trigenic2 Tact手工縫線工藝設計輕盈寬楦休閒鞋 (黑色)</td>
                             <td>8</td>
                             <td>20</td>
                             <td><strong style="color: var(--success-color);">12</strong></td>
                             <td>NT$7,580</td>
                             <td>CLM87635C</td>
-                            <td><strong>Golden Star Co.</strong></td>
                             <td>昂路名鞋館-明曜店</td>
-                            <td>官網</td>
+                            <td><strong>桃園倉</strong></td>
+                            <td>Clarks	</td>
                             <td><span class="status-badge status-stock">充足</span></td>
                         </tr>
                         <tr>
-                            <td>Clarks 男鞋 Clarkbay Go 愜意穿搭兩眼孔麂皮帆船休閒鞋</td>
+                            <td>Clarks	 男鞋 Clarkbay Go 愜意穿搭兩眼孔麂皮帆船休閒鞋</td>
                             <td>3</td>
                             <td>12</td>
                             <td><strong style="color: var(--danger-color);">9</strong></td>
                             <td>NT$1,980</td>
                             <td>CLM77499C</td>
-                            <td><strong>Golden Star Co.</strong></td>
                             <td>新竹遠東巨城</td>
+                            <td><strong>林口倉</strong></td>
                             <td>Momo</td>
                             <td><span class="status-badge status-critical">缺貨</span></td>
                         </tr>
                         <tr>
-                            <td>Clarks 女鞋 Quilto Step 柔軟舒適真皮流蘇莫卡辛鞋</td>
+                            <td>Clarks	 女鞋 Quilto Step 柔軟舒適真皮流蘇莫卡辛鞋</td>
                             <td>12</td>
                             <td>18</td>
                             <td><strong style="color: var(--success-color);">6</strong></td>
                             <td>NT$3,600</td>
                             <td>CLF80714C</td>
-                            <td><strong>Good Leather Shoes</strong></td>
                             <td>台中新光三越中港店</td>
+                            <td><strong>桃園倉</strong></td>
                             <td>Momo</td>
                             <td><span class="status-badge status-stock">充足</span></td>
                         </tr>
                         <tr>
-                            <td>Clarks 男鞋 Un Aldric On 全新升級寬楦優質便士樂福鞋</td>
+                            <td>Clarks	 男鞋 Un Aldric On 全新升級寬楦優質便士樂福鞋</td>
                             <td>6</td>
                             <td>16</td>
                             <td><strong style="color: var(--warning-color);">10</strong></td>
                             <td>NT$4,300</td>
                             <td>CLM78044D</td>
-                            <td><strong>Good Leather Shoes</strong></td>
                             <td>高雄大遠百</td>
+                            <td><strong>林口倉</strong></td>
                             <td>Momo</td>
                             <td><span class="status-badge status-low">補貨</span></td>
                         </tr>
                         <tr>
-                            <td>Clarks 空氣鞋-Craftravel Izy 潮流撞色可後踩兩穿德訓鞋 (海軍藍)</td>
+                            <td>Clarks	 空氣鞋-Craftravel Izy 潮流撞色可後踩兩穿德訓鞋 (海軍藍)</td>
                             <td>4</td>
                             <td>14</td>
                             <td><strong style="color: var(--danger-color);">10</strong></td>
                             <td>NT$7,880</td>
                             <td>CLM82541C</td>
-                            <td><strong>Vinh Thong Production</strong></td>
                             <td>遠東SOGO台北忠孝館</td>
-                            <td>官網</td>
+                            <td><strong>桃園倉</strong></td>
+                            <td>Clarks	</td>
                             <td><span class="status-badge status-critical">缺貨</span></td>
                         </tr>
                         <tr>
-                            <td>Clarks 女鞋 Craftravel Lit 簡約拚接年輕時尚潮流板鞋</td>
+                            <td>Clarks	 女鞋 Craftravel Lit 簡約拚接年輕時尚潮流板鞋</td>
                             <td>7</td>
                             <td>17</td>
                             <td><strong style="color: var(--warning-color);">10</strong></td>
                             <td>NT$4,300</td>
                             <td>CLF82544C</td>
-                            <td><strong>Golden Star Co.</strong></td>
                             <td>新光三越南西一館</td>
+                            <td><strong>林口倉</strong></td>
                             <td>Momo</td>
                             <td><span class="status-badge status-low">補貨</span></td>
                         </tr>
                         <tr>
-                            <td>Clarks 三瓣鞋2.0- Trigenic2 See. 三瓣鞋2.0 全皮面輕量涼鞋</td>
+                            <td>Clarks	 三瓣鞋2.0- Trigenic2 See. 三瓣鞋2.0 全皮面輕量涼鞋</td>
                             <td>9</td>
                             <td>19</td>
                             <td><strong style="color: var(--success-color);">10</strong></td>
                             <td>NT$3,600</td>
                             <td>CLF82571S</td>
-                            <td><strong>Good Leather Shoes</strong></td>
                             <td>昂路名鞋館-明曜店</td>
+                            <td><strong>桃園倉</strong></td>
                             <td>Momo</td>
                             <td><span class="status-badge status-stock">充足</span></td>
                         </tr>
                         <tr>
-                            <td>Clarks 微風跑- Zeph Run Joy全皮面厚底運動休閒鞋(黑色)</td>
+                            <td>Clarks	 微風跑- Zeph Run Joy全皮面厚底運動休閒鞋(黑色)</td>
                             <td>11</td>
                             <td>22</td>
                             <td><strong style="color: var(--success-color);">11</strong></td>
                             <td>NT$6,880</td>
                             <td>CLM84559C</td>
-                            <td><strong>Zhejiang Sunmans</strong></td>
                             <td>台中新光三越中港店</td>
-                            <td>官網</td>
+                            <td><strong>林口倉</strong></td>
+                            <td>Clarks	</td>
                             <td><span class="status-badge status-stock">充足</span></td>
                         </tr>
                     </tbody>
@@ -814,11 +985,11 @@
             </div>
 
             <div class="chart-row">
-                <!-- 圖表1: 廠商供應占比 -->
+                <!-- 圖表1: 倉庫庫存分布 -->
                 <div class="chart-card">
-                    <div class="chart-title">廠商供應占比</div>
+                    <div class="chart-title">倉庫庫存分布</div>
                     <div class="chart-container">
-                        <canvas id="supplierDistributionChart"></canvas>
+                        <canvas id="warehouseInventoryChart"></canvas>
                     </div>
                 </div>
 
@@ -829,18 +1000,26 @@
                         <canvas id="inventoryStatusChart"></canvas>
                     </div>
                 </div>
+
+                <!-- 圖表3: 倉庫需求量對比 -->
+                <div class="chart-card">
+                    <div class="chart-title">倉庫需求量對比</div>
+                    <div class="chart-container">
+                        <canvas id="warehouseDemandChart"></canvas>
+                    </div>
+                </div>
             </div>
 
             <div class="chart-row">
-                <!-- 圖表3: 銷售渠道對比 (Momo vs 官網) -->
+                <!-- 圖表4: 銷售通路對比 (Momo vs Clarks	) -->
                 <div class="chart-card">
-                    <div class="chart-title">銷售渠道對比</div>
+                    <div class="chart-title">銷售通路對比</div>
                     <div class="chart-container">
                         <canvas id="channelComparisonChart"></canvas>
                     </div>
                 </div>
 
-                <!-- 圖表4: 商品價格分布 -->
+                <!-- 圖表5: 商品價格分布 -->
                 <div class="chart-card">
                     <div class="chart-title">商品價格分布</div>
                     <div class="chart-container">
@@ -870,30 +1049,6 @@
                 <div class="flow-container">
                     <div class="flow-node">
                         <div class="flow-box">
-                            <div class="flow-icon">🏭</div>
-                            <div class="flow-text">上游廠商</div>
-                            <div style="font-size: 11px; color: var(--text-gray); margin-top: 5px;">越/中/印/柬</div>
-                        </div>
-                    </div>
-                    <div class="flow-arrow">→</div>
-                    <div class="flow-node">
-                        <div class="flow-box">
-                            <div class="flow-icon">✈️</div>
-                            <div class="flow-text">英國轉運</div>
-                            <div style="font-size: 11px; color: var(--text-gray); margin-top: 5px;">Somerset</div>
-                        </div>
-                    </div>
-                    <div class="flow-arrow">→</div>
-                    <div class="flow-node">
-                        <div class="flow-box">
-                            <div class="flow-icon">🌍</div>
-                            <div class="flow-text">美國中轉</div>
-                            <div style="font-size: 11px; color: var(--text-gray); margin-top: 5px;">Pennsylvania</div>
-                        </div>
-                    </div>
-                    <div class="flow-arrow">→</div>
-                    <div class="flow-node">
-                        <div class="flow-box">
                             <div class="flow-icon">🚢</div>
                             <div class="flow-text">台灣倉庫</div>
                             <div style="font-size: 11px; color: var(--text-gray); margin-top: 5px;">桃園/林口</div>
@@ -913,232 +1068,106 @@
             <!-- KPI卡片 -->
             <div class="kpi-row">
                 <div class="kpi-card">
-                    <h4>📦 在途庫存</h4>
-                    <div class="value">2,450</div>
-                    <div class="desc">件 (全球轉運中)</div>
+                    <h4>🏪 門市覆蓋</h4>
+                    <div class="value">24</div>
+                    <div class="desc">間零售門市</div>
                 </div>
                 <div class="kpi-card">
-                    <h4>🚚 預計到貨</h4>
-                    <div class="value">7</div>
-                    <div class="desc">天 (平均)</div>
+                    <h4>📦 保稅倉庫</h4>
+                    <div class="value">2</div>
+                    <div class="desc">處(桃園/林口)</div>
                 </div>
                 <div class="kpi-card">
-                    <h4>✅ 到貨率</h4>
-                    <div class="value" style="color: var(--success-color);">98%</div>
-                    <div class="desc">本月準時率</div>
+                    <h4>📈 月均營業額</h4>
+                    <div class="value" style="color: var(--success-color);">NT$2.8M</div>
+                    <div class="desc">全通路合計</div>
                 </div>
                 <div class="kpi-card">
-                    <h4>🏭 活躍廠商</h4>
-                    <div class="value">4</div>
-                    <div class="desc">家合作廠商</div>
+                    <h4>✅ 配送效率</h4>
+                    <div class="value">98%</div>
+                    <div class="desc">準時到貨率</div>
                 </div>
             </div>
 
-            <!-- 廠商卡片區塊 -->
-            <div style="margin-bottom: 25px;">
-                <div class="info-title" style="margin-bottom: 15px;">上游廠商管理</div>
-            </div>
-
-            <div class="supplier-grid">
-                <!-- Supplier 1: Golden Star -->
-                <div class="supplier-card">
-                    <div class="supplier-header">
-                        <div class="supplier-icon">🏭</div>
-                        <div class="supplier-title">
-                            <div class="supplier-name">Golden Star Co., Ltd.</div>
-                            <div class="supplier-location">越南河內</div>
-                        </div>
-                        <div class="supplier-status">🟢 活躍</div>
-                    </div>
-
-                    <div class="supplier-info">
-                        <div class="info-item">
-                            <div class="info-label">工廠數</div>
-                            <div class="info-value">13-20</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">合作狀態</div>
-                            <div class="info-value">主要基地</div>
-                        </div>
-                    </div>
-
-                    <div class="products-list">
-                        <strong>主要商品：</strong>
-                        運動鞋、登山鞋、休閒鞋
-                    </div>
-                </div>
-
-                <!-- Supplier 2: Vinh Thong -->
-                <div class="supplier-card">
-                    <div class="supplier-header">
-                        <div class="supplier-icon">🏭</div>
-                        <div class="supplier-title">
-                            <div class="supplier-name">Vinh Thong Production</div>
-                            <div class="supplier-location">越南胡志明市</div>
-                        </div>
-                        <div class="supplier-status">🟢 活躍</div>
-                    </div>
-
-                    <div class="supplier-info">
-                        <div class="info-item">
-                            <div class="info-label">工廠數</div>
-                            <div class="info-value">15+</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">合作狀態</div>
-                            <div class="info-value">次要基地</div>
-                        </div>
-                    </div>
-
-                    <div class="products-list">
-                        <strong>主要商品：</strong>
-                        兒童鞋、季節限定款、特色鞋型
-                    </div>
-                </div>
-
-                <!-- Supplier 3: Good Leather -->
-                <div class="supplier-card">
-                    <div class="supplier-header">
-                        <div class="supplier-icon">🏭</div>
-                        <div class="supplier-title">
-                            <div class="supplier-name">Good Leather Shoes Pvt Ltd</div>
-                            <div class="supplier-location">印度班加羅爾</div>
-                        </div>
-                        <div class="supplier-status">🟢 活躍</div>
-                    </div>
-
-                    <div class="supplier-info">
-                        <div class="info-item">
-                            <div class="info-label">工廠數</div>
-                            <div class="info-value">12</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">專長</div>
-                            <div class="info-value">皮革處理</div>
-                        </div>
-                    </div>
-
-                    <div class="products-list">
-                        <strong>主要商品：</strong>
-                        皮革鞋、正裝鞋、高端鞋款
-                    </div>
-                </div>
-
-                <!-- Supplier 4: Zhejiang Sunmans -->
-                <div class="supplier-card">
-                    <div class="supplier-header">
-                        <div class="supplier-icon">🏭</div>
-                        <div class="supplier-title">
-                            <div class="supplier-name">Zhejiang Sunmans Knitting Co., Ltd</div>
-                            <div class="supplier-location">中國杭州</div>
-                        </div>
-                        <div class="supplier-status">🟢 活躍</div>
-                    </div>
-
-                    <div class="supplier-info">
-                        <div class="info-item">
-                            <div class="info-label">工廠數</div>
-                            <div class="info-value">19</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">專長</div>
-                            <div class="info-value">針織部件</div>
-                        </div>
-                    </div>
-
-                    <div class="products-list">
-                        <strong>主要商品：</strong>
-                        鞋套部件、內墊、襯墊材料
-                    </div>
-                </div>
-            </div>
-
-            <!-- 倉庫信息表格 -->
-            <div style="margin-top: 30px;">
-                <div class="info-title" style="margin-bottom: 15px;">全球倉庫分布</div>
+            <!-- 庫存分配表 -->
+            <div style="margin-top: 30px; margin-bottom: 25px;">
+                <div class="info-title" style="margin-bottom: 18px;">📊 門市與倉庫分布</div>
             </div>
 
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <th>倉庫名稱</th>
+                            <th>名稱</th>
                             <th>位置</th>
-                            <th>功能</th>
-                            <th>主要角色</th>
+                            <th>類型</th>
+                            <th>主要功能</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>Westway Distribution Centre</strong></td>
-                            <td>Somerset, UK</td>
-                            <td>全球轉運</td>
-                            <td>🌍 核心轉運樞紐</td>
+                            <td><strong>桃園保稅倉庫</strong></td>
+                            <td>桃園市中壢區</td>
+                            <td>🏭 倉庫</td>
+                            <td>總部配送中心</td>
                         </tr>
                         <tr>
-                            <td><strong>Hanover Distribution Center</strong></td>
-                            <td>Pennsylvania, USA</td>
-                            <td>北美轉運</td>
-                            <td>🌎 美洲分發中心</td>
-                        </tr>
-                        <tr>
-                            <td><strong>台灣物流中心</strong></td>
-                            <td>桃園/林口 (保稅倉)</td>
-                            <td>亞洲配送</td>
-                            <td>🇹🇼 台灣區域樞紐</td>
+                            <td><strong>林口保稅倉庫</strong></td>
+                            <td>新北市林口區</td>
+                            <td>🏭 倉庫</td>
+                            <td>北區備貨中心</td>
                         </tr>
                         <tr>
                             <td><strong>【品牌直營】遠東SOGO台北忠孝館</strong></td>
-                            <td>台北市大安區孝東路四段45號6樓</td>
-                            <td>門市庫存</td>
+                            <td>台北市大安區</td>
                             <td>🏪 直營門市</td>
+                            <td>門市庫存</td>
                         </tr>
                         <tr>
                             <td><strong>【經銷】昂路名鞋館-明曜店</strong></td>
-                            <td>台北市大安區忠孝東路4段200號7樓</td>
-                            <td>門市庫存</td>
+                            <td>台北市大安區</td>
                             <td>🏪 經銷門市</td>
+                            <td>門市庫存</td>
                         </tr>
                         <tr>
                             <td><strong>【品牌直營】新光三越南西一館</strong></td>
-                            <td>台北市中山區南京東路3段200號12樓</td>
-                            <td>門市庫存</td>
+                            <td>台北市中山區</td>
                             <td>🏪 直營門市</td>
+                            <td>門市庫存</td>
                         </tr>
                         <tr>
                             <td><strong>【品牌直營】新竹遠東巨城</strong></td>
-                            <td>新竹市東區中央路1號9樓</td>
-                            <td>門市庫存</td>
+                            <td>新竹市東區</td>
                             <td>🏪 直營門市</td>
+                            <td>門市庫存</td>
                         </tr>
                         <tr>
                             <td><strong>【品牌直營】台中新光三越中港店</strong></td>
-                            <td>台中市西屯區中港路一段123號8樓</td>
-                            <td>門市庫存</td>
+                            <td>台中市西屯區</td>
                             <td>🏪 直營門市</td>
+                            <td>門市庫存</td>
                         </tr>
                         <tr>
                             <td><strong>【品牌直營】高雄大遠百</strong></td>
-                            <td>高雄市前鎮區中山四路163號8樓</td>
-                            <td>門市庫存</td>
+                            <td>高雄市前鎮區</td>
                             <td>🏪 直營門市</td>
+                            <td>門市庫存</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- 廠商供應占比圖表 -->
             <div class="chart-row" style="margin-top: 30px;">
                 <div class="chart-card">
-                    <div class="chart-title">廠商供應占比</div>
+                    <div class="chart-title">倉庫與門市分佈</div>
                     <div class="chart-container">
-                        <canvas id="supplierChart"></canvas>
+                        <canvas id="warehouseStoreChart"></canvas>
                     </div>
                 </div>
                 <div class="chart-card">
-                    <div class="chart-title">庫存來源堆疊圖 (4週趨勢)</div>
+                    <div class="chart-title">門市庫存占比 (按地區)</div>
                     <div class="chart-container">
-                        <canvas id="sourceChart"></canvas>
+                        <canvas id="storeDistributionChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -1155,46 +1184,61 @@
 <script>
     // ========== 初始化頁面時間 ==========
     function initializeTime() {
-        const now = new Date();
-        const timeString = now.toLocaleString('zh-TW', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false
-        });
-        document.getElementById('updateTime').textContent = timeString;
+        try {
+            const now = new Date();
+            const timeString = now.toLocaleString('zh-TW', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            const updateTimeElement = document.getElementById('updateTime');
+            if (updateTimeElement) {
+                updateTimeElement.textContent = timeString;
+            }
+        } catch (error) {
+            console.error('Error initializing time:', error);
+        }
     }
     
     // 頁面載入時初始化時間
     window.addEventListener('load', initializeTime);
-    initializeTime();
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeTime);
+    } else {
+        initializeTime();
+    }
 
     // ========== Tab切換 ==========
-    function switchTab(tabName) {
+    function switchTab(tabName, event) {
         const tabs = document.querySelectorAll('.tab-content');
         const buttons = document.querySelectorAll('.tab-btn');
         
         tabs.forEach(tab => tab.classList.remove('active'));
         buttons.forEach(btn => btn.classList.remove('active'));
         
-        document.getElementById(tabName).classList.add('active');
-        event.target.classList.add('active');
+        const targetTab = document.getElementById(tabName);
+        if (!targetTab) {
+            console.warn(`Tab '${tabName}' not found`);
+            return;
+        }
+        targetTab.classList.add('active');
+        
+        if (event && event.target) {
+            event.target.classList.add('active');
+        }
 
         // 更新圖表
         if (tabName === 'inventory') {
             setTimeout(() => {
-                drawSupplierDistributionChart();
+                drawWarehouseInventoryChart();
                 drawInventoryStatusChart();
+                drawWarehouseDemandChart();
                 drawChannelComparisonChart();
                 drawPriceDistributionChart();
-            }, 100);
-        } else if (tabName === 'overview') {
-            setTimeout(() => {
-                drawLocationChart();
-                drawStatusChart();
             }, 100);
         } else if (tabName === 'supply-chain') {
             setTimeout(() => {
@@ -1206,30 +1250,74 @@
 
     // ========== 庫存位置選擇 ==========
     function selectLocation(location) {
-        const items = document.querySelectorAll('.sidebar-item');
-        items.forEach(item => item.classList.remove('active'));
-        event.target.classList.add('active');
+        try {
+            const items = document.querySelectorAll('.sidebar-item');
+            items.forEach(item => item.classList.remove('active'));
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+        } catch (error) {
+            console.error('Error selecting location:', error);
+        }
     }
 
     // ========== 分店切換 ==========
     function switchStore() {
-        const store = document.getElementById('storeSelect').value;
-        console.log('切換到分店:', store);
+        try {
+            const storeSelect = document.getElementById('storeSelect');
+            if (storeSelect) {
+                const store = storeSelect.value;
+                console.log('切換到分店:', store);
+            }
+        } catch (error) {
+            console.error('Error switching store:', error);
+        }
     }
 
     // ========== 表格排序 ==========
     function sortTable(tableId, columnIndex) {
-        const table = document.getElementById(tableId);
-        const rows = Array.from(table.querySelectorAll('tbody tr'));
-        
-        rows.sort((a, b) => {
-            const aVal = a.cells[columnIndex].textContent;
-            const bVal = b.cells[columnIndex].textContent;
-            return aVal.localeCompare(bVal);
-        });
+        try {
+            const table = document.getElementById(tableId);
+            if (!table) {
+                console.warn(`Table '${tableId}' not found`);
+                return;
+            }
+            
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+            
+            // 追蹤排序方向（升序/降序）
+            const isCurrentlySorted = table.dataset.sortColumn === String(columnIndex);
+            const isAscending = !isCurrentlySorted || table.dataset.sortDirection === 'desc';
+            
+            rows.sort((a, b) => {
+                let aVal = a.cells[columnIndex].textContent.trim();
+                let bVal = b.cells[columnIndex].textContent.trim();
+                
+                // 嘗試轉換為數字
+                const aNum = parseFloat(aVal.replace(/[^\d.-]/g, ''));
+                const bNum = parseFloat(bVal.replace(/[^\d.-]/g, ''));
+                
+                // 如果都是有效的數字，進行數字比較
+                if (!isNaN(aNum) && !isNaN(bNum)) {
+                    return isAscending ? aNum - bNum : bNum - aNum;
+                }
+                
+                // 否則進行字符串比較
+                const comparison = aVal.localeCompare(bVal, 'zh-TW');
+                return isAscending ? comparison : -comparison;
+            });
 
-        const tbody = table.querySelector('tbody');
-        rows.forEach(row => tbody.appendChild(row));
+            const tbody = table.querySelector('tbody');
+            if (tbody) {
+                rows.forEach(row => tbody.appendChild(row));
+            }
+            
+            // 儲存排序狀態
+            table.dataset.sortColumn = columnIndex;
+            table.dataset.sortDirection = isAscending ? 'asc' : 'desc';
+        } catch (error) {
+            console.error('Error sorting table:', error);
+        }
     }
 
     // ========== 圖表1: 庫存位置分布 ==========
@@ -1252,7 +1340,22 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { position: 'bottom' }
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            generateLabels: function(chart) {
+                                const data = chart.data;
+                                const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                return data.labels.map((label, i) => ({
+                                    text: label + ' (' + ((data.datasets[0].data[i] / total * 100).toFixed(1)) + '%)',
+                                    fillStyle: data.datasets[0].backgroundColor[i],
+                                    hidden: false,
+                                    index: i,
+                                    pointStyle: 'circle'
+                                }));
+                            }
+                        }
+                    }
                 }
             }
         });
@@ -1370,7 +1473,7 @@
         const sku = prompt('SKU 碼：');
         const supplier = prompt('廠商名稱：');
         const location = prompt('倉庫位置 (台灣桃園倉/台灣林口倉/架上)：');
-        const source = prompt('來源 (Momo/官網)：');
+        const source = prompt('來源 (Momo/Clarks	)：');
 
         if (productName && inventory && demand && recommended && price && sku && supplier && location && source) {
             const table = document.getElementById('inventoryTable');
@@ -1600,192 +1703,347 @@
         }
     }
 
-    // ========== 圖表3: 廠商供應占比 ==========
+    // ========== 圖表3: 倉庫與門市分布 ==========
     function drawSupplierChart() {
-        const ctx = document.getElementById('supplierChart');
-        if (!ctx) return;
+        try {
+            const ctx = document.getElementById('warehouseStoreChart');
+            if (!ctx) return;
 
-        new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Golden Star Co.', 'Good Leather Shoes', 'Zhejiang Sunmans', 'Vinh Thong'],
-                datasets: [{
-                    data: [30, 25, 25, 20],
-                    backgroundColor: ['#FF6B6B', '#4ECDC4', '#D4A574', '#FFD93D'],
-                    borderColor: '#ffffff',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'bottom' }
-                }
+            if (window.warehouseStoreChartInstance) {
+                window.warehouseStoreChartInstance.destroy();
             }
-        });
-    }
 
-    // ========== 圖表4: 庫存來源堆疊圖 ==========
-    function drawSourceChart() {
-        const ctx = document.getElementById('sourceChart');
-        if (!ctx) return;
-
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['第1週', '第2週', '第3週', '第4週'],
-                datasets: [
-                    {
-                        label: 'Golden Star Co.',
-                        data: [800, 950, 1100, 950],
-                        backgroundColor: '#FF6B6B'
-                    },
-                    {
-                        label: 'Good Leather Shoes',
-                        data: [600, 700, 750, 680],
-                        backgroundColor: '#4ECDC4'
-                    },
-                    {
-                        label: 'Zhejiang Sunmans',
-                        data: [400, 500, 550, 500],
-                        backgroundColor: '#D4A574'
-                    },
-                    {
-                        label: 'Vinh Thong',
-                        data: [300, 400, 450, 400],
-                        backgroundColor: '#FFD93D'
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: { stacked: true },
-                    y: { stacked: true }
+            window.warehouseStoreChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['保稅倉庫', '零售門市'],
+                    datasets: [{
+                        data: [2, 24],
+                        backgroundColor: ['#FF6B6B', '#4ECDC4'],
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
                 },
-                plugins: {
-                    legend: { position: 'bottom' }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed + ' 處';
+                                }
+                            }
+                        }
+                    }
                 }
-            }
-        });
+            });
+        } catch (error) {
+            console.error('Error drawing warehouse/store chart:', error);
+        }
     }
 
-    // ========== 圖表4: 廠商供應占比 (庫存頁面) ==========
-    function drawSupplierDistributionChart() {
-        const ctx = document.getElementById('supplierDistributionChart');
-        if (!ctx) return;
+    // ========== 圖表4: 門市庫存占比 ==========
+    function drawSourceChart() {
+        try {
+            const ctx = document.getElementById('storeDistributionChart');
+            if (!ctx) return;
 
-        new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Golden Star Co.', 'Good Leather Shoes', 'Zhejiang Sunmans', 'Vinh Thong Production'],
-                datasets: [{
-                    data: [4, 3, 1, 2],
-                    backgroundColor: ['#FF6B6B', '#4ECDC4', '#D4A574', '#FFD93D'],
-                    borderColor: '#ffffff',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'bottom' }
-                }
+            if (window.storeDistributionChartInstance) {
+                window.storeDistributionChartInstance.destroy();
             }
-        });
+
+            window.storeDistributionChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['台北', '新竹', '台中', '高雄'],
+                    datasets: [
+                        {
+                            label: '直營門市',
+                            data: [3, 1, 1, 1],
+                            backgroundColor: '#4ECDC4'
+                        },
+                        {
+                            label: '經銷門市',
+                            data: [1, 0, 0, 0],
+                            backgroundColor: '#FFD93D'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { stacked: false },
+                        y: { 
+                            stacked: false,
+                            ticks: {
+                                callback: function(value) {
+                                    return Math.floor(value);
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y + ' 間';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Error drawing store distribution chart:', error);
+        }
+    }
+
+    // ========== 圖表4: 倉庫庫存分布 (庫存頁面) ==========
+    function drawWarehouseInventoryChart() {
+        try {
+            const ctx = document.getElementById('warehouseInventoryChart');
+            if (!ctx) return;
+
+            if (window.warehouseInventoryChartInstance) {
+                window.warehouseInventoryChartInstance.destroy();
+            }
+
+            window.warehouseInventoryChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['桃園倉', '林口倉'],
+                    datasets: [{
+                        data: [52, 48],
+                        backgroundColor: ['#FF6B6B', '#4ECDC4'],
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                    return context.label + ': ' + percentage + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Error drawing warehouse inventory chart:', error);
+        }
     }
 
     // ========== 圖表5: 庫存狀態統計 (庫存頁面) ==========
     function drawInventoryStatusChart() {
-        const ctx = document.getElementById('inventoryStatusChart');
-        if (!ctx) return;
+        try {
+            const ctx = document.getElementById('inventoryStatusChart');
+            if (!ctx) return;
 
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['充足', '補貨', '缺貨'],
-                datasets: [{
-                    label: '商品數量',
-                    data: [5, 4, 1],
-                    backgroundColor: ['#51CF66', '#FFA94D', '#FF6B6B'],
-                    borderRadius: 5,
-                    borderSkipped: false
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false }
-                }
+            if (window.inventoryStatusChartInstance) {
+                window.inventoryStatusChartInstance.destroy();
             }
-        });
+
+            window.inventoryStatusChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['充足', '補貨', '缺貨'],
+                    datasets: [{
+                        label: '商品數量',
+                        data: [5, 4, 1],
+                        backgroundColor: ['#51CF66', '#FFA94D', '#FF6B6B'],
+                        borderRadius: 5,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Error drawing inventory status chart:', error);
+        }
     }
 
-    // ========== 圖表6: 銷售渠道對比 ==========
-    function drawChannelComparisonChart() {
-        const ctx = document.getElementById('channelComparisonChart');
-        if (!ctx) return;
+    // ========== 圖表: 倉庫需求量對比 ==========
+    function drawWarehouseDemandChart() {
+        try {
+            const ctx = document.getElementById('warehouseDemandChart');
+            if (!ctx) return;
 
-        new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['官網', 'Momo'],
-                datasets: [{
-                    data: [5, 5],
-                    backgroundColor: ['#4ECDC4', '#FF6B6B'],
-                    borderColor: '#ffffff',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'bottom' }
-                }
+            // 銷毀舊的圖表實例
+            if (window.warehouseDemandChartInstance) {
+                window.warehouseDemandChartInstance.destroy();
             }
-        });
+
+            window.warehouseDemandChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['桃園倉', '林口倉'],
+                    datasets: [
+                        {
+                            label: '本週庫存',
+                            data: [43, 32],
+                            backgroundColor: '#4ECDC4',
+                            borderRadius: 5,
+                            borderSkipped: false
+                        },
+                        {
+                            label: '建議下單',
+                            data: [53, 50],
+                            backgroundColor: '#FFD93D',
+                            borderRadius: 5,
+                            borderSkipped: false
+                        },
+                        {
+                            label: '下週需求量',
+                            data: [96, 82],
+                            backgroundColor: '#FF6B6B',
+                            borderRadius: 5,
+                            borderSkipped: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) {
+                                    return Math.floor(value);
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: true, position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y + '件';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Error drawing warehouse demand chart:', error);
+        }
+    }
+
+    // ========== 圖表6: 銷售通路對比 ==========
+    function drawChannelComparisonChart() {
+        try {
+            const ctx = document.getElementById('channelComparisonChart');
+            if (!ctx) return;
+
+            if (window.channelComparisonChartInstance) {
+                window.channelComparisonChartInstance.destroy();
+            }
+
+            window.channelComparisonChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Clarks	', 'Momo'],
+                    datasets: [{
+                        data: [5, 5],
+                        backgroundColor: ['#4ECDC4', '#FF6B6B'],
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                generateLabels: function(chart) {
+                                    const data = chart.data;
+                                    const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                    return data.labels.map((label, i) => ({
+                                        text: label + ' (' + ((data.datasets[0].data[i] / total * 100).toFixed(1)) + '%)',
+                                        fillStyle: data.datasets[0].backgroundColor[i],
+                                        hidden: false,
+                                        index: i,
+                                        pointStyle: 'circle'
+                                    }));
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Error drawing channel comparison chart:', error);
+        }
     }
 
     // ========== 圖表7: 商品價格分布 ==========
     function drawPriceDistributionChart() {
-        const ctx = document.getElementById('priceDistributionChart');
-        if (!ctx) return;
+        try {
+            const ctx = document.getElementById('priceDistributionChart');
+            if (!ctx) return;
 
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['NT$1,980-3,999', 'NT$4,000-5,999', 'NT$6,000-8,000'],
-                datasets: [{
-                    label: '商品數',
-                    data: [3, 3, 4],
-                    backgroundColor: ['#FFD93D', '#A8E6CF', '#FF8B94'],
-                    borderRadius: 5,
-                    borderSkipped: false
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false }
-                }
+            if (window.priceDistributionChartInstance) {
+                window.priceDistributionChartInstance.destroy();
             }
-        });
+
+            window.priceDistributionChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['NT$1,980-3,999', 'NT$4,000-5,999', 'NT$6,000-8,000'],
+                    datasets: [{
+                        label: '商品數',
+                        data: [3, 3, 4],
+                        backgroundColor: ['#FFD93D', '#A8E6CF', '#FF8B94'],
+                        borderRadius: 5,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Error drawing price distribution chart:', error);
+        }
     }
 
     // ========== 初始化 ==========
     document.addEventListener('DOMContentLoaded', () => {
         console.log('庫存盤點儀表板已加載');
         // 初始化庫存頁面圖表
-        drawSupplierDistributionChart();
+        drawWarehouseInventoryChart();
         drawInventoryStatusChart();
+        drawWarehouseDemandChart();
         drawChannelComparisonChart();
         drawPriceDistributionChart();
+        // 初始化供應鏈圖表
+        drawSupplierChart();
+        drawSourceChart();
     });
 </script>
 
