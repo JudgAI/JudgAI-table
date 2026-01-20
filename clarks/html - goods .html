@@ -1399,6 +1399,16 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 indexAxis: 'y',
+                scales: {
+                    x: {
+                        ticks: {
+                            callback: function(value) {
+                                return Math.floor(value);
+                            },
+                            stepSize: 1
+                        }
+                    }
+                },
                 plugins: {
                     legend: { display: false }
                 }
@@ -1798,7 +1808,8 @@
                             ticks: {
                                 callback: function(value) {
                                     return Math.floor(value);
-                                }
+                                },
+                                stepSize: 1
                             }
                         }
                     },
@@ -1887,6 +1898,16 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) {
+                                    return Math.floor(value);
+                                },
+                                stepSize: 1
+                            }
+                        }
+                    },
                     plugins: {
                         legend: { display: false }
                     }
@@ -1944,7 +1965,8 @@
                             ticks: {
                                 callback: function(value) {
                                     return Math.floor(value);
-                                }
+                                },
+                                stepSize: 1
                             }
                         }
                     },
@@ -2039,6 +2061,16 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) {
+                                    return Math.floor(value);
+                                },
+                                stepSize: 1
+                            }
+                        }
+                    },
                     plugins: {
                         legend: { display: false }
                     }
