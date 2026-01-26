@@ -517,7 +517,7 @@
 
 <header>
     <div class="brand">
-        <h1><i class="fas fa-chart-bar"></i> <img src="./public/336-3365353_clarks-shoes-logo.png" alt="Clarks Logo" style="height: 50px; vertical-align: middle; margin: 0 10px; filter: drop-shadow(0 0 2px rgba(0,0,0,0.2));"> 電商訂單匯總 Demo</h1>
+        <h1><img src="./public/336-3365353_clarks-shoes-logo.png" alt="Clarks Logo" style="height: 50px; vertical-align: middle; margin: 0 10px; filter: drop-shadow(0 0 2px rgba(0,0,0,0.2));"> 電商訂單匯總 Demo</h1>
         <div class="brand-sub">🎯 商品通路銷售數據戰情室</div>
         <div style="font-size: 12px; color: #999; margin-top: 10px;">最後更新時間：<span id="updateTime"></span></div>
     </div>
@@ -3099,6 +3099,12 @@
         const stats = calculateKPIStats(startDate, endDate);
         updateKPIDisplays(stats);
         
+        // ========== 【新增】篩選後自動刷新圖表 ==========
+        setTimeout(() => {
+            updateAllCharts();
+            console.log('✅ 篩選完成 - 圖表已自動更新');
+        }, 300);
+        
         console.log(`日期範圍已更新: ${displayText}`, stats);
     }
 
@@ -3375,12 +3381,14 @@
 
             if (window.channelPieChartInstance) window.channelPieChartInstance.destroy();
 
-            // 动态计算通路订单数
+            // 动态计算通路订单数（仅计算可见行）
             const momoTable = document.getElementById('multiverceTable');
             const clarksTable = document.getElementById('carrefourTable');
             
-            const momoCount = momoTable?.querySelectorAll('tbody tr').length || 0;
-            const clarksCount = clarksTable?.querySelectorAll('tbody tr').length || 0;
+            const momoCount = Array.from(momoTable?.querySelectorAll('tbody tr') || [])
+                .filter(row => row.style.display !== 'none').length || 0;
+            const clarksCount = Array.from(clarksTable?.querySelectorAll('tbody tr') || [])
+                .filter(row => row.style.display !== 'none').length || 0;
             const channelData = [momoCount, clarksCount];
             const total = channelData.reduce((a, b) => a + b, 0);
             const percentages = total > 0 ? channelData.map(d => ((d / total) * 100).toFixed(1)) : [0, 0];
@@ -3464,19 +3472,21 @@
 
         if (sizesChart) sizesChart.destroy();
 
-        // 动态统计商品价格销售排名
+        // 动态统计商品价格销售排名（仅计算可见行）
         const momoTable = document.getElementById('multiverceTable');
         const clarksTable = document.getElementById('carrefourTable');
         const productCount = {};
         
         const processProducts = (table) => {
             if (!table) return;
-            table.querySelectorAll('tbody tr').forEach(row => {
-                const productCell = row.cells[7]?.textContent.trim();
-                if (productCell) {
-                    productCount[productCell] = (productCount[productCell] || 0) + 1;
-                }
-            });
+            Array.from(table.querySelectorAll('tbody tr'))
+                .filter(row => row.style.display !== 'none')
+                .forEach(row => {
+                    const productCell = row.cells[7]?.textContent.trim();
+                    if (productCell) {
+                        productCount[productCell] = (productCount[productCell] || 0) + 1;
+                    }
+                });
         };
         
         processProducts(momoTable);
@@ -3935,7 +3945,7 @@
 
         if (comparisonRevenueChart) comparisonRevenueChart.destroy();
 
-        // 动态计算总销售额
+        // 动态计算总销售额（仅计算可见行）
         const momoTable = document.getElementById('multiverceTable');
         const clarksTable = document.getElementById('carrefourTable');
         
@@ -3943,21 +3953,25 @@
         let clarksTotal = 0;
         
         if (momoTable) {
-            momoTable.querySelectorAll('tbody tr').forEach(row => {
-                const amountCell = row.cells[11]?.textContent.trim();
-                if (amountCell) {
-                    momoTotal += parseInt(amountCell.replace(/[^\d]/g, '')) || 0;
-                }
-            });
+            Array.from(momoTable.querySelectorAll('tbody tr'))
+                .filter(row => row.style.display !== 'none')
+                .forEach(row => {
+                    const amountCell = row.cells[11]?.textContent.trim();
+                    if (amountCell) {
+                        momoTotal += parseInt(amountCell.replace(/[^\d]/g, '')) || 0;
+                    }
+                });
         }
         
         if (clarksTable) {
-            clarksTable.querySelectorAll('tbody tr').forEach(row => {
-                const amountCell = row.cells[11]?.textContent.trim();
-                if (amountCell) {
-                    clarksTotal += parseInt(amountCell.replace(/[^\d]/g, '')) || 0;
-                }
-            });
+            Array.from(clarksTable.querySelectorAll('tbody tr'))
+                .filter(row => row.style.display !== 'none')
+                .forEach(row => {
+                    const amountCell = row.cells[11]?.textContent.trim();
+                    if (amountCell) {
+                        clarksTotal += parseInt(amountCell.replace(/[^\d]/g, '')) || 0;
+                    }
+                });
         }
 
         comparisonRevenueChart = new Chart(ctx, {
@@ -4027,7 +4041,7 @@
 
         if (comparisonStatusChart) comparisonStatusChart.destroy();
 
-        // 动态计算已完成订单
+        // 动态计算已完成订单（仅计算可见行）
         const momoTable = document.getElementById('multiverceTable');
         const clarksTable = document.getElementById('carrefourTable');
         
@@ -4035,21 +4049,25 @@
         let clarksCompleted = 0;
         
         if (momoTable) {
-            momoTable.querySelectorAll('tbody tr').forEach(row => {
-                const statusCell = row.cells[16]?.textContent.trim();
-                if (statusCell === '已配送') {
-                    momoCompleted++;
-                }
-            });
+            Array.from(momoTable.querySelectorAll('tbody tr'))
+                .filter(row => row.style.display !== 'none')
+                .forEach(row => {
+                    const statusCell = row.cells[16]?.textContent.trim();
+                    if (statusCell === '已配送') {
+                        momoCompleted++;
+                    }
+                });
         }
         
         if (clarksTable) {
-            clarksTable.querySelectorAll('tbody tr').forEach(row => {
-                const statusCell = row.cells[16]?.textContent.trim();
-                if (statusCell === '已配送') {
-                    clarksCompleted++;
-                }
-            });
+            Array.from(clarksTable.querySelectorAll('tbody tr'))
+                .filter(row => row.style.display !== 'none')
+                .forEach(row => {
+                    const statusCell = row.cells[16]?.textContent.trim();
+                    if (statusCell === '已配送') {
+                        clarksCompleted++;
+                    }
+                });
         }
 
         comparisonStatusChart = new Chart(ctx, {
@@ -4128,19 +4146,21 @@
 
         if (cityChart) cityChart.destroy();
 
-        // 动态计算城市订单分布
+        // 动态计算城市订单分布（仅计算可见行）
         const momoTable = document.getElementById('multiverceTable');
         const clarksTable = document.getElementById('carrefourTable');
         const cityCount = {};
         
         const processCityData = (table) => {
             if (!table) return;
-            table.querySelectorAll('tbody tr').forEach(row => {
-                const cityCell = row.cells[5]?.textContent.trim();
-                if (cityCell) {
-                    cityCount[cityCell] = (cityCount[cityCell] || 0) + 1;
-                }
-            });
+            Array.from(table.querySelectorAll('tbody tr'))
+                .filter(row => row.style.display !== 'none')
+                .forEach(row => {
+                    const cityCell = row.cells[5]?.textContent.trim();
+                    if (cityCell) {
+                        cityCount[cityCell] = (cityCount[cityCell] || 0) + 1;
+                    }
+                });
         };
         
         processCityData(momoTable);
@@ -4208,21 +4228,23 @@
 
         if (cityRevenueChart) cityRevenueChart.destroy();
 
-        // 动态计算城市销售额
+        // 动态计算城市销售额（仅计算可见行）
         const momoTable = document.getElementById('multiverceTable');
         const clarksTable = document.getElementById('carrefourTable');
         const cityRevenue = {};
         
         const processCityRevenue = (table) => {
             if (!table) return;
-            table.querySelectorAll('tbody tr').forEach(row => {
-                const cityCell = row.cells[5]?.textContent.trim();
-                const amountCell = row.cells[11]?.textContent.trim();
-                if (cityCell && amountCell) {
-                    const amount = parseInt(amountCell.replace(/[^\d]/g, '')) || 0;
-                    cityRevenue[cityCell] = (cityRevenue[cityCell] || 0) + amount;
-                }
-            });
+            Array.from(table.querySelectorAll('tbody tr'))
+                .filter(row => row.style.display !== 'none')
+                .forEach(row => {
+                    const cityCell = row.cells[5]?.textContent.trim();
+                    const amountCell = row.cells[11]?.textContent.trim();
+                    if (cityCell && amountCell) {
+                        const amount = parseInt(amountCell.replace(/[^\d]/g, '')) || 0;
+                        cityRevenue[cityCell] = (cityRevenue[cityCell] || 0) + amount;
+                    }
+                });
         };
         
         processCityRevenue(momoTable);
