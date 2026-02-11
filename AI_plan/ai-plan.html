@@ -252,6 +252,83 @@
                 padding: 0.75rem 0.75rem !important;
             }
         }
+
+        /* 錄取率成效統計列 */
+        .stats-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .stat-card {
+            flex: 1;
+            min-width: 90px;
+            text-align: center;
+            padding: 10px 8px;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+        .stat-card.purple {
+            background: linear-gradient(135deg, #ede9fe, #e0e7ff);
+            border: 1px solid rgba(99,102,241,0.2);
+        }
+        .stat-card.purple:hover { box-shadow: 0 6px 20px rgba(99,102,241,0.15); }
+        .stat-card.amber {
+            background: linear-gradient(135deg, #fef3c7, #ffedd5);
+            border: 1px solid rgba(245,158,11,0.2);
+        }
+        .stat-card.amber:hover { box-shadow: 0 6px 20px rgba(245,158,11,0.15); }
+        .stat-card.teal {
+            background: linear-gradient(135deg, #d1fae5, #ccfbf1);
+            border: 1px solid rgba(16,185,129,0.2);
+        }
+        .stat-card.teal:hover { box-shadow: 0 6px 20px rgba(16,185,129,0.15); }
+        .stat-num {
+            font-weight: 900;
+            font-size: 1.5rem;
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+            margin-bottom: 2px;
+        }
+        .stat-card.purple .stat-num {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .stat-card.amber .stat-num {
+            background: linear-gradient(135deg, #d97706, #ea580c);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .stat-card.teal .stat-num {
+            background: linear-gradient(135deg, #059669, #0891b2);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .stat-num.animate-in {
+            animation: statReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        @keyframes statReveal {
+            from { opacity: 0; transform: translateY(8px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .stat-desc {
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.7;
+        }
+        .stat-card.purple .stat-desc { color: #4338ca; }
+        .stat-card.amber .stat-desc { color: #b45309; }
+        .stat-card.teal .stat-desc { color: #047857; }
+        .stat-arrow-icon {
+            display: inline-block;
+            font-size: 0.85em;
+            margin-right: 1px;
+        }
     </style>
 </head>
 
@@ -1256,8 +1333,21 @@
                     <div class="p-4 sm:p-6 md:p-8 flex-grow flex flex-col justify-between">
                         <div>
                             <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3 group-hover:text-purple-600 transition">經濟部 × 北科大 AI 新秀培訓成果紀錄｜Kahoot 即時測驗片段</h3>
-                            <p class="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">本課程採用「互動測驗導入＋講師概念拆解」教學設計，強化學員的刻意練習與即時修正，確保學習真正內化。
-最終達成 81.3% 錄取率，相較整體平均 45%，提升 36%，展現高度培訓成效。</p>
+                            <p class="text-sm sm:text-base text-gray-600 mb-1 sm:mb-2">本課程採用「互動測驗導入＋講師概念拆解」教學設計，強化學員的刻意練習與即時修正，確保學習真正內化，展現高度培訓成效。</p>
+                            <div class="stats-row">
+                                <div class="stat-card purple">
+                                    <div class="stat-num" data-target="81.3">81.3%</div>
+                                    <div class="stat-desc">錄取率</div>
+                                </div>
+                                <div class="stat-card amber">
+                                    <div class="stat-num" data-target="45">45%</div>
+                                    <div class="stat-desc">整體平均</div>
+                                </div>
+                                <div class="stat-card teal">
+                                    <div class="stat-num" data-target="36"><span class="stat-arrow-icon">↑</span>36%</div>
+                                    <div class="stat-desc">提升幅度</div>
+                                </div>
+                            </div>
                         </div>
                         <a href="https://youtu.be/Zi37PBJLLU0" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-purple-600 font-semibold text-sm sm:text-base cursor-pointer hover:text-purple-800 transition">
                             <span>立即觀看</span>
@@ -2198,6 +2288,51 @@
                 }
             }
         });
+    </script>
+
+    <!-- 錄取率數字 count-up 動畫 -->
+    <script>
+    (function() {
+        function animateCounter(el, target, duration, prefix) {
+            const isDecimal = String(target).includes('.');
+            const decimals = isDecimal ? String(target).split('.')[1].length : 0;
+            let start = 0;
+            const startTime = performance.now();
+            function update(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+                const current = start + (target - start) * ease;
+                el.textContent = prefix + current.toFixed(decimals) + '%';
+                if (progress < 1) requestAnimationFrame(update);
+                else el.classList.add('animate-in');
+            }
+            requestAnimationFrame(update);
+        }
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = parseFloat(el.getAttribute('data-target'));
+                    if (!isNaN(target) && !el.dataset.animated) {
+                        el.dataset.animated = '1';
+                        // preserve arrow prefix
+                        const arrow = el.querySelector('.stat-arrow-icon');
+                        const prefix = arrow ? '↑' : '';
+                        animateCounter(el, target, 1600, prefix);
+                    }
+                    observer.unobserve(el);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        document.querySelectorAll('.stat-num[data-target]').forEach(function(el) {
+            const arrow = el.querySelector('.stat-arrow-icon');
+            el.textContent = (arrow ? '↑' : '') + '0%';
+            observer.observe(el);
+        });
+    })();
     </script>
 
 </body>
